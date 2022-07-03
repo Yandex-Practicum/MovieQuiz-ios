@@ -16,12 +16,6 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
-		ADF0CF7D283FDEA80075F54D /* YS Display-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADF0CF77283FDEA70075F54D /* YS Display-Heavy.ttf */; };
-		ADF0CF7E283FDEA80075F54D /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADF0CF78283FDEA70075F54D /* YS Display-Bold.ttf */; };
-		ADF0CF7F283FDEA80075F54D /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADF0CF79283FDEA70075F54D /* YS Display-Medium.ttf */; };
-		ADF0CF80283FDEA80075F54D /* YS Display-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADF0CF7A283FDEA70075F54D /* YS Display-Regular.ttf */; };
-		ADF0CF81283FDEA80075F54D /* YS Display-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADF0CF7B283FDEA80075F54D /* YS Display-Light.ttf */; };
-		ADF0CF82283FDEA80075F54D /* YS Display-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADF0CF7C283FDEA80075F54D /* YS Display-Thin.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,12 +30,6 @@
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
-		ADF0CF77283FDEA70075F54D /* YS Display-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Heavy.ttf"; sourceTree = "<group>"; };
-		ADF0CF78283FDEA70075F54D /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		ADF0CF79283FDEA70075F54D /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
-		ADF0CF7A283FDEA70075F54D /* YS Display-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Regular.ttf"; sourceTree = "<group>"; };
-		ADF0CF7B283FDEA80075F54D /* YS Display-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Light.ttf"; sourceTree = "<group>"; };
-		ADF0CF7C283FDEA80075F54D /* YS Display-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Thin.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,12 +55,25 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				ADF0CF76283FDE980075F54D /* Fonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		8F474D26287254A000E1AE5F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8F474D27287254B000E1AE5F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		AD1ABAA52831907B00B3E448 = {
@@ -95,28 +96,14 @@
 			isa = PBXGroup;
 			children = (
 				8F4738322848DE2A005DF65E /* Presentation */,
-				AD88FF67283B79AD0076AB1C /* Models */,
-				ADF0CF74283FDA800075F54D /* Services */,
+				8F474D26287254A000E1AE5F /* Models */,
+				8F474D27287254B000E1AE5F /* Services */,
 				ADF0CF75283FDAA10075F54D /* Helpers */,
 				8F4738332848DE46005DF65E /* Resources */,
 				AD1ABAB12831907B00B3E448 /* AppDelegate.swift */,
 				AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */,
 			);
 			path = MovieQuiz;
-			sourceTree = "<group>";
-		};
-		AD88FF67283B79AD0076AB1C /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		ADF0CF74283FDA800075F54D /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		ADF0CF75283FDAA10075F54D /* Helpers */ = {
@@ -127,27 +114,6 @@
 				AD77F5732857F8810062FB14 /* Date+Extensions.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		ADF0CF76283FDE980075F54D /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				ADF0CF83283FDEAE0075F54D /* YS Display */,
-			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
-		ADF0CF83283FDEAE0075F54D /* YS Display */ = {
-			isa = PBXGroup;
-			children = (
-				ADF0CF78283FDEA70075F54D /* YS Display-Bold.ttf */,
-				ADF0CF77283FDEA70075F54D /* YS Display-Heavy.ttf */,
-				ADF0CF7B283FDEA80075F54D /* YS Display-Light.ttf */,
-				ADF0CF79283FDEA70075F54D /* YS Display-Medium.ttf */,
-				ADF0CF7A283FDEA70075F54D /* YS Display-Regular.ttf */,
-				ADF0CF7C283FDEA80075F54D /* YS Display-Thin.ttf */,
-			);
-			path = "YS Display";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +146,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
+				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					AD1ABAAD2831907B00B3E448 = {
 						CreatedOnToolsVersion = 13.3.1;
@@ -209,15 +176,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADF0CF7D283FDEA80075F54D /* YS Display-Heavy.ttf in Resources */,
-				ADF0CF80283FDEA80075F54D /* YS Display-Regular.ttf in Resources */,
-				ADF0CF7F283FDEA80075F54D /* YS Display-Medium.ttf in Resources */,
-				ADF0CF82283FDEA80075F54D /* YS Display-Thin.ttf in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
-				ADF0CF7E283FDEA80075F54D /* YS Display-Bold.ttf in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
-				ADF0CF81283FDEA80075F54D /* YS Display-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +368,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -419,7 +382,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -436,6 +399,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -448,7 +413,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
