@@ -10,7 +10,7 @@
              <string>YS Display-Medium</string>
              <string>YS Display-Regular</string>
              <string>YS Display-Thin</string>
-    </array> 
+         </array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
