@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "LaunchScreen.png",
+      "filename" : "Defolt.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Background-1.png",
+      "filename" : "Defolt@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
