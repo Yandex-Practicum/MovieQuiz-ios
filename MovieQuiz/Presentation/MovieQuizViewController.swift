@@ -36,7 +36,7 @@ final class MovieQuizViewController: UIViewController {
             image: UIImage(named: "Kill Bill"),
             rating: 9.2,
             question: "Рейтинг этого фильма больше чем 6?",
-            answer: true)
+            answer: true),
         QuizQuestion(
             image: UIImage(named: "The Avengers"),
             rating: 8,
