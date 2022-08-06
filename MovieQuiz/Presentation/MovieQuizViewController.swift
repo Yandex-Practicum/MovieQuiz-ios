@@ -17,9 +17,6 @@ final class MovieQuizViewController: UIViewController {
         let text: String
         let buttonText: String
     }
-    private struct AnswerResultsViewModel {
-        let answerResult: Bool
-    }
 
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -77,17 +74,24 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var score = 0
     private var totalScore = 0
-    private var quizesPlayed: Int = 0
+    private var highestScore = 0
+    private var highestScoreDate = ""
+    private var quizesPlayed = 0
     private var averageAccuracy: Float = 0
+    private let dateFormatter = DateFormatter()
+    private let dateFormat = "dd.MM.yy HH:mm"
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
+        dateFormatter.dateFormat = dateFormat
         let quiz = convert(model: questions[currentQuestionIndex])
         showQuestion(quiz: quiz)
     }
@@ -99,28 +103,23 @@ final class MovieQuizViewController: UIViewController {
     }
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        toggleAnswerButtons()
-        let result = questions[currentQuestionIndex].answer == true
-        if result {
-            score += 1
-        }
-        setImageBorder(answerWasCorrect: result)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.showNextQuestionOrResults()
-            self.toggleAnswerButtons()
-        }
+        handleButtonClick(answerWasCorrect: questions[currentQuestionIndex].answer == true)
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        handleButtonClick(answerWasCorrect: questions[currentQuestionIndex].answer == false)
+    }
+
+    private func handleButtonClick(answerWasCorrect: Bool) {
         toggleAnswerButtons()
-        let result = questions[currentQuestionIndex].answer == false
-        if result {
+        if answerWasCorrect {
             score += 1
         }
-        setImageBorder(answerWasCorrect: result)
+        setImageBorder(answerWasCorrect: answerWasCorrect)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.showNextQuestionOrResults()
-            self.toggleAnswerButtons()
+            [weak self] in
+            self?.showNextQuestionOrResults()
+            self?.toggleAnswerButtons()
         }
     }
 
@@ -130,9 +129,7 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func setImageBorder(answerWasCorrect: Bool) {
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = UIColor(named: answerWasCorrect ? "YP Green" : "YP Red")?.cgColor
     }
 
@@ -145,6 +142,10 @@ final class MovieQuizViewController: UIViewController {
         } else {
             quizesPlayed += 1
             totalScore += score
+            if score > highestScore {
+                highestScore = score
+                highestScoreDate = dateFormatter.string(from: Date())
+            }
             averageAccuracy = Float(totalScore * 1000 / (questions.count * quizesPlayed)) / 10
             let title = score == questions.count ? "Поздравляем!" : "Этот раунд окончен!"
             showResults(quiz: QuizResultsViewModel(
@@ -152,6 +153,7 @@ final class MovieQuizViewController: UIViewController {
                 text: """
                 Ваш результат: \(score)/\(questions.count)
                 Количество сыгранных квизов: \(quizesPlayed)
+                Рекорд: \(highestScore)/\(questions.count) (\(highestScoreDate))
                 Средняя точность: \(averageAccuracy)%
                 """,
                 buttonText: "Сыграть еще раз"))
@@ -164,15 +166,15 @@ final class MovieQuizViewController: UIViewController {
             message: step.text,
             preferredStyle: .alert
         )
-        let action = UIAlertAction(title: step.buttonText, style: .default) { _ in
-            self.startNewRound()
+        let action = UIAlertAction(title: step.buttonText, style: .default) { [weak self] _ in
+            self?.startNewRound()
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
 
     private func startNewRound() {
-        imageView.layer.borderColor = nil
+        imageView.layer.borderWidth = 0
         currentQuestionIndex = 0
         score = 0
         let quiz = convert(model: questions[currentQuestionIndex])
