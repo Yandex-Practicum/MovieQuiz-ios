@@ -28,7 +28,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Lw3-dt-cK8">
                                 <rect key="frame" x="20" y="44" width="374" height="818"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oiT-hy-eHV">
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="oiT-hy-eHV">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ER-vI-LpQ" userLabel="QuestionLabel">
@@ -45,7 +45,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Deadpool" translatesAutoresizingMaskIntoConstraints="NO" id="dzb-4t-JrE" userLabel="MovieImage">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Deadpool" translatesAutoresizingMaskIntoConstraints="NO" id="dzb-4t-JrE" userLabel="MovieImage">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="YCWhite"/>
                                         <constraints>
@@ -57,25 +57,13 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xg5-4V-jRU">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s27-go-nV6" userLabel="QuestionContentsLabel">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="113.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s27-go-nV6" userLabel="QuestionContentsLabel">
-                                                <rect key="frame" x="20" y="0.0" width="334" height="113.5"/>
-                                                <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
-                                                <color key="textColor" name="YCWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="s27-go-nV6" secondAttribute="trailing" constant="20" id="Fbd-fo-djC"/>
-                                            <constraint firstItem="s27-go-nV6" firstAttribute="top" secondItem="xg5-4V-jRU" secondAttribute="top" id="NTA-1C-uSA"/>
-                                            <constraint firstAttribute="bottom" secondItem="s27-go-nV6" secondAttribute="bottom" id="eEZ-Vh-7ec"/>
-                                            <constraint firstItem="s27-go-nV6" firstAttribute="leading" secondItem="xg5-4V-jRU" secondAttribute="leading" constant="20" id="r1o-Mo-k7N"/>
-                                        </constraints>
-                                    </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="LX3-Xz-YBk" userLabel="ButtonsStack">
+                                        <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
+                                        <color key="textColor" name="YCWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="LX3-Xz-YBk" userLabel="ButtonsStack">
                                         <rect key="frame" x="0.0" y="758" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kU-jE-2pq" userLabel="NoButton">
@@ -125,7 +113,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YCBlack"/>
                         <constraints>
-                            <constraint firstItem="Lw3-dt-cK8" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="5oX-Af-uHa"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Lw3-dt-cK8" secondAttribute="bottom" id="9Iv-wH-Yyx"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="WBc-Gn-ZGt"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ZPP-xs-nDK"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="cfX-Z3-6bc"/>

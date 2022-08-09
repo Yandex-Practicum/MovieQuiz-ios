@@ -44,8 +44,9 @@ final class MovieQuizViewController: UIViewController {
     private var qNumber: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
     private var currentViewModel: QuizeStepViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: 0)
     private var resultsViewModel: QuizeResultsViewModel = QuizeResultsViewModel(title: "Этот раунд окончен!", text: "")
-    private var accuracy: [Float] = []
-    private var avgAccuracy: Float = 0.0
+    private var accuracy: [Double] = []
+    private var avgAccuracy: Double = 0.0
+    private var sumAccuracy: Double = 0.0
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
         return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: qNumber)
@@ -105,18 +106,20 @@ final class MovieQuizViewController: UIViewController {
                 recordDate = dt.dateTimeString
             }
             if corrects > 0 {
-                accuracy.append(Float(questions.count / corrects) * 100.0)
+                accuracy.append((Double(corrects) / Double(questions.count)) * 100.0)
             }
             else {
                 accuracy.append(0.0)
             }
             if !accuracy.isEmpty {
-                var sumArray: Float {
-                    return accuracy.reduce(0 as Float) { $0 + Float($1) }
+                sumAccuracy = 0.0
+                for element in accuracy {
+                    sumAccuracy += element
                 }
-                avgAccuracy = sumArray / Float(accuracy.count)
+                print(sumAccuracy)
+                avgAccuracy = sumAccuracy / Double(accuracy.count)
             }
-            resultsViewModel.text = "Ваш результат: \(corrects)/\(questions.count)\nКоличество сыграных квизов:\(rounds)\nРекорд: \(records)/\(questions.count) (\(recordDate)"
+            resultsViewModel.text = "Ваш результат: \(corrects)/\(questions.count)\nКоличество сыграных квизов:\(rounds)\nРекорд: \(records)/\(questions.count) (\(recordDate))"
             resultsViewModel.text += "\nСредняя точность: \(avgAccuracy)%"
             show(quize: resultsViewModel)
             return
