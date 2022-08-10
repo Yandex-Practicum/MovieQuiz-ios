@@ -1,25 +1,30 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
+    
+    @IBOutlet private var moviePoster: UIImageView!
+    @IBOutlet private var questionForUser: UILabel!
+    @IBOutlet private var questionNumber: UILabel!
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard qNumber < questions.count else { return }
-        if !questions[qNumber].correctAnswer {
-            showAnswerResult(isCorrect: true)
-        }
-        else {
-            showAnswerResult(isCorrect: false)
+        if !buttonsBlocked {
+            guard questionNumberGlobal < questions.count else { return }
+            if !questions[questionNumberGlobal].correctAnswer {
+                showAnswerResult(isCorrect: true)
+            }
+            else {
+                showAnswerResult(isCorrect: false)
+            }
         }
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard qNumber < questions.count else { return }
-        if questions[qNumber].correctAnswer {
-            showAnswerResult(isCorrect: true)
-        }
-        else {
-            showAnswerResult(isCorrect: false)
+        if !buttonsBlocked {
+            guard questionNumberGlobal < questions.count else { return }
+            if questions[questionNumberGlobal].correctAnswer {
+                showAnswerResult(isCorrect: true)
+            }
+            else {
+                showAnswerResult(isCorrect: false)
+            }
         }
     }
 
@@ -36,27 +41,32 @@ final class MovieQuizViewController: UIViewController {
     }
 
     struct QuizeResultsViewModel {
-        let title: String
+        var title: String
         var text: String
     }
 
     private var questions: [QuizeQuestion] = []
-    private var qNumber: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
+    private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
     private var currentViewModel: QuizeStepViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: 0)
-    private var resultsViewModel: QuizeResultsViewModel = QuizeResultsViewModel(title: "Этот раунд окончен!", text: "")
+    private var resultsViewModel: QuizeResultsViewModel = QuizeResultsViewModel(title: "", text: "")
     private var accuracy: [Double] = []
     private var avgAccuracy: Double = 0.0
     private var sumAccuracy: Double = 0.0
+    private var buttonsBlocked: Bool = false
+    private let greenColor: CGColor = UIColor(named: "YCGreen")!.cgColor
+    private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
-        return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: qNumber)
+        return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: questionNumberGlobal)
     }
 
     private func show(quize step: QuizeStepViewModel) {
-        let currentViewModel = convert(model: questions[qNumber])
-        imageView.image = UIImage(named: currentViewModel.image)
-        textLabel.text = currentViewModel.question
-        counterLabel.text = "\(currentViewModel.questionNumber + 1)/\(questions.count)"
+        moviePoster.layer.borderWidth = 0
+        let currentViewModel = convert(model: questions[questionNumberGlobal])
+        moviePoster.image = UIImage(named: currentViewModel.image)
+        questionForUser.text = currentViewModel.question
+        questionNumber.text = "\(currentViewModel.questionNumber + 1)/\(questions.count)"
+        buttonsBlocked = false
     }
 
     private func show(quize result: QuizeResultsViewModel) {
@@ -67,10 +77,7 @@ final class MovieQuizViewController: UIViewController {
 
         // создаём для него кнопки с действиями
         let action = UIAlertAction(title: "Сыграть еще раз!", style: .default, handler: { _ in
-            self.corrects = 0
-            self.wrongs = 0
-            self.qNumber = 0
-            self.show(quize: self.convert(model: self.questions[self.qNumber]))
+            self.show(quize: self.convert(model: self.questions[self.questionNumberGlobal]))
         })
 
         // добавляем в алерт кнопки
@@ -81,29 +88,30 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.borderWidth = 8
+        buttonsBlocked = true
+        moviePoster.layer.borderWidth = 8
         if isCorrect {
-            imageView.layer.borderColor = UIColor.green.cgColor
+            moviePoster.layer.borderColor = greenColor
             corrects += 1
         }
         else {
-            imageView.layer.borderColor = UIColor.red.cgColor
+            moviePoster.layer.borderColor = redColor
             wrongs += 1
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.imageView.layer.borderWidth = 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            //self.moviePoster.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
     }
 
     private func showNextQuestionOrResults() {
-        qNumber += 1
-        guard qNumber < questions.count else {
+        questionNumberGlobal += 1
+        guard questionNumberGlobal < questions.count else {
             rounds += 1
             if corrects > records {
                 records = corrects
-                let dt = Date()
-                recordDate = dt.dateTimeString
+                let temporaryDateVar = Date()
+                recordDate = temporaryDateVar.dateTimeString
             }
             if corrects > 0 {
                 accuracy.append((Double(corrects) / Double(questions.count)) * 100.0)
@@ -119,12 +127,21 @@ final class MovieQuizViewController: UIViewController {
                 print(sumAccuracy)
                 avgAccuracy = sumAccuracy / Double(accuracy.count)
             }
+            if corrects != questions.count {
+                resultsViewModel.title = "Этот раунд окончен!"
+            }
+            else {
+                resultsViewModel.title = "Потрясающе!"
+            }
             resultsViewModel.text = "Ваш результат: \(corrects)/\(questions.count)\nКоличество сыграных квизов:\(rounds)\nРекорд: \(records)/\(questions.count) (\(recordDate))"
             resultsViewModel.text += "\nСредняя точность: \(avgAccuracy)%"
+            corrects = 0
+            wrongs = 0
+            questionNumberGlobal = 0
             show(quize: resultsViewModel)
             return
         }
-        show(quize: convert(model: questions[qNumber]))
+        show(quize: convert(model: questions[questionNumberGlobal]))
     }
 
     // MARK: - Lifecycle
@@ -140,73 +157,21 @@ final class MovieQuizViewController: UIViewController {
         questions.append(QuizeQuestion(image: "Tesla", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false))
         questions.append(QuizeQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false))
         super.viewDidLoad()
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 0 // толщина рамки
-        imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
-        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
-        show(quize: convert(model: questions[qNumber]))
+        moviePoster.layer.masksToBounds = true // даём разрешение на рисование рамки
+        moviePoster.layer.borderWidth = 0 // толщина рамки
+        moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
+        moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenSizeRatio = screenSize.width / screenSize.height
+        if screenSizeRatio > 0.5 {
+            moviePoster.addConstraint(NSLayoutConstraint(item: moviePoster,
+                                                  attribute: .width,
+                                                  relatedBy: .equal,
+                                                  toItem: moviePoster,
+                                                  attribute: .height,
+                                                  multiplier: 2.0 / 2.5,
+                                                  constant: 0))
+        }
+        show(quize: convert(model: questions[questionNumberGlobal]))
     }
 }
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
