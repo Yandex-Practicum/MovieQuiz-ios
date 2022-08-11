@@ -18,6 +18,7 @@ final class MovieQuizViewController: UIViewController {
 
     var allQuestions: Int = 10
     var currentPosition: Int = 0
+    var imageViewBorderWidth = 8.0
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -61,21 +62,22 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func imageQuestionStyle(image: UIImageView) {
-        image.layer.borderWidth = 8
         image.layer.cornerRadius = 20
-
         imageResetStyle(image: image)
     }
 
     private func imageResetStyle(image: UIImageView) {
         image.layer.borderColor = .none
+        image.layer.borderWidth = .nan
     }
 
     private func answerSuccess(image: UIImageView) {
         image.layer.borderColor = UIColor.appSuccess.cgColor
+        image.layer.borderWidth = imageViewBorderWidth
     }
 
     private func answerFail(image: UIImageView) {
         image.layer.borderColor = UIColor.appFail.cgColor
+        image.layer.borderWidth = imageViewBorderWidth
     }
 }
