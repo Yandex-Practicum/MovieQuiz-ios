@@ -7,7 +7,9 @@ enum FontDefault {
 }
 
 final class MovieQuizViewController: UIViewController {
+
     // MARK: - IBOutlet
+
     @IBOutlet var viewContainer: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var headerCounterLabel: UILabel!
@@ -15,6 +17,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var questionTextLabel: UILabel!
     @IBOutlet weak var falseButton: UIButton!
     @IBOutlet weak var trueButton: UIButton!
+
+    // MARK: - Properties
 
     var allQuestions: Int = 10
     var currentPosition: Int = 0
@@ -25,6 +29,7 @@ final class MovieQuizViewController: UIViewController {
     }
 
     // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configuration()
