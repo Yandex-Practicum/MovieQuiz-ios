@@ -33,6 +33,7 @@ final class MovieQuizViewController: UIViewController {
 
         headerTitleLabel.font = UIFont(name: FontDefault.medium, size: FontDefault.size)
         headerCounterLabel.font = UIFont(name: FontDefault.medium, size: FontDefault.size)
+        headerCounterLabel.text = "\(currentPosition) / \(allQuestions)"
 
         questionTextLabel.text = "..."
         questionTextLabel.font = UIFont(name: FontDefault.bold, size: 23.0)
