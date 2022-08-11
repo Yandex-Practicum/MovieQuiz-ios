@@ -5,26 +5,25 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var moviePoster: UIImageView!
     @IBOutlet private var questionForUser: UILabel!
     @IBOutlet private var questionNumber: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        if !buttonsBlocked {
-            guard questionNumberGlobal < questions.count else { return }
-            if !questions[questionNumberGlobal].correctAnswer {
-                showAnswerResult(isCorrect: true)
-            }
-            else {
-                showAnswerResult(isCorrect: false)
-            }
+        guard questionNumberGlobal < questions.count else { return }
+        if !questions[questionNumberGlobal].correctAnswer {
+            showAnswerResult(isCorrect: true)
+        }
+        else {
+            showAnswerResult(isCorrect: false)
         }
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        if !buttonsBlocked {
-            guard questionNumberGlobal < questions.count else { return }
-            if questions[questionNumberGlobal].correctAnswer {
-                showAnswerResult(isCorrect: true)
-            }
-            else {
-                showAnswerResult(isCorrect: false)
-            }
+        guard questionNumberGlobal < questions.count else { return }
+        if questions[questionNumberGlobal].correctAnswer {
+            showAnswerResult(isCorrect: true)
+        }
+        else {
+            showAnswerResult(isCorrect: false)
         }
     }
 
@@ -66,7 +65,9 @@ final class MovieQuizViewController: UIViewController {
         moviePoster.image = UIImage(named: currentViewModel.image)
         questionForUser.text = currentViewModel.question
         questionNumber.text = "\(currentViewModel.questionNumber + 1)/\(questions.count)"
-        buttonsBlocked = false
+        //buttonsBlocked = false
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
 
     private func show(quize result: QuizeResultsViewModel) {
@@ -88,7 +89,8 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showAnswerResult(isCorrect: Bool) {
-        buttonsBlocked = true
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         moviePoster.layer.borderWidth = 8
         if isCorrect {
             moviePoster.layer.borderColor = greenColor
@@ -99,7 +101,6 @@ final class MovieQuizViewController: UIViewController {
             wrongs += 1
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            //self.moviePoster.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
     }
@@ -146,7 +147,7 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
-        questions.append(QuizeQuestion(image: "The Godfather",text: "Рейтинг этого фильма больше, чем 6?",correctAnswer: true))
+        questions.append(QuizeQuestion(image: "The Godfather",text: "Рейтинг этого замечательного фильма \"Крестный отец\" больше, чем 6?" ,correctAnswer: true))
         questions.append(QuizeQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
         questions.append(QuizeQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
         questions.append(QuizeQuestion(image: "The Green Knight", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
@@ -161,17 +162,6 @@ final class MovieQuizViewController: UIViewController {
         moviePoster.layer.borderWidth = 0 // толщина рамки
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
-        let screenSize: CGRect = UIScreen.main.bounds
-        let screenSizeRatio = screenSize.width / screenSize.height
-        if screenSizeRatio > 0.5 {
-            moviePoster.addConstraint(NSLayoutConstraint(item: moviePoster,
-                                                  attribute: .width,
-                                                  relatedBy: .equal,
-                                                  toItem: moviePoster,
-                                                  attribute: .height,
-                                                  multiplier: 2.0 / 2.5,
-                                                  constant: 0))
-        }
         show(quize: convert(model: questions[questionNumberGlobal]))
     }
 }
