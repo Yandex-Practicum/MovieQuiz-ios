@@ -7,7 +7,6 @@ enum FontDefault {
 }
 
 final class MovieQuizViewController: UIViewController {
-
     // MARK: - IBOutlet
 
     @IBOutlet var viewContainer: UIView!
