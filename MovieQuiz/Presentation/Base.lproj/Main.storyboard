@@ -38,7 +38,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Default" translatesAutoresizingMaskIntoConstraints="NO" id="2fP-IF-Jbs">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Default" translatesAutoresizingMaskIntoConstraints="NO" id="2fP-IF-Jbs">
                                         <rect key="frame" x="0.0" y="60" width="374" height="538"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
