@@ -12,28 +12,56 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func noButtonClicked(_ sender: UIButton) {
 
     }
+
+    var questionNumber = 0
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        func show(quiz step: QuizStepViewModel) {
+          // здесь мы заполняем нашу картинку, текст и счётчик данными
+        }
     }
     struct QuizQuestion {
         let imageName: String
         let questionText: String
         let correctAnswer: Bool
-        var questionNumber = 0
+    }
 
-        private let questions = [
-            QuizQuestion(imageName: "The Godfather", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-            QuizQuestion(imageName: "The Dark Knight", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-            QuizQuestion(imageName: "Kill Bill", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-            QuizQuestion(imageName: "The Avengers", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-            QuizQuestion(imageName: "The Avengers", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-            QuizQuestion(imageName: "The Green Knight", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-            QuizQuestion(imageName: "Old", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-            QuizQuestion(imageName: "The Ice Age Adventures of Buck Wild", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-            QuizQuestion(imageName: "Tesla", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-            QuizQuestion(imageName: "Vivarium", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
-        ]
+    private let questions = [
+        QuizQuestion(imageName: "The Godfather", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(imageName: "The Dark Knight", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(imageName: "Kill Bill", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(imageName: "The Avengers", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(imageName: "The Avengers", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(imageName: "The Green Knight", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(imageName: "Old", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
+        QuizQuestion(imageName: "The Ice Age Adventures of Buck Wild", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
+        QuizQuestion(imageName: "Tesla", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
+        QuizQuestion(imageName: "Vivarium", questionText: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
+    ]
+
+    // для состояния "Вопрос задан"
+    struct QuizStepViewModel {
+      let image: UIImage
+      let question: String
+      let questionNumber: String
+    }
+
+    // для состояния "Результат квиза"
+    struct QuizResultsViewModel {
+      let title: String
+      let text: String
+      let buttonText: String
+    }
+
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+      // Напишите код конвертации сами
+    }
+
+
+    private func show(quiz result: QuizResultsViewModel) {
+      // здесь мы показываем результат прохождения квиза
     }
     //
     //
