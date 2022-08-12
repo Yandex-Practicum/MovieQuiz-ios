@@ -29,9 +29,13 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Lifecycle
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configuration()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        configuration()
     }
 
     // MARK: - Private methods
