@@ -137,8 +137,8 @@ QuizQuestion(
     // MARK: - Функция для подсветки корректности результата ответа
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
-        imageView.layer.cornerRadius = 6
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = UIColor(named: isCorrect ? "YP Green" : "YP Red")?.cgColor
     }
 
