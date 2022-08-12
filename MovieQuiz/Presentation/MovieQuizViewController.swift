@@ -139,7 +139,7 @@ QuizQuestion(
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
-        imageView.layer.borderColor = UIColor(named: isCorrect ? "YP Green" : "YP Red")?.cgColor
+        imageView.layer.borderColor = UIColor(named: isCorrect ? "green" : "red")?.cgColor
     }
 
     private func toggleAnswerButtons() {
