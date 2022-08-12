@@ -2,8 +2,6 @@
 
 import UIKit
 
-// todo: alternative text on alert when 10 / 10
-
 final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
@@ -214,6 +212,7 @@ extension UIColor {
     static var ypRed: UIColor { UIColor(named: "YP Red") ?? UIColor(red: 0.961, green: 0.42, blue: 0.34, alpha: 1) }
     static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor(red: 0.26, green: 0.27, blue: 0.133, alpha: 1) }
     static var ypBackground: UIColor { UIColor(named: "YP Background") ?? UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 0.6) }
+    static var transparent: UIColor { UIColor(red: 0, green: 0, blue: 0, alpha: 0) }
 }
 
 // НАСТРОЙКА СТИЛЕЙ ОБВОДКИ ИМИДЖА
@@ -235,7 +234,7 @@ extension MovieQuizViewController {
         case "incorrect":
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         default:
-            imageView.layer.borderColor = UIColor.ypBlack.cgColor
+            imageView.layer.borderColor = UIColor.transparent.cgColor
         }
     }
     
@@ -243,7 +242,7 @@ extension MovieQuizViewController {
 
 // НАСТРОЙКИ АЛЕРТА ДЛЯ РЕЗУЛЬТАТА КВИЗА
 extension MovieQuizViewController {
-    func showResultAlert(result: QuizResultViewModel) {
+    private func showResultAlert(result: QuizResultViewModel) {
         let alert = UIAlertController(title: result.title,
                                       message: result.text,
                                       preferredStyle: .alert)
@@ -273,13 +272,13 @@ extension MovieQuizViewController {
         var accuracyCollect: Float = 0
         // var accuracyAverage: Float = 0
         
-        mutating func accuracyAverage() -> String {
+        mutating private func accuracyAverage() -> String {
             accuracyCurrent = Float(100 / numberOfQuestions * score)
             accuracyCollect += accuracyCurrent
             return String(format: "%.2f", accuracyCollect / Float(gamesPlayed))
         }
 
-        mutating func isItRecord() {
+        mutating private func isItRecord() {
             // проверка на рекорд
             if score >= record {
                 record = score // это рекорд
@@ -287,12 +286,11 @@ extension MovieQuizViewController {
             }
         }
         
-        mutating func gameRestart() {
+        mutating private func gameRestart() {
             gamesPlayed += 1
             score = 0
         }
-
+ 
     }
-    
     
 }
