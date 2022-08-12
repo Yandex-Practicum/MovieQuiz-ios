@@ -21,12 +21,27 @@ final class MovieQuizViewController: UIViewController {
         showQuestion(quiz: quiz)
     }
     // MARK: - Обработка ответа от пользователя
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {toggleAnswerButtons()
+        let result = questions[currentQuestionIndex].correctAnswer == true
+         if result {
+             score += 1
+         }
+        showAnswerResult(isCorrect: result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+             self.showNextQuestionOrResults()
+             self.toggleAnswerButtons()
+         }    }
 
-    }
-
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-
+    @IBAction private func noButtonClicked(_ sender: UIButton) {toggleAnswerButtons()
+        let result = questions[currentQuestionIndex].correctAnswer == false
+        if result {
+            score += 1
+        }
+        showAnswerResult(isCorrect: result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.showNextQuestionOrResults()
+            self.toggleAnswerButtons()
+        }
     }
     // MARK: - Mock-данные
     private struct QuizQuestion {
@@ -37,16 +52,56 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private let questions: [QuizQuestion] = [
-QuizQuestion(imageName: UIImage(named: "The Godfather"),rating: 9.2,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: true),
-QuizQuestion(imageName: UIImage(named: "The Dark Knight"),rating: 9,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: true),
-QuizQuestion(imageName: UIImage(named: "Kill Bill"),rating: 9.2,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: true),
-QuizQuestion(imageName: UIImage(named: "The Avengers"),rating: 8,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: true),
-QuizQuestion(imageName: UIImage(named: "Deadpool"),rating: 8,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: true),
-QuizQuestion(imageName: UIImage(named: "The Green Knight"),rating: 6.6,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: true),
-QuizQuestion(imageName: UIImage(named: "Old"),rating: 5.8,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: false),
-QuizQuestion(imageName: UIImage(named: "The Ice Age Adventures of Buck Wild"),rating: 4.3,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: false),
-QuizQuestion(imageName: UIImage(named: "Tesla"),rating: 5.1,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: false),
-QuizQuestion(imageName: UIImage(named: "Vivarium"),rating: 5.8,questionText: "Рейтинг этого фильма больше чем 6?",correctAnswer: false)
+QuizQuestion(
+    imageName: UIImage(named: "The Godfather"),
+    rating: 9.2,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: true),
+QuizQuestion(
+    imageName: UIImage(named: "The Dark Knight"),
+    rating: 9,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: true),
+QuizQuestion(
+    imageName: UIImage(named: "Kill Bill"),
+    rating: 9.2,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: true),
+QuizQuestion(
+    imageName: UIImage(named: "The Avengers"),
+    rating: 8,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: true),
+QuizQuestion(
+    imageName: UIImage(named: "Deadpool"),
+    rating: 8,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: true),
+QuizQuestion(
+    imageName: UIImage(named: "The Green Knight"),
+    rating: 6.6,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: true),
+QuizQuestion(
+    imageName: UIImage(named: "Old"),
+    rating: 5.8,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: false),
+QuizQuestion(
+    imageName: UIImage(named: "The Ice Age Adventures of Buck Wild"),
+    rating: 4.3,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: false),
+QuizQuestion(
+    imageName: UIImage(named: "Tesla"),
+    rating: 5.1,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: false),
+QuizQuestion(
+    imageName: UIImage(named: "Vivarium"),
+    rating: 5.8,
+    questionText: "Рейтинг этого фильма больше чем 6?",
+    correctAnswer: false)
     ]
     // MARK: - модели данных для вьюшек
     private struct QuizStepViewModel {
@@ -92,7 +147,7 @@ QuizQuestion(imageName: UIImage(named: "Vivarium"),rating: 5.8,questionText: "Р
         yesButton.isEnabled.toggle()
     }
     // MARK: - Показываем следующий шаг
-    private func showNextQuestionOrResults(_ bestQuiz: (score: Int, date: String)) {
+    private func showNextQuestionOrResults() {
         if currentQuestionIndex < questions.count - 1 {
             currentQuestionIndex += 1
             let quiz = convert(model: questions[currentQuestionIndex])
@@ -108,7 +163,6 @@ QuizQuestion(imageName: UIImage(named: "Vivarium"),rating: 5.8,questionText: "Р
                 textResult: """
                 Ваш результат: \(score)/\(questions.count)
                 Количество сыгранных квизов: \(quizSum)
-                Рекорд: \(bestQuiz.score)/10 (\(bestQuiz.date))
                 Средняя точность: \(averageAccuracy)%
                 """,
                 buttonText: "Сыграть еще раз"))
