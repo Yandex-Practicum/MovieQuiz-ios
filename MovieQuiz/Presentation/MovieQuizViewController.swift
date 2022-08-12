@@ -2,6 +2,8 @@
 
 import UIKit
 
+// todo: alternative text on alert when 10 / 10
+
 final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
@@ -18,7 +20,7 @@ final class MovieQuizViewController: UIViewController {
     var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
     var analytic: QuizAnalytics = QuizAnalytics()
-
+    
     
     // MARK: - LIFECYCLE
     
@@ -34,7 +36,7 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
     }
-
+    
     
     // MARK: - QUIZ STEP
     
@@ -55,7 +57,7 @@ final class MovieQuizViewController: UIViewController {
         let quiz: QuizStepViewModel = QuizStepViewModel(
             image: UIImage(named: model.image)!,
             question: model.text,
-            questionNumber: "0/0")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return quiz
     }
     
@@ -63,7 +65,7 @@ final class MovieQuizViewController: UIViewController {
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
-        counterLabel.text = ""
+        counterLabel.text = step.questionNumber
     }
     
     
@@ -86,7 +88,7 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             imageBorderColor(for: "correct")
-
+            
         } else {
             imageBorderColor(for: "incorrect")
         }
@@ -111,7 +113,19 @@ final class MovieQuizViewController: UIViewController {
     // Показываем следующий вопрос или результат всей викторины
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 { // это последний вопрос
-            show(quiz: quizResults)
+            analytic.isItRecord() // Проверил на рекорд
+            let result = QuizResultViewModel(
+                title: "Этот раунд окончен!",
+                text:
+                """
+                Ваш результат: \(analytic.score)/\(questions.count)
+                Количество сыгранных квизов: \(analytic.gamesPlayed)
+                Рекорд: \(analytic.record) /\(questions.count) (\(analytic.recordTime))
+                Средняя точность: \(analytic.accuracyAverage())%
+                """,
+                buttonText: "Сыграть еще раз"
+            )
+            show(quiz: result)
         } else { // это не последний вопрос
             currentQuestionIndex += 1
             show(quiz: convert(model: currentQuestion))
@@ -120,12 +134,11 @@ final class MovieQuizViewController: UIViewController {
     
     private func restart() {
         currentQuestionIndex = 0 // Сбросил вопрос на первый
-        analytic.gamesPlayed += 1 // Записал кол-во сыгранных игр
-        analytic.score = 0 // Сбросил очки в прошедшей игре
+        analytic.gameRestart()
         show(quiz: convert(model: currentQuestion))
     }
     
-   
+    
     
     // MARK: - DATA SET
     
@@ -172,19 +185,6 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-    
-    // Данные для вывода алерта с результатами
-    private var quizResults: QuizResultViewModel = QuizResultViewModel(
-        title: "Этот раунд окончен!",
-        text:
-        """
-        Ваш результат: 6/10
-        Количество сыгранных квизов:
-        Рекорд: 6/10 (03.07.22 03:22)
-        Средняя точность: 60.00%
-        """,
-        buttonText: "Сыграть еще раз")
-
 }
 
 // MARK: - CLASS EXTENSIONS
@@ -201,7 +201,7 @@ extension UIColor {
 
 // НАСТРОЙКА СТИЛЕЙ ОБВОДКИ ИМИДЖА
 extension MovieQuizViewController {
-
+    
     // Дефолтные стили обводки UIView
     private func imageBorderDefaultStyle() {
         imageView.layer.masksToBounds = true
@@ -242,10 +242,8 @@ extension MovieQuizViewController {
 extension MovieQuizViewController {
     
     struct QuizAnalytics {
-        var gamesPlayed: Int = 0
-        
+        var gamesPlayed: Int = 1
         var score: Int = 0
-        var previousGameScore: Int = 0
         var record: Int = 0
         
         var currentTime: String {
@@ -253,31 +251,31 @@ extension MovieQuizViewController {
             return date.dateTimeString
         }
         var recordTime: String = ""
+        let numberOfQuestions = 10 // Не придумал как увидеть отсюда длину массива вопросов
+        var accuracyCurrent: Float = 0
+        var accuracyCollect: Float = 0
+        // var accuracyAverage: Float = 0
         
-       // var accuracy: String = "\(calculateAccuracy())"
-        
-        func calculateAccuracy(numberOfQuesions: Int) -> Float {
-            print(numberOfQuesions)
-            return Float(100 / numberOfQuesions * score)
+        mutating func accuracyAverage() -> String {
+            accuracyCurrent = Float(100 / numberOfQuestions * score)
+            accuracyCollect += accuracyCurrent
+            return String(format: "%.2f", accuracyCollect / Float(gamesPlayed))
         }
-        
-        mutating func gameOver() {
+
+        mutating func isItRecord() {
             // проверка на рекорд
-            if score >= previousGameScore {
+            if score >= record {
                 record = score // это рекорд
                 recordTime = currentTime
-            } else {
-                record = previousGameScore // это не рекорд
             }
-            gamesPlayed += 1
         }
         
-        mutating func gameWillRestart() {
-            previousGameScore = score
+        mutating func gameRestart() {
+            gamesPlayed += 1
             score = 0
         }
-        
-    }
 
+    }
+    
     
 }
