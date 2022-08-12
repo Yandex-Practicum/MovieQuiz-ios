@@ -17,6 +17,7 @@ final class MovieQuizViewController: UIViewController {
     
     var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
+
     
     // MARK: - LIFECYCLE
     
@@ -29,6 +30,10 @@ final class MovieQuizViewController: UIViewController {
         super.viewWillAppear(animated)
         imageBorderDefaultStyle() // Настройка стиля обводки ImageView
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+    }
+
     
     // MARK: - QUIZ STEP
     
@@ -80,6 +85,7 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             imageBorderColor(for: "correct")
+
         } else {
             imageBorderColor(for: "incorrect")
         }
@@ -91,6 +97,7 @@ final class MovieQuizViewController: UIViewController {
     private func processUserAnswer(answer: Bool) {
         if answer == currentQuestion.correctAnswer {
             showAnswerResult(isCorrect: true)
+            analytic.score += 1 // Записал успешный результат
         } else {
             showAnswerResult(isCorrect: false)
         }
@@ -111,9 +118,13 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func restart() {
-        currentQuestionIndex = 0
+        currentQuestionIndex = 0 // Сбросил вопрос на первый
+        analytic.gamesPlayed += 1 // Записал кол-во сыгранных игр
+        analytic.score = 0 // Сбросил очки в прошедшей игре
         show(quiz: convert(model: currentQuestion))
     }
+    
+   
     
     // MARK: - DATA SET
     
@@ -167,7 +178,7 @@ final class MovieQuizViewController: UIViewController {
         text:
         """
         Ваш результат: 6/10
-        Количество сыгранных квизов: 1
+        Количество сыгранных квизов:
         Рекорд: 6/10 (03.07.22 03:22)
         Средняя точность: 60.00%
         """,
@@ -224,4 +235,48 @@ extension MovieQuizViewController {
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
+}
+
+// СБОРЩИК АНАЛИТИКИ
+extension MovieQuizViewController {
+    
+    struct QuizAnalytics {
+        var gamesPlayed: Int = 0
+        
+        var score: Int = 0
+        var previousGameScore: Int = 0
+        var record: Int = 0
+        
+        var currentTime: String {
+            let date = Date()
+            return date.dateTimeString
+        }
+        var recordTime: String = ""
+        
+       // var accuracy: String = "\(calculateAccuracy())"
+        
+        func calculateAccuracy(numberOfQuesions: Int) -> Float {
+            print(numberOfQuesions)
+            return Float(100 / numberOfQuesions * score)
+        }
+        
+        mutating func gameOver() {
+            // проверка на рекорд
+            if score >= previousGameScore {
+                record = score // это рекорд
+                recordTime = currentTime
+            } else {
+                record = previousGameScore // это не рекорд
+            }
+            gamesPlayed += 1
+        }
+        
+        mutating func gameWillRestart() {
+            previousGameScore = score
+            score = 0
+        }
+        
+    }
+
+    
 }
