@@ -114,18 +114,35 @@ final class MovieQuizViewController: UIViewController {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 { // это последний вопрос
             analytic.isItRecord() // Проверил на рекорд
-            let result = QuizResultViewModel(
-                title: "Этот раунд окончен!",
-                text:
-                """
-                Ваш результат: \(analytic.score)/\(questions.count)
-                Количество сыгранных квизов: \(analytic.gamesPlayed)
-                Рекорд: \(analytic.record) /\(questions.count) (\(analytic.recordTime))
-                Средняя точность: \(analytic.accuracyAverage())%
-                """,
-                buttonText: "Сыграть еще раз"
-            )
-            show(quiz: result)
+            if analytic.score == 10 {
+                // Статистика для победителя - 10 из 10 правильных ответов
+                let winResult = QuizResultViewModel(
+                    title: "Вы выиграли!",
+                    text:
+                    """
+                    Ваш результат: \(analytic.score)/\(questions.count)
+                    Количество сыгранных квизов: \(analytic.gamesPlayed)
+                    Рекорд: \(analytic.record) /\(questions.count) (\(analytic.recordTime))
+                    Средняя точность: \(analytic.accuracyAverage())%
+                    """,
+                    buttonText: "Сыграть еще раз"
+                )
+                show(quiz: winResult)
+            } else {
+                // Статистика
+                let result = QuizResultViewModel(
+                    title: "Этот раунд окончен!",
+                    text:
+                    """
+                    Ваш результат: \(analytic.score)/\(questions.count)
+                    Количество сыгранных квизов: \(analytic.gamesPlayed)
+                    Рекорд: \(analytic.record) /\(questions.count) (\(analytic.recordTime))
+                    Средняя точность: \(analytic.accuracyAverage())%
+                    """,
+                    buttonText: "Сыграть еще раз"
+                )
+                show(quiz: result)
+            }
         } else { // это не последний вопрос
             currentQuestionIndex += 1
             show(quiz: convert(model: currentQuestion))
