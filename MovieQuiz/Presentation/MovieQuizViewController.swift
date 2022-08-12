@@ -30,7 +30,8 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
              self.showNextQuestionOrResults()
              self.toggleAnswerButtons()
-         }    }
+         }
+    }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {toggleAnswerButtons()
         let result = questions[currentQuestionIndex].correctAnswer == false
