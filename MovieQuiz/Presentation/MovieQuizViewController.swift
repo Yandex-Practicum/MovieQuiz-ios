@@ -16,21 +16,40 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - СОСТОЯНИЯ
     
-    // Структура — "Вопрос задан"
+    // "Вопрос задан" — структура
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
-        let questuinNumber: String
+        let questionNumber: String
     }
     
-    // Структура — "Результат квиза"
+    // "Вопрос задан" — наполнение данными
+    private func show(quiz step: QuizStepViewModel) {
+        
+    }
+    
+    // "Результаты квиза" — структура
     struct QuizResultViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
- 
+    
+    // "Результаты квиза" — наполнение данными
+    private func show(quiz result: QuizResultViewModel) {
+        
+    }
+    
     // Состояние «Результат ответа» можно описать одной переменной типа Bool — ответ правильный или нет.
+
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let quiz: QuizStepViewModel = QuizStepViewModel(
+            image: UIImage(named: model.image)!,
+            question: model.text,
+            questionNumber: "0/0")
+    }
+    
+    
     
     // MARK: - ДАННЫЕ
     
@@ -84,7 +103,16 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
+    
+    // MARK: - Жизненный цикл
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        show(quiz: showQuestion)
+    }
+    
 }
+
 
 
 
@@ -99,3 +127,5 @@ extension UIColor {
     static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor(red: 0.26, green: 0.27, blue: 0.133, alpha: 1) }
     static var ypBackground: UIColor { UIColor(named: "YP Background") ?? UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 0.6) }
 }
+
+
