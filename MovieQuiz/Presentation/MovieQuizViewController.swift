@@ -17,6 +17,7 @@ final class MovieQuizViewController: UIViewController {
     
     var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
+    var analytic: QuizAnalytics = QuizAnalytics()
 
     
     // MARK: - LIFECYCLE
