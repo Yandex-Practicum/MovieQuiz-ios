@@ -9,56 +9,113 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var counterLabel: UILabel!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        processUserAnswer(answer: false)
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        processUserAnswer(answer: true)
     }
     
+    var currentQuestionIndex: Int = 0
+    var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
     
-    // MARK: - СОСТОЯНИЯ
+    // MARK: - LIFECYCLE
     
-    // "Вопрос задан" — структура
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        show(quiz: convert(model: currentQuestion))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        imageBorderDefaultStyle() // Настройка стиля обводки ImageView
+    }
+    
+    // MARK: - QUIZ STEP
+    
+    struct QuizQuestion {
+        let image: String
+        let text: String
+        let correctAnswer: Bool
+    }
+    
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
     
-    // "Вопрос задан" — наполнение данными
-    private func show(quiz step: QuizStepViewModel) {
-        
+    // Конвертор данных вопроса в данные для заполнения вью
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let quiz: QuizStepViewModel = QuizStepViewModel(
+            image: UIImage(named: model.image)!,
+            question: model.text,
+            questionNumber: "0/0")
+        return quiz
     }
     
-    // "Результаты квиза" — структура
+    // Вывод данных на экран
+    private func show(quiz step: QuizStepViewModel) {
+        imageView.image = step.image
+        textLabel.text = step.question
+        counterLabel.text = ""
+    }
+    
+    
+    // MARK: - QUIZ RESULT
+    
     struct QuizResultViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
     
-    // "Результаты квиза" — наполнение данными
+    // Вывод данных на экран
     private func show(quiz result: QuizResultViewModel) {
-        
+        showResultAlert(result: result)
     }
     
-    // Состояние «Результат ответа» можно описать одной переменной типа Bool — ответ правильный или нет.
-
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let quiz: QuizStepViewModel = QuizStepViewModel(
-            image: UIImage(named: model.image)!,
-            question: model.text,
-            questionNumber: "0/0")
+    // MARK: - ANSWER RESULT
+    
+    // Вывод на экран рамки для фото в зависимости от правильности
+    private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            imageBorderColor(for: "correct")
+        } else {
+            imageBorderColor(for: "incorrect")
+        }
     }
     
+    // MARK: - QUIZ BRAIN
     
-    
-    // MARK: - ДАННЫЕ
-    
-    // Структура данных отдельного вопроса
-    struct QuizQuestion {
-        let image: String
-        let text: String
-        let correctAnswer: Bool
+    // Определяю правильность ответа
+    private func processUserAnswer(answer: Bool) {
+        if answer == currentQuestion.correctAnswer {
+            showAnswerResult(isCorrect: true)
+        } else {
+            showAnswerResult(isCorrect: false)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.imageBorderDefaultStyle()
+            self.showNextQuestionOrResults()
+        }
     }
+    
+    // Показываем следующий вопрос или результат всей викторины
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 { // это последний вопрос
+            show(quiz: quizResults)
+        } else { // это не последний вопрос
+            currentQuestionIndex += 1
+            show(quiz: convert(model: currentQuestion))
+        }
+    }
+    
+    private func restart() {
+        currentQuestionIndex = 0
+        show(quiz: convert(model: currentQuestion))
+    }
+    
+    // MARK: - DATA SET
     
     // Массив вопросов
     private let questions: [QuizQuestion] = [
@@ -104,21 +161,23 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false)
     ]
     
-    // MARK: - Жизненный цикл
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        show(quiz: showQuestion)
-    }
-    
+    // Данные для вывода алерта с результатами
+    private var quizResults: QuizResultViewModel = QuizResultViewModel(
+        title: "Этот раунд окончен!",
+        text:
+        """
+        Ваш результат: 6/10
+        Количество сыгранных квизов: 1
+        Рекорд: 6/10 (03.07.22 03:22)
+        Средняя точность: 60.00%
+        """,
+        buttonText: "Сыграть еще раз")
+
 }
 
+// MARK: - CLASS EXTENSIONS
 
-
-
-// MARK: - РАСШИРЕНИЯ КЛАССОВ
-
-// Цвета
+// НАСТРОЙКА ЦВЕТОВ
 extension UIColor {
     static var ypBlack: UIColor { UIColor(named: "YP Black") ?? UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1) }
     static var ypWhite: UIColor { UIColor(named: "YP White") ?? UIColor(red: 1, green: 1, blue: 1, alpha: 1) }
@@ -128,4 +187,41 @@ extension UIColor {
     static var ypBackground: UIColor { UIColor(named: "YP Background") ?? UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 0.6) }
 }
 
+// НАСТРОЙКА СТИЛЕЙ ОБВОДКИ ИМИДЖА
+extension MovieQuizViewController {
 
+    // Дефолтные стили обводки UIView
+    private func imageBorderDefaultStyle() {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
+        imageBorderColor(for: "default")
+    }
+    
+    // Изменение цвета обводки в зависимости от правильности ответа
+    private func imageBorderColor(for state: String) {
+        switch state {
+        case "correct":
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor
+        case "incorrect":
+            imageView.layer.borderColor = UIColor.ypRed.cgColor
+        default:
+            imageView.layer.borderColor = UIColor.ypBlack.cgColor
+        }
+    }
+    
+}
+
+// НАСТРОЙКИ АЛЕРТА ДЛЯ РЕЗУЛЬТАТА КВИЗА
+extension MovieQuizViewController {
+    func showResultAlert(result: QuizResultViewModel) {
+        let alert = UIAlertController(title: result.title,
+                                      message: result.text,
+                                      preferredStyle: .alert)
+        let action = UIAlertAction(title: result.buttonText, style: .default, handler: { _ in
+            self.restart()
+        })
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+}
