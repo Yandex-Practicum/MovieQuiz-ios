@@ -38,7 +38,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Default" translatesAutoresizingMaskIntoConstraints="NO" id="2fP-IF-Jbs">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Tesla" translatesAutoresizingMaskIntoConstraints="NO" id="2fP-IF-Jbs">
                                         <rect key="frame" x="0.0" y="60" width="374" height="538"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
@@ -62,12 +62,18 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет"/>
+                                                <connections>
+                                                    <action selector="falseButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="P2E-NM-GZ7"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6D-E8-qoe">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="default"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да"/>
+                                                <connections>
+                                                    <action selector="trueButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FWY-XV-jrR"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -105,7 +111,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Default" width="335" height="502"/>
+        <image name="Tesla" width="1693" height="2500"/>
         <namedColor name="default">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
