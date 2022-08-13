@@ -24,13 +24,13 @@
                                     <stackView opaque="NO" contentMode="top" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="kCP-00-GcQ">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="40"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xxv-rY-1l8">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xxv-rY-1l8" customClass="ThemeUILabel" customModule="MovieQuiz" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="187" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" name="default"/>
                                                 <color key="highlightedColor" name="default"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/10" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jlz-Sm-pAg">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/10" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jlz-Sm-pAg" customClass="ThemeUILabel" customModule="MovieQuiz" customModuleProvider="target">
                                                 <rect key="frame" x="187" y="0.0" width="187" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" name="default"/>
@@ -56,7 +56,7 @@
                                     <stackView opaque="NO" contentMode="scaleAspectFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="aCb-am-HGv">
                                         <rect key="frame" x="0.0" y="738" width="374" height="60"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnn-xf-hRH">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnn-xf-hRH" customClass="ThemeUIButton" customModule="MovieQuiz" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="default"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -66,7 +66,7 @@
                                                     <action selector="falseButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="P2E-NM-GZ7"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6D-E8-qoe">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6D-E8-qoe" customClass="ThemeUIButton" customModule="MovieQuiz" customModuleProvider="target">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="default"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -97,10 +97,9 @@
                     </view>
                     <connections>
                         <outlet property="falseButton" destination="dnn-xf-hRH" id="TWh-KB-L9c"/>
-                        <outlet property="headerCounterLabel" destination="Jlz-Sm-pAg" id="u6a-uJ-xGH"/>
-                        <outlet property="headerTitleLabel" destination="xxv-rY-1l8" id="4kG-pL-54c"/>
-                        <outlet property="questionImageView" destination="2fP-IF-Jbs" id="vEq-2q-4cg"/>
-                        <outlet property="questionTextLabel" destination="FFA-Mx-yNc" id="c1r-sV-qim"/>
+                        <outlet property="quizImageView" destination="2fP-IF-Jbs" id="Bv7-tK-sLf"/>
+                        <outlet property="quizQuestionLabel" destination="FFA-Mx-yNc" id="xCG-c4-dfP"/>
+                        <outlet property="quizStepsLabel" destination="Jlz-Sm-pAg" id="CRz-rl-aVa"/>
                         <outlet property="trueButton" destination="W6D-E8-qoe" id="gaZ-4Y-quF"/>
                         <outlet property="viewContainer" destination="8bC-Xf-vdC" id="CwS-EI-fMD"/>
                     </connections>

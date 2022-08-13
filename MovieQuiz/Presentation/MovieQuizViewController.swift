@@ -1,384 +1,425 @@
 import UIKit
 
-enum StyleDefault {
-    static let fontBold = "YSDisplay-Bold"
-    static let fontMedium = "YSDisplay-Medium"
-    static let fontSize = 20.0
-    static let borderWidthImageState = 8.0
-}
+// MARK: - Structures
 
-struct Question {
+struct QuizQuestion {
     let image: String
-    let text: String
     let rating: Float
+    let text: String
     let correctAnswer: Bool
 }
 
-struct Quiz {
-    var questions: [Question] = []
-    var current: Question?
-    var index: Int
-    var successful: Int
-    var failed: Int
-    let beginedAt: Date
-    var completedAt: Date?
+struct QuizStepViewModel {
+    let image: UIImage?
+    let question: String
+    let stepsTextLabel: String
+}
 
-    init() {
-        index = 0
-        successful = 0
-        failed = 0
-        beginedAt = Date()
-        questions = getQuestions().shuffled()
-        current = questions.first
+struct QuizScoreViewModel {
+    let title: String
+    let message: String
+    let buttonText: String
+}
+
+struct QuizAnswered {
+    var succesful: [QuizQuestion] = []
+    var failed: [QuizQuestion] = []
+
+    // MARK: - Public methods
+
+    func position() -> Int {
+        return succesful.count + failed.count
     }
 
-    func accuracy() -> Float {
-        return Float(successful) / Float(successful + failed) * 100
-    }
-
-    func isComplete() -> Bool {
-        return index > questions.count - 1
-    }
-
-    mutating func chooseByCurrentIndex() {
-        if isComplete() { return }
-        current = questions[index]
-    }
-
-    mutating func complete() {
-        self.completedAt = Date()
-    }
-
-    mutating func incrementIndex() {
-        index += 1
-    }
-
-    private func getQuestions() -> [Question] {
-        return [
-            Question.init(
-                image: "The Godfather",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 9.2,
-                correctAnswer: true),
-
-            Question.init(
-                image: "The Dark Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 9.0,
-                correctAnswer: true),
-
-            Question.init(
-                image: "Kill Bill",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 8.1,
-                correctAnswer: true),
-
-            Question.init(
-                image: "The Avengers",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 8.0,
-                correctAnswer: true),
-
-            Question.init(
-                image: "Deadpool",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 8.0,
-                correctAnswer: true),
-
-            Question.init(
-                image: "The Green Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 6.6,
-                correctAnswer: true),
-
-            Question.init(
-                image: "Old",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 5.8,
-                correctAnswer: false),
-
-            Question.init(
-                image: "The Ice Age Adventures of Buck Wild",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 4.3,
-                correctAnswer: false),
-
-            Question.init(
-                image: "Tesla",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 5.1,
-                correctAnswer: false),
-
-            Question.init(
-                image: "Vivarium",
-                text: "Рейтинг этого фильма больше чем 6?",
-                rating: 5.8,
-                correctAnswer: false)
-        ]
+    mutating func store(question: QuizQuestion, result: Bool) {
+        result
+            ? succesful.append(question)
+            : failed.append(question)
     }
 }
 
+/**
+    View controller Movie Quiz App
+*/
 final class MovieQuizViewController: UIViewController {
-    // MARK: - IBOutlets
-
-    @IBOutlet var viewContainer: UIView!
-    @IBOutlet weak var headerTitleLabel: UILabel!
-    @IBOutlet weak var headerCounterLabel: UILabel!
-    @IBOutlet weak var questionImageView: UIImageView!
-    @IBOutlet weak var questionTextLabel: UILabel!
-    @IBOutlet weak var falseButton: UIButton!
-    @IBOutlet weak var trueButton: UIButton!
-
     // MARK: - Properties
 
-    private var scores: [Quiz] = []
-    private var quiz = Quiz()
+    var quizes: [Quiz] = []
+    var currentQuiz: Quiz?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+
+    // MARK: - IBOutlets
+
+    @IBOutlet private var viewContainer: UIView!
+    @IBOutlet private weak var quizStepsLabel: ThemeUILabel!
+    @IBOutlet private weak var quizImageView: UIImageView!
+    @IBOutlet private weak var quizQuestionLabel: UILabel!
+    @IBOutlet private weak var falseButton: ThemeUIButton!
+    @IBOutlet private weak var trueButton: ThemeUIButton!
+
+    // MARK: - IBActions
+
+    @IBAction private func falseButtonClicked(_ sender: Any) {
+        checkAnswer(answer: false)
+    }
+
+    @IBAction private func trueButtonClicked(_ sender: Any) {
+        checkAnswer(answer: true)
     }
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Setup view
         configuration()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        start()
-    }
-
-    // MARK: - Logic
-
-    private func start() {
-        quiz = Quiz()
-        show()
-    }
-
-    private func show() {
-        if quiz.isComplete() {
-            return complete()
-        }
-
-        guard let question = quiz.current else {
-            return
-        }
-
-        enableButtons(true)
-        imageViewDefaultState()
-
-        questionImageView.image = UIImage(named: question.image) ?? UIImage(named: "Error")
-        questionTextLabel.text = question.text
-
-        headerCounterLabel.text = "\(quiz.index + 1) / \(quiz.questions.count)"
-
-        quiz.incrementIndex()
-
-        print("Show question \"\(question.image)\"")
-    }
-
-    private func complete() {
-        // quiz closed
-        quiz.complete()
-        scores.append(quiz)
-
-        print("Quiz completed")
-
-        alertQuizComplete(
-            title: "Этот раунд окончен",
-            message: generateMessage(),
-            buttonText: "Попробовать еще раз"
-        )
-    }
-
-    private func answerSuccess() {
-        imageViewSuccessState()
-
-        quiz.successful += 1
-        print("🎉 Succesful!")
-    }
-
-    private func answerFail() {
-        imageViewFailState()
-
-        quiz.failed += 1
-        print("😔 Oops!")
+        createQuiz()
     }
 
     // MARK: - Private methods
 
-    /// Default configuration View
-    private func configuration() {
-        // configure view
-        viewContainer.backgroundColor = UIColor.appBackground
-
-        // configure question image
-        questionImageView.layer.cornerRadius = 20
-
-        // configure header labels
-        headerTitleLabel.font = UIFont(
-            name: StyleDefault.fontMedium,
-            size: StyleDefault.fontSize)
-
-        headerCounterLabel.font = UIFont(
-            name: StyleDefault.fontMedium,
-            size: StyleDefault.fontSize)
-
-        // configure question text label
-        questionTextLabel.font = UIFont(
-            name: StyleDefault.fontBold,
-            size: 23.0)
-
-        // configure buttons style
-        buttonStyle(button: falseButton)
-        buttonStyle(button: trueButton)
-
-        print("Completed start configuration")
+    /// Creating new quiz (start/continue)
+    private func createQuiz() {
+        currentQuiz = Quiz()
+        show(quiz: currentQuiz?.show())
     }
 
-    /// Default styles UIButton
-    // TODO: На сколько я понимаю, в Swift должна быть возможность создания дизайн системы. Типа наследования своего класса от UIButton, но с настройками по-умолчанию. Пока не разобрался как это реализовать.
-    private func buttonStyle(button: UIButton) {
-        button.layer.cornerRadius = 15
-        button.backgroundColor = UIColor.appDefault
-        button.tintColor = UIColor.appBackground
+    /// Show the quiz on the screen
+    private func show(quiz: QuizStepViewModel?) {
+        guard let quiz = quiz else { return }
 
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.titleLabel?.font = UIFont(
-            name: StyleDefault.fontBold,
-            size: StyleDefault.fontSize)
+        quizImageView.image = quiz.image
+        quizQuestionLabel.text = quiz.question
+        quizStepsLabel.text = quiz.stepsTextLabel
 
-        button.titleEdgeInsets = UIEdgeInsets(
-            top: 18.0,
-            left: 16.0,
-            bottom: 18.0,
-            right: 16.0)
+        guard let stepIndex = currentQuiz?.answered.position() else { return }
+        print(String("Showed a quiz question #\(stepIndex + 1)"))
     }
 
-    private func imageViewDefaultState() {
-        return updateStyleImageView()
-    }
+    private func checkAnswer(answer: Bool) {
+        guard let isCorrectAnswer = currentQuiz?.checkAnswer(answer: answer) else { return }
 
-    private func imageViewSuccessState() {
-        return updateStyleImageView(
-            borderWidth: StyleDefault.borderWidthImageState,
-            borderColor: UIColor.appSuccess.cgColor)
-    }
-
-    private func imageViewFailState() {
-        return updateStyleImageView(
-            borderWidth: StyleDefault.borderWidthImageState,
-            borderColor: UIColor.appFail.cgColor)
-    }
-
-    private func updateStyleImageView(
-        borderWidth: CGFloat = .nan,
-        borderColor: CGColor? = .none
-    ) {
-        questionImageView.layer.borderColor = borderColor
-        questionImageView.layer.borderWidth = borderWidth
-    }
-
-    private func checkAnswer(correctAnswer: Bool) {
-        guard let question = quiz.current else {
-            return
+        if isCorrectAnswer {
+            showSuccessImageView()
+            print("🎉 The answer is correct")
+        } else {
+            showFailedImageView()
+            print("😔 The answer is NOT correct")
         }
 
-        enableButtons(false)
+        // buttons disable
+        toggleEnableButtons()
 
-        question.correctAnswer == correctAnswer
-            ? answerSuccess()
-            : answerFail()
+        // Go to the next question or wait for results with a delay of 1 second
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            // buttons enable
+            self.toggleEnableButtons()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            if self.quiz.isComplete() {
-                return self.complete()
+            self.setImageBorderView()
+
+            let nextQuestion = self.currentQuiz?.show()
+            if nextQuestion == nil {
+                // complete quiz
+                guard let currentQuiz = self.currentQuiz else { return }
+                self.storeScore(quiz: currentQuiz)
+                self.showScore(currentQuiz: currentQuiz)
             } else {
-                self.quiz.chooseByCurrentIndex()
-                self.show()
+                self.show(quiz: nextQuestion)
             }
         }
     }
 
-    // MARK: - IBActions
+    private func showScore(currentQuiz: Quiz) {
+        let score = ViewScore(quizes: quizes)
 
-    @IBAction func falseButtonClicked(_ sender: Any) {
-        checkAnswer(correctAnswer: false)
-    }
+        let scoreModel = QuizScoreViewModel(
+            title: "Этот раунд окончен",
+            message: score.message(),
+            buttonText: "Попробовать еще раз")
 
-    @IBAction func trueButtonClicked(_ sender: Any) {
-        checkAnswer(correctAnswer: true)
-    }
-
-    // MARK: - Helper methods
-
-    private func alertQuizComplete(title: String, message: String, buttonText: String) {
         let alert = UIAlertController(
-            title: title,
-            message: message,
+            title: scoreModel.title,
+            message: scoreModel.message,
             preferredStyle: .alert)
 
-        alert.addAction(
-            UIAlertAction(title: buttonText, style: .default) { _ in
-                self.start()
-            })
-
-        self.present(alert, animated: true, completion: nil)
-    }
-
-    private func generateMessage() -> String {
-        let recordScore = getBestScore()
-
-        // TODO: Не совсем догоняю как это работает (повторить темы про синтаксис Swift).
-        guard let dateRecordScoreString = recordScore?.completedAt?.dateTimeString else {
-            return ""
+        let action = UIAlertAction(
+            title: scoreModel.buttonText,
+            style: .default
+        ) {_ in
+            self.createQuiz()
         }
 
-        // Лучший счет 2/10
-        let recordScoreString =
-            "\(String(describing: recordScore?.successful ?? 0))/" +
-            "\(quiz.questions.count) (\(dateRecordScoreString))"
+        alert.addAction(action)
 
-        // Средняя точность
-        let avg = NSString(format: "%.2f", avgAccuracy())
-
-        let message: [String] = [
-            "Ваш результат: \(quiz.successful)/\(quiz.questions.count)",
-            "Количество сыграных квизов: \(scores.count)",
-            "Рекорд: \(recordScoreString)",
-            "Средняя точность: \(avg)%"
-        ]
-
-        return message.joined(separator: "\n")
+        self.present(alert, animated: true)
     }
 
-    private func getBestScore() -> Quiz? {
-        if scores.isEmpty { return nil }
+    private func storeScore(quiz: Quiz) {
+        self.quizes.append(quiz)
+    }
 
-        var bestScore = scores.first ?? quiz
+    private func setImageBorderView(color: UIColor? = .none, width: CGFloat = .nan) {
+        quizImageView.layer.borderColor = color?.cgColor
+        quizImageView.layer.borderWidth = width
+    }
 
-        for score in scores where bestScore.successful < score.successful {
+    private func showSuccessImageView() {
+        return setImageBorderView(
+            color: UIColor.appSuccess,
+            width: StyleDefault.borderWidthShowResult)
+    }
+
+    private func showFailedImageView() {
+        return setImageBorderView(
+            color: UIColor.appFail,
+            width: StyleDefault.borderWidthShowResult)
+    }
+
+    private func toggleEnableButtons() {
+        trueButton.isEnabled.toggle()
+        falseButton.isEnabled.toggle()
+    }
+
+    private func configuration() {
+        viewContainer.backgroundColor = UIColor.appBackground
+        quizImageView.layer.cornerRadius = 20
+        quizQuestionLabel.font = UIFont(name: StyleDefault.fontBold, size: 23.0)
+
+        print("✅ Configurated storyboard")
+    }
+}
+
+/**
+    The main functionality of the quiz
+*/
+class Quiz {
+    // MARK: - Properties
+    var answered = QuizAnswered()
+    let beginedAt: Date
+    var completedAt: Date?
+    var counterLabelText: String?
+    var questions: [QuizQuestion] = []
+
+    init() {
+        beginedAt = Date()
+        questions = getQuestions().shuffled()
+        counterLabelText = getTextForStepsLabel()
+
+        print("🎲 Created a new quiz and shuffled the questions.")
+    }
+
+    // MARK: - Public methods
+
+    func show() -> QuizStepViewModel? {
+        guard let question = getCurrentQuestion() else { return nil }
+
+        return QuizStepViewModel(
+            image: UIImage(named: question.image) ?? UIImage(named: "Error"),
+            question: question.text,
+            stepsTextLabel: getTextForStepsLabel())
+    }
+
+    func checkAnswer(answer: Bool) -> Bool? {
+        guard let question = getCurrentQuestion() else { return nil }
+
+        let result = checkAnswer(question: question, answer: answer)
+        answered.store(question: question, result: result)
+
+        return result
+    }
+
+    func getCurrentQuestion() -> QuizQuestion? {
+        let currentPosition = answered.position()
+
+        if currentPosition > questions.count - 1 {
+            complete(date: Date())
+            return nil
+        }
+
+        return questions[currentPosition]
+    }
+
+    func complete(date: Date) {
+        if answered.position() < questions.count - 1 { return }
+        self.completedAt = date
+
+        print("🏁 Completed quiz")
+    }
+
+    func percentAccuraty() -> Float {
+        return Float(answered.succesful.count) / Float(questions.count) * 100
+    }
+
+    // MARK: - Private methods
+
+    private func getTextForStepsLabel() -> String {
+        return "\(answered.position() + 1) / \(questions.count)"
+    }
+
+    private func checkAnswer(question: QuizQuestion, answer: Bool) -> Bool {
+        return question.correctAnswer == answer
+    }
+
+    // MARK: - Mock data
+
+    private func getQuestions() -> [QuizQuestion] {
+        return [
+            QuizQuestion.init(
+                image: "The Godfather",
+                rating: 9.2,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+
+            QuizQuestion.init(
+                image: "The Dark Knight",
+                rating: 9.0,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+
+            QuizQuestion.init(
+                image: "Kill Bill",
+                rating: 8.1,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+
+            QuizQuestion.init(
+                image: "The Avengers",
+                rating: 8.0,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+
+            QuizQuestion.init(
+                image: "Deadpool",
+                rating: 8.0,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+
+            QuizQuestion.init(
+                image: "The Green Knight",
+                rating: 6.6,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+
+            QuizQuestion.init(
+                image: "Old",
+                rating: 5.8,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: false),
+
+            QuizQuestion.init(
+                image: "The Ice Age Adventures of Buck Wild",
+                rating: 4.3,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: false),
+
+            QuizQuestion.init(
+                image: "Tesla",
+                rating: 5.1,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: false),
+
+            QuizQuestion.init(
+                image: "Vivarium",
+                rating: 5.8,
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: false)
+        ]
+    }
+}
+
+/**
+    Helper class by score message
+*/
+class ViewScore {
+    // MARK: - Properties
+
+    let quizes: [Quiz]
+
+    init(quizes: [Quiz]) {
+        self.quizes = quizes
+    }
+
+    // MARK: - Public methods
+
+    func message() -> String {
+        guard let lastQuiz = quizes.last else { return "" }
+        guard let bestResult = bestResult() else { return "" }
+        guard let bestDateString = bestResult.completedAt else { return "" }
+
+        let bestScoreString = [
+            "\(bestResult.answered.succesful.count)/\(bestResult.questions.count)",
+            "(\(bestDateString.dateTimeString))"
+        ].joined(separator: " ")
+
+        return [
+            "Ваш результат: \(lastQuiz.answered.succesful.count)/\(lastQuiz.questions.count)",
+            "Количество сыграных квизов: \(quizes.count)",
+            "Рекорд: \(bestScoreString)",
+            "Средняя точность: \(NSString(format: "%.2f", accuratyAvg()))%"
+        ].joined(separator: "\n")
+    }
+
+    /// Search the best quiz
+    private func bestResult() -> Quiz? {
+        guard var bestScore = quizes.first else { return nil }
+        for score in quizes where score.answered.succesful.count > bestScore.answered.succesful.count {
             bestScore = score
         }
 
         return bestScore
     }
 
-    private func avgAccuracy() -> Float {
-        var avgs: [Float] = []
+    /// Search for the average accuracy of quizzes
+    private func accuratyAvg() -> Float {
+        var accuraties: [Float] = []
 
-        for score in scores { avgs.append(score.accuracy()) }
-        let sum = avgs.reduce(0, +)
+        for quiz in quizes { accuraties.append(quiz.percentAccuraty()) }
 
-        return sum / Float(avgs.count)
+        return accuraties.reduce(0, +) / Float(accuraties.count)
     }
+}
 
-    private func enableButtons(_ enable: Bool) {
-        trueButton.isEnabled = enable
-        falseButton.isEnabled = enable
+// MARK: - Theme
+
+enum StyleDefault {
+    static let fontBold = "YSDisplay-Bold"
+    static let fontMedium = "YSDisplay-Medium"
+    static let fontSize = 20.0
+    static let borderWidthShowResult = 8.0
+}
+
+class ThemeUIButton: UIButton {
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        layer.cornerRadius = 15
+        tintColor = UIColor.appBackground
+        backgroundColor = UIColor.appDefault
+
+        titleLabel?.font = UIFont(
+            name: StyleDefault.fontBold,
+            size: StyleDefault.fontSize)
+
+        self.titleEdgeInsets = UIEdgeInsets(
+            top: 18.0,
+            left: 16.0,
+            bottom: 18.0,
+            right: 16.0)
+    }
+}
+
+class ThemeUILabel: UILabel {
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        font = UIFont(
+            name: StyleDefault.fontMedium,
+            size: StyleDefault.fontSize)
     }
 }
