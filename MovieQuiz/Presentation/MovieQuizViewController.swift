@@ -268,17 +268,17 @@ extension MovieQuizViewController {
         }
         var recordTime: String = ""
         let numberOfQuestions = 10 // Не придумал как увидеть отсюда длину массива вопросов
-        var accuracyCurrent: Float = 0
-        var accuracyCollect: Float = 0
-        // var accuracyAverage: Float = 0
+        var accuracyCurrent: Float = 0 // Точность только закончившегося квиза
+        var accuracyCollect: Float = 0 // Суммарная точность всех квизов, который были завершены раньше
         
-        mutating private func accuracyAverage() -> String {
+        mutating func accuracyAverage() -> String {
+            // Вычисление средней точности всех квизов
             accuracyCurrent = Float(100 / numberOfQuestions * score)
             accuracyCollect += accuracyCurrent
             return String(format: "%.2f", accuracyCollect / Float(gamesPlayed))
         }
 
-        mutating private func isItRecord() {
+        mutating func isItRecord() {
             // проверка на рекорд
             if score >= record {
                 record = score // это рекорд
@@ -286,7 +286,7 @@ extension MovieQuizViewController {
             }
         }
         
-        mutating private func gameRestart() {
+        mutating func gameRestart() {
             gamesPlayed += 1
             score = 0
         }
