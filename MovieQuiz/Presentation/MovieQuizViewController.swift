@@ -80,6 +80,7 @@ final class MovieQuizViewController: UIViewController {
         showResultAlert(result: result)
     }
     
+    
     // MARK: - ANSWER RESULT
     
     // Вывод на экран рамки для фото в зависимости от правильности
@@ -91,6 +92,7 @@ final class MovieQuizViewController: UIViewController {
             imageBorderColor(for: "incorrect")
         }
     }
+    
     
     // MARK: - QUIZ BRAIN
     
@@ -154,7 +156,6 @@ final class MovieQuizViewController: UIViewController {
     }
     
     
-    
     // MARK: - DATA SET
     
     // Массив вопросов
@@ -202,6 +203,7 @@ final class MovieQuizViewController: UIViewController {
     ]
 }
 
+
 // MARK: - CLASS EXTENSIONS
 
 // НАСТРОЙКА ЦВЕТОВ
@@ -212,7 +214,7 @@ extension UIColor {
     static var ypRed: UIColor { UIColor(named: "YP Red") ?? UIColor(red: 0.961, green: 0.42, blue: 0.34, alpha: 1) }
     static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor(red: 0.26, green: 0.27, blue: 0.133, alpha: 1) }
     static var ypBackground: UIColor { UIColor(named: "YP Background") ?? UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 0.6) }
-    static var transparent: UIColor { UIColor(red: 0, green: 0, blue: 0, alpha: 0) }
+    static var transparent: UIColor { UIColor(red: 0, green: 0, blue: 0, alpha: 0) } // для скрывания обводки
 }
 
 // НАСТРОЙКА СТИЛЕЙ ОБВОДКИ ИМИДЖА
