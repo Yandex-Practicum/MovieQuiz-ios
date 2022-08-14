@@ -139,7 +139,9 @@ final class MovieQuizViewController: UIViewController {
         let score = ViewScore(quizes: quizes)
 
         let scoreModel = QuizScoreViewModel(
-            title: "Этот раунд окончен",
+            title: currentQuiz.answered.succesful.count == currentQuiz.questions.count
+                ? "🎉 Победа!"
+                : "Этот раунд окончен",
             message: score.message(),
             buttonText: "Попробовать еще раз")
 
@@ -157,7 +159,14 @@ final class MovieQuizViewController: UIViewController {
 
         alert.addAction(action)
 
-        self.present(alert, animated: true)
+        self.present(alert, animated: true) {
+            // поиск слоя с фоном алерта
+            guard let window = UIApplication.shared.windows.first else { return }
+            guard let overlay = window.subviews.last?.layer.sublayers?.first else { return }
+
+            // замена цвета фона
+            self.animateOverlayColorAlert(overlay, color: StyleDefault.overlayColor)
+        }
     }
 
     private func storeScore(quiz: Quiz) {
@@ -165,8 +174,8 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func setImageBorderView(color: UIColor? = .none, width: CGFloat = .nan) {
-        quizImageView.layer.borderColor = color?.cgColor
-        quizImageView.layer.borderWidth = width
+        self.quizImageView.layer.borderColor = color?.cgColor
+        self.quizImageView.layer.borderWidth = width
     }
 
     private func showSuccessImageView() {
@@ -193,6 +202,20 @@ final class MovieQuizViewController: UIViewController {
 
         print("✅ Configurated storyboard")
     }
+
+    private func animateOverlayColorAlert(_ overlay: CALayer, color: UIColor, alpha: CGFloat = 0.6) {
+        let animation = CABasicAnimation(keyPath: "backgroundColor")
+        animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        animation.speed = 0.15
+
+        overlay.add(animation, forKey: nil)
+
+        // fix: моргание 🤷‍♂️, не знаю как это должно быть по другому
+        // возможно тут и правильно так, типа другой задачей, но не уверен
+        DispatchQueue.main.async {
+            overlay.backgroundColor = color.withAlphaComponent(alpha).cgColor
+        }
+    }
 }
 
 /**
@@ -200,6 +223,7 @@ final class MovieQuizViewController: UIViewController {
 */
 class Quiz {
     // MARK: - Properties
+
     var answered = QuizAnswered()
     let beginedAt: Date
     var completedAt: Date?
@@ -392,6 +416,11 @@ enum StyleDefault {
     static let fontMedium = "YSDisplay-Medium"
     static let fontSize = 20.0
     static let borderWidthShowResult = 8.0
+    static let overlayColor = UIColor(
+        red: 26 / 255,
+        green: 27 / 255,
+        blue: 34 / 255,
+        alpha: 1)
 }
 
 class ThemeUIButton: UIButton {
