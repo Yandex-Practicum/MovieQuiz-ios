@@ -51,6 +51,10 @@ final class MovieQuizViewController: UIViewController {
         return .lightContent
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
     // MARK: - IBOutlets
 
     @IBOutlet private var viewContainer: UIView!
@@ -113,14 +117,11 @@ final class MovieQuizViewController: UIViewController {
             print("😔 The answer is NOT correct")
         }
 
-        // buttons disable
-        toggleEnableButtons()
+        enableButtons(enable: false)
 
         // Go to the next question or wait for results with a delay of 1 second
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            // buttons enable
-            self.toggleEnableButtons()
-
+            self.enableButtons(enable: true)
             self.setImageBorderView()
 
             let nextQuestion = self.currentQuiz?.show()
@@ -136,30 +137,9 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showScore(currentQuiz: Quiz) {
-        let score = ViewScore(quizes: quizes)
+        let score = ViewScore(quizes: quizes, currentQuiz: currentQuiz)
 
-        let scoreModel = QuizScoreViewModel(
-            title: currentQuiz.answered.succesful.count == currentQuiz.questions.count
-                ? "🎉 Победа!"
-                : "Этот раунд окончен",
-            message: score.message(),
-            buttonText: "Попробовать еще раз")
-
-        let alert = UIAlertController(
-            title: scoreModel.title,
-            message: scoreModel.message,
-            preferredStyle: .alert)
-
-        let action = UIAlertAction(
-            title: scoreModel.buttonText,
-            style: .default
-        ) {_ in
-            self.createQuiz()
-        }
-
-        alert.addAction(action)
-
-        self.present(alert, animated: true) {
+        self.present(score.alertComplete { self.createQuiz() }, animated: true) {
             // поиск слоя с фоном алерта
             guard let window = UIApplication.shared.windows.first else { return }
             guard let overlay = window.subviews.last?.layer.sublayers?.first else { return }
@@ -190,9 +170,9 @@ final class MovieQuizViewController: UIViewController {
             width: StyleDefault.borderWidthShowResult)
     }
 
-    private func toggleEnableButtons() {
-        trueButton.isEnabled.toggle()
-        falseButton.isEnabled.toggle()
+    private func enableButtons(enable: Bool) {
+        trueButton.isEnabled = enable
+        falseButton.isEnabled = enable
     }
 
     private func configuration() {
@@ -282,12 +262,12 @@ class Quiz {
 
     // MARK: - Private methods
 
-    private func getTextForStepsLabel() -> String {
-        return "\(answered.position() + 1) / \(questions.count)"
-    }
-
     private func checkAnswer(question: QuizQuestion, answer: Bool) -> Bool {
         return question.correctAnswer == answer
+    }
+
+    private func getTextForStepsLabel() -> String {
+        return "\(answered.position() + 1) / \(questions.count)"
     }
 
     // MARK: - Mock data
@@ -363,15 +343,44 @@ class Quiz {
 class ViewScore {
     // MARK: - Properties
 
+    let currentQuiz: Quiz
     let quizes: [Quiz]
 
-    init(quizes: [Quiz]) {
+    init(quizes: [Quiz], currentQuiz: Quiz) {
         self.quizes = quizes
+        self.currentQuiz = currentQuiz
     }
 
     // MARK: - Public methods
 
-    func message() -> String {
+    func alertComplete(closure: @escaping () -> Void) -> UIAlertController {
+        let scoreModel = QuizScoreViewModel(
+            title: currentQuiz.answered.succesful.count == currentQuiz.questions.count
+                ? "🎉 Победа!"
+                : "Этот раунд окончен",
+            message: message(),
+            buttonText: "Попробовать еще раз")
+
+        let alert = UIAlertController(
+            title: scoreModel.title,
+            message: scoreModel.message,
+            preferredStyle: .alert)
+
+        let action = UIAlertAction(
+            title: scoreModel.buttonText,
+            style: .default
+        ) {_ in
+            closure()
+        }
+
+        alert.addAction(action)
+
+        return alert
+    }
+
+    // MARK: - Privete methods
+
+    private func message() -> String {
         guard let lastQuiz = quizes.last else { return "" }
         guard let bestResult = bestResult() else { return "" }
         guard let bestDateString = bestResult.completedAt else { return "" }
