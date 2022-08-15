@@ -7,6 +7,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         processUserAnswer(answer: false)
@@ -15,9 +17,9 @@ final class MovieQuizViewController: UIViewController {
         processUserAnswer(answer: true)
     }
     
-    var currentQuestionIndex: Int = 0
-    var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
-    var analytic: QuizAnalytics = QuizAnalytics()
+    private var currentQuestionIndex: Int = 0
+    private var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
+    private var analytic: QuizAnalytics = QuizAnalytics()
     
     
     // MARK: - LIFECYCLE
@@ -38,13 +40,13 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - QUIZ STEP
     
-    struct QuizQuestion {
+    private struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
     }
     
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
@@ -104,9 +106,11 @@ final class MovieQuizViewController: UIViewController {
         } else {
             showAnswerResult(isCorrect: false)
         }
+        buttonsEnabled(is: false) // временно отключил кнопки
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.imageBorderDefaultStyle()
             self.showNextQuestionOrResults()
+            self.buttonsEnabled(is: true) // включил кнопки
         }
     }
     
@@ -146,6 +150,17 @@ final class MovieQuizViewController: UIViewController {
         } else { // это не последний вопрос
             currentQuestionIndex += 1
             show(quiz: convert(model: currentQuestion))
+        }
+    }
+    
+    // Делаю кнопки "да" и "нет" активными или нет по необходимости
+    private func buttonsEnabled(is state: Bool) {
+        if state {
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+        } else {
+            self.yesButton.isEnabled = false
+            self.noButton.isEnabled = false
         }
     }
     
@@ -214,7 +229,7 @@ extension UIColor {
     static var ypRed: UIColor { UIColor(named: "YP Red") ?? UIColor(red: 0.961, green: 0.42, blue: 0.34, alpha: 1) }
     static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor(red: 0.26, green: 0.27, blue: 0.133, alpha: 1) }
     static var ypBackground: UIColor { UIColor(named: "YP Background") ?? UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 0.6) }
-    static var transparent: UIColor { UIColor(red: 0, green: 0, blue: 0, alpha: 0) } // для скрывания обводки
+    static var transparent: UIColor { UIColor(red: 0, green: 0, blue: 0, alpha: 0) } // Этот цвет использую, чтобы скрывать обводку
 }
 
 // НАСТРОЙКА СТИЛЕЙ ОБВОДКИ ИМИДЖА
@@ -259,7 +274,7 @@ extension MovieQuizViewController {
 // СБОРЩИК АНАЛИТИКИ
 extension MovieQuizViewController {
     
-    struct QuizAnalytics {
+    private struct QuizAnalytics {
         var gamesPlayed: Int = 1
         var score: Int = 0
         var record: Int = 0
@@ -292,7 +307,7 @@ extension MovieQuizViewController {
             gamesPlayed += 1
             score = 0
         }
- 
+
     }
     
 }
