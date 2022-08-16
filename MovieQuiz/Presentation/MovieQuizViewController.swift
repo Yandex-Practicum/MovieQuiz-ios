@@ -44,8 +44,8 @@ struct QuizAnswered {
 final class MovieQuizViewController: UIViewController {
     // MARK: - Properties
 
-    var quizes: [Quiz] = []
-    var currentQuiz: Quiz?
+    private var quizes: [Quiz] = []
+    private var currentQuiz: Quiz?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
