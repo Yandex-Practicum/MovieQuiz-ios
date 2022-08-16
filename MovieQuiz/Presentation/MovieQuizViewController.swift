@@ -140,11 +140,17 @@ final class MovieQuizViewController: UIViewController {
             show(quize: resultsViewModel)
             return
         }
-        guard let tmpQuestion = questionFactory.requestNextQuestion() else {
-            return
-        }
-        currentQuestion = tmpQuestion
-        show(quize: convert(model: currentQuestion!))
+        questionFactory.requestNextQuestion(completion: { [weak self] question in
+            guard
+                let self = self,
+                let question = question
+            else {
+                return
+            }
+            let currentQuestion = question
+            print(currentQuestion.image)
+            show(quize: self.convert(model: currentQuestion))
+        })
     }
 
     // MARK: - Lifecycle
@@ -156,11 +162,18 @@ final class MovieQuizViewController: UIViewController {
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
         
-        guard let tmpCurrentQuestion = questionFactory.requestNextQuestion() else {
-            return
-        }
-        currentQuestion = tmpCurrentQuestion
-        let viewModel = convert(model: currentQuestion!)
-        show(quize: viewModel)
+        questionFactory.requestNextQuestion(completion: { [weak self] question in
+            guard
+                let self = self,
+                let question = question
+            else {
+                return
+            }
+            self.currentQuestion = question
+            let viewModel = self.convert(model: question)
+            DispatchQueue.main.async {
+                self.show(quize: viewModel)
+            }
+        })
     }
 }

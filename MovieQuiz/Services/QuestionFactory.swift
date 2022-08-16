@@ -20,10 +20,11 @@ class QuestionFactory: QuestionFactoryProtocol {
         QuizeQuestion(image: "Tesla", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false),
         QuizeQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false)
     ]
-    
-    func requestNextQuestion() -> QuizeQuestion? {
+
+    func requestNextQuestion(completion: (QuizeQuestion?) -> Void) {
         let index = (0..<questions.count).randomElement() ?? 0
-        return questions[safe: index]
+        let question = questions[safe: index]
+        completion(question)
     }
 }
 

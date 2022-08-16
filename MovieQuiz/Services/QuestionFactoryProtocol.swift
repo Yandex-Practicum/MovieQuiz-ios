@@ -7,8 +7,6 @@
 
 import Foundation
 
-protocol QuestionFactoryProtocol() {
-    func requestNextQuestion() -> QuizeQuestion? {
-    }
-    //bla-bla-bla
+protocol QuestionFactoryProtocol {
+    func requestNextQuestion(completion: (QuizeQuestion?) -> Void)
 }
