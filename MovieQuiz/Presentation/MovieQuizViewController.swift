@@ -9,8 +9,10 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var yesButton: UIButton!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard questionNumberGlobal < questions.count else { return }
-        if !questions[questionNumberGlobal].correctAnswer {
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        if !currentQuestion.correctAnswer {
             showAnswerResult(isCorrect: true)
         }
         else {
@@ -18,8 +20,10 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard questionNumberGlobal < questions.count else { return }
-        if questions[questionNumberGlobal].correctAnswer {
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        if currentQuestion.correctAnswer {
             showAnswerResult(isCorrect: true)
         }
         else {
@@ -27,26 +31,18 @@ final class MovieQuizViewController: UIViewController {
         }
     }
 
-    struct QuizeQuestion {
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
+    private let questionsAmount: Int = 10
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var currentQuestion: QuizeQuestion?
+    
 
-    struct QuizeStepViewModel {
-        let image: String
-        let question: String
-        let questionNumber: Int
-    }
+    
 
-    struct QuizeResultsViewModel {
-        var title: String
-        var text: String
-    }
+    
 
-    private var questions: [QuizeQuestion] = []
+    
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
-    private var currentViewModel: QuizeStepViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: 0)
+    private var currentViewModel: QuizeStepViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: "")
     private var resultsViewModel: QuizeResultsViewModel = QuizeResultsViewModel(title: "", text: "")
     private var accuracy: [Double] = []
     private var avgAccuracy: Double = 0.0
@@ -56,15 +52,18 @@ final class MovieQuizViewController: UIViewController {
     private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
-        return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: questionNumberGlobal)
+        return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: "\(questionNumberGlobal + 1)/\(questionsAmount)")
     }
 
     private func show(quize step: QuizeStepViewModel) {
         moviePoster.layer.borderWidth = 0
-        let currentViewModel = convert(model: questions[questionNumberGlobal])
+        guard let tmpQuestion = currentQuestion else {
+            return
+        }
+        currentViewModel = convert(model: tmpQuestion)
         moviePoster.image = UIImage(named: currentViewModel.image)
         questionForUser.text = currentViewModel.question
-        questionNumber.text = "\(currentViewModel.questionNumber + 1)/\(questions.count)"
+        questionNumber.text = currentViewModel.questionNumber
         //buttonsBlocked = false
         yesButton.isEnabled = true
         noButton.isEnabled = true
@@ -72,13 +71,12 @@ final class MovieQuizViewController: UIViewController {
 
     private func show(quize result: QuizeResultsViewModel) {
         // создаём объекты всплывающего окна
-        let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
-                                    message: result.text, // текст во всплывающем окне
-                                      preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
-
-        // создаём для него кнопки с действиями
+        let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
         let action = UIAlertAction(title: "Сыграть еще раз!", style: .default, handler: { _ in
-            self.show(quize: self.convert(model: self.questions[self.questionNumberGlobal]))
+            guard let tmpQuestion = self.currentQuestion else {
+                return
+            }
+            self.show(quize: self.convert(model: tmpQuestion))
         })
 
         // добавляем в алерт кнопки
@@ -107,7 +105,7 @@ final class MovieQuizViewController: UIViewController {
 
     private func showNextQuestionOrResults() {
         questionNumberGlobal += 1
-        guard questionNumberGlobal < questions.count else {
+        guard questionNumberGlobal < questionsAmount else {
             rounds += 1
             if corrects > records {
                 records = corrects
@@ -115,7 +113,7 @@ final class MovieQuizViewController: UIViewController {
                 recordDate = temporaryDateVar.dateTimeString
             }
             if corrects > 0 {
-                accuracy.append((Double(corrects) / Double(questions.count)) * 100.0)
+                accuracy.append((Double(corrects) / Double(questionsAmount)) * 100.0)
             }
             else {
                 accuracy.append(0.0)
@@ -128,13 +126,13 @@ final class MovieQuizViewController: UIViewController {
                 print(sumAccuracy)
                 avgAccuracy = sumAccuracy / Double(accuracy.count)
             }
-            if corrects != questions.count {
+            if corrects != questionsAmount {
                 resultsViewModel.title = "Этот раунд окончен!"
             }
             else {
                 resultsViewModel.title = "Потрясающе!"
             }
-            resultsViewModel.text = "Ваш результат: \(corrects)/\(questions.count)\nКоличество сыграных квизов:\(rounds)\nРекорд: \(records)/\(questions.count) (\(recordDate))"
+            resultsViewModel.text = "Ваш результат: \(corrects)/\(questionsAmount)\nКоличество сыграных квизов:\(rounds)\nРекорд: \(records)/\(questionsAmount) (\(recordDate))"
             resultsViewModel.text += "\nСредняя точность: \(avgAccuracy)%"
             corrects = 0
             wrongs = 0
@@ -142,26 +140,27 @@ final class MovieQuizViewController: UIViewController {
             show(quize: resultsViewModel)
             return
         }
-        show(quize: convert(model: questions[questionNumberGlobal]))
+        guard let tmpQuestion = questionFactory.requestNextQuestion() else {
+            return
+        }
+        currentQuestion = tmpQuestion
+        show(quize: convert(model: currentQuestion!))
     }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
-        questions.append(QuizeQuestion(image: "The Godfather",text: "Рейтинг этого замечательного фильма \"Крестный отец\" больше, чем 6?" ,correctAnswer: true))
-        questions.append(QuizeQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
-        questions.append(QuizeQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
-        questions.append(QuizeQuestion(image: "The Green Knight", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
-        questions.append(QuizeQuestion(image: "The Avengers", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
-        questions.append(QuizeQuestion(image: "Deadpool", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true))
-        questions.append(QuizeQuestion(image: "Old", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false))
-        questions.append(QuizeQuestion(image: "The Ice Age Adventures of Buck Wild", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false))
-        questions.append(QuizeQuestion(image: "Tesla", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false))
-        questions.append(QuizeQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false))
+        
         super.viewDidLoad()
         moviePoster.layer.masksToBounds = true // даём разрешение на рисование рамки
         moviePoster.layer.borderWidth = 0 // толщина рамки
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
-        show(quize: convert(model: questions[questionNumberGlobal]))
+        
+        guard let tmpCurrentQuestion = questionFactory.requestNextQuestion() else {
+            return
+        }
+        currentQuestion = tmpCurrentQuestion
+        let viewModel = convert(model: currentQuestion!)
+        show(quize: viewModel)
     }
 }
