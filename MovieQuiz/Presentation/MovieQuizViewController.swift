@@ -9,10 +9,11 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var yesButton: UIButton!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
+        guard let tmpcurrentQuestion = currentQuestion else {
             return
         }
-        if !currentQuestion.correctAnswer {
+        print("CQ: "+currentQuestion!.image)
+        if !currentQuestion!.correctAnswer {
             showAnswerResult(isCorrect: true)
         }
         else {
@@ -20,10 +21,11 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
+        guard let tmpcurrentQuestion = currentQuestion else {
             return
         }
-        if currentQuestion.correctAnswer {
+        print("CQ: "+currentQuestion!.image)
+        if currentQuestion!.correctAnswer {
             showAnswerResult(isCorrect: true)
         }
         else {
@@ -60,7 +62,9 @@ final class MovieQuizViewController: UIViewController {
         guard let tmpQuestion = currentQuestion else {
             return
         }
-        currentViewModel = convert(model: tmpQuestion)
+        currentViewModel = step
+        //print("from show array element: " + tmpQuestion.image)
+        //print("from show: " + currentViewModel.image)
         moviePoster.image = UIImage(named: currentViewModel.image)
         questionForUser.text = currentViewModel.question
         questionNumber.text = currentViewModel.questionNumber
@@ -143,13 +147,13 @@ final class MovieQuizViewController: UIViewController {
         questionFactory.requestNextQuestion(completion: { [weak self] question in
             guard
                 let self = self,
-                let question = question
+                let tmpquestion = question
             else {
                 return
             }
-            let currentQuestion = question
-            print(currentQuestion.image)
-            show(quize: self.convert(model: currentQuestion))
+            self.currentQuestion = question
+            print(currentQuestion!.image)
+            show(quize: self.convert(model: currentQuestion!))
         })
     }
 

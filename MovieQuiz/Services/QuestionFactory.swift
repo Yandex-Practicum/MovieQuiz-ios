@@ -24,6 +24,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     func requestNextQuestion(completion: (QuizeQuestion?) -> Void) {
         let index = (0..<questions.count).randomElement() ?? 0
         let question = questions[safe: index]
+        print("from factory: " + question!.image)
         completion(question)
     }
 }
