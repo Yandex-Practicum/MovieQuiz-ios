@@ -8,5 +8,5 @@
 import Foundation
 
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion(completion: (QuizeQuestion?) -> Void)
+    func requestNextQuestion()
 }

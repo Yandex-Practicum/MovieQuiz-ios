@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private var moviePoster: UIImageView!
     @IBOutlet private var questionForUser: UILabel!
@@ -34,7 +34,7 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     
 
@@ -59,9 +59,6 @@ final class MovieQuizViewController: UIViewController {
 
     private func show(quize step: QuizeStepViewModel) {
         moviePoster.layer.borderWidth = 0
-        guard let tmpQuestion = currentQuestion else {
-            return
-        }
         currentViewModel = step
         //print("from show array element: " + tmpQuestion.image)
         //print("from show: " + currentViewModel.image)
@@ -144,17 +141,7 @@ final class MovieQuizViewController: UIViewController {
             show(quize: resultsViewModel)
             return
         }
-        questionFactory.requestNextQuestion(completion: { [weak self] question in
-            guard
-                let self = self,
-                let tmpquestion = question
-            else {
-                return
-            }
-            self.currentQuestion = question
-            print(currentQuestion!.image)
-            show(quize: self.convert(model: currentQuestion!))
-        })
+        questionFactory?.requestNextQuestion()
     }
 
     // MARK: - Lifecycle
@@ -165,19 +152,21 @@ final class MovieQuizViewController: UIViewController {
         moviePoster.layer.borderWidth = 0 // толщина рамки
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
-        
-        questionFactory.requestNextQuestion(completion: { [weak self] question in
-            guard
-                let self = self,
-                let question = question
-            else {
-                return
-            }
-            self.currentQuestion = question
-            let viewModel = self.convert(model: question)
-            DispatchQueue.main.async {
-                self.show(quize: viewModel)
-            }
-        })
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+    }
+    
+    // MARK: QuestionFactoryDelegate
+    func didReceiveNextQuestion(question: QuizeQuestion?) {
+        guard
+            let question = question
+        else {
+            return
+        }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quize: viewModel)
+        }
     }
 }
