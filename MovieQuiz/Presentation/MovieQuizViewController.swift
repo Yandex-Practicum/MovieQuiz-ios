@@ -190,5 +190,4 @@ final class MovieQuizViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-    
 }
