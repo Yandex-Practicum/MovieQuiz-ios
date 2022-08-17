@@ -55,7 +55,7 @@ final class MovieQuizViewController: UIViewController {
     // Конвертор данных вопроса в данные для заполнения вью
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let quiz: QuizStepViewModel = QuizStepViewModel(
-            image: UIImage(named: model.image)!,
+            image: UIImage(named: model.image)!, // TODO: подставить дефолтную картинку
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return quiz
@@ -229,7 +229,6 @@ extension UIColor {
     static var ypRed: UIColor { UIColor(named: "YP Red") ?? UIColor(red: 0.961, green: 0.42, blue: 0.34, alpha: 1) }
     static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor(red: 0.26, green: 0.27, blue: 0.133, alpha: 1) }
     static var ypBackground: UIColor { UIColor(named: "YP Background") ?? UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 0.6) }
-    static var transparent: UIColor { UIColor(red: 0, green: 0, blue: 0, alpha: 0) } // Этот цвет использую, чтобы скрывать обводку
 }
 
 // НАСТРОЙКА СТИЛЕЙ ОБВОДКИ ИМИДЖА
@@ -251,7 +250,7 @@ extension MovieQuizViewController {
         case "incorrect":
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         default:
-            imageView.layer.borderColor = UIColor.transparent.cgColor
+            imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
     
