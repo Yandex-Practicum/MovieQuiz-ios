@@ -1,6 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    // MARK: ViewModels
     struct QuizQuestion {
         let image: String
         let text: String
