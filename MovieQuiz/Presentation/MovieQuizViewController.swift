@@ -139,6 +139,9 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             counterCorrectAnswers += 1
         }
+        
+        yesAnswerButton.isEnabled = false
+        noAnswerButton.isEnabled = false
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
@@ -146,6 +149,8 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
+        yesAnswerButton.isEnabled = true
+        noAnswerButton.isEnabled = true
         if currentQuestionIndex == questions.count - 1 {
             allCorrectAnswers += counterCorrectAnswers
             numberOfQuizGames += 1
@@ -159,11 +164,10 @@ final class MovieQuizViewController: UIViewController {
     
     private func getResultQuiz() -> QuizResultsViewModel {
         var title = "Игра окончена!"
-        var recordDateString = ""
         if counterCorrectAnswers >= recordCorrectAnswers {
             title = "Поздравляем! Новый рекорд!"
             recordCorrectAnswers = counterCorrectAnswers
-            recordDateString = Date().dateTimeString
+            recordDate.dateTimeString
         }
         
         if counterCorrectAnswers == numberOfQuizGames {
@@ -174,11 +178,16 @@ final class MovieQuizViewController: UIViewController {
                                              text: """
                                              Ваш результат: \(counterCorrectAnswers)/\(numberOfQuizQuestion)
                                              Количество сыгранных квизов: \(numberOfQuizGames)
-                                             Рекорд: \(recordCorrectAnswers)/\(numberOfQuizQuestion) \(recordDateString)
+                                             Рекорд: \(recordCorrectAnswers)/\(numberOfQuizQuestion) \(recordDate.dateTimeString)
                                              Средняя точность: \(String(format: "%.02f", averageAccuracy))%
                                              """,
                                              buttonText: "Новая игра")
         return resultQuiz
+    }
+    
+    // статусбар с белым контентом
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
     }
     
 }
