@@ -8,6 +8,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
     
+    @IBAction func showAlert(_ sender: Any) {
+        let alert = ResultAlertPresenter(title: "TITLE", message: "MESSAGE", controller: self)
+        alert.show()
+    }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let tmpcurrentQuestion = currentQuestion else {
             return
@@ -37,12 +41,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     
-
-    
-
-    
-
-    
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
     private var currentViewModel: QuizeStepViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: "")
     private var resultsViewModel: QuizeResultsViewModel = QuizeResultsViewModel(title: "", text: "")
@@ -60,31 +58,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(quize step: QuizeStepViewModel) {
         moviePoster.layer.borderWidth = 0
         currentViewModel = step
-        //print("from show array element: " + tmpQuestion.image)
-        //print("from show: " + currentViewModel.image)
         moviePoster.image = UIImage(named: currentViewModel.image)
         questionForUser.text = currentViewModel.question
         questionNumber.text = currentViewModel.questionNumber
-        //buttonsBlocked = false
         yesButton.isEnabled = true
         noButton.isEnabled = true
     }
 
     private func show(quize result: QuizeResultsViewModel) {
-        // создаём объекты всплывающего окна
-        let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Сыграть еще раз!", style: .default, handler: { _ in
-            guard let tmpQuestion = self.currentQuestion else {
-                return
-            }
-            self.show(quize: self.convert(model: tmpQuestion))
-        })
-
-        // добавляем в алерт кнопки
-        alert.addAction(action)
-
-        // показываем всплывающее окно
-        self.present(alert, animated: true, completion: nil)
+        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self)
+        alert.show()
+        /*guard let tmpQuestion = self.currentQuestion else {
+            return
+        }
+        self.show(quize: self.convert(model: tmpQuestion))*/
     }
 
     private func showAnswerResult(isCorrect: Bool) {
