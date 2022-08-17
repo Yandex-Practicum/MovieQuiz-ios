@@ -26,15 +26,15 @@
                                 <rect key="frame" x="186" y="320" width="50" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="20"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="white"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mUn-Pj-iBb">
-                                <rect key="frame" x="192" y="624" width="158" height="59"/>
+                                <rect key="frame" x="192" y="624" width="112" height="47"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Да">
-                                    <fontDescription key="titleFontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Да" cornerStyle="large">
+                                    <fontDescription key="titleFontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="16"/>
                                     <color key="baseForegroundColor" name="black"/>
                                     <color key="baseBackgroundColor" name="white"/>
                                 </buttonConfiguration>
