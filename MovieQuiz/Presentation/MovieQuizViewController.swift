@@ -76,7 +76,7 @@ final class MovieQuizViewController: UIViewController {
     private var recordDate = Date() // дата рекорда
     private var averageAccuracy = 0.0 // среднее кол-во угаданных ответов в %
     private var numberOfQuizQuestion: Int = 10 // максимальное количество вопросов ответов
-    private var allCorrectAnswers: Int = 0
+    private var allCorrectAnswers: Int = 0 // если ответили на все вопросы верно
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -84,14 +84,17 @@ final class MovieQuizViewController: UIViewController {
         setupViewModel()
     }
     
+    // кнопка с значением фолс
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == false)
     }
     
+    // кнопка с значением тру
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
     }
     
+    // вью с картинкой, текстом и счетчиком
     private func show(quiz step: QuizStepViewModel) {
         UIView.animate(withDuration: 0.1) {
             self.textLabel.text = step.question
@@ -107,13 +110,12 @@ final class MovieQuizViewController: UIViewController {
                                       preferredStyle: .alert)
         let action = UIAlertAction(title: result.buttonText,
                                    style: .default,
-                                   handler: {
-                                    _ in self.restart()
-        })
+                                   handler: { _ in self.restart()})
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
     
+    // установили вью с вопросами
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(named: model.image) ?? .remove,
