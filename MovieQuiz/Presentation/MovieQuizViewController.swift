@@ -9,7 +9,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak var yesButton: UIButton!
     
     @IBAction func showAlert(_ sender: Any) {
-        let alert = ResultAlertPresenter(title: "TITLE", message: "MESSAGE", controller: self)
+        let callback = {
+            print("Hello")
+        }
+        let alert = ResultAlertPresenter(title: "TITLE", message: "MESSAGE", controller: self, someClosure: callback())
         alert.show()
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -66,7 +69,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func show(quize result: QuizeResultsViewModel) {
-        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self)
+        let someClosure: (QuizeQuestion) -> () = { question in
+            self.show(quize: self.convert(model: question))
+        }
+        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self, someClosure: someClosure(currentQuestion!))
         alert.show()
         /*guard let tmpQuestion = self.currentQuestion else {
             return
@@ -141,6 +147,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        
+        //print(NSHomeDirectory())
+        //UserDefaults.standard.set(true, forKey: "viewDidLoad")
+        //print(Bundle.main.bundlePath)
+        var documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //print(documentsUrl.scheme)
+        //print(documentsUrl.path)
+        let fileName = "text.swift"
+        let hello = "Hello World!"
+        let data = hello.data(using: .utf8)
+        documentsUrl.appendPathComponent(fileName)
+        FileManager.default.createFile(atPath: documentsUrl.path, contents: data)
+        try? print(String(contentsOf: documentsUrl))
+        //print(documentsUrl.path)
     }
     
     // MARK: QuestionFactoryDelegate
