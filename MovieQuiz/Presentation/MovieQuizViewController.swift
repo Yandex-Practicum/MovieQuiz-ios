@@ -8,7 +8,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
     
-    @IBAction func showAlert(_ sender: Any) {
+    @IBAction func showAlert(_ sender: UIButton) {
         let callback = {
             print("Hello")
         }
@@ -148,6 +148,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         
+        // MARK: Filesystem
+        /*
         //print(NSHomeDirectory())
         //UserDefaults.standard.set(true, forKey: "viewDidLoad")
         //print(Bundle.main.bundlePath)
@@ -161,6 +163,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         FileManager.default.createFile(atPath: documentsUrl.path, contents: data)
         try? print(String(contentsOf: documentsUrl))
         //print(documentsUrl.path)
+        //-------------------
+         */
+        
     }
     
     // MARK: QuestionFactoryDelegate
