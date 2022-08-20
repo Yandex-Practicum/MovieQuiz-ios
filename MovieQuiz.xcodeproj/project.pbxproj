@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		841F472628AD518400158B42 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841F472528AD518400158B42 /* QuestionFactoryDelegate.swift */; };
 		841F472828AD5B4300158B42 /* ResultAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841F472728AD5B4300158B42 /* ResultAlertPresenter.swift */; };
+		841FBA7228B147F8003DC73E /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FBA7128B147F8003DC73E /* FileService.swift */; };
+		841FBA7528B15928003DC73E /* jsondata in Resources */ = {isa = PBXBuildFile; fileRef = 841FBA7428B15928003DC73E /* jsondata */; };
 		8420132D28A6B16200E35D9C /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8420132C28A6B16200E35D9C /* QuestionFactory.swift */; };
 		8420133028A6D11E00E35D9C /* QuizeQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8420132F28A6D11E00E35D9C /* QuizeQuestion.swift */; };
 		8420133428A6D15200E35D9C /* QuizeStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8420133328A6D15200E35D9C /* QuizeStepViewModel.swift */; };
@@ -30,6 +32,8 @@
 		84061381289319380021A1F0 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		841F472528AD518400158B42 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		841F472728AD5B4300158B42 /* ResultAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultAlertPresenter.swift; sourceTree = "<group>"; };
+		841FBA7128B147F8003DC73E /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
+		841FBA7428B15928003DC73E /* jsondata */ = {isa = PBXFileReference; lastKnownFileType = text; path = jsondata; sourceTree = "<group>"; };
 		8420132C28A6B16200E35D9C /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		8420132F28A6D11E00E35D9C /* QuizeQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizeQuestion.swift; sourceTree = "<group>"; };
 		8420133328A6D15200E35D9C /* QuizeStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizeStepViewModel.swift; sourceTree = "<group>"; };
@@ -59,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		841FBA7328B158F1003DC73E /* tmp */ = {
+			isa = PBXGroup;
+			children = (
+				841FBA7428B15928003DC73E /* jsondata */,
+			);
+			path = tmp;
+			sourceTree = "<group>";
+		};
 		8420132B28A6B11700E35D9C /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +78,7 @@
 				8420133728A9694B00E35D9C /* QuestionFactoryProtocol.swift */,
 				841F472528AD518400158B42 /* QuestionFactoryDelegate.swift */,
 				841F472728AD5B4300158B42 /* ResultAlertPresenter.swift */,
+				841FBA7128B147F8003DC73E /* FileService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -134,6 +147,7 @@
 		AD1ABAB02831907B00B3E448 /* MovieQuiz */ = {
 			isa = PBXGroup;
 			children = (
+				841FBA7328B158F1003DC73E /* tmp */,
 				8420132E28A6D10700E35D9C /* Models */,
 				8420132B28A6B11700E35D9C /* Services */,
 				8F4738322848DE2A005DF65E /* Presentation */,
@@ -217,6 +231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841FBA7528B15928003DC73E /* jsondata in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
@@ -252,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8420133628A6D16B00E35D9C /* QuizeResultsViewModel.swift in Sources */,
+				841FBA7228B147F8003DC73E /* FileService.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				8420133828A9694B00E35D9C /* QuestionFactoryProtocol.swift in Sources */,
 				841F472628AD518400158B42 /* QuestionFactoryDelegate.swift in Sources */,

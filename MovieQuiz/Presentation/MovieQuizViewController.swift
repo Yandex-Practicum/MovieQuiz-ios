@@ -9,11 +9,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak var yesButton: UIButton!
     
     @IBAction func showAlert(_ sender: UIButton) {
-        let callback = {
+        /*let callback = {
             print("Hello")
         }
-        let alert = ResultAlertPresenter(title: "TITLE", message: "MESSAGE", controller: self, someClosure: callback())
-        alert.show()
+        let alert = ResultAlertPresenter(title: "TITLE", message: "MESSAGE", controller: self, completion: @escaping () -> Void)
+        alert.show()*/
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let tmpcurrentQuestion = currentQuestion else {
@@ -72,7 +72,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let someClosure: (QuizeQuestion) -> () = { question in
             self.show(quize: self.convert(model: question))
         }
-        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self, someClosure: someClosure(currentQuestion!))
+        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self/*, someClosure: someClosure(currentQuestion!)*/)
         alert.show()
         /*guard let tmpQuestion = self.currentQuestion else {
             return
@@ -136,6 +136,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         questionFactory?.requestNextQuestion()
     }
+    
+    enum FileManagerError: Error {
+        case fileDoesntExist
+    }
+    
+    func string(from fileURL: URL) throws -> String {
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            throw FileManagerError.fileDoesntExist
+        }
+        var str = ""
+        do {
+            str = try String(contentsOf: fileURL)
+        } catch FileManagerError.fileDoesntExist {
+            print ("File on URL \(fileURL.path) doesn't exist")
+        } catch {
+            print("Unknown error")
+        }
+        return str
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -150,7 +169,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         // MARK: Filesystem
         /*
-        //print(NSHomeDirectory())
+        print(NSHomeDirectory())
         //UserDefaults.standard.set(true, forKey: "viewDidLoad")
         //print(Bundle.main.bundlePath)
         var documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -165,6 +184,34 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         //print(documentsUrl.path)
         //-------------------
          */
+        
+        //MARK: json
+        //let jsonString1: String
+        var documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //let fileService: FileService
+        documentsUrl.appendPathComponent("inception.json")
+        guard let jsonString = try? string(from: documentsUrl) else {
+            return
+        }
+        
+        guard let data = jsonString.data(using: .utf8) else {
+            return
+        }
+        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+            return
+        }
+        //print(json)
+        //print(json["title"])
+        guard let actorList = json["actorList"] as? [Any] else {
+            return
+        }
+        for actor in actorList {
+            guard let actor = actor as? [String: Any] else {
+                return
+            }
+            print(actor["asCharacter"])
+        }
+        //----------
         
     }
     
