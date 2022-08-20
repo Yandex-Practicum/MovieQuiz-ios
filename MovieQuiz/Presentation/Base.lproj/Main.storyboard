@@ -44,17 +44,19 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" image="TestImage" translatesAutoresizingMaskIntoConstraints="NO" id="dTU-nb-L7X" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="dTU-nb-L7X" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="white"/>
+                                        <color key="tintColor" name="white"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="dTU-nb-L7X" secondAttribute="height" multiplier="2:3" id="eb3-SY-gXr"/>
+                                            <constraint firstAttribute="height" constant="561" id="i6v-x9-YdF"/>
                                         </constraints>
                                     </imageView>
-                                    <view contentMode="scaleToFill" verticalHuggingPriority="50" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VHj-OB-Pu6">
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="50" translatesAutoresizingMaskIntoConstraints="NO" id="VHj-OB-Pu6">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="103.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c23-Jz-LAM" userLabel="Question Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5? " textAlignment="center" lineBreakMode="clip" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="c23-Jz-LAM" userLabel="Question Label">
                                                 <rect key="frame" x="20" y="5" width="334" height="93.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
@@ -88,6 +90,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hRc-FW-h8N"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mUn-Pj-iBb" userLabel="Yes button">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
@@ -101,6 +106,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="soE-x3-KFa"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -119,6 +127,11 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="LQ8-Iu-AR5" secondAttribute="trailing" constant="20" id="Ynu-aV-sxv"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="1jB-ad-fLu" id="f6Y-lc-puC"/>
+                        <outlet property="imageView" destination="dTU-nb-L7X" id="WBg-YJ-9eP"/>
+                        <outlet property="questionLabel" destination="c23-Jz-LAM" id="T6s-94-M3b"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -126,7 +139,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="TestImage" width="335" height="502"/>
         <namedColor name="black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
