@@ -7,19 +7,19 @@ final class MovieQuizViewController: UIViewController {
         let text: String
         let correctAnswer: Bool
     }
-    
+
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    
+
     struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
-    
+
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -68,7 +68,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet weak var noAnswerButton: UIButton!
     @IBOutlet weak var yesAnswerButton: UIButton!
-    
+
     private var currentQuestionIndex: Int = 0 // индекс нашего вопроса
     private var counterCorrectAnswers: Int = 0 // счетчик правильных ответов
     private var numberOfQuizGames: Int = 0 // количетсво сыгранных квизов
@@ -83,18 +83,15 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         setupViewModel()
     }
-    
-    // кнопка с значением фолс
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
+
+    @IBAction private func noAnswerButton(_ sender: UIButton) {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == false)
     }
-    
-    // кнопка с значением тру
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+
+    @IBAction private func yesAnswerButton(_ sender: UIButton) {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
     }
-    
-    // вью с картинкой, текстом и счетчиком
+
     private func show(quiz step: QuizStepViewModel) {
         UIView.animate(withDuration: 0.1) {
             self.textLabel.text = step.question
@@ -170,7 +167,6 @@ final class MovieQuizViewController: UIViewController {
         if counterCorrectAnswers >= recordCorrectAnswers {
             title = "Поздравляем! Новый рекорд!"
             recordCorrectAnswers = counterCorrectAnswers
-            recordDate.dateTimeString
         }
         
         if counterCorrectAnswers == numberOfQuizGames {
