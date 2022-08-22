@@ -109,11 +109,11 @@ final class MovieQuizViewController: UIViewController {
         let action = UIAlertAction(
             title: result.buttonText,
             style: .default,
-            handler: { [weak self] _ in
-                self?.restart()
+            handler: { _ in
+                self.restart()
             })
         alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
