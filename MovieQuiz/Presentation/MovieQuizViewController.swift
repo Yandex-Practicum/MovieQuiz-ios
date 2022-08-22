@@ -212,6 +212,44 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             print(actor["asCharacter"])
         }
         //----------
+        //MARK: JSON homework
+        struct Actor {
+            let id: String
+            let image: String
+            let name: String
+            let asCharacter: String
+        }
+        struct Movie {
+            let id: String
+            let title: String
+            let year: Int
+            let image: String
+            let releaseDate: String
+            let runtimeMins: Int
+            let directors: String
+            let actorList: [Actor]
+        }
+        var actorList1: [Actor] = []
+        for actor1 in actorList {
+            guard let tmpActor = actor1 as? [String: Any] else {
+                return
+            }
+            let tmpActor1: Actor = Actor(id: tmpActor["id"] as! String, image: tmpActor["image"] as! String, name: tmpActor["name"] as! String, asCharacter: tmpActor["asCharacter"] as! String)
+            actorList1.append(tmpActor1)
+        }
+        
+        let theMovie: Movie = Movie(
+            id: json["id"] as! String,
+            title: json["title"] as! String,
+            year: Int(json["year"] as! String)!,
+            image: json["image"] as! String,
+            releaseDate: json["releaseDate"] as! String,
+            runtimeMins: Int(json["runtimeMins"] as! String)!,
+            directors: json["directors"] as! String,
+            actorList: actorList1)
+        print("Movie:")
+        print(theMovie)
+        //-------------------
         
     }
     
