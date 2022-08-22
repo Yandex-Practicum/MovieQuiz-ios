@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="BOV-bt-LZF">
-                                <rect key="frame" x="20" y="54" width="350" height="756"/>
+                                <rect key="frame" x="20" y="54" width="350" height="755"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WxH-oB-TjG">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="23.666666666666668"/>
@@ -46,7 +46,7 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="j7N-hQ-X9k" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.666666666666686" width="350" height="468"/>
+                                        <rect key="frame" x="0.0" y="43.666666666666686" width="350" height="467"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="j7N-hQ-X9k" secondAttribute="height" multiplier="2:3" id="BBR-qB-ERi"/>
@@ -58,7 +58,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QSC-1B-ZsG">
-                                        <rect key="frame" x="0.0" y="531.66666666666663" width="350" height="144.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="530.66666666666663" width="350" height="144.33333333333337"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="eca-u2-01g" userLabel="Question Label">
                                                 <rect key="frame" x="52.333333333333329" y="12.999999999999993" width="245.33333333333337" height="118.33333333333331"/>
@@ -76,7 +76,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="0v9-sI-YqE">
-                                        <rect key="frame" x="0.0" y="696" width="350" height="60"/>
+                                        <rect key="frame" x="0.0" y="695" width="350" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGf-7t-26J" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="165" height="60"/>
@@ -125,7 +125,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BOV-bt-LZF" secondAttribute="bottom" id="1Vc-pZ-gKt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BOV-bt-LZF" secondAttribute="bottom" constant="1" id="1Vc-pZ-gKt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BOV-bt-LZF" secondAttribute="trailing" constant="20" id="GeZ-1q-tgw"/>
                             <constraint firstItem="BOV-bt-LZF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ica-1A-vKx"/>
                             <constraint firstItem="BOV-bt-LZF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="rs9-zD-jgL"/>
