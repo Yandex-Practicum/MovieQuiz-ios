@@ -122,10 +122,25 @@
                             <constraint firstItem="BOV-bt-LZF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="rs9-zD-jgL"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="bkD-BZ-EK0" id="wgA-Mc-hPQ"/>
+                        <outlet property="imageView" destination="j7N-hQ-X9k" id="zWo-ez-gjd"/>
+                        <outlet property="noAnswerButton" destination="vGf-7t-26J" id="qvk-G4-24f"/>
+                        <outlet property="textLabel" destination="eca-u2-01g" id="NP3-Eh-c55"/>
+                        <outlet property="yesAnswerButton" destination="ABY-Sn-HMP" id="2oK-lH-HER"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-55.072463768115945" y="55.580357142857139"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="YP Black">
+            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
