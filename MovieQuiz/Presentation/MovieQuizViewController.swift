@@ -193,4 +193,3 @@ final class MovieQuizViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         .portrait
     }
-}
