@@ -4,6 +4,10 @@ class QuestionFactory: QuestionFactoryProtocol {
 
     private let delegate: QuestionFactoryDelegate
 
+    init(delegate: QuestionFactoryDelegate) {
+        self.delegate = delegate
+    }
+
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -47,8 +51,9 @@ class QuestionFactory: QuestionFactoryProtocol {
             correctAnswer: false)  // Настоящий рейтинг 5,8
     ]
 
-    func requestNextQuestion() -> QuizQuestion? {
+    func requestNextQuestion() {
         let index = (0..<questions.count).randomElement() ?? 0
-        return questions[safe: index]
+        let question = questions[safe: index]
+        delegate.didReceiveNextQuestion(question: question)
     }
 }
