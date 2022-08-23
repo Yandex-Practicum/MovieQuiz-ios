@@ -97,8 +97,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func setupViewModel() {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
+        
         questionFactory = QuestionFactory(delegate: self)
-
         questionFactory?.requestNextQuestion()
     }
 
