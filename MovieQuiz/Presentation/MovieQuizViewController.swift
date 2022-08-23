@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var noAnswerButton: UIButton!
     @IBOutlet private weak var yesAnswerButton: UIButton!
 
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     private var questionsAmount: Int = 10 // максимальное количество вопросов ответов
 
