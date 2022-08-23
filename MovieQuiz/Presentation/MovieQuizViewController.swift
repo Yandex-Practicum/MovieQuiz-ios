@@ -1,13 +1,11 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    
     @IBOutlet private var moviePoster: UIImageView!
     @IBOutlet private var questionForUser: UILabel!
     @IBOutlet private var questionNumber: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
-    
     @IBAction func showAlert(_ sender: UIButton) {
         /*let callback = {
             print("Hello")
@@ -19,11 +17,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let tmpcurrentQuestion = currentQuestion else {
             return
         }
-        print("CQ: "+currentQuestion!.image)
+        // print("CQ: "+currentQuestion!.image)
         if !currentQuestion!.correctAnswer {
             showAnswerResult(isCorrect: true)
-        }
-        else {
+        } else {
             showAnswerResult(isCorrect: false)
         }
     }
@@ -31,11 +28,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let tmpcurrentQuestion = currentQuestion else {
             return
         }
-        print("CQ: "+currentQuestion!.image)
+        // print("CQ: "+currentQuestion!.image)
         if currentQuestion!.correctAnswer {
             showAnswerResult(isCorrect: true)
-        }
-        else {
+        } else {
             showAnswerResult(isCorrect: false)
         }
     }
@@ -43,7 +39,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
-    
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
     private var currentViewModel: QuizeStepViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: "")
     private var resultsViewModel: QuizeResultsViewModel = QuizeResultsViewModel(title: "", text: "")
@@ -57,7 +52,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
         return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: "\(questionNumberGlobal + 1)/\(questionsAmount)")
     }
-
     private func show(quize step: QuizeStepViewModel) {
         moviePoster.layer.borderWidth = 0
         currentViewModel = step
@@ -67,11 +61,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         yesButton.isEnabled = true
         noButton.isEnabled = true
     }
-
     private func show(quize result: QuizeResultsViewModel) {
-        let someClosure: (QuizeQuestion) -> () = { question in
+        /*let someClosure: (QuizeQuestion) -> () = { question in
             self.show(quize: self.convert(model: question))
-        }
+        }*/
         let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self/*, someClosure: someClosure(currentQuestion!)*/)
         alert.show()
         /*guard let tmpQuestion = self.currentQuestion else {
@@ -108,8 +101,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
             if corrects > 0 {
                 accuracy.append((Double(corrects) / Double(questionsAmount)) * 100.0)
-            }
-            else {
+            } else {
                 accuracy.append(0.0)
             }
             if !accuracy.isEmpty {
@@ -136,20 +128,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         questionFactory?.requestNextQuestion()
     }
-    
     enum FileManagerError: Error {
         case fileDoesntExist
     }
-    
     func string(from fileURL: URL) throws -> String {
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             throw FileManagerError.fileDoesntExist
         }
         var str = ""
         do {
-            str = try String(contentsOf: fileURL)
+        str = try String(contentsOf: fileURL)
         } catch FileManagerError.fileDoesntExist {
-            print ("File on URL \(fileURL.path) doesn't exist")
+            print("File on URL \(fileURL.path) doesn't exist")
         } catch {
             print("Unknown error")
         }
@@ -158,7 +148,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         moviePoster.layer.masksToBounds = true // даём разрешение на рисование рамки
         moviePoster.layer.borderWidth = 0 // толщина рамки
@@ -166,149 +155,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
-        
-        // MARK: Filesystem
-        /*
-        print(NSHomeDirectory())
-        //UserDefaults.standard.set(true, forKey: "viewDidLoad")
-        //print(Bundle.main.bundlePath)
-        var documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        //print(documentsUrl.scheme)
-        //print(documentsUrl.path)
-        let fileName = "text.swift"
-        let hello = "Hello World!"
-        let data = hello.data(using: .utf8)
-        documentsUrl.appendPathComponent(fileName)
-        FileManager.default.createFile(atPath: documentsUrl.path, contents: data)
-        try? print(String(contentsOf: documentsUrl))
-        //print(documentsUrl.path)
-        //-------------------
-         */
-        
-        //MARK: json
-        //let jsonString1: String
-        var documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        //let fileService: FileService
-        documentsUrl.appendPathComponent("inception.json")
-        guard let jsonString = try? string(from: documentsUrl) else {
-            return
-        }
-        
-        guard let data = jsonString.data(using: .utf8) else {
-            return
-        }
-        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-            return
-        }
-        
-        guard let actorList = json["actorList"] as? [Any] else {
-            return
-        }
-        for actor in actorList {
-            guard let actor = actor as? [String: Any] else {
-                return
-            }
-            //print(actor["asCharacter"])
-        }
-        //----------
-        //MARK: JSON homework
-        struct Actor: Codable {
-            let id: String
-            let image: String
-            let name: String
-            let asCharacter: String
-        }
-        struct Movie: Codable {
-            let id: String
-            let title: String
-            var year: String
-            let image: String
-            let releaseDate: String
-            var runtimeMins: String
-            let directors: String
-            let actorList: [Actor]
-            enum CodingKeys: CodingKey {
-                case id, title,year, image, releaseDate, runtimeMins, directors, actorList
-            }
-            enum ParseError: Error {
-                case yearFailure
-                case runtimeMinsFailure
-            }
-            init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                id = try container.decode(String.self, forKey: .id)
-                title = try container.decode(String.self, forKey: .title)
-                year = try container.decode(String.self, forKey: .year)
-                releaseDate = try container.decode(String.self, forKey: .releaseDate)
-                runtimeMins = try container.decode(String.self, forKey: .runtimeMins)
-                directors = try container.decode(String.self, forKey: .directors)
-                image = try container.decode(String.self, forKey: .image)
-                actorList = try container.decode([Actor].self, forKey: .actorList)
-                guard let yearValue = Int(year) else {
-                    throw ParseError.yearFailure
-                }
-                guard let runtimeMinsValue = Int(runtimeMins) else {
-                    throw ParseError.runtimeMinsFailure
-                }
-            }
-        }
-        struct ImdbMovie: Codable {
-            let id: String
-            let rank: String
-            let title: String
-            let fullTitle: String
-            let year: String
-            let image: String
-            let crew: String
-            let imDbRating: String
-            let imDbRatingCount: String
-            enum CodingKeys: CodingKey {
-                case id,rank, title, fullTitle, year, image, crew, imDbRating, imDbRatingCount
-            }
-            init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                id = try container.decode(String.self, forKey: .id)
-                rank = try container.decode(String.self, forKey: .rank)
-                title = try container.decode(String.self, forKey: .title)
-                fullTitle = try container.decode(String.self, forKey: .fullTitle)
-                year = try container.decode(String.self, forKey: .year)
-                image = try container.decode(String.self, forKey: .image)
-                crew = try container.decode(String.self, forKey: .crew)
-                imDbRating = try container.decode(String.self, forKey: .imDbRating)
-                imDbRatingCount = try container.decode(String.self, forKey: .imDbRatingCount)
-            }
-        }
-        struct ImdbMovies: Codable {
-            let items: [ImdbMovie]
-        }
-        do {
-            let movie22 = try JSONDecoder().decode(Movie.self, from: data)
-            //print(movie22)
-            //print(documentsUrl)
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-        documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        documentsUrl.appendPathComponent("top250MoviesIMDB.min.json")
-        //print(documentsUrl)
-        guard let jsonString1 = try? string(from: documentsUrl) else {
-            return
-        }
-        
-        guard let data1 = jsonString1.data(using: .utf8) else {
-            return
-        }
-        //print(jsonString1)
-        do {
-            let movie44 = try JSONDecoder().decode(ImdbMovies.self, from: data1)
-            print(movie44)
-        } catch {
-            print ("Failed to parse: \(error.localizedDescription)")
-        }
-        
-        
-        //-------------------
-        
     }
     
     // MARK: QuestionFactoryDelegate
