@@ -1,68 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: ViewModels
-    struct QuizQuestion {
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
-
-    struct QuizStepViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-
-    struct QuizResultsViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
-    }
-
-    private let questions: [QuizQuestion] = [
-        QuizQuestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true), // Настоящий рейтинг: 9,2
-        QuizQuestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true), // Настоящий рейтинг: 9
-        QuizQuestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true), // Настоящий рейтинг: 8,1
-        QuizQuestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true), // Настоящий рейтинг: 8
-        QuizQuestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true), // Настоящий рейтинг: 8
-        QuizQuestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),  // Настоящий рейтинг: 6,6
-        QuizQuestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),  // Настоящий рейтинг: 5,8
-        QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),  // Настоящий рейтинг: 4,3
-        QuizQuestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),  // Настоящий рейтинг: 5,1
-        QuizQuestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false)  // Настоящий рейтинг 5,8
-    ]
-
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -70,7 +8,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var yesAnswerButton: UIButton!
 
     private var currentQuestionIndex: Int = 0 // индекс нашего вопроса
-    private var counterCorrectAnswers: Int = 0 // счетчик правильных ответов
+    private var correctAnswers: Int = 0 // счетчик правильных ответов
     private var numberOfQuizGames: Int = 0 // количетсво сыгранных квизов
     private var recordCorrectAnswers: Int = 0 // рекорд правильных овтетов
     private var recordDate = Date() // дата рекорда
@@ -124,7 +62,7 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func restart() {
-        counterCorrectAnswers = 0
+        correctAnswers = 0
         currentQuestionIndex = 0
         setupViewModel()
     }
@@ -138,7 +76,7 @@ final class MovieQuizViewController: UIViewController {
 
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
-            counterCorrectAnswers += 1
+            correctAnswers += 1
         }
 
         yesAnswerButton.isEnabled = false
@@ -153,7 +91,7 @@ final class MovieQuizViewController: UIViewController {
         yesAnswerButton.isEnabled = true
         noAnswerButton.isEnabled = true
         if currentQuestionIndex == questions.count - 1 {
-            allCorrectAnswers += counterCorrectAnswers
+            allCorrectAnswers += correctAnswers
             numberOfQuizGames += 1
             let resultQuiz = getResultQuiz()
             show(quiz: resultQuiz)
@@ -165,19 +103,19 @@ final class MovieQuizViewController: UIViewController {
 
     private func getResultQuiz() -> QuizResultsViewModel {
         var title = "Игра окончена!"
-        if counterCorrectAnswers >= recordCorrectAnswers {
+        if correctAnswers >= recordCorrectAnswers {
             title = "Поздравляем! Новый рекорд!"
-            recordCorrectAnswers = counterCorrectAnswers
+            recordCorrectAnswers = correctAnswers
         }
 
-        if counterCorrectAnswers == numberOfQuizGames {
+        if correctAnswers == numberOfQuizGames {
             title = "Поздравляем! Это лучший результат"
         }
         averageAccuracy = Double(allCorrectAnswers * 100) / Double(numberOfQuizQuestion * numberOfQuizGames)
         let resultQuiz = QuizResultsViewModel(
             title: title,
             text: """
-                Ваш результат: \(counterCorrectAnswers)/\(numberOfQuizQuestion)
+                Ваш результат: \(correctAnswers)/\(numberOfQuizQuestion)
                 Количество сыгранных квизов: \(numberOfQuizGames)
                 Рекорд: \(recordCorrectAnswers)/\(numberOfQuizQuestion) \(recordDate.dateTimeString)
                 Средняя точность: \(String(format: "%.02f", averageAccuracy))%
