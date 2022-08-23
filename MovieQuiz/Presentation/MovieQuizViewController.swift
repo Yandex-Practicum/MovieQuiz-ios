@@ -63,15 +63,6 @@ final class MovieQuizViewController: UIViewController {
         gamesScore.score += 1
     }
 
-/*
-    private func processUserAnswer(answer: Bool) {
-        if answer == currentQuestion.correctAnswer {
-            showAnswerResult(isCorrect: true)
-            gamesScore.score += 1 // Записал успешный результат
-        } else {
-            showAnswerResult(isCorrect: false)
-        } */
-
 
     private func showAnswerResult(answer: Bool) {
 
@@ -175,7 +166,7 @@ final class MovieQuizViewController: UIViewController {
 
 
     // Выносим показ окна алерта в отдельную функцию
-        func showResultAlert (result: QuizResultsViewModel) {
+    private func showResultAlert (result: QuizResultsViewModel) {
             let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
                                           message: result.text, /* текст во всплывающем окне */
                                           preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
