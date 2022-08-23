@@ -117,7 +117,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BOV-bt-LZF" secondAttribute="bottom" id="1Vc-pZ-gKt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BOV-bt-LZF" secondAttribute="bottom" constant="20" id="1Vc-pZ-gKt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BOV-bt-LZF" secondAttribute="trailing" constant="20" id="GeZ-1q-tgw"/>
                             <constraint firstItem="BOV-bt-LZF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ica-1A-vKx"/>
                             <constraint firstItem="BOV-bt-LZF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="rs9-zD-jgL"/>
