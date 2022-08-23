@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var noAnswerButton: UIButton!
     @IBOutlet private weak var yesAnswerButton: UIButton!
 
-    private let questionFactory: QuestionFactoryProtocol?
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var questionsAmount: Int = 10 // максимальное количество вопросов ответов
 
@@ -36,7 +36,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
-        }
+        } 
     }
 
     // MARK: - Actions
@@ -99,11 +99,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderColor = UIColor.clear.cgColor
         questionFactory = QuestionFactory(delegate: self)
 
-        if let showQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = showQuestion
-            let viewModel = convert(model: showQuestion)
-            show(quiz: viewModel)
-        }
+        questionFactory?.requestNextQuestion()
     }
 
     private func showAnswerResult(isCorrect: Bool) {
