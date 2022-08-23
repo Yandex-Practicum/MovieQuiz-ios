@@ -7,13 +7,16 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var noAnswerButton: UIButton!
     @IBOutlet private weak var yesAnswerButton: UIButton!
 
+    private let questionFactory: QuestionFactory = QuestionFactory()
+    private var currentQuestion: QuizQuestion?
+    private var questionsAmount: Int = 10 // максимальное количество вопросов ответов
+
     private var currentQuestionIndex: Int = 0 // индекс нашего вопроса
     private var correctAnswers: Int = 0 // счетчик правильных ответов
     private var numberOfQuizGames: Int = 0 // количетсво сыгранных квизов
     private var recordCorrectAnswers: Int = 0 // рекорд правильных овтетов
     private var recordDate = Date() // дата рекорда
     private var averageAccuracy = 0.0 // среднее кол-во угаданных ответов в %
-    private var numberOfQuizQuestion: Int = 10 // максимальное количество вопросов ответов
     private var allCorrectAnswers: Int = 0 // если ответили на все вопросы верно
 
     // MARK: - Lifecycle
@@ -58,7 +61,7 @@ final class MovieQuizViewController: UIViewController {
         QuizStepViewModel(
             image: UIImage(named: model.image) ?? .remove,
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(numberOfQuizQuestion)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
 
     private func restart() {
@@ -111,13 +114,13 @@ final class MovieQuizViewController: UIViewController {
         if correctAnswers == numberOfQuizGames {
             title = "Поздравляем! Это лучший результат"
         }
-        averageAccuracy = Double(allCorrectAnswers * 100) / Double(numberOfQuizQuestion * numberOfQuizGames)
+        averageAccuracy = Double(allCorrectAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
         let resultQuiz = QuizResultsViewModel(
             title: title,
             text: """
-                Ваш результат: \(correctAnswers)/\(numberOfQuizQuestion)
+                Ваш результат: \(correctAnswers)/\(questionsAmount)
                 Количество сыгранных квизов: \(numberOfQuizGames)
-                Рекорд: \(recordCorrectAnswers)/\(numberOfQuizQuestion) \(recordDate.dateTimeString)
+                Рекорд: \(recordCorrectAnswers)/\(questionsAmount) \(recordDate.dateTimeString)
                 Средняя точность: \(String(format: "%.02f", averageAccuracy))%
             """,
             buttonText: "Новая игра")
