@@ -7,9 +7,9 @@
 
 import Foundation
 protocol StatisticService {
-    var totalAccuracy: Double {get}
-    var gamesCount: Int {get}
-    var bestGame: GameRecord {get}
+    var totalAccuracy: Double { get }
+    var gamesCount: Int { get }
+    var bestGame: GameRecord { get }
     func store(correct count: Int, total amount: Int)
 }
 struct GameRecord: Codable {
@@ -21,12 +21,12 @@ final class StatisticServiceImplementation: StatisticService {
     var totalAccuracy: Double {
         get {
             guard let rawCorrects = userDefaults.string(forKey: Keys.correct.rawValue),
-                let rawTotal = userDefaults.string(forKey: Keys.total.rawValue) else {
-                    return 0.0
+            let rawTotal = userDefaults.string(forKey: Keys.total.rawValue) else {
+                return 0.0
             }
             guard let corrects = Double(rawCorrects),
-                  let total = Double(rawTotal) else {
-                      return 0.0
+            let total = Double(rawTotal) else {
+                return 0.0
             }
             guard total > 0 else {
                 return 0.0
@@ -34,7 +34,6 @@ final class StatisticServiceImplementation: StatisticService {
             return corrects / total
         }
     }
-    
     private(set) var gamesCount: Int {
         get {
             guard let data = userDefaults.string(forKey: Keys.gamesCount.rawValue),
@@ -47,7 +46,6 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
-    
     private(set) var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -64,25 +62,29 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
-    
     private let userDefaults = UserDefaults.standard
-    
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
-    
     func store(correct count: Int, total amount: Int) {
+        print("store called (\(count) \(amount))")
         guard let rawCorrects = userDefaults.string(forKey: Keys.correct.rawValue),
         let corrects = Int(rawCorrects) else {
             return
         }
-        userDefaults.set(corrects + count, forKey: Keys.gamesCount.rawValue)
-        guard let rawTotal = userDefaults.string(forKey: Keys.gamesCount.rawValue),
+        userDefaults.set(corrects + count, forKey: Keys.correct.rawValue)
+        guard let rawTotal = userDefaults.string(forKey: Keys.total.rawValue),
         let total = Int(rawTotal) else {
             return
         }
-        userDefaults.set(total + amount, forKey: Keys.gamesCount.rawValue)
+        userDefaults.set(total + amount, forKey: Keys.total.rawValue)
+        guard let rawCorrects = userDefaults.string(forKey: Keys.correct.rawValue) else {
+            return
+        }
+        print("Stored corrects: \(rawCorrects)")
+        guard let rawTotal = userDefaults.string(forKey: Keys.total.rawValue) else {
+            return
+        }
+        print("Stored total: \(rawTotal)")
     }
-    
-    
 }

@@ -36,7 +36,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
-    private let questionsAmount: Int = 10
+    private let questionsAmount: Int = 3
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
@@ -48,6 +48,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var buttonsBlocked: Bool = false
     private let greenColor: CGColor = UIColor(named: "YCGreen")!.cgColor
     private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
+    private let statisticService = StatisticServiceImplementation()
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
         return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: "\(questionNumberGlobal + 1)/\(questionsAmount)")
@@ -65,6 +66,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         /*let someClosure: (QuizeQuestion) -> () = { question in
             self.show(quize: self.convert(model: question))
         }*/
+        statisticService.store(correct: corrects, total: questionsAmount)
+        corrects = 0
+        wrongs = 0
+        questionNumberGlobal = 0
         let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self/*, someClosure: someClosure(currentQuestion!)*/)
         alert.show()
         /*guard let tmpQuestion = self.currentQuestion else {
@@ -109,7 +114,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 for element in accuracy {
                     sumAccuracy += element
                 }
-                print(sumAccuracy)
+                // print(sumAccuracy)
                 avgAccuracy = sumAccuracy / Double(accuracy.count)
             }
             if corrects != questionsAmount {
@@ -120,35 +125,40 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
             resultsViewModel.text = "Ваш результат: \(corrects)/\(questionsAmount)\nКоличество сыграных квизов:\(rounds)\nРекорд: \(records)/\(questionsAmount) (\(recordDate))"
             resultsViewModel.text += "\nСредняя точность: \(avgAccuracy)%"
-            corrects = 0
-            wrongs = 0
-            questionNumberGlobal = 0
             show(quize: resultsViewModel)
             return
         }
         questionFactory?.requestNextQuestion()
     }
-    enum FileManagerError: Error {
-        case fileDoesntExist
-    }
-    func string(from fileURL: URL) throws -> String {
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            throw FileManagerError.fileDoesntExist
-        }
-        var str = ""
-        do {
-        str = try String(contentsOf: fileURL)
-        } catch FileManagerError.fileDoesntExist {
-            print("File on URL \(fileURL.path) doesn't exist")
-        } catch {
-            print("Unknown error")
-        }
-        return str
-    }
-
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        // INIT UserDefaults
+        enum Keys: String {
+            case correct, total, bestGame, gamesCount
+        }
+        struct GameRecord: Codable {
+            let correct: Int
+            let total: Int
+            let date: Date
+        }
+        if UserDefaults.standard.string(forKey: Keys.correct.rawValue) == nil {
+            UserDefaults.standard.set(0, forKey: Keys.correct.rawValue)
+        }
+        if UserDefaults.standard.string(forKey: Keys.total.rawValue) == nil {
+            UserDefaults.standard.set(0, forKey: Keys.total.rawValue)
+        }
+        if UserDefaults.standard.string(forKey: Keys.gamesCount.rawValue) == nil {
+            UserDefaults.standard.set(0, forKey: Keys.gamesCount.rawValue)
+        }
+        if UserDefaults.standard.data(forKey: Keys.bestGame.rawValue) == nil {
+            let game = GameRecord(correct: 0, total: 0, date: Date())
+            guard let data = try? JSONEncoder().encode(game) else {
+                return
+            }
+            UserDefaults.standard.set(data, forKey: Keys.bestGame.rawValue)
+        }
+        // -----------------
         moviePoster.layer.masksToBounds = true // даём разрешение на рисование рамки
         moviePoster.layer.borderWidth = 0 // толщина рамки
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
