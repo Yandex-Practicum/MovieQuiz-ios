@@ -1,7 +1,6 @@
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
-
     private let delegate: QuestionFactoryDelegate
 
     init(delegate: QuestionFactoryDelegate) {
