@@ -14,22 +14,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alert.show()*/
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let tmpcurrentQuestion = currentQuestion else {
+        guard let currentQuestion = currentQuestion else {
             return
         }
         // print("CQ: "+currentQuestion!.image)
-        if !currentQuestion!.correctAnswer {
+        if !currentQuestion.correctAnswer {
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
         }
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let tmpcurrentQuestion = currentQuestion else {
+        guard let currentQuestion = currentQuestion else {
             return
         }
         // print("CQ: "+currentQuestion!.image)
-        if currentQuestion!.correctAnswer {
+        if currentQuestion.correctAnswer {
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
@@ -98,33 +98,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         questionNumberGlobal += 1
         guard questionNumberGlobal < questionsAmount else {
-            rounds += 1
-            if corrects > records {
-                records = corrects
-                let temporaryDateVar = Date()
-                recordDate = temporaryDateVar.dateTimeString
-            }
-            if corrects > 0 {
-                accuracy.append((Double(corrects) / Double(questionsAmount)) * 100.0)
-            } else {
-                accuracy.append(0.0)
-            }
-            if !accuracy.isEmpty {
-                sumAccuracy = 0.0
-                for element in accuracy {
-                    sumAccuracy += element
-                }
-                // print(sumAccuracy)
-                avgAccuracy = sumAccuracy / Double(accuracy.count)
-            }
             if corrects != questionsAmount {
                 resultsViewModel.title = "Этот раунд окончен!"
-            }
-            else {
+            } else {
                 resultsViewModel.title = "Потрясающе!"
             }
-            resultsViewModel.text = "Ваш результат: \(corrects)/\(questionsAmount)\nКоличество сыграных квизов:\(rounds)\nРекорд: \(records)/\(questionsAmount) (\(recordDate))"
-            resultsViewModel.text += "\nСредняя точность: \(avgAccuracy)%"
+            resultsViewModel.text = "Ваш результат: \(corrects)/\(questionsAmount)\n"
+            resultsViewModel.text += "Количество сыграных квизов:\(statisticService.gamesCount)\n"
+            resultsViewModel.text += "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
+            resultsViewModel.text += "\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             show(quize: resultsViewModel)
             return
         }
@@ -133,32 +115,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // INIT UserDefaults
-        enum Keys: String {
-            case correct, total, bestGame, gamesCount
-        }
-        struct GameRecord: Codable {
-            let correct: Int
-            let total: Int
-            let date: Date
-        }
-        if UserDefaults.standard.string(forKey: Keys.correct.rawValue) == nil {
-            UserDefaults.standard.set(0, forKey: Keys.correct.rawValue)
-        }
-        if UserDefaults.standard.string(forKey: Keys.total.rawValue) == nil {
-            UserDefaults.standard.set(0, forKey: Keys.total.rawValue)
-        }
-        if UserDefaults.standard.string(forKey: Keys.gamesCount.rawValue) == nil {
-            UserDefaults.standard.set(0, forKey: Keys.gamesCount.rawValue)
-        }
-        if UserDefaults.standard.data(forKey: Keys.bestGame.rawValue) == nil {
-            let game = GameRecord(correct: 0, total: 0, date: Date())
-            guard let data = try? JSONEncoder().encode(game) else {
-                return
-            }
-            UserDefaults.standard.set(data, forKey: Keys.bestGame.rawValue)
-        }
-        // -----------------
         moviePoster.layer.masksToBounds = true // даём разрешение на рисование рамки
         moviePoster.layer.borderWidth = 0 // толщина рамки
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой

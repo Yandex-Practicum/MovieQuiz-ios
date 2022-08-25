@@ -17,6 +17,11 @@ struct GameRecord: Codable {
     let total: Int
     let date: Date
 }
+extension GameRecord: Comparable {
+    static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
+        return lhs.correct < rhs.correct
+    }
+}
 final class StatisticServiceImplementation: StatisticService {
     var totalAccuracy: Double {
         get {
@@ -31,7 +36,7 @@ final class StatisticServiceImplementation: StatisticService {
             guard total > 0 else {
                 return 0.0
             }
-            return corrects / total
+            return (corrects / total) * 100.0
         }
     }
     private(set) var gamesCount: Int {
@@ -60,6 +65,7 @@ final class StatisticServiceImplementation: StatisticService {
                 return
             }
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
+            // print("Stored UserDefault bestGame = \(newValue)")
         }
     }
     private let userDefaults = UserDefaults.standard
@@ -67,24 +73,55 @@ final class StatisticServiceImplementation: StatisticService {
         case correct, total, bestGame, gamesCount
     }
     func store(correct count: Int, total amount: Int) {
-        print("store called (\(count) \(amount))")
-        guard let rawCorrects = userDefaults.string(forKey: Keys.correct.rawValue),
-        let corrects = Int(rawCorrects) else {
-            return
+        // print("store(correct: \(count), total: \(amount))")
+        if userDefaults.string(forKey: Keys.correct.rawValue) == nil {
+            userDefaults.set(count, forKey: Keys.correct.rawValue)
+            // print("Stored UserDefault correct = \(count)")
+        } else {
+            guard let oldValue = userDefaults.string(forKey: Keys.correct.rawValue) else {
+                return
+            }
+            guard let oldValue = Int(oldValue) else {
+                return
+            }
+            // print("oldValue for count (correct) = \(oldValue)")
+            userDefaults.set(oldValue + count, forKey: Keys.correct.rawValue)
+            // print("Stored UserDefault correct = \(oldValue + count)")
         }
-        userDefaults.set(corrects + count, forKey: Keys.correct.rawValue)
-        guard let rawTotal = userDefaults.string(forKey: Keys.total.rawValue),
-        let total = Int(rawTotal) else {
-            return
+        
+        if userDefaults.string(forKey: Keys.total.rawValue) == nil {
+            userDefaults.set(amount, forKey: Keys.total.rawValue)
+            // print("Stored UserDefault total (init) = \(amount)")
+        } else {
+            guard let oldValue = userDefaults.string(forKey: Keys.total.rawValue) else {
+                return
+            }
+            guard let oldValue = Int(oldValue) else {
+                return
+            }
+            // print("oldValue1 for amount (total) = \(oldValue)")
+            userDefaults.set(oldValue + amount, forKey: Keys.total.rawValue)
+            // print("Stored UserDefault total = \(oldValue + amount)")
         }
-        userDefaults.set(total + amount, forKey: Keys.total.rawValue)
-        guard let rawCorrects = userDefaults.string(forKey: Keys.correct.rawValue) else {
-            return
+        
+        if userDefaults.string(forKey: Keys.gamesCount.rawValue) == nil {
+            userDefaults.set(1, forKey: Keys.gamesCount.rawValue)
+            print("Stored UserDefault gamesCount = 1")
+        } else {
+            guard let oldValue = userDefaults.string(forKey: Keys.gamesCount.rawValue) else {
+                return
+            }
+            guard let oldValue = Int(oldValue) else {
+                return
+            }
+            // print("oldValue for gamesCount = \(oldValue)")
+            userDefaults.set(oldValue + 1, forKey: Keys.gamesCount.rawValue)
+            // print("Stored UserDefault total = \(oldValue + 1)")
         }
-        print("Stored corrects: \(rawCorrects)")
-        guard let rawTotal = userDefaults.string(forKey: Keys.total.rawValue) else {
-            return
+        
+        let currentGame: GameRecord = GameRecord(correct: count, total: amount, date: Date())
+        if self.bestGame < currentGame {
+            self.bestGame = currentGame
         }
-        print("Stored total: \(rawTotal)")
     }
 }
