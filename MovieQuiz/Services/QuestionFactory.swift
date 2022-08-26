@@ -8,8 +8,10 @@
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
+    private let moviesLoader: MoviesLoading
     private let delegate: QuestionFactoryDelegate
-    private var questions: [QuizeQuestion] = [
+    let movies: [PopularMovie] = []
+    /*private var questions: [QuizeQuestion] = [
         QuizeQuestion(image: "The Godfather",text: "Рейтинг этого замечательного фильма \"Крестный отец\" больше, чем 6?" ,correctAnswer: true),
         QuizeQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true),
         QuizeQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true),
@@ -20,7 +22,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         QuizeQuestion(image: "The Ice Age Adventures of Buck Wild", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false),
         QuizeQuestion(image: "Tesla", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false),
         QuizeQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: false)
-    ]
+    ]*/
 
     func requestNextQuestion() {
         let index = (0..<questions.count).randomElement() ?? 0
@@ -28,7 +30,12 @@ class QuestionFactory: QuestionFactoryProtocol {
         delegate.didReceiveNextQuestion(question: question)
     }
     
-    init(delegate: QuestionFactoryDelegate) {
+    func loadData() {
+        
+    }
+    
+    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate) {
+        self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
 }

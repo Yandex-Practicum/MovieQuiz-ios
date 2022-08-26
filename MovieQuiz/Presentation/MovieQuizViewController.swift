@@ -5,7 +5,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var questionForUser: UILabel!
     @IBOutlet private var questionNumber: UILabel!
     @IBOutlet private var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     @IBAction func showAlert(_ sender: UIButton) {
         /*let callback = {
             print("Hello")
@@ -40,18 +41,35 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
-    private var currentViewModel: QuizeStepViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: "")
-    private var resultsViewModel: QuizeResultsViewModel = QuizeResultsViewModel(title: "", text: "")
+    private var currentViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: "")
+    private var resultsViewModel = QuizeResultsViewModel(title: "", text: "")
     private var accuracy: [Double] = []
     private var avgAccuracy: Double = 0.0
-    private var sumAccuracy: Double = 0.0
-    private var buttonsBlocked: Bool = false
+    private var sumAccuracy = 0.0
+    private var buttonsBlocked = false
     private let greenColor: CGColor = UIColor(named: "YCGreen")!.cgColor
     private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
     private let statisticService = StatisticServiceImplementation()
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
-        return QuizeStepViewModel(image: model.image, question: model.text, questionNumber: "\(questionNumberGlobal + 1)/\(questionsAmount)")
+        return QuizeStepViewModel(
+            image: model.image,
+            question: model.text,
+            questionNumber: "\(questionNumberGlobal + 1)/\(questionsAmount)"
+        )
+    }
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        let alert = ResultAlertPresenter(title: "Ошибка", message: message, controller: self)
+        alert.show()
     }
     private func show(quize step: QuizeStepViewModel) {
         moviePoster.layer.borderWidth = 0
@@ -85,8 +103,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if isCorrect {
             moviePoster.layer.borderColor = greenColor
             corrects += 1
-        }
-        else {
+        } else {
             moviePoster.layer.borderColor = redColor
             wrongs += 1
         }
@@ -112,6 +129,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         questionFactory?.requestNextQuestion()
     }
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,6 +145,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        let aaa: MoviesLoader = MoviesLoader()
+        aaa.loadMovies(handler: { result in
+            switch result {
+            case .success(let films):
+                print("Error message in JSON is: " + films.errorMessage)
+                print("Quantity of films is: \(films.items.count)")
+                print("First Film is: \(films.items.first)")
+            case .failure(let error):
+                print(error)
+            }
+        })
     }
     
     // MARK: QuestionFactoryDelegate

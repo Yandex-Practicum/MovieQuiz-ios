@@ -32,20 +32,20 @@
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ER-vI-LpQ" userLabel="QuestionLabel">
-                                                <rect key="frame" x="0.0" y="0.0" width="338" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="360.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YCWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hSt-1J-87i" userLabel="QuestionCounterLabel">
-                                                <rect key="frame" x="338" y="0.0" width="36" height="23.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hSt-1J-87i" userLabel="QuestionCounterLabel">
+                                                <rect key="frame" x="360.5" y="0.0" width="13.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YCWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Deadpool" translatesAutoresizingMaskIntoConstraints="NO" id="dzb-4t-JrE" userLabel="MovieImage">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dzb-4t-JrE" userLabel="MovieImage">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="YCWhite"/>
                                         <constraints>
@@ -60,7 +60,7 @@
                                     <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="PQ7-rE-uJl">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="103.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="clip" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="s27-go-nV6" userLabel="QuestionContentsLabel">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="..." textAlignment="center" lineBreakMode="clip" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="s27-go-nV6" userLabel="QuestionContentsLabel">
                                                 <rect key="frame" x="0.0" y="13" width="374" height="77.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
@@ -140,17 +140,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ll6-0f-ju2">
+                                <rect key="frame" x="197" y="443" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YCBlack"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Lw3-dt-cK8" secondAttribute="bottom" id="9Iv-wH-Yyx"/>
+                            <constraint firstItem="ll6-0f-ju2" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="PJa-gw-UlY"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="WBc-Gn-ZGt"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ZPP-xs-nDK"/>
+                            <constraint firstItem="ll6-0f-ju2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bDU-pD-65U"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="cfX-Z3-6bc"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="ll6-0f-ju2" id="tiJ-0e-v6f"/>
                         <outlet property="moviePoster" destination="dzb-4t-JrE" id="yCA-uL-T5X"/>
                         <outlet property="noButton" destination="2kU-jE-2pq" id="KJI-vK-hTa"/>
                         <outlet property="questionForUser" destination="s27-go-nV6" id="l58-E1-0BK"/>
@@ -164,7 +170,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Deadpool" width="2000" height="3000"/>
         <namedColor name="YCBlack">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
