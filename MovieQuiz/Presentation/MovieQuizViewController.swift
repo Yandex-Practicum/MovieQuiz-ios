@@ -26,7 +26,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     // MARK: - QuestionFactoryDelegate
-
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -36,7 +35,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
-        } 
+        }
     }
 
     // MARK: - Actions
@@ -93,7 +92,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func setupViewModel() {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
-        
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
     }

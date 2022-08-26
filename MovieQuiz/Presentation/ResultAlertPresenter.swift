@@ -1,7 +1,5 @@
 import Foundation
-import UIKit
 
-class ResultAlertPresenter: UIAlertController {
-
-
+class ResultAlertPresenter {
+    
 }
