@@ -40,21 +40,9 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - QUIZ STEP
     
-    private struct QuizQuestion {
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
-    
-    private struct QuizStepViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-    
     // Конвертор данных вопроса в данные для заполнения вью
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let quiz: QuizStepViewModel = QuizStepViewModel(
+        let quiz = QuizStepViewModel(
             image: UIImage(named: model.image)!, // TODO: подставить дефолтную картинку
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
@@ -70,12 +58,6 @@ final class MovieQuizViewController: UIViewController {
     
     
     // MARK: - QUIZ RESULT
-    
-    struct QuizResultViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
-    }
     
     // Вывод данных на экран
     private func show(quiz result: QuizResultViewModel) {
@@ -169,53 +151,7 @@ final class MovieQuizViewController: UIViewController {
         analytic.gameRestart()
         show(quiz: convert(model: currentQuestion))
     }
-    
-    
-    // MARK: - DATA SET
-    
-    // Массив вопросов
-    private let questions: [QuizQuestion] = [
-        QuizQuestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false)
-    ]
+
 }
 
 
