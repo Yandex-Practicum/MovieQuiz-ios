@@ -10,6 +10,16 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     
+    private let questionsAmount = 10
+    private let questionFactory = QuestionFactory()
+    
+    private var currentQuestion: QuizQuestion?
+    private var currentQuestionIndex: Int = 0
+    private var analytic: QuizAnalytics = QuizAnalytics()
+    
+    
+    
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         processUserAnswer(answer: false)
     }
@@ -17,9 +27,6 @@ final class MovieQuizViewController: UIViewController {
         processUserAnswer(answer: true)
     }
     
-    private var currentQuestionIndex: Int = 0
-    private var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
-    private var analytic: QuizAnalytics = QuizAnalytics()
     
     
     // MARK: - LIFECYCLE
