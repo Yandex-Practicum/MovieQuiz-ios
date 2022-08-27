@@ -30,7 +30,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
-    private let questionsAmount: Int = 10
+    private let questionsAmount: Int = 1
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0
@@ -65,7 +65,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
-        let alert = ResultAlertPresenter(title: "Ошибка", message: message, controller: self)
+        let alert = ResultAlertPresenter(title: "Ошибка", message: message, controller: self, completion: {
+            
+        })
         alert.show()
     }
 
@@ -83,7 +85,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticService.store(correct: corrects, total: questionsAmount)
         corrects = 0
         questionNumberGlobal = 0
-        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self/*, someClosure: someClosure(currentQuestion!)*/)
+        
+        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self, completion: { result in
+            print("here")
+            self.questionFactory?.requestNextQuestion()
+        })
+            
         alert.show()
     }
 
