@@ -1,10 +1,3 @@
-//
-//  StatisticService.swift
-//  MovieQuiz
-//
-//  Created by  admin on 23.08.2022.
-//
-
 import Foundation
 protocol StatisticService {
     var totalAccuracy: Double { get }
@@ -65,7 +58,6 @@ final class StatisticServiceImplementation: StatisticService {
                 return
             }
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
-            // print("Stored UserDefault bestGame = \(newValue)")
         }
     }
     private let userDefaults = UserDefaults.standard
@@ -73,10 +65,8 @@ final class StatisticServiceImplementation: StatisticService {
         case correct, total, bestGame, gamesCount
     }
     func store(correct count: Int, total amount: Int) {
-        // print("store(correct: \(count), total: \(amount))")
         if userDefaults.string(forKey: Keys.correct.rawValue) == nil {
             userDefaults.set(count, forKey: Keys.correct.rawValue)
-            // print("Stored UserDefault correct = \(count)")
         } else {
             guard let oldValue = userDefaults.string(forKey: Keys.correct.rawValue) else {
                 return
@@ -84,14 +74,10 @@ final class StatisticServiceImplementation: StatisticService {
             guard let oldValue = Int(oldValue) else {
                 return
             }
-            // print("oldValue for count (correct) = \(oldValue)")
             userDefaults.set(oldValue + count, forKey: Keys.correct.rawValue)
-            // print("Stored UserDefault correct = \(oldValue + count)")
         }
-        
         if userDefaults.string(forKey: Keys.total.rawValue) == nil {
             userDefaults.set(amount, forKey: Keys.total.rawValue)
-            // print("Stored UserDefault total (init) = \(amount)")
         } else {
             guard let oldValue = userDefaults.string(forKey: Keys.total.rawValue) else {
                 return
@@ -99,11 +85,8 @@ final class StatisticServiceImplementation: StatisticService {
             guard let oldValue = Int(oldValue) else {
                 return
             }
-            // print("oldValue1 for amount (total) = \(oldValue)")
             userDefaults.set(oldValue + amount, forKey: Keys.total.rawValue)
-            // print("Stored UserDefault total = \(oldValue + amount)")
         }
-        
         if userDefaults.string(forKey: Keys.gamesCount.rawValue) == nil {
             userDefaults.set(1, forKey: Keys.gamesCount.rawValue)
             print("Stored UserDefault gamesCount = 1")
@@ -114,12 +97,10 @@ final class StatisticServiceImplementation: StatisticService {
             guard let oldValue = Int(oldValue) else {
                 return
             }
-            // print("oldValue for gamesCount = \(oldValue)")
             userDefaults.set(oldValue + 1, forKey: Keys.gamesCount.rawValue)
-            // print("Stored UserDefault total = \(oldValue + 1)")
         }
-        
-        let currentGame: GameRecord = GameRecord(correct: count, total: amount, date: Date())
+
+        let currentGame = GameRecord(correct: count, total: amount, date: Date())
         if self.bestGame < currentGame {
             self.bestGame = currentGame
         }

@@ -1,16 +1,9 @@
-//
-//  QuestionFactory.swift
-//  MovieQuiz
-//
-//  Created by  admin on 12.08.2022.
-//
-
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     private let delegate: QuestionFactoryDelegate
-    let movies: [PopularMovie] = []
+    var movies: [PopularMovie] = []
     /*private var questions: [QuizeQuestion] = [
         QuizeQuestion(image: "The Godfather",text: "Рейтинг этого замечательного фильма \"Крестный отец\" больше, чем 6?" ,correctAnswer: true),
         QuizeQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше, чем 6?", correctAnswer: true),
@@ -25,19 +18,61 @@ class QuestionFactory: QuestionFactoryProtocol {
     ]*/
 
     func requestNextQuestion() {
-        let index = (0..<questions.count).randomElement() ?? 0
-        let question = questions[safe: index]
-        delegate.didReceiveNextQuestion(question: question)
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            let index = (0..<self.movies.count).randomElement() ?? 0
+            guard let movie = self.movies[safe: index] else { return }
+            var imageData = Data()
+            do {
+                imageData = try Data(contentsOf: movie.imageURL)
+            } catch {
+                print("Failed to load image")
+            }
+            var rating = Float(movie.rating) ?? 0
+            let floorRating = floor(rating)
+            /*if rating == floorRating {
+                rating -= 0.0001
+            }*/
+            print(rating)
+            let randomBool = Bool.random()
+            var compareSign: String
+            var correctAnswer: Bool
+            if (randomBool) {
+                correctAnswer = floorRating >= rating
+                compareSign = "больше"
+            } else {
+                correctAnswer = floorRating <= rating
+                compareSign = "меньше"
+            }
+            let text = "Рейтинг этого фильма \(compareSign) \(String(format: "%.0f", floorRating))"
+            let question = QuizeQuestion(
+                image: imageData,
+                text: text,
+                correctAnswer: correctAnswer
+            )
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.delegate.didReceiveNextQuestion(question: question)
+            }
+        }
     }
-    
     func loadData() {
-        
+        print("QuestionFactory loadData called")
+        moviesLoader.loadMovies(handler: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .failure(let error):
+                self.delegate.didFailToLoadData(with: error)
+            case .success(let mostPopularMovies):
+                print("NetworkClient returned success in closure")
+                self.movies = mostPopularMovies.items
+                print("self.movies contain \(self.movies.count) films")
+                self.delegate.didLoadDataFromServer()
+            }
+        })
     }
-    
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
 }
-
-

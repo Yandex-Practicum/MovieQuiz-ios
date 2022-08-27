@@ -7,19 +7,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
-    @IBAction func showAlert(_ sender: UIButton) {
-        /*let callback = {
-            print("Hello")
-        }
-        let alert = ResultAlertPresenter(title: "TITLE", message: "MESSAGE", controller: self, completion: @escaping () -> Void)
-        alert.show()*/
-    }
+
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        // print("CQ: "+currentQuestion!.image)
-        if !currentQuestion.correctAnswer {
+        if currentQuestion.correctAnswer {
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
@@ -29,19 +22,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        // print("CQ: "+currentQuestion!.image)
-        if currentQuestion.correctAnswer {
+        if !currentQuestion.correctAnswer {
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
         }
     }
 
-    private let questionsAmount: Int = 3
+    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
-    private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0, rounds: Int = 0, records: Int = 0, average: Float = 0.0, recordDate: String = ""
-    private var currentViewModel = QuizeStepViewModel(image: "", question: "", questionNumber: "")
+    private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0
+    private var currentViewModel = QuizeStepViewModel(image: Data(), question: "", questionNumber: "")
     private var resultsViewModel = QuizeResultsViewModel(title: "", text: "")
     private var accuracy: [Double] = []
     private var avgAccuracy: Double = 0.0
@@ -50,6 +42,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let greenColor: CGColor = UIColor(named: "YCGreen")!.cgColor
     private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
     private let statisticService = StatisticServiceImplementation()
+    private let moviesLoader = MoviesLoader()
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
         return QuizeStepViewModel(
@@ -74,26 +67,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(quize step: QuizeStepViewModel) {
         moviePoster.layer.borderWidth = 0
         currentViewModel = step
-        moviePoster.image = UIImage(named: currentViewModel.image)
+        moviePoster.image = UIImage(data: currentViewModel.image)
         questionForUser.text = currentViewModel.question
         questionNumber.text = currentViewModel.questionNumber
         yesButton.isEnabled = true
         noButton.isEnabled = true
     }
     private func show(quize result: QuizeResultsViewModel) {
-        /*let someClosure: (QuizeQuestion) -> () = { question in
-            self.show(quize: self.convert(model: question))
-        }*/
         statisticService.store(correct: corrects, total: questionsAmount)
         corrects = 0
-        wrongs = 0
         questionNumberGlobal = 0
         let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self/*, someClosure: someClosure(currentQuestion!)*/)
         alert.show()
-        /*guard let tmpQuestion = self.currentQuestion else {
-            return
-        }
-        self.show(quize: self.convert(model: tmpQuestion))*/
     }
 
     private func showAnswerResult(isCorrect: Bool) {
@@ -105,7 +90,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             corrects += 1
         } else {
             moviePoster.layer.borderColor = redColor
-            wrongs += 1
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
@@ -129,13 +113,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         questionFactory?.requestNextQuestion()
     }
-    func didLoadDataFromServer() {
-        hideLoadingIndicator()
-        questionFactory?.requestNextQuestion()
-    }
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
-    }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,21 +120,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         moviePoster.layer.borderWidth = 0 // толщина рамки
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        let aaa: MoviesLoader = MoviesLoader()
-        aaa.loadMovies(handler: { result in
-            switch result {
-            case .success(let films):
-                print("Error message in JSON is: " + films.errorMessage)
-                print("Quantity of films is: \(films.items.count)")
-                print("First Film is: \(films.items.first)")
-            case .failure(let error):
-                print(error)
-            }
-        })
+        questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
+        print("Question Factory in viewDidLoad initialized")
+        questionFactory?.loadData()
     }
-    
     // MARK: QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizeQuestion?) {
         guard
@@ -170,5 +136,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.show(quize: viewModel)
         }
+    }
+    func didLoadDataFromServer() {
+        print("questionFactory called delegate didLoadDataFromServer")
+        hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
     }
 }

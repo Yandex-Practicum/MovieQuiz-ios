@@ -6,27 +6,26 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
     private let networkClient = NetworkClient()
-    
     private var mostPopularMoviesUrl: URL {
-        guard let url = URL(string: "https://imdb-api.com/en/API/MostPopularMovies/k_kiwxbi4y") else {
+        guard let url = URL(string: "https://imdb-api.com/en/API/MostPopularMovies/k_3c1m97j7") else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         return url
     }
-    
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
-        let films = networkClient.fetch(url: mostPopularMoviesUrl, handler: { result in
+        print("MoviesLoader loadMovies called")
+        networkClient.fetch(url: mostPopularMoviesUrl, handler: { result in
             switch result {
-                case .success(let rawData):
-                    print("OK")
+            case .success(let rawData):
+                print("NetworkClient returned success in closure")
                     do {
-                        let tmp = try JSONDecoder().decode(MostPopularMovies.self, from: rawData)
-                        handler(.success(tmp))
+                        let JSONtoStruct = try JSONDecoder().decode(MostPopularMovies.self, from: rawData)
+                        handler(.success(JSONtoStruct))
                     } catch {
-                        print ("Failed to parse: \(error.localizedDescription)")
+                        print("Failed to parse: \(error.localizedDescription)")
                     }
-                case .failure(let error) :
-                    handler(.failure(error))
+            case .failure(let error):
+                handler(.failure(error))
             }
         })
     }

@@ -1,12 +1,5 @@
-//
-//  ResultAlertPresenter.swift
-//  MovieQuiz
-//
-//  Created by  admin on 17.08.2022.
-//
-
-import Foundation
 import UIKit
+
 class ResultAlertPresenter {
     private let title: String
     private let message: String
