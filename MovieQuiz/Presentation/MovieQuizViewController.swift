@@ -12,7 +12,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionsAmount: Int = 10 // максимальное количество вопросов ответов
 
     private var currentQuestionIndex: Int = 0 // индекс нашего вопроса
-    private var correctAnswers: Int = 0 // счетчик правильных ответов
+    private var counterCorrectAnswers: Int = 0 // счетчик правильных ответов
     private var numberOfQuizGames: Int = 0 // количетсво сыгранных квизов
     private var recordCorrectAnswers: Int = 0 // рекорд правильных овтетов
     private var recordDate = Date() // дата рекорда
@@ -39,7 +39,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     // MARK: - Actions
-
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
 
@@ -52,6 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
 
+    // MARK: - Private Functions
     private func show(quiz step: QuizStepViewModel) {
         UIView.animate(withDuration: 0.1) {
             self.textLabel.text = step.question
@@ -76,6 +76,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.present(alert, animated: true, completion: nil)
     }
 
+    private func restart() {
+        counterCorrectAnswers = 0
+        currentQuestionIndex = 0
+        setupViewModel()
+    }
+
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(named: model.image) ?? .remove,
@@ -83,11 +89,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
 
-    private func restart() {
-        correctAnswers = 0
-        currentQuestionIndex = 0
-        setupViewModel()
-    }
 
     private func setupViewModel() {
         imageView.layer.borderWidth = 8
@@ -96,9 +97,47 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
 
+    private func showNextQuestionOrResults() {
+        yesAnswerButton.isEnabled = true
+        noAnswerButton.isEnabled = true
+        
+        if currentQuestionIndex == questionsAmount - 1 {
+            let resultQuiz = getResultQuiz()
+            allCorrectAnswers += counterCorrectAnswers
+            numberOfQuizGames += 1
+            show(quiz: resultQuiz)
+        } else {
+            currentQuestionIndex += 1
+            setupViewModel()
+        }
+    }
+    
+    private func getResultQuiz() -> QuizResultsViewModel {
+        var title = "Игра окончена!"
+        if counterCorrectAnswers >= recordCorrectAnswers {
+            title = "Поздравляем! Новый рекорд!"
+            recordCorrectAnswers = counterCorrectAnswers
+        }
+        
+        if counterCorrectAnswers == numberOfQuizGames {
+            title = "Поздравляем! Это лучший результат"
+        }
+        averageAccuracy = Double(allCorrectAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
+        let resultQuiz = QuizResultsViewModel(
+            title: title,
+            text: """
+                Ваш результат: \(counterCorrectAnswers)/\(questionsAmount)
+                Количество сыгранных квизов: \(numberOfQuizGames)
+                Рекорд: \(recordCorrectAnswers)/\(questionsAmount) \(recordDate.dateTimeString)
+                Средняя точность: \(String(format: "%.02f", averageAccuracy))%
+            """,
+            buttonText: "Новая игра")
+        return resultQuiz
+    }
+    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
-            correctAnswers += 1
+            counterCorrectAnswers += 1
         }
 
         yesAnswerButton.isEnabled = false
@@ -109,42 +148,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
-    private func showNextQuestionOrResults() {
-        yesAnswerButton.isEnabled = true
-        noAnswerButton.isEnabled = true
-        if currentQuestionIndex == questionsAmount - 1 {
-            allCorrectAnswers += correctAnswers
-            numberOfQuizGames += 1
-            let resultQuiz = getResultQuiz()
-            show(quiz: resultQuiz)
-        } else {
-            currentQuestionIndex += 1
-            setupViewModel()
-        }
-    }
 
-    private func getResultQuiz() -> QuizResultsViewModel {
-        var title = "Игра окончена!"
-        if correctAnswers >= recordCorrectAnswers {
-            title = "Поздравляем! Новый рекорд!"
-            recordCorrectAnswers = correctAnswers
-        }
-
-        if correctAnswers == numberOfQuizGames {
-            title = "Поздравляем! Это лучший результат"
-        }
-        averageAccuracy = Double(allCorrectAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
-        let resultQuiz = QuizResultsViewModel(
-            title: title,
-            text: """
-                Ваш результат: \(correctAnswers)/\(questionsAmount)
-                Количество сыгранных квизов: \(numberOfQuizGames)
-                Рекорд: \(recordCorrectAnswers)/\(questionsAmount) \(recordDate.dateTimeString)
-                Средняя точность: \(String(format: "%.02f", averageAccuracy))%
-            """,
-            buttonText: "Новая игра")
-        return resultQuiz
-    }
+    // MARK: - Status bar and orientations settings
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
