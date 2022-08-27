@@ -56,7 +56,7 @@ final class MovieQuizViewController: UIViewController {
         let quiz = QuizStepViewModel(
             image: UIImage(named: model.image)!, // TODO: подставить дефолтную картинку
             question: model.text,
-            questionNumber: "\(currentQuestionCounter + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionCounter + 1)/\(questionsAmount)")
         return quiz
     }
     
@@ -93,23 +93,27 @@ final class MovieQuizViewController: UIViewController {
     
     // Определяю правильность ответа
     private func processUserAnswer(answer: Bool) {
-        if answer == currentQuestion.correctAnswer {
-            showAnswerResult(isCorrect: true)
-            analytic.score += 1 // Записал успешный результат
-        } else {
-            showAnswerResult(isCorrect: false)
+        
+        if let currentQuestion = currentQuestion {
+            if answer == currentQuestion.correctAnswer {
+                showAnswerResult(isCorrect: true)
+                analytic.score += 1 // Записал успешный результат
+            } else {
+                showAnswerResult(isCorrect: false)
+            }
+            buttonsEnabled(is: false) // временно отключил кнопки
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.imageBorderDefaultStyle()
+                self.showNextQuestionOrResults()
+                self.buttonsEnabled(is: true) // включил кнопки
+            }
         }
-        buttonsEnabled(is: false) // временно отключил кнопки
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.imageBorderDefaultStyle()
-            self.showNextQuestionOrResults()
-            self.buttonsEnabled(is: true) // включил кнопки
-        }
+        
     }
     
     // Показываем следующий вопрос или результат всей викторины
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // это последний вопрос
+        if currentQuestionCounter == questionsAmount - 1 { // это последний вопрос
             analytic.isItRecord() // Проверил на рекорд
             if analytic.score == 10 {
                 // Статистика для победителя - 10 из 10 правильных ответов
@@ -117,9 +121,9 @@ final class MovieQuizViewController: UIViewController {
                     title: "Вы выиграли!",
                     text:
                     """
-                    Ваш результат: \(analytic.score)/\(questions.count)
+                    Ваш результат: \(analytic.score)/\(questionsAmount)
                     Количество сыгранных квизов: \(analytic.gamesPlayed)
-                    Рекорд: \(analytic.record) /\(questions.count) (\(analytic.recordTime))
+                    Рекорд: \(analytic.record) /\(questionsAmount) (\(analytic.recordTime))
                     Средняя точность: \(analytic.accuracyAverage())%
                     """,
                     buttonText: "Сыграть еще раз"
@@ -131,9 +135,9 @@ final class MovieQuizViewController: UIViewController {
                     title: "Этот раунд окончен!",
                     text:
                     """
-                    Ваш результат: \(analytic.score)/\(questions.count)
+                    Ваш результат: \(analytic.score)/\(questionsAmount)
                     Количество сыгранных квизов: \(analytic.gamesPlayed)
-                    Рекорд: \(analytic.record) /\(questions.count) (\(analytic.recordTime))
+                    Рекорд: \(analytic.record) /\(questionsAmount) (\(analytic.recordTime))
                     Средняя точность: \(analytic.accuracyAverage())%
                     """,
                     buttonText: "Сыграть еще раз"
@@ -142,7 +146,11 @@ final class MovieQuizViewController: UIViewController {
             }
         } else { // это не последний вопрос
             currentQuestionCounter += 1
-            show(quiz: convert(model: currentQuestion))
+            if let nextQuestion = questionFactory.requestNextQuestion() {
+                currentQuestion = nextQuestion
+                let viewModel = convert(model: nextQuestion)
+                show(quiz: viewModel)
+            }
         }
     }
     
@@ -160,7 +168,7 @@ final class MovieQuizViewController: UIViewController {
     private func restart() {
         currentQuestionCounter = 0 // Сбросил вопрос на первый
         analytic.gameRestart()
-        show(quiz: convert(model: currentQuestion))
+        viewDidLoad()
     }
 
 }
