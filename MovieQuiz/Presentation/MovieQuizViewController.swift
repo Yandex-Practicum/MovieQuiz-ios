@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController {
     private let questionFactory = QuestionFactory()
     
     private var currentQuestion: QuizQuestion?
-    private var currentQuestionIndex: Int = 0
+    private var currentQuestionCounter: Int = 0
     private var analytic: QuizAnalytics = QuizAnalytics()
     
     
@@ -33,7 +33,11 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        show(quiz: convert(model: currentQuestion))
+        if let firstQuestion = questionFactory.requestNextQuestion() {
+            currentQuestion = firstQuestion
+            let viewModel = convert(model: firstQuestion)
+            show(quiz: viewModel)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +56,7 @@ final class MovieQuizViewController: UIViewController {
         let quiz = QuizStepViewModel(
             image: UIImage(named: model.image)!, // TODO: подставить дефолтную картинку
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionCounter + 1)/\(questions.count)")
         return quiz
     }
     
@@ -137,7 +141,7 @@ final class MovieQuizViewController: UIViewController {
                 show(quiz: result)
             }
         } else { // это не последний вопрос
-            currentQuestionIndex += 1
+            currentQuestionCounter += 1
             show(quiz: convert(model: currentQuestion))
         }
     }
@@ -154,7 +158,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func restart() {
-        currentQuestionIndex = 0 // Сбросил вопрос на первый
+        currentQuestionCounter = 0 // Сбросил вопрос на первый
         analytic.gameRestart()
         show(quiz: convert(model: currentQuestion))
     }
