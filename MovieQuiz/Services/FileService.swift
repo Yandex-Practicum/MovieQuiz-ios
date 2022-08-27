@@ -4,6 +4,7 @@ class FileService {
     enum FileManagerError: Error {
         case fileDoesntExist
     }
+
     func string(from fileURL: URL) throws -> String {
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             throw FileManagerError.fileDoesntExist

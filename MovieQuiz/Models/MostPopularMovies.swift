@@ -1,8 +1,10 @@
 import Foundation
+
 struct MostPopularMovies: Codable {
     let errorMessage: String
     let items: [PopularMovie]
 }
+
 struct PopularMovie: Codable {
     let title: String
     let rating: String

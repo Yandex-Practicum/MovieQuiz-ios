@@ -56,6 +56,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             }
         }
     }
+
     func loadData() {
         print("QuestionFactory loadData called")
         moviesLoader.loadMovies(handler: { [weak self] result in
@@ -71,6 +72,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             }
         })
     }
+
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate

@@ -1,20 +1,24 @@
 import Foundation
+
 protocol StatisticService {
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
     var bestGame: GameRecord { get }
     func store(correct count: Int, total amount: Int)
 }
+
 struct GameRecord: Codable {
     let correct: Int
     let total: Int
     let date: Date
 }
+
 extension GameRecord: Comparable {
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         return lhs.correct < rhs.correct
     }
 }
+
 final class StatisticServiceImplementation: StatisticService {
     var totalAccuracy: Double {
         get {
@@ -32,6 +36,7 @@ final class StatisticServiceImplementation: StatisticService {
             return (corrects / total) * 100.0
         }
     }
+
     private(set) var gamesCount: Int {
         get {
             guard let data = userDefaults.string(forKey: Keys.gamesCount.rawValue),
@@ -44,6 +49,7 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
+
     private(set) var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -60,10 +66,13 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
+
     private let userDefaults = UserDefaults.standard
+
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
+
     func store(correct count: Int, total amount: Int) {
         if userDefaults.string(forKey: Keys.correct.rawValue) == nil {
             userDefaults.set(count, forKey: Keys.correct.rawValue)
@@ -76,6 +85,7 @@ final class StatisticServiceImplementation: StatisticService {
             }
             userDefaults.set(oldValue + count, forKey: Keys.correct.rawValue)
         }
+
         if userDefaults.string(forKey: Keys.total.rawValue) == nil {
             userDefaults.set(amount, forKey: Keys.total.rawValue)
         } else {
@@ -87,6 +97,7 @@ final class StatisticServiceImplementation: StatisticService {
             }
             userDefaults.set(oldValue + amount, forKey: Keys.total.rawValue)
         }
+
         if userDefaults.string(forKey: Keys.gamesCount.rawValue) == nil {
             userDefaults.set(1, forKey: Keys.gamesCount.rawValue)
             print("Stored UserDefault gamesCount = 1")
@@ -101,6 +112,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
 
         let currentGame = GameRecord(correct: count, total: amount, date: Date())
+
         if self.bestGame < currentGame {
             self.bestGame = currentGame
         }
