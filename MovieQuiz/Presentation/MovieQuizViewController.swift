@@ -11,12 +11,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var questionsAmount: Int = 10 // максимальное количество вопросов ответов
 
+
+    
+
     private var currentQuestionIndex: Int = 0 // индекс нашего вопроса
     private var counterCorrectAnswers: Int = 0 // счетчик правильных ответов
     private var numberOfQuizGames: Int = 0 // количетсво сыгранных квизов
     private var recordCorrectAnswers: Int = 0 // рекорд правильных овтетов
     private var recordDate = Date() // дата рекорда
-    private var averageAccuracy = 0.0 // среднее кол-во угаданных ответов в %
+    private var averageAccuracy: Double = 0.0 // среднее кол-во угаданных ответов в %
     private var allCorrectAnswers: Int = 0 // если ответили на все вопросы верно
 
     // MARK: - Lifecycle
@@ -60,22 +63,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
-    // показываем алерт
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        let action = UIAlertAction(
-            title: result.buttonText,
-            style: .default,
-            handler: { _ in
-                self.restart()
-            })
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-    }
-
     private func restart() {
         counterCorrectAnswers = 0
         currentQuestionIndex = 0
@@ -100,41 +87,46 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         yesAnswerButton.isEnabled = true
         noAnswerButton.isEnabled = true
-        
+
         if currentQuestionIndex == questionsAmount - 1 {
-            let resultQuiz = getResultQuiz()
-            allCorrectAnswers += counterCorrectAnswers
             numberOfQuizGames += 1
-            show(quiz: resultQuiz)
+            allCorrectAnswers += counterCorrectAnswers
+            let resultQuiz = getResultQuiz()
         } else {
             currentQuestionIndex += 1
             setupViewModel()
         }
     }
-    
-    private func getResultQuiz() -> QuizResultsViewModel {
+
+    private func getResultQuiz() {
         var title = "Игра окончена!"
         if counterCorrectAnswers >= recordCorrectAnswers {
             title = "Поздравляем! Новый рекорд!"
             recordCorrectAnswers = counterCorrectAnswers
         }
-        
+
         if counterCorrectAnswers == numberOfQuizGames {
             title = "Поздравляем! Это лучший результат"
         }
         averageAccuracy = Double(allCorrectAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
-        let resultQuiz = QuizResultsViewModel(
+        let resultQuiz = ResultAlertPresenter(
             title: title,
-            text: """
+            message: """
                 Ваш результат: \(counterCorrectAnswers)/\(questionsAmount)
                 Количество сыгранных квизов: \(numberOfQuizGames)
                 Рекорд: \(recordCorrectAnswers)/\(questionsAmount) \(recordDate.dateTimeString)
-                Средняя точность: \(String(format: "%.02f", averageAccuracy))%
+                Средняя точность: \(String(format: "%.2f", averageAccuracy))%
             """,
-            buttonText: "Новая игра")
-        return resultQuiz
+
+            controller: self,
+            actionHandler: { _ in
+                self.restart()
+            }
+        )
+        resultQuiz.show()
+        return
     }
-    
+
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             counterCorrectAnswers += 1
