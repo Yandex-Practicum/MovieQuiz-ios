@@ -23,21 +23,21 @@ class QuestionFactory: QuestionFactoryProtocol {
             let index = (0..<self.movies.count).randomElement() ?? 0
             guard let movie = self.movies[safe: index] else { return }
             var imageData = Data()
+            guard let imageURL = URL(string: "https://imdb-api.com/API/ResizeImage?apiKey=k_3c1m97j7&size=600x1000&url=\(movie.imageURL)") else {
+                return
+            }
             do {
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
                 print("Failed to load image")
             }
-            var rating = Float(movie.rating) ?? 0
-            let floorRating = floor(rating)
-            /*if rating == floorRating {
-                rating -= 0.0001
-            }*/
-            print(rating)
+            let rating = Float(movie.rating) ?? 0
+            let floorRatingInt = Int.random(in: Int(floor(rating)) - 1...Int(floor(rating) + 1))
+            let floorRating = Float(floorRatingInt)
             let randomBool = Bool.random()
             var compareSign: String
             var correctAnswer: Bool
-            if (randomBool) {
+            if randomBool {
                 correctAnswer = floorRating >= rating
                 compareSign = "больше"
             } else {
@@ -58,16 +58,13 @@ class QuestionFactory: QuestionFactoryProtocol {
     }
 
     func loadData() {
-        print("QuestionFactory loadData called")
         moviesLoader.loadMovies(handler: { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .failure(let error):
                 self.delegate.didFailToLoadData(with: error)
             case .success(let mostPopularMovies):
-                print("NetworkClient returned success in closure")
                 self.movies = mostPopularMovies.items
-                print("self.movies contain \(self.movies.count) films")
                 self.delegate.didLoadDataFromServer()
             }
         })

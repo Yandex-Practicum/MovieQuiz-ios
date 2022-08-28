@@ -30,7 +30,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
-    private let questionsAmount: Int = 1
+    private let questionsAmount: Int = 3
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0
@@ -65,9 +65,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
-        let alert = ResultAlertPresenter(title: "Ошибка", message: message, controller: self, completion: {
-            
-        })
+        let alert = ResultAlertPresenter(title: "Ошибка сети", message: message, buttonText: "OK", controller: self, actionHandler: { _ in })
         alert.show()
     }
 
@@ -85,12 +83,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticService.store(correct: corrects, total: questionsAmount)
         corrects = 0
         questionNumberGlobal = 0
-        
-        let alert = ResultAlertPresenter(title: result.title, message: result.text, controller: self, completion: { result in
-            print("here")
-            self.questionFactory?.requestNextQuestion()
-        })
-            
+
+        let alert = ResultAlertPresenter(
+            title: result.title,
+            message: result.text,
+            buttonText: "Сыграть еще раз!",
+            controller: self,
+            actionHandler: { _ in
+                self.questionFactory?.requestNextQuestion()
+            }
+        )
         alert.show()
     }
 
@@ -134,7 +136,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
         questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
-        print("Question Factory in viewDidLoad initialized")
         questionFactory?.loadData()
     }
 
@@ -153,7 +154,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     func didLoadDataFromServer() {
-        print("questionFactory called delegate didLoadDataFromServer")
         hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
