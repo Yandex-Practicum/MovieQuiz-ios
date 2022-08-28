@@ -100,7 +100,6 @@ final class StatisticServiceImplementation: StatisticService {
 
         if userDefaults.string(forKey: Keys.gamesCount.rawValue) == nil {
             userDefaults.set(1, forKey: Keys.gamesCount.rawValue)
-            print("Stored UserDefault gamesCount = 1")
         } else {
             guard let oldValue = userDefaults.string(forKey: Keys.gamesCount.rawValue) else {
                 return

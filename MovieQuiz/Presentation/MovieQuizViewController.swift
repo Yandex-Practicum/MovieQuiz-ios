@@ -30,7 +30,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
-    private let questionsAmount: Int = 3
+    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0
@@ -80,7 +80,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func show(quize result: QuizeResultsViewModel) {
-        statisticService.store(correct: corrects, total: questionsAmount)
         corrects = 0
         questionNumberGlobal = 0
 
@@ -119,6 +118,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             } else {
                 resultsViewModel.title = "Потрясающе!"
             }
+            statisticService.store(correct: corrects, total: questionsAmount)
             resultsViewModel.text = "Ваш результат: \(corrects)/\(questionsAmount)\n"
             resultsViewModel.text += "Количество сыграных квизов:\(statisticService.gamesCount)\n"
             resultsViewModel.text += "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"

@@ -27,12 +27,18 @@ class QuestionFactory: QuestionFactoryProtocol {
                 return
             }
             do {
-                imageData = try Data(contentsOf: movie.imageURL)
+                imageData = try Data(contentsOf: imageURL)
             } catch {
                 print("Failed to load image")
             }
             let rating = Float(movie.rating) ?? 0
-            let floorRatingInt = Int.random(in: Int(floor(rating)) - 1...Int(floor(rating) + 1))
+            var floorRatingInt = Int.random(in: Int(floor(rating)) - 1...Int(floor(rating) + 1))
+            if floorRatingInt < 0 {
+                floorRatingInt = 0
+            }
+            if floorRatingInt > 10 {
+                floorRatingInt = 10
+            }
             let floorRating = Float(floorRatingInt)
             let randomBool = Bool.random()
             var compareSign: String
