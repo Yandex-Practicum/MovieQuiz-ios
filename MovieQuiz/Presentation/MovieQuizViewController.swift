@@ -11,9 +11,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var questionsAmount: Int = 10 // максимальное количество вопросов ответов
 
-
-    
-
     private var currentQuestionIndex: Int = 0 // индекс нашего вопроса
     private var counterCorrectAnswers: Int = 0 // счетчик правильных ответов
     private var numberOfQuizGames: Int = 0 // количетсво сыгранных квизов
@@ -21,6 +18,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var recordDate = Date() // дата рекорда
     private var averageAccuracy: Double = 0.0 // среднее кол-во угаданных ответов в %
     private var allCorrectAnswers: Int = 0 // если ответили на все вопросы верно
+
+    private var statisticService = StatisticServiceImpl()
+    private var gameCount: Int = 0
+
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -80,8 +81,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func setupViewModel() {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
+
+        let statisticService = StatisticServiceImpl()
+        self.statisticService = statisticService
+
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+    }
+
+    private func show(quiz result: QuizResultsViewModel) {
+
+        let alert = ResultAlertPresenter(
+            title: result.title,
+            message: result.text,
+            controller: self,
+            actionHandler: { _ in
+                self.questionFactory?.requestNextQuestion()
+            })
+        alert.show()
     }
 
     private func showNextQuestionOrResults() {
@@ -109,15 +126,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             title = "Поздравляем! Это лучший результат"
         }
         averageAccuracy = Double(allCorrectAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
+        statisticService.store(correct: allCorrectAnswers, total: questionsAmount)
         let resultQuiz = ResultAlertPresenter(
             title: title,
             message: """
-                Ваш результат: \(counterCorrectAnswers)/\(questionsAmount)
-                Количество сыгранных квизов: \(numberOfQuizGames)
-                Рекорд: \(recordCorrectAnswers)/\(questionsAmount) \(recordDate.dateTimeString)
+                Ваш результат: \(allCorrectAnswers)/\(questionsAmount)
+                Количество сыгранных квизов: \(statisticService.gamesCount)
+                Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) \(statisticService.bestGame.date.dateTimeString)
                 Средняя точность: \(String(format: "%.2f", averageAccuracy))%
             """,
-
             controller: self,
             actionHandler: { _ in
                 self.restart()

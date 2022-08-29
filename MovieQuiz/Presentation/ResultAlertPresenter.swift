@@ -1,6 +1,7 @@
 import UIKit
 
 class ResultAlertPresenter {
+
     private let title: String
     private let message: String
     private let controller: UIViewController
