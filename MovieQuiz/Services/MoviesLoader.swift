@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 protocol MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
@@ -22,7 +23,7 @@ struct MoviesLoader: MoviesLoading {
                         let JSONtoStruct = try JSONDecoder().decode(MostPopularMovies.self, from: rawData)
                         handler(.success(JSONtoStruct))
                     } catch {
-                        print("Failed to parse: \(error.localizedDescription)")
+                        handler(.failure(error))
                     }
             case .failure(let error):
                 handler(.failure(error))

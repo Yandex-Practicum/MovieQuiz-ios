@@ -21,6 +21,8 @@
 		846AA2FE28B9246900F6199D /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846AA2FD28B9246900F6199D /* NetworkClient.swift */; };
 		846AA30028B9318300F6199D /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846AA2FF28B9318300F6199D /* MostPopularMovies.swift */; };
 		846AA30228B9330600F6199D /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846AA30128B9330600F6199D /* MoviesLoader.swift */; };
+		848AF61F28BE9739007FF928 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84061380289319380021A1F0 /* YS Display-Bold.ttf */; };
+		848AF62028BE973F007FF928 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84061381289319380021A1F0 /* YS Display-Medium.ttf */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -247,10 +249,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				84138EA728B53EE4009C375B /* codeChunks in Resources */,
+				848AF61F28BE9739007FF928 /* YS Display-Bold.ttf in Resources */,
 				841FBA7528B15928003DC73E /* jsondata in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
+				848AF62028BE973F007FF928 /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -54,19 +54,41 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
+        DispatchQueue.main.async {
+            self.activityIndicator.isHidden = false
+            self.activityIndicator.startAnimating()
+        }
     }
 
     private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
-        activityIndicator.stopAnimating()
+        DispatchQueue.main.async {
+            self.activityIndicator.isHidden = true
+            self.activityIndicator.stopAnimating()
+        }
     }
 
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
         let alert = ResultAlertPresenter(title: "Ошибка сети", message: message, buttonText: "OK", controller: self, actionHandler: { _ in })
-        alert.show()
+        DispatchQueue.main.async {
+            alert.show()
+        }
+    }
+    
+    private func showImageLoadError(message: String) {
+        //hideLoadingIndicator()
+        let alert = ResultAlertPresenter(title: "Ошибка загрузки изображения", message: message, buttonText: "OK", controller: self, actionHandler: { _ in })
+        DispatchQueue.main.async {
+            alert.show()
+        }
+    }
+    
+    private func showJSONErrorMessage(message: String) {
+        //hideLoadingIndicator()
+        let alert = ResultAlertPresenter(title: "Ошибка в полученных данных", message: message, buttonText: "OK", controller: self, actionHandler: { _ in })
+        DispatchQueue.main.async {
+            alert.show()
+        }
     }
 
     private func show(quize step: QuizeStepViewModel) {
@@ -92,7 +114,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.questionFactory?.requestNextQuestion()
             }
         )
-        alert.show()
+        DispatchQueue.main.async {
+            alert.show()
+        }
     }
 
     private func showAnswerResult(isCorrect: Bool) {
@@ -160,5 +184,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription)
+    }
+
+    func didFailToLoadImage(with error: Error) {
+        showImageLoadError(message: error.localizedDescription)
+    }
+
+    func didReceiveErrorMessageInJSON(errorMessage errorMess: String) {
+        showJSONErrorMessage(message: errorMess)
     }
 }

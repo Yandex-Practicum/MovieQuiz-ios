@@ -29,7 +29,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: imageURL)
             } catch {
-                print("Failed to load image")
+                self.delegate.didFailToLoadImage(with: error)
             }
             let rating = Float(movie.rating) ?? 0
             var floorRatingInt = Int.random(in: Int(floor(rating)) - 1...Int(floor(rating) + 1))
@@ -50,7 +50,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                 correctAnswer = floorRating <= rating
                 compareSign = "меньше"
             }
-            let text = "Рейтинг этого фильма \(compareSign) \(String(format: "%.0f", floorRating))"
+            let text = "Рейтинг этого фильма \(compareSign) \(String(format: "%.0f", floorRating))?"
             let question = QuizeQuestion(
                 image: imageData,
                 text: text,
@@ -70,8 +70,13 @@ class QuestionFactory: QuestionFactoryProtocol {
             case .failure(let error):
                 self.delegate.didFailToLoadData(with: error)
             case .success(let mostPopularMovies):
-                self.movies = mostPopularMovies.items
-                self.delegate.didLoadDataFromServer()
+                if mostPopularMovies.errorMessage.isEmpty {
+                    self.movies = mostPopularMovies.items
+                    self.delegate.didLoadDataFromServer()
+                } else {
+                    print(mostPopularMovies.errorMessage)
+                    self.delegate.didReceiveErrorMessageInJSON(errorMessage: mostPopularMovies.errorMessage)
+                }
             }
         })
     }
