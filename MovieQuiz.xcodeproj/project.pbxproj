@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A916396928BDCF8D00EE190A /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A916396828BDCF8D00EE190A /* NetworkClient.swift */; };
 		A9C9A0A428B4AC0E009FFE67 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9C9A0A228B4AC0E009FFE67 /* YS Display-Bold.ttf */; };
 		A9C9A0A528B4AC0E009FFE67 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9C9A0A328B4AC0E009FFE67 /* YS Display-Medium.ttf */; };
 		A9C9A0A728B4BE79009FFE67 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C9A0A628B4BE79009FFE67 /* QuestionFactory.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A916396828BDCF8D00EE190A /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetworkClient.swift; path = MovieQuiz/Presentation/NetworkClient.swift; sourceTree = SOURCE_ROOT; };
 		A9C9A0A228B4AC0E009FFE67 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		A9C9A0A328B4AC0E009FFE67 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		A9C9A0A628B4BE79009FFE67 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuestionFactory.swift; path = MovieQuiz/Resources/QuestionFactory.swift; sourceTree = SOURCE_ROOT; };
@@ -104,6 +106,7 @@
 				A9C9A0AE28B4C9C4009FFE67 /* QuestionFactoryProtocol.swift */,
 				A9C9A0B028B4CC40009FFE67 /* QuestionFactoryDelegate.swift */,
 				A9CA0D1E28BCA86100EF1389 /* StatisticService.swift */,
+				A916396828BDCF8D00EE190A /* NetworkClient.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				A9C9A0A928B4BFFA009FFE67 /* QuizStepViewModel.swift in Sources */,
 				A9C9A0AD28B4C04D009FFE67 /* QuizQuestion.swift in Sources */,
+				A916396928BDCF8D00EE190A /* NetworkClient.swift in Sources */,
 				A9C9A0A728B4BE79009FFE67 /* QuestionFactory.swift in Sources */,
 				A9CA0D1F28BCA86100EF1389 /* StatisticService.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,

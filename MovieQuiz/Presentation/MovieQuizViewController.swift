@@ -6,6 +6,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private weak var noAnswerButton: UIButton!
     @IBOutlet private weak var yesAnswerButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
@@ -87,6 +88,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+    }
+
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func showNetworkError(message: String) {
+        activityIndicator.isHidden = true
+
+        let alert = UIAlertController(
+            title: "Упс! произошла ошибка",
+            message: "Попробуйте позднее",
+            preferredStyle: .alert
+        )
+        let action = UIAlertAction(
+            title: "Попробовать еще раз",
+            style: .default
+//            handler: {
+//                _ in action
+        )
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
     }
 
     private func show(quiz result: QuizResultsViewModel) {
