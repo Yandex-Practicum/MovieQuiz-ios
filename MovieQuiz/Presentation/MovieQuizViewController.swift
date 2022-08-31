@@ -42,7 +42,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var buttonsBlocked = false
     private let greenColor: CGColor = UIColor(named: "YCGreen")!.cgColor
     private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
-    private let statisticService = StatisticServiceImplementation()
+    //private let statisticService = StatisticServiceImplementation()
+    private let statisticService: StatisticService
     private let moviesLoader = MoviesLoader()
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
@@ -168,6 +169,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard
             let question = question
         else {
+            questionFactory?.requestNextQuestion()
             return
         }
         currentQuestion = question

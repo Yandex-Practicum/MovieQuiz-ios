@@ -158,3 +158,7 @@
         
         //-------------------
         
+        let JSONstring = """
+{"items":[{"fullTitle":"Top Gun: Maverick","image":"https://m.media-amazon.com/images/M/MV5BOWQwOTA1ZDQtNzk3Yi00ZmVmLWFiZGYtNjdjNThiYjJhNzRjXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_Ratio0.6716_AL_.jpg","imDbRating":""},{"fullTitle":"Nope","image":"https://m.media-amazon.com/images/M/MV5BNGM1MDc3ZjgtODlkOS00NmZjLWJlOTItNGQ5OGFhN2JlNjgxXkEyXkFqcGdeQXVyNjk1Njg5NTA@._V1_Ratio0.7910_AL_.jpg","imDbRating":"av"}],"errorMessage":""}
+"""
+            let data1 = Data(JSONstring.utf8)

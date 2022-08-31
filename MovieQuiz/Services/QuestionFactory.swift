@@ -21,44 +21,58 @@ class QuestionFactory: QuestionFactoryProtocol {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
-            guard let movie = self.movies[safe: index] else { return }
-            var imageData = Data()
-            guard let imageURL = URL(string: "https://imdb-api.com/API/ResizeImage?apiKey=k_3c1m97j7&size=600x1000&url=\(movie.imageURL)") else {
-                return
+            guard var movie = self.movies[safe: index] else { return }
+            var currentRating = Float(movie.rating) ?? 0.0
+            var tryings = 0
+            while currentRating == 0 && tryings < 10 {
+                let index = (0..<self.movies.count).randomElement() ?? 0
+                guard let safeMovie = self.movies[safe: index] else { return }
+                currentRating = Float(safeMovie.rating) ?? 0.0
+                movie = safeMovie
+                tryings += 1
             }
-            do {
-                imageData = try Data(contentsOf: imageURL)
-            } catch {
-                self.delegate.didFailToLoadImage(with: error)
+            if tryings >= 10 {
+                self.delegate.didReceiveErrorMessageInJSON(errorMessage: "Failed to parse ratings")
             }
-            let rating = Float(movie.rating) ?? 0
-            var floorRatingInt = Int.random(in: Int(floor(rating)) - 1...Int(floor(rating) + 1))
-            if floorRatingInt < 0 {
-                floorRatingInt = 0
-            }
-            if floorRatingInt > 10 {
-                floorRatingInt = 10
-            }
-            let floorRating = Float(floorRatingInt)
-            let randomBool = Bool.random()
-            var compareSign: String
-            var correctAnswer: Bool
-            if randomBool {
-                correctAnswer = floorRating >= rating
-                compareSign = "больше"
-            } else {
-                correctAnswer = floorRating <= rating
-                compareSign = "меньше"
-            }
-            let text = "Рейтинг этого фильма \(compareSign) \(String(format: "%.0f", floorRating))?"
-            let question = QuizeQuestion(
-                image: imageData,
-                text: text,
-                correctAnswer: correctAnswer
-            )
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate.didReceiveNextQuestion(question: question)
+            else {
+                var imageData = Data()
+                guard let imageURL = URL(string: "https://imdb-api.com/API/ResizeImage?apiKey=k_3c1m97j7&size=600x1000&url=\(movie.imageURL)") else {
+                    return
+                }
+                do {
+                    imageData = try Data(contentsOf: imageURL)
+                } catch {
+                    self.delegate.didFailToLoadImage(with: error)
+                }
+                let rating = Float(movie.rating) ?? 0
+                var floorRatingInt = Int.random(in: Int(floor(rating)) - 1...Int(floor(rating) + 1))
+                if floorRatingInt < 0 {
+                    floorRatingInt = 0
+                }
+                if floorRatingInt > 10 {
+                    floorRatingInt = 10
+                }
+                let floorRating = Float(floorRatingInt)
+                let randomBool = Bool.random()
+                var compareSign: String
+                var correctAnswer: Bool
+                if randomBool {
+                    correctAnswer = floorRating >= rating
+                    compareSign = "больше"
+                } else {
+                    correctAnswer = floorRating <= rating
+                    compareSign = "меньше"
+                }
+                let text = "Рейтинг этого фильма \(compareSign) \(String(format: "%.0f", floorRating))?"
+                let question = QuizeQuestion(
+                    image: imageData,
+                    text: text,
+                    correctAnswer: correctAnswer
+                )
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.delegate.didReceiveNextQuestion(question: question)
+                }
             }
         }
     }
