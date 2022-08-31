@@ -9,7 +9,6 @@ protocol StatisticService {
 }
 
 final class StatisticServiceImpl: StatisticService {
-
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
@@ -36,7 +35,6 @@ final class StatisticServiceImpl: StatisticService {
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат")
                 return
             }
 
@@ -56,6 +54,4 @@ final class StatisticServiceImpl: StatisticService {
     private func isRecord(correct answer: Int) -> Bool {
         answer > bestGame.correct
     }
-
-
 }

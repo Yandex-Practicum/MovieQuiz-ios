@@ -1,7 +1,6 @@
 import UIKit
 
 class ResultAlertPresenter {
-
     private let title: String
     private let message: String
     private let controller: UIViewController
@@ -19,7 +18,7 @@ class ResultAlertPresenter {
         self.actionHandlder = actionHandler
     }
 
-    func show() {
+    func showResultAlert() {
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -32,6 +31,22 @@ class ResultAlertPresenter {
                 action in self.actionHandlder?(action)
             })
 
+        alert.addAction(action)
+        self.controller.present(alert, animated: true, completion: nil)
+    }
+
+    func showErrorAlert() {
+        let alert = UIAlertController(
+            title: "Упс! Что-то пошло не так :(",
+            message: message,
+            preferredStyle: .alert
+        )
+        let action = UIAlertAction(
+            title: "Попробуйте еще раз",
+            style: .default,
+            handler: {
+                action in self.actionHandlder?(action)
+            })
         alert.addAction(action)
         self.controller.present(alert, animated: true, completion: nil)
     }
