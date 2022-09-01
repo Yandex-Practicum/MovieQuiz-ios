@@ -8,7 +8,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var movieTitle: UILabel!
-    
+
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
             return
@@ -45,8 +45,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
     private let statisticService: StatisticService = StatisticServiceImplementation()
     private let moviesLoader = MoviesLoader()
-    
-    
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
         return QuizeStepViewModel(
@@ -73,23 +71,39 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
-        let alert = ResultAlertPresenter(title: "Ошибка сети", message: message, buttonText: "OK", controller: self, actionHandler: { _ in })
+        let alert = ResultAlertPresenter(
+            title: "Ошибка сети",
+            message: message,
+            buttonText: "OK",
+            controller: self,
+            actionHandler: { _ in }
+        )
         DispatchQueue.main.async {
             alert.show()
         }
     }
-    
+
     private func showImageLoadError(message: String) {
-        //hideLoadingIndicator()
-        let alert = ResultAlertPresenter(title: "Ошибка загрузки изображения", message: message, buttonText: "OK", controller: self, actionHandler: { _ in })
+        let alert = ResultAlertPresenter(
+            title: "Ошибка загрузки изображения",
+            message: message,
+            buttonText: "OK",
+            controller: self,
+            actionHandler: { _ in }
+        )
         DispatchQueue.main.async {
             alert.show()
         }
     }
-    
+
     private func showJSONErrorMessage(message: String) {
-        //hideLoadingIndicator()
-        let alert = ResultAlertPresenter(title: "Ошибка в полученных данных", message: message, buttonText: "OK", controller: self, actionHandler: { _ in })
+        let alert = ResultAlertPresenter(
+            title: "Ошибка в полученных данных",
+            message: message,
+            buttonText: "OK",
+            controller: self,
+            actionHandler: { _ in }
+        )
         DispatchQueue.main.async {
             alert.show()
         }
@@ -164,10 +178,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        moviePoster.layer.masksToBounds = true // даём разрешение на рисование рамки
-        moviePoster.layer.borderWidth = 0 // толщина рамки
-        moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
-        moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
+        moviePoster.layer.masksToBounds = true
+        moviePoster.layer.borderWidth = 0
+        moviePoster.layer.borderColor = UIColor.white.cgColor
+        moviePoster.layer.cornerRadius = 20
         movieTitle.layer.opacity = 0
         questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
         questionFactory?.loadData()
