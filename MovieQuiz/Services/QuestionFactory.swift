@@ -33,8 +33,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             }
             if tryings >= 10 {
                 self.delegate.didReceiveErrorMessageInJSON(errorMessage: "Failed to parse ratings")
-            }
-            else {
+            } else {
                 var imageData = Data()
                 guard let imageURL = URL(string: "https://imdb-api.com/API/ResizeImage?apiKey=k_3c1m97j7&size=600x1000&url=\(movie.imageURL)") else {
                     return
@@ -64,10 +63,12 @@ class QuestionFactory: QuestionFactoryProtocol {
                     compareSign = "меньше"
                 }
                 let text = "Рейтинг этого фильма \(compareSign) \(String(format: "%.0f", floorRating))?"
+                let title = movie.title
                 let question = QuizeQuestion(
                     image: imageData,
                     text: text,
-                    correctAnswer: correctAnswer
+                    correctAnswer: correctAnswer,
+                    title: title
                 )
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }

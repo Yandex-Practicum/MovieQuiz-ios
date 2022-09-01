@@ -7,7 +7,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
-
+    @IBOutlet weak var movieTitle: UILabel!
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
             return
@@ -34,7 +35,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
     private var questionNumberGlobal: Int = 0, corrects: Int = 0, wrongs: Int = 0
-    private var currentViewModel = QuizeStepViewModel(image: Data(), question: "", questionNumber: "")
+    private var currentViewModel = QuizeStepViewModel(image: Data(), question: "", questionNumber: "", title: "")
     private var resultsViewModel = QuizeResultsViewModel(title: "", text: "")
     private var accuracy: [Double] = []
     private var avgAccuracy: Double = 0.0
@@ -42,15 +43,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var buttonsBlocked = false
     private let greenColor: CGColor = UIColor(named: "YCGreen")!.cgColor
     private let redColor: CGColor = UIColor(named: "YCRed")!.cgColor
-    //private let statisticService = StatisticServiceImplementation()
-    private let statisticService: StatisticService
+    private let statisticService: StatisticService = StatisticServiceImplementation()
     private let moviesLoader = MoviesLoader()
+    
+    
 
     private func convert(model: QuizeQuestion) -> QuizeStepViewModel {
         return QuizeStepViewModel(
             image: model.image,
             question: model.text,
-            questionNumber: "\(questionNumberGlobal + 1)/\(questionsAmount)"
+            questionNumber: "\(questionNumberGlobal + 1)/\(questionsAmount)",
+            title: model.title
         )
     }
 
@@ -100,6 +103,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionNumber.text = currentViewModel.questionNumber
         yesButton.isEnabled = true
         noButton.isEnabled = true
+        hideLoadingIndicator()
+        movieTitle.text = "Наименование фильма:\n\(currentViewModel.title)"
     }
 
     private func show(quize result: QuizeResultsViewModel) {
@@ -112,6 +117,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             buttonText: "Сыграть еще раз!",
             controller: self,
             actionHandler: { _ in
+                self.showLoadingIndicator()
                 self.questionFactory?.requestNextQuestion()
             }
         )
@@ -151,6 +157,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             show(quize: resultsViewModel)
             return
         }
+        showLoadingIndicator()
+        movieTitle.layer.opacity = 0
         questionFactory?.requestNextQuestion()
     }
     // MARK: - Lifecycle
@@ -160,6 +168,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         moviePoster.layer.borderWidth = 0 // толщина рамки
         moviePoster.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
         moviePoster.layer.cornerRadius = 20 // радиус скругления углов рамки
+        movieTitle.layer.opacity = 0
         questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
         questionFactory?.loadData()
     }
@@ -189,6 +198,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     func didFailToLoadImage(with error: Error) {
+        movieTitle.layer.opacity = 1
         showImageLoadError(message: error.localizedDescription)
     }
 

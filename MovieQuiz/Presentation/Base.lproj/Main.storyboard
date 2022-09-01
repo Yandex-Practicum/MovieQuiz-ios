@@ -25,6 +25,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="ilz-ks-brw" userLabel="movieTitle">
+                                <rect key="frame" x="20" y="378" width="374" height="0.0"/>
+                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
+                                <color key="textColor" name="YCWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Lw3-dt-cK8">
                                 <rect key="frame" x="20" y="54" width="374" height="808"/>
                                 <subviews>
@@ -47,7 +53,6 @@
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dzb-4t-JrE" userLabel="MovieImage">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
-                                        <color key="backgroundColor" name="YCWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="dzb-4t-JrE" secondAttribute="height" multiplier="2:3" id="EFD-Z8-dsm"/>
                                         </constraints>
@@ -124,22 +129,27 @@
                             </stackView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ll6-0f-ju2">
                                 <rect key="frame" x="197" y="443" width="20" height="20"/>
+                                <color key="backgroundColor" name="YCWhite"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YCBlack"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Lw3-dt-cK8" secondAttribute="bottom" id="9Iv-wH-Yyx"/>
+                            <constraint firstItem="ilz-ks-brw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="DWy-xV-0iA"/>
                             <constraint firstItem="ll6-0f-ju2" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="PJa-gw-UlY"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="WBc-Gn-ZGt"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ZPP-xs-nDK"/>
+                            <constraint firstItem="ilz-ks-brw" firstAttribute="centerY" secondItem="dzb-4t-JrE" secondAttribute="centerY" id="aFT-DR-SkL"/>
                             <constraint firstItem="ll6-0f-ju2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bDU-pD-65U"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ilz-ks-brw" secondAttribute="trailing" constant="20" id="bVN-DH-9tz"/>
                             <constraint firstItem="Lw3-dt-cK8" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="cfX-Z3-6bc"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="ll6-0f-ju2" id="tiJ-0e-v6f"/>
                         <outlet property="moviePoster" destination="dzb-4t-JrE" id="yCA-uL-T5X"/>
+                        <outlet property="movieTitle" destination="ilz-ks-brw" id="b49-MU-GEN"/>
                         <outlet property="noButton" destination="2kU-jE-2pq" id="KJI-vK-hTa"/>
                         <outlet property="questionForUser" destination="s27-go-nV6" id="l58-E1-0BK"/>
                         <outlet property="questionNumber" destination="hSt-1J-87i" id="aIN-xP-dE6"/>
