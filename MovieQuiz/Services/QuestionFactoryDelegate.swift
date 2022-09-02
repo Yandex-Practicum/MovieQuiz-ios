@@ -6,4 +6,5 @@ protocol QuestionFactoryDelegate {
     func didFailToLoadData(with error: Error)
     func didFailToLoadImage(with error: Error)
     func didReceiveErrorMessageInJSON(errorMessage: String)
+    func didReceiveErrorMessage(errorMessage: String)
 }

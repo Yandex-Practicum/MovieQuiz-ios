@@ -35,7 +35,25 @@ class QuestionFactory: QuestionFactoryProtocol {
                 self.delegate.didReceiveErrorMessageInJSON(errorMessage: "Failed to parse ratings")
             } else {
                 var imageData = Data()
-                guard let imageURL = URL(string: "https://imdb-api.com/API/ResizeImage?apiKey=k_3c1m97j7&size=600x1000&url=\(movie.imageURL)") else {
+                let imageURLSeparatedToReceiveName = movie.imageURL.absoluteString.components(separatedBy: "._")
+                guard let imageName = imageURLSeparatedToReceiveName[safe: 0] else {
+                    self.delegate.didReceiveErrorMessage(errorMessage: "Не удалось получить адрес полноразмерного изображения")
+                    return
+                }
+                let imageURLSeparatedToReceiveExtension = movie.imageURL.absoluteString.components(separatedBy: ".")
+                guard let imageExtension = imageURLSeparatedToReceiveExtension[safe: imageURLSeparatedToReceiveExtension.count - 1] else {
+                    self.delegate.didReceiveErrorMessage(errorMessage: "Не удалось получить адрес полноразмерного изображения")
+                    return
+                }
+                var fullSizeImageUrl: String
+                switch imageExtension {
+                case "jpg", "png", "webp", "gif", "JPG", "PNG", "WEBP", "GIF":
+                    fullSizeImageUrl = imageName + "." + imageExtension
+                default:
+                    fullSizeImageUrl = movie.imageURL.absoluteString
+                }
+
+                guard let imageURL = URL(string: "\(fullSizeImageUrl)") else {
                     return
                 }
                 do {
@@ -89,7 +107,6 @@ class QuestionFactory: QuestionFactoryProtocol {
                     self.movies = mostPopularMovies.items
                     self.delegate.didLoadDataFromServer()
                 } else {
-                    print(mostPopularMovies.errorMessage)
                     self.delegate.didReceiveErrorMessageInJSON(errorMessage: mostPopularMovies.errorMessage)
                 }
             }

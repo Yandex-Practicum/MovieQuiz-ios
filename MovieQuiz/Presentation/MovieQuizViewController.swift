@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var movieTitle: UILabel!
+    @IBOutlet private var movieTitle: UILabel!
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
@@ -57,6 +57,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func showLoadingIndicator() {
         DispatchQueue.main.async {
+            self.movieTitle.isHidden = true
             self.activityIndicator.isHidden = false
             self.activityIndicator.startAnimating()
         }
@@ -92,6 +93,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             actionHandler: { _ in }
         )
         DispatchQueue.main.async {
+            self.movieTitle.isHidden = false
             alert.show()
         }
     }
@@ -105,6 +107,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             actionHandler: { _ in }
         )
         DispatchQueue.main.async {
+            self.movieTitle.isHidden = false
+            alert.show()
+        }
+    }
+
+    private func showErrorMessage(message: String) {
+        let alert = ResultAlertPresenter(
+            title: "Ошибка",
+            message: message,
+            buttonText: "OK",
+            controller: self,
+            actionHandler: { _ in }
+        )
+        DispatchQueue.main.async {
+            self.movieTitle.layer.opacity = 1
             alert.show()
         }
     }
@@ -172,17 +189,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         showLoadingIndicator()
-        movieTitle.layer.opacity = 0
         questionFactory?.requestNextQuestion()
     }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        moviePoster.layer.masksToBounds = true
-        moviePoster.layer.borderWidth = 0
-        moviePoster.layer.borderColor = UIColor.white.cgColor
-        moviePoster.layer.cornerRadius = 20
-        movieTitle.layer.opacity = 0
+        DispatchQueue.main.async {
+            self.moviePoster.layer.masksToBounds = true
+            self.moviePoster.layer.borderWidth = 0
+            self.moviePoster.layer.borderColor = UIColor.white.cgColor
+            self.moviePoster.layer.cornerRadius = 20
+            self.movieTitle.layer.opacity = 0
+        }
         questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
         questionFactory?.loadData()
     }
@@ -197,13 +215,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         currentQuestion = question
         let viewModel = convert(model: question)
+        hideLoadingIndicator()
         DispatchQueue.main.async { [weak self] in
             self?.show(quize: viewModel)
         }
     }
 
     func didLoadDataFromServer() {
-        hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
 
@@ -212,11 +230,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     func didFailToLoadImage(with error: Error) {
-        movieTitle.layer.opacity = 1
         showImageLoadError(message: error.localizedDescription)
     }
 
     func didReceiveErrorMessageInJSON(errorMessage errorMess: String) {
         showJSONErrorMessage(message: errorMess)
+    }
+
+    func didReceiveErrorMessage(errorMessage errorMess: String) {
+        showErrorMessage(message: errorMess)
     }
 }
