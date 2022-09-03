@@ -25,8 +25,7 @@ class ResultAlertPresenter {
         let action = UIAlertAction(
             title: self.buttonText,
             style: .default,
-            handler: { [weak self] action in
-                guard let self = self else { return }
+            handler: { action in
                 self.actionHandler?(action)
             })
 

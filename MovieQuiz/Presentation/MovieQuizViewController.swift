@@ -121,7 +121,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             actionHandler: { _ in }
         )
         DispatchQueue.main.async {
-            self.movieTitle.layer.opacity = 1
+            self.movieTitle.isHidden = false
             alert.show()
         }
     }
@@ -194,13 +194,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.main.async {
-            self.moviePoster.layer.masksToBounds = true
-            self.moviePoster.layer.borderWidth = 0
-            self.moviePoster.layer.borderColor = UIColor.white.cgColor
-            self.moviePoster.layer.cornerRadius = 20
-            self.movieTitle.layer.opacity = 0
-        }
+        self.moviePoster.layer.masksToBounds = true
+        self.moviePoster.layer.borderWidth = 0
+        self.moviePoster.layer.borderColor = UIColor.white.cgColor
+        self.moviePoster.layer.cornerRadius = 20
+        self.movieTitle.isHidden = true
         questionFactory = QuestionFactory(moviesLoader: moviesLoader, delegate: self)
         questionFactory?.loadData()
     }
