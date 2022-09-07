@@ -18,6 +18,7 @@
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
 		CA1EDA2228A44BD6007D8519 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA1EDA2028A44BAB007D8519 /* YS Display-Bold.ttf */; };
 		CA1EDA2328A44BDA007D8519 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA1EDA2128A44BAD007D8519 /* YS Display-Medium.ttf */; };
+		CA9D56F828C5F3AC00963700 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA9D56F728C5F3AC00963700 /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CA1EDA2028A44BAB007D8519 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		CA1EDA2128A44BAD007D8519 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		CA9D56F728C5F3AC00963700 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				CA1EDA1F28A44B95007D8519 /* New Group */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
+				CA9D56F728C5F3AC00963700 /* Colors.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
 			);
 			path = Resources;
@@ -193,6 +196,7 @@
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
+				CA9D56F828C5F3AC00963700 /* Colors.xcassets in Resources */,
 				CA1EDA2228A44BD6007D8519 /* YS Display-Bold.ttf in Resources */,
 				CA1EDA2328A44BDA007D8519 /* YS Display-Medium.ttf in Resources */,
 			);

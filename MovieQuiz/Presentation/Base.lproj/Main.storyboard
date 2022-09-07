@@ -22,10 +22,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleAspectFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="I7Y-t9-Aht">
-                                <rect key="frame" x="206" y="418" width="280" height="558"/>
+                            <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="I7Y-t9-Aht">
+                                <rect key="frame" x="20" y="10" width="280" height="558"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="fAl-gA-ebE">
+                                    <stackView opaque="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="fAl-gA-ebE">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbA-X8-zwP" userLabel="Question Title Label">
@@ -42,10 +42,10 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Defolt" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kod-uW-iAP" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="23.5" width="280" height="420"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" image="Defolt" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kod-uW-iAP" userLabel="Preview Image">
+                                        <rect key="frame" x="0.0" y="23.5" width="280" height="410.5"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="Kod-uW-iAP" secondAttribute="height" multiplier="2:3" id="3BS-63-80N"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="Kod-uW-iAP" secondAttribute="height" multiplier="2:3" id="3BS-63-80N"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -53,11 +53,11 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="f4g-To-fWU">
-                                        <rect key="frame" x="0.0" y="443.5" width="280" height="54.5"/>
+                                    <view contentMode="scaleAspectFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="f4g-To-fWU">
+                                        <rect key="frame" x="0.0" y="434" width="280" height="64"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="18" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DV7-3E-5J8" userLabel="Question Label">
-                                                <rect key="frame" x="99" y="53" width="396" height="27"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="18" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DV7-3E-5J8" userLabel="Question Label">
+                                                <rect key="frame" x="20" y="5" width="240" height="54"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
                                                 <color key="highlightedColor" name="white"/>
@@ -88,7 +88,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="noButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cvJ-Us-9Yv"/>
+                                                    <action selector="noButtonAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wst-jY-Hep"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4B-uA-CoL" userLabel="Yes button">
@@ -106,7 +106,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="yesButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="72p-cw-HYV"/>
+                                                    <action selector="yesButtonAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="MxM-LC-w6Q"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -131,7 +131,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="whN-bo-sWE" id="RWv-od-gwG"/>
                         <outlet property="imageView" destination="Kod-uW-iAP" id="RzO-2w-him"/>
+                        <outlet property="noButton" destination="Nss-RT-Qag" id="mkd-5c-3Ns"/>
                         <outlet property="textLabel" destination="DV7-3E-5J8" id="HHp-4j-7NT"/>
+                        <outlet property="yesButton" destination="Q4B-uA-CoL" id="8KE-bO-Q6o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
