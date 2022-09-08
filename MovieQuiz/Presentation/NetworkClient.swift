@@ -25,7 +25,7 @@ struct NetworkClient {
             // Возвращаем данные
             guard let data = data else { return }
             handler(.success(data))
-            }
-            task.resume()
+        }
+        task.resume()
     }
 }

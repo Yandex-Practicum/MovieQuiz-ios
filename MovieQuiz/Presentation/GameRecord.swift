@@ -7,7 +7,7 @@ struct GameRecord: Codable, Comparable {
 
     var score: Double {
         guard total != 0 else {
-            return 0.0
+            return 0
         }
         return Double(correct) / Double(total)
     }

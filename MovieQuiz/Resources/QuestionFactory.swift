@@ -65,10 +65,10 @@ class QuestionFactory: QuestionFactoryProtocol {
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
                 print("Failed to load image")
+                self.delegate.didFailToLoadData(with: error)
             }
 
             let rating = Float(movie.rating) ?? 0
-//            var randomRating = 
             let text = "Рейтинг этого фильма больше чем 7?"
             let correctAnswer = rating > 7
 

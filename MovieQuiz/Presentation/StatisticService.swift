@@ -46,12 +46,12 @@ final class StatisticServiceImpl: StatisticService {
         gamesCount += 1
         let newAccuracy = Double(count) / Double(amount)
         totalAccuracy = (totalAccuracy * Double((gamesCount - 1)) + newAccuracy) / Double(gamesCount)
-        if isRecord(correct: count) {
+        if isRecord(correctAnswer: count) {
             bestGame = GameRecord(correct: count, total: amount, date: Date())
         }
     }
 
-    private func isRecord(correct answer: Int) -> Bool {
-        answer > bestGame.correct
+    private func isRecord(correctAnswer: Int) -> Bool {
+        correctAnswer > bestGame.correct
     }
 }
