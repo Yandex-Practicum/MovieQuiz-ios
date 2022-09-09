@@ -4,6 +4,15 @@ import Foundation
 
 class QuestionFactory {
     
+    
+    private let delegate: QuestionFactoryDelegate
+  
+    init(delegate: QuestionFactoryDelegate) {
+        self.delegate = delegate
+    }
+    
+    
+    
     // Получаем следующий рандомный вопрос из массива
     func requestNextQuestion() -> QuizQuestion? {
         let index = (0..<questions.count).randomElement() ?? 0
