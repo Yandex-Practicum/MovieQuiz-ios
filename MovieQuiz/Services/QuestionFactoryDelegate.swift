@@ -1,5 +1,3 @@
-import Foundation
-
 protocol QuestionFactoryDelegate {
-    func didReceiveNextQuestion(question: QuizQuestion)
+    func didReceiveNextQuestion(question: QuizQuestion?)
 }

@@ -2,7 +2,7 @@
 
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -10,7 +10,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     
-    private let questionFactory = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private let questionsAmount: Int = 10
     
     private var currentQuestion: QuizQuestion?
@@ -29,11 +29,9 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +41,25 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
     }
+    
+    // QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        
+        guard let question = question else {
+            return
+        }
+
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
+    
+    
+    
+    
     
     // MARK: - QUIZ STEP
     
@@ -141,11 +158,7 @@ final class MovieQuizViewController: UIViewController {
             }
         } else { // это не последний вопрос
             currentQuestionCounter += 1
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-                show(quiz: viewModel)
-            }
+            questionFactory?.requestNextQuestion()
         }
     }
     
