@@ -52,16 +52,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
-        questionFactory?.requestNextQuestion()
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.isHidden = true
+            self?.questionFactory?.requestNextQuestion()
+        }
     }
 
     func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
+        DispatchQueue.main.async { [weak self] in
+            self?.showNetworkError(message: error.localizedDescription)
+        }
     }
 
     func didFailToLoadImage(with error: Error) {
-        showImageError(message: error.localizedDescription)
+        DispatchQueue.main.async { [weak self] in
+            self?.showImageError(message: error.localizedDescription)
+        }
     }
 
     // MARK: - Actions

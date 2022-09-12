@@ -88,7 +88,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             guard let self = self else { return }
             switch result {
             case .success(let mostPopularMovies):
-                self.movies = mostPopularMovies.items
+                self.movies = mostPopularMovies.items.filter { $0.rating != "" }
                 self.delegate.didLoadDataFromServer()
             case .failure(let error):
                 self.delegate.didFailToLoadData(with: error)
