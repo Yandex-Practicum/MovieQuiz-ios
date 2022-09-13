@@ -201,7 +201,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -f \"${PROJECT_DIR}/.bin/swiftlint\" ]; then\n    echo \"error: SwiftLint not found\"\n    exit 1 \nfi\n\n${PROJECT_DIR}/.bin/swiftlint\n";
+			shellScript = "# if [ ! -f \"${PROJECT_DIR}/.bin/swiftlint\" ]; then\n#     echo \"error: SwiftLint not found\"\n#     exit 1 \n# fi\n\n# ${PROJECT_DIR}/.bin/swiftlint\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
