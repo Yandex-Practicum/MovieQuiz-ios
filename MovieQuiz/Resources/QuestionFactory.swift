@@ -95,7 +95,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                     self.delegate.didReceiveEmptyJson(errorMessage: mostPopularMovies.errorMessage)
                 }
             case .failure(let error):
-                    self.delegate.didFailToLoadData(with: error)
+                self.delegate.didFailToLoadData(with: error)
             }
         })
     }
