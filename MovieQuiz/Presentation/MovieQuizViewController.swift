@@ -58,6 +58,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
+    func didReceiveEmptyJson(errorMessage errorMessage: String) {
+        showErrorEmptyJson(message: errorMessage)
+    }
+
     func didFailToLoadData(with error: Error) {
         DispatchQueue.main.async { [weak self] in
             self?.showNetworkError(message: error.localizedDescription)
@@ -117,6 +121,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showLoadingIndicator() {
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
+    }
+
+    private func showErrorEmptyJson(message: String) {
+        let alert = ResultAlertPresenter(
+            title: "Упс! Кажется мы не получили данные о фильме",
+            message: message,
+            controller: self,
+            actionHandler: { _ in }
+        )
+        DispatchQueue.main.async {
+            alert.showErrorAlert()
+        }
     }
 
     private func showNetworkError(message: String) {
