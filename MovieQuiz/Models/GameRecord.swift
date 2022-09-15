@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct GameRecord: Codable, Comparable {
     let correct: Int

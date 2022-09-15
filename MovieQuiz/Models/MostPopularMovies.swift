@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct MostPopularMovies: Codable {
     let errorMessage: String
