@@ -59,7 +59,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     func didReceiveEmptyJson(errorMessage errorMessage: String) {
-        showErrorEmptyJson(message: errorMessage)
+        DispatchQueue.main.async { [weak self] in
+            self?.showErrorEmptyJson(message: errorMessage)
+        }
     }
 
     func didFailToLoadData(with error: Error) {

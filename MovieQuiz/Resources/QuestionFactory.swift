@@ -88,7 +88,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             guard let self = self else { return }
             switch result {
             case .success(let mostPopularMovies):
-                if !mostPopularMovies.items.isEmpty || mostPopularMovies.errorMessage == "" {
+                if !mostPopularMovies.items.isEmpty {
                     self.movies = mostPopularMovies.items
                     self.delegate.didLoadDataFromServer()
                 } else {
