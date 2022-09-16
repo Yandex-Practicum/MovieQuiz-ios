@@ -134,8 +134,8 @@
                         <outlet property="poster" destination="WSZ-mx-Uav" id="Iuk-LB-xqn"/>
                         <outlet property="questionCounter" destination="T8S-tk-V3K" id="XXp-sb-bhx"/>
                         <outlet property="questionText" destination="HCq-oy-qO2" id="qss-SS-7k2"/>
-                        <outletCollection property="buttons" destination="Nwt-MX-tFh" collectionClass="NSMutableArray" id="J2x-Ps-kH1"/>
-                        <outletCollection property="buttons" destination="h6X-ic-awa" collectionClass="NSMutableArray" id="Z1i-q9-6Ds"/>
+                        <outletCollection property="answerButtons" destination="h6X-ic-awa" collectionClass="NSMutableArray" id="sPt-Qu-Gyp"/>
+                        <outletCollection property="answerButtons" destination="Nwt-MX-tFh" collectionClass="NSMutableArray" id="m19-N5-KfV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
