@@ -131,9 +131,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLabel" destination="T8S-tk-V3K" id="UoZ-Ti-Zcq"/>
-                        <outlet property="imageView" destination="WSZ-mx-Uav" id="i2B-0z-n0P"/>
-                        <outlet property="textLabel" destination="HCq-oy-qO2" id="HUZ-3M-R3R"/>
+                        <outlet property="poster" destination="WSZ-mx-Uav" id="Iuk-LB-xqn"/>
+                        <outlet property="questionCounter" destination="T8S-tk-V3K" id="XXp-sb-bhx"/>
+                        <outlet property="questionText" destination="HCq-oy-qO2" id="qss-SS-7k2"/>
                         <outletCollection property="buttons" destination="Nwt-MX-tFh" collectionClass="NSMutableArray" id="J2x-Ps-kH1"/>
                         <outletCollection property="buttons" destination="h6X-ic-awa" collectionClass="NSMutableArray" id="Z1i-q9-6Ds"/>
                     </connections>

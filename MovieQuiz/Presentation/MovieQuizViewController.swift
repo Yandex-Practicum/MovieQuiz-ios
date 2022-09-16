@@ -3,9 +3,9 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Outlets and Actions
 
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var textLabel: UILabel!
-    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var poster: UIImageView!
+    @IBOutlet private weak var questionText: UILabel!
+    @IBOutlet private weak var questionCounter: UILabel!
     @IBOutlet private var buttons: [UIButton]!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -74,7 +74,7 @@ final class MovieQuizViewController: UIViewController {
         
         guard let firstQuestion = questions.first else { return }
         
-        imageView.layer.masksToBounds = true
+        poster.layer.masksToBounds = true
 
         show(quiz: convert(model: firstQuestion))
     }
@@ -97,9 +97,9 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func show(quiz step: QuizStepViewModel) {
-        imageView.image = step.image
-        textLabel.text = step.question
-        counterLabel.text = step.questionNumber
+        poster.image = step.image
+        questionText.text = step.question
+        questionCounter.text = step.questionNumber
         
         toggleButtonsEnableProperty(to: true)
     }
@@ -126,11 +126,11 @@ final class MovieQuizViewController: UIViewController {
             correctAnswersCount += 1
         }
 
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        poster.layer.borderWidth = 8
+        poster.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.imageView.layer.borderWidth = 0
+            self.poster.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
     }
