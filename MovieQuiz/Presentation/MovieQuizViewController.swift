@@ -143,7 +143,7 @@ final class MovieQuizViewController: UIViewController {
         } else {
             let text = "Ваш результат: \(correctAnswersCount) из \(questions.count)"
             let viewModel = QuizResultsViewModel(
-                title: "Это раунд окончен!",
+                title: "Этот раунд окончен!",
                 text: text,
                 buttonText: "Cыграть еще раз")
             show(quiz: viewModel)
