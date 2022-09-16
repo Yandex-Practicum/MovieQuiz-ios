@@ -6,7 +6,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-
+    @IBOutlet private var buttons: [UIButton]!
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         showAnswerResult(isCorrect: checkAnswerCorrectness(for: true))
     }
@@ -76,6 +77,12 @@ final class MovieQuizViewController: UIViewController {
 
         show(quiz: convert(model: firstQuestion))
     }
+    
+    // MARK: - Methods
+    
+    private func toggleButtonsEnableProperty(to value: Bool) {
+        buttons.forEach { $0.isEnabled = value }
+    }
 
     private func checkAnswerCorrectness(for chosenAnswer: Bool) -> Bool {
         chosenAnswer == currentQuestionCorrectAnswer
@@ -92,6 +99,8 @@ final class MovieQuizViewController: UIViewController {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        
+        toggleButtonsEnableProperty(to: true)
     }
 
     private func show(quiz result: QuizResultsViewModel) {
@@ -116,6 +125,8 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showAnswerResult(isCorrect: Bool) {
+        toggleButtonsEnableProperty(to: false)
+        
         if isCorrect {
             correctAnswersCount += 1
         }

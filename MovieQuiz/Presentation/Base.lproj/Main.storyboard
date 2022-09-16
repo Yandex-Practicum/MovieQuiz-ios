@@ -110,7 +110,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rvx-jX-MJL"/>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sNx-nO-eTL"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -134,6 +134,8 @@
                         <outlet property="counterLabel" destination="T8S-tk-V3K" id="UoZ-Ti-Zcq"/>
                         <outlet property="imageView" destination="WSZ-mx-Uav" id="i2B-0z-n0P"/>
                         <outlet property="textLabel" destination="HCq-oy-qO2" id="HUZ-3M-R3R"/>
+                        <outletCollection property="buttons" destination="Nwt-MX-tFh" collectionClass="NSMutableArray" id="J2x-Ps-kH1"/>
+                        <outletCollection property="buttons" destination="h6X-ic-awa" collectionClass="NSMutableArray" id="Z1i-q9-6Ds"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
