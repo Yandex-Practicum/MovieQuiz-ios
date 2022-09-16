@@ -64,8 +64,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int = 0
     private var correctAnswersCount: Int = 0
     private var currentQuestionCorrectAnswer: Bool? {
-        guard let question = questions[safe: currentQuestionIndex] else { return nil }
-        return question.correctAnswer
+        questions[safe: currentQuestionIndex]?.correctAnswer
     }
 
     // MARK: - Lifecycle
@@ -74,6 +73,8 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         
         guard let firstQuestion = questions.first else { return }
+        
+        imageView.layer.masksToBounds = true
 
         show(quiz: convert(model: firstQuestion))
     }
@@ -131,10 +132,8 @@ final class MovieQuizViewController: UIViewController {
             correctAnswersCount += 1
         }
 
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 20
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.imageView.layer.borderWidth = 0
