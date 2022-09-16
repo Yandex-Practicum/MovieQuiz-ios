@@ -6,7 +6,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var poster: UIImageView!
     @IBOutlet private weak var questionText: UILabel!
     @IBOutlet private weak var questionCounter: UILabel!
-    @IBOutlet var answerButtons: [UIButton]!
+    @IBOutlet private var answerButtons: [UIButton]!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         showAnswerResult(isCorrect: checkAnswerCorrectness(for: true))
