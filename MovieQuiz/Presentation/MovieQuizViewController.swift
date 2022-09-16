@@ -110,14 +110,8 @@ final class MovieQuizViewController: UIViewController {
             message: result.text,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .cancel) { _ in
-            self.currentQuestionIndex = 0
-
-            self.correctAnswersCount = 0
-
-            let firstQuestion = self.questions[self.currentQuestionIndex]
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
+        let action = UIAlertAction(title: result.buttonText, style: .cancel) { [weak self] _ in
+            self?.restartQuiz()
         }
 
         alert.addAction(action)
@@ -154,6 +148,16 @@ final class MovieQuizViewController: UIViewController {
                 buttonText: "Cыграть еще раз")
             show(quiz: viewModel)
         }
+    }
+    
+    private func restartQuiz() {
+        currentQuestionIndex = 0
+
+        correctAnswersCount = 0
+
+        let firstQuestion = questions[currentQuestionIndex]
+        let viewModel = convert(model: firstQuestion)
+        show(quiz: viewModel)
     }
 
     // MARK: - ViewModel
