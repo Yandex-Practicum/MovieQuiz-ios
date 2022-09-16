@@ -51,6 +51,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="WSZ-mx-Uav" secondAttribute="height" multiplier="2:3" id="GAX-KG-0gj"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xh7-Ra-doQ">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="128"/>
@@ -117,7 +122,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cDX-Bb-P1L" secondAttribute="trailing" constant="20" id="ATr-b5-abI"/>
                             <constraint firstItem="cDX-Bb-P1L" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="n88-if-g6h"/>

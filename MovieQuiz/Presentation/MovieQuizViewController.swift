@@ -100,7 +100,7 @@ final class MovieQuizViewController: UIViewController {
             message: result.text,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .cancel) { _ in
             self.currentQuestionIndex = 0
 
             self.correctAnswersCount = 0
