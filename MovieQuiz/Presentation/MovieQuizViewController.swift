@@ -32,6 +32,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        
+        print("Sandbox url:")
+        print(NSHomeDirectory()) // Узнаю адрес sandbox
+        UserDefaults.standard.set(true, forKey: "viewDidLoad") // Добавляю запись в UD
+        
+        print("Bundle url:")
+        print(Bundle.main.bundlePath) // Узнаю адрес bundle
+        
+        // Добавляю файл в папку Documents
+        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! // Записал в переменную url папки Documents
+        var fileName = "text.swift"
+        documentsURL.appendPathComponent(fileName) // Добавил в путь text.swift
+
+        documentsURL.appendPathComponent(fileName) // Добавил в путь text.swift
+        if !FileManager.default.fileExists(atPath: documentsURL.path) { // проверил нет ли такого файла
+            // Такого файла нет
+            let hello = "Hello World!" // создаю контент
+            let data = hello.data(using: .utf8) // конвертирую контент в двоичный формат Data
+            // создаю файл и добавляю в него контент
+            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,7 +81,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     
     
-    
     // MARK: - QUIZ STEP
     
     // Конвертор данных вопроса в данные для заполнения вью
@@ -84,7 +104,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // Вывод данных на экран
     private func show(quiz result: QuizResultViewModel) {
-        showResultAlert(result: result)
+        
+        let alert = AlertPresenter(
+            title: result.title,
+            text: result.text,
+            buttonText: result.buttonText,
+            controller: self,
+            onAction: { _ in
+                self.analytic.gameRestart()
+                self.currentQuestionCounter = 0
+                self.questionFactory?.requestNextQuestion()
+            }
+        )
+        DispatchQueue.main.async {
+            alert.showAlert()
+        }
     }
     
     
@@ -219,19 +253,7 @@ extension MovieQuizViewController {
     
 }
 
-// НАСТРОЙКИ АЛЕРТА ДЛЯ РЕЗУЛЬТАТА КВИЗА
-extension MovieQuizViewController {
-    private func showResultAlert(result: QuizResultViewModel) {
-        let alert = UIAlertController(title: result.title,
-                                      message: result.text,
-                                      preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default, handler: { _ in
-            self.restart()
-        })
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-    }
-}
+
 
 // СБОРЩИК АНАЛИТИКИ
 extension MovieQuizViewController {
