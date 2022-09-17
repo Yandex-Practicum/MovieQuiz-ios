@@ -112,36 +112,52 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }()
         
         let data = jsonString.data(using: .utf8)! // Конвертирую стринг в Data
-        
-        // Создаю словарь с данными JSON
-        var json = {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            } catch let error as NSError {
-                print("Failed to parse: \(error.localizedDescription)")
-                return nil
-            }
-        }()
-        
-        let title = json!["title"]
-        let year = json!["year"]
-        let actorList = json!["actorList"] as! [Any]
-        
-        print("JSON TITLE: \(title)")
-        print("JSON YEAR: \(year)")
-        print("JSON ACTORLIST: \(actorList)")
-        
-        for actor in actorList {
-            if let actor = actor as? [String: Any] {
-                print(actor["asCharacter"])
-            }
-        }
-        
-        
+   
         // Возьмите файл JSON, который мы разбирали на уроке.
         // И преобразуйте его в модель Movie со следующей структурой:
 
-        
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            guard let id = json["id"] as? String,
+                    let title = json["title"] as? String,
+                    let jsonYear = json["year"] as? String,
+                    let year = Int(jsonYear),
+                    let image = json["image"] as? String,
+                    let releaseDate = json["releaseDate"] as? String,
+                    let jsonRuntimeMins = json["runtimeMins"] as? String,
+                    let runtimeMins = Int(jsonRuntimeMins),
+                    let directors = json["directors"] as? String,
+                    let actorList = json["actorList"] as? [Any] else {
+                return
+            }
+
+            var actors: [Actor] = []
+
+            for actor in actorList {
+                guard let actor = actor as? [String: Any],
+                        let id = actor["id"] as? String,
+                        let image = actor["image"] as? String,
+                        let name = actor["name"] as? String,
+                        let asCharacter = actor["asCharacter"] as? String else {
+                    return
+                }
+                let mainActor = Actor(id: id,
+                                        image: image,
+                                        name: name,
+                                        asCharacter: asCharacter)
+                actors.append(mainActor)
+            }
+            let movie = Movie(id: id,
+                                title: title,
+                                year: year,
+                                image: image,
+                                releaseDate: releaseDate,
+                                runtimeMins: runtimeMins,
+                                directors: directors,
+                                actorList: actors)
+        } catch {
+            print("Failed to parse: \(error.localizedDescription)")
+        }
         
         
     }
