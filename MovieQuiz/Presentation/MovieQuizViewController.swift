@@ -8,17 +8,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesAnswerButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 
+    private let presenter = MovieQuizPresenter()
+
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var questionsAmount: Int = 10
 
-    private var currentQuestionIndex: Int = 0
     private var counterCorrectAnswers: Int = 0
     private var numberOfQuizGames: Int = 0
     private var recordCorrectAnswers: Int = 0
     private var recordDate = Date()
     private var averageAccuracy: Double = 0.0
-    private var allCorrectAnswers: Int = 0
+    private var correctAnswers: Int = 0
 
     private var statisticService: StatisticService = StatisticServiceImpl()
     private var moviesLoader = MoviesLoader()
@@ -45,7 +45,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
 
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -98,17 +98,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func restart() {
         counterCorrectAnswers = 0
-        currentQuestionIndex = 0
+        presenter.resetQuestionIndex()
         questionFactory?.loadData()
     }
-
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        QuizStepViewModel(
-            image: UIImage(data: model.image) ?? .remove,
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
-
 
     private func setupViewModel() {
         imageView.layer.borderWidth = 8
@@ -146,6 +138,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 guard let self = self else { return }
                 self.questionFactory?.requestNextQuestion()
             })
+        self.presenter.resetQuestionIndex()
+        self.correctAnswers = 0
         DispatchQueue.main.async {
             alert.showErrorAlert()
         }
@@ -166,6 +160,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func show(quiz result: QuizResultsViewModel) {
+        statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
+
+
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(presenter.questionsAmount)"
+
         let alert = ResultAlertPresenter(
             title: result.title,
             message: result.text,
@@ -174,6 +173,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 guard let self = self else { return }
                 self.questionFactory?.requestNextQuestion()
             })
+
+//        let action = UIAlertAction(
+//            title: result.buttonText,
+//            style: .default
+//        ) { [weak self] _ in
+//            guard let self = self else { return }
+//            self.presenter.resetQuestionIndex()
+//        }
         DispatchQueue.main.async {
             alert.showResultAlert()
         }
@@ -183,33 +190,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         yesAnswerButton.isEnabled = true
         noAnswerButton.isEnabled = true
 
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             numberOfQuizGames += 1
-            allCorrectAnswers += counterCorrectAnswers
+            correctAnswers += counterCorrectAnswers
             getResultQuiz()
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
-//            setupViewModel()
         }
     }
 
     private func getResultQuiz() {
-        var title = counterCorrectAnswers == questionsAmount ? "Вы победили!" : "Этот раунд окончен!"
-//        if counterCorrectAnswers >= recordCorrectAnswers {
-//            title = "Поздравляем!"
-//            recordCorrectAnswers = counterCorrectAnswers
-//        }
-//
-//        if counterCorrectAnswers == numberOfQuizGames {
-//            title = "Поздравляем! Это лучший результат"
-//        }
-        averageAccuracy = Double(allCorrectAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
-        statisticService.store(correct: allCorrectAnswers, total: questionsAmount)
+        var title = counterCorrectAnswers == presenter.questionsAmount ? "Вы победили!" : "Этот раунд окончен!"
+
+        averageAccuracy = Double(correctAnswers * 100) / Double(presenter.questionsAmount * numberOfQuizGames)
+        statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
         let resultQuiz = ResultAlertPresenter(
             title: title,
             message: """
-                Ваш результат: \(allCorrectAnswers)/\(questionsAmount)
+                Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
                 Количество сыгранных квизов: \(statisticService.gamesCount)
                 Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) \(statisticService.bestGame.date.dateTimeString)
                 Средняя точность: \(String(format: "%.2f", averageAccuracy))%
@@ -223,7 +222,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         resultQuiz.showResultAlert()
     }
 
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             counterCorrectAnswers += 1
         }

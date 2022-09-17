@@ -6,14 +6,6 @@ class ResultAlertPresenter {
     private let controller: UIViewController
     private let actionHandlder: ((UIAlertAction) -> Void)?
 
-    var currentQuestionIndex: Int = 0
-    var counterCorrectAnswers: Int = 0
-    var numberOfQuizGames: Int = 0
-    var recordCorrectAnswers: Int = 0
-    var recordDate = Date()
-    var averageAccuracy: Double = 0.0
-    var allCorrectAnswers: Int = 0
-
     init(
         title: String,
         message: String,
