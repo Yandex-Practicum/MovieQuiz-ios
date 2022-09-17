@@ -43,9 +43,10 @@ class QuestionFactory: QuestionFactoryProtocol {
             text: "Рейтинг этого фильма больше, чем 6?",
             correctAnswer: false)] //  Настоящий рейтинг: 5,8
 
-    func requestNextQuestion() -> QuizQuestion? { // 1
+    func requestNextQuestion(completion: (QuizQuestion?) -> Void) { // 1
         let index = (0..<QuestionFactory.questions.count).randomElement() ?? 0 // 2
-        return QuestionFactory.questions[safe: index] // 3
+        let question = QuestionFactory.questions[safe: index]
+        completion(question)
     }
 }
 private let questionFactory: QuestionFactoryProtocol = QuestionFactory()

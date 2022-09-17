@@ -26,12 +26,26 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
 
-        if let firstQuestion = self.questionFactory.requestNextQuestion() {
-            self.currentQuestion = firstQuestion
-            let viewModel = self.convert(model: firstQuestion)
-            self.showQuestion()
-        }
+      //  if let firstQuestion = questionFactory.requestNextQuestion() {
+      //       currentQuestion = firstQuestion
+      //      let viewModel = convert(model: firstQuestion)
+      //      showQuestion() */
 
+        questionFactory.requestNextQuestion { [weak self] question in
+            guard
+                let self = self,
+                let question = question
+            else {
+                // Ошибка
+                return
+            }
+            self.currentQuestion = question
+            let viewModel = self.convert(model: question)
+            DispatchQueue.main.async {
+                self.showQuestion()
+            }
+
+        }
     }
     // MARK: - Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
