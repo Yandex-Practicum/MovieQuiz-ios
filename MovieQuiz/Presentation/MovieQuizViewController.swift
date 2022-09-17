@@ -12,16 +12,26 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var noButton: UIButton!
 
     // MARK: - Properties
-    private let questions: [QuizQuestion] = DataSource.mockQuestions
-    private var currentQuestion: QuizQuestion?
+    // private let questions: [QuizQuestion] = mockQuestions
     private var currentQuestionIndex: Int = 0
     private var gamesScore: QuizScores = QuizScores()
+    private var questionsAmount: Int = 10
+    private let questionFactory: QuestionFactory = QuestionFactory()
+    private var currentQuestion: QuizQuestion?
+    
+
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        showQuestion()
+
+        if let firstQuestion = self.questionFactory.requestNextQuestion() {
+            self.currentQuestion = firstQuestion
+            let viewModel = self.convert(model: firstQuestion)
+            self.showQuestion()
+        }
+
     }
     // MARK: - Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -35,10 +45,11 @@ final class MovieQuizViewController: UIViewController {
     }
 
     // MARK: - Logic
+
     private func showQuestion() {
         /// Установили текущий вопрос. Так как у нас квиз начинается с 1го вопроса,
         /// то и берем из массива вопросов 1й элемент
-        currentQuestion = questions[safe: currentQuestionIndex] // метод лежит в Array+Extensions
+        currentQuestion = QuestionFactory.questions[safe: currentQuestionIndex] // метод лежит в Array+Extensions
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -107,16 +118,16 @@ final class MovieQuizViewController: UIViewController {
 
 
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
+        if currentQuestionIndex == QuestionFactory.questions.count - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
             print("Пора показать результат")
             gamesScore.itIsRecord() // проверяем рекорд ли это
             if gamesScore.score == 10 {
                 let winResult = QuizResultsViewModel (
                     title: "Вы выиграли!",
                     text:  """
-                    Ваш результат: \(gamesScore.score)/\(questions.count)
+                    Ваш результат: \(gamesScore.score)/\(QuestionFactory.questions.count)
                     Количество сыгранных квизов: \(gamesScore.gamesPlayed)
-                    Рекорд: \(gamesScore.record)/\(questions.count) (\(gamesScore.recordTime))
+                    Рекорд: \(gamesScore.record)/\(QuestionFactory.questions.count) (\(gamesScore.recordTime))
                     Средняя точность: \(gamesScore.accuracyAverage())%
                     """,
                     buttonText: "Сыграть еще раз"
@@ -127,9 +138,9 @@ final class MovieQuizViewController: UIViewController {
                     title: "Этот раунд окончен!",
                     text:
                     """
-                    Ваш результат: \(gamesScore.score)/\(questions.count)
+                    Ваш результат: \(gamesScore.score)/\(QuestionFactory.questions.count)
                     Количество сыгранных квизов: \(gamesScore.gamesPlayed)
-                    Рекорд: \(gamesScore.record)/\(questions.count) (\(gamesScore.recordTime))
+                    Рекорд: \(gamesScore.record)/\(QuestionFactory.questions.count) (\(gamesScore.recordTime))
                     Средняя точность: \(gamesScore.accuracyAverage())%
                     """,
                     buttonText: "Сыграть еще раз"
@@ -160,7 +171,7 @@ final class MovieQuizViewController: UIViewController {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? .remove,
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
     }
 
@@ -189,47 +200,5 @@ final class MovieQuizViewController: UIViewController {
 
 
 
-    enum DataSource {
-        static let mockQuestions: [QuizQuestion] = [
-            QuizQuestion(
-                image: "Deadpool",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: true), //  Настоящий рейтинг: 8
-            QuizQuestion(
-                image: "The Dark Knight",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: true), // Настоящий рейтинг: 9
-            QuizQuestion(
-                image: "The Godfather",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: true),  // Настоящий рейтинг: 9,2
-            QuizQuestion(
-                image: "Kill Bill",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: true), // Настоящий рейтинг: 8,1
-            QuizQuestion(
-                image: "The Avengers",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: true), // Настоящий рейтинг: 8
-            QuizQuestion(
-                image: "The Green Knight",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: true), //  Настоящий рейтинг: 6,6
-            QuizQuestion(
-                image: "Old",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: false), // Настоящий рейтинг: 5,8
-            QuizQuestion(
-                image: "The Ice Age Adventures of Buck Wild",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: false), //  Настоящий рейтинг: 4,3
-            QuizQuestion(
-                image: "Tesla",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: false), // Настоящий рейтинг: 5,1
-            QuizQuestion(
-                image: "Vivarium",
-                text: "Рейтинг этого фильма больше, чем 6?",
-                correctAnswer: false)] //  Настоящий рейтинг: 5,8
-    }
+
 }
