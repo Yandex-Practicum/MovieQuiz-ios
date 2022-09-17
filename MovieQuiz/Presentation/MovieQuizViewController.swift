@@ -33,6 +33,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         
+        // РАБОТА С ФАЙЛАМИ
+        
         print("Sandbox url:")
         print(NSHomeDirectory()) // Узнаю адрес sandbox
         UserDefaults.standard.set(true, forKey: "viewDidLoad") // Добавляю запись в UD
@@ -42,10 +44,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         // Добавляю файл в папку Documents
         var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! // Записал в переменную url папки Documents
-        var fileName = "text.swift"
+        let fileName = "text.swift"
         documentsURL.appendPathComponent(fileName) // Добавил в путь text.swift
-
-        documentsURL.appendPathComponent(fileName) // Добавил в путь text.swift
+        
         if !FileManager.default.fileExists(atPath: documentsURL.path) { // проверил нет ли такого файла
             // Такого файла нет
             let hello = "Hello World!" // создаю контент
@@ -53,6 +54,96 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             // создаю файл и добавляю в него контент
             FileManager.default.createFile(atPath: documentsURL.path, contents: data)
         }
+        
+        print("ПУТЬ — \(documentsURL.path)")
+        
+        
+        // ОБРАБОТКА ОШИБОК
+        
+        enum FileManagerError: Error {
+            case fileDoesNotExist
+        }
+        
+        func string(from fileURL: URL) throws -> String {
+            // Проверяю есть ли файл
+            if !FileManager.default.fileExists(atPath: fileURL.path) {
+                throw FileManagerError.fileDoesNotExist
+            }
+            // Проверяю генерится ли строка
+            return try String(contentsOf: fileURL)
+        }
+        var str = ""
+        
+        do {
+            str = try string(from: documentsURL)
+        } catch FileManagerError.fileDoesNotExist {
+            print("ОШИБКА! Файл по адресу \(documentsURL.path) не существует")
+        } catch {
+            print("Неизвестная ошибка чтения из файла \(error)") // Дефолтный текст ошибки
+        }
+        
+        
+        
+        // JSON
+        // Скачайте файл inception.json и положите его в папку Documents песочницы
+        // вашего проекта. Далее, во viewDidLoad() создайте переменную jsonString и
+        // запишите в неё содержимое файла.
+        
+        
+        // Создаю URL JSON-файла
+        let jsonURL: URL = {
+            var dirPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            dirPath.appendPathComponent("inception.json")
+            return dirPath
+        }()
+        
+        // Записываю содержимое JSON-файла
+        var jsonString: String = {
+            // Проверяю есть ли файл
+            var str = ""
+            do {
+                str = try string(from: jsonURL)
+            } catch FileManagerError.fileDoesNotExist {
+                print("Файл по адресу \(jsonURL.path) не существует!")
+            } catch {
+                print("Неизвестная ошибка \(error)")
+            }
+            return str
+        }()
+        
+        let data = jsonString.data(using: .utf8)! // Конвертирую стринг в Data
+        
+        // Создаю словарь с данными JSON
+        var json = {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch let error as NSError {
+                print("Failed to parse: \(error.localizedDescription)")
+                return nil
+            }
+        }()
+        
+        let title = json!["title"]
+        let year = json!["year"]
+        let actorList = json!["actorList"] as! [Any]
+        
+        print("JSON TITLE: \(title)")
+        print("JSON YEAR: \(year)")
+        print("JSON ACTORLIST: \(actorList)")
+        
+        for actor in actorList {
+            if let actor = actor as? [String: Any] {
+                print(actor["asCharacter"])
+            }
+        }
+        
+        
+        // Возьмите файл JSON, который мы разбирали на уроке.
+        // И преобразуйте его в модель Movie со следующей структурой:
+
+        
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
