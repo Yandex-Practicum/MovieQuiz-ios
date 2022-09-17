@@ -195,15 +195,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func getResultQuiz() {
-        var title = "Игра окончена!"
-        if counterCorrectAnswers >= recordCorrectAnswers {
-            title = "Поздравляем! Новый рекорд!"
-            recordCorrectAnswers = counterCorrectAnswers
-        }
-
-        if counterCorrectAnswers == numberOfQuizGames {
-            title = "Поздравляем! Это лучший результат"
-        }
+        var title = counterCorrectAnswers == questionsAmount ? "Вы победили!" : "Этот раунд окончен!"
+//        if counterCorrectAnswers >= recordCorrectAnswers {
+//            title = "Поздравляем!"
+//            recordCorrectAnswers = counterCorrectAnswers
+//        }
+//
+//        if counterCorrectAnswers == numberOfQuizGames {
+//            title = "Поздравляем! Это лучший результат"
+//        }
         averageAccuracy = Double(allCorrectAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
         statisticService.store(correct: allCorrectAnswers, total: questionsAmount)
         let resultQuiz = ResultAlertPresenter(

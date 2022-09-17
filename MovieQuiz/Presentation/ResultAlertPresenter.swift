@@ -38,7 +38,7 @@ class ResultAlertPresenter {
             handler: {
                 action in self.actionHandlder?(action)
             })
-
+        alert.view.accessibilityIdentifier = "Result_Alert"
         alert.addAction(action)
         self.controller.present(alert, animated: true, completion: nil)
     }
