@@ -11,7 +11,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let presenter = MovieQuizPresenter()
 
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+//    private var currentQuestion: QuizQuestion?
 
     private var counterCorrectAnswers: Int = 0
     private var numberOfQuizGames: Int = 0
@@ -40,17 +40,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            self.questionFactory?.requestNextQuestion()
-            return
-        }
-
-        presenter.currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
+        presenter.didReceiveNextQuestion(question: question)
     }
+//    func didReceiveNextQuestion(question: QuizQuestion?) {
+//        guard let question = question else {
+//            self.questionFactory?.requestNextQuestion()
+//            return
+//        }
+//
+//        currentQuestion = question
+//        let viewModel = presenter.convert(model: question)
+//        DispatchQueue.main.async { [weak self] in
+//            self?.show(quiz: viewModel)
+//        }
+//    }
 
     func didLoadDataFromServer() {
         DispatchQueue.main.async { [weak self] in
@@ -79,17 +82,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     // MARK: - Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        presenter.currentQuestion = currentQuestion
         presenter.noButtonClicked()
     }
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        presenter.currentQuestion = currentQuestion
         presenter.yesButtonClicked()
     }
 
     // MARK: - Private Functions
-    private func show(quiz step: QuizStepViewModel) {
+    func show(quiz step: QuizStepViewModel) {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.image = step.image

@@ -29,16 +29,32 @@ final class MovieQuizPresenter {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
 
+    // MARK: - Buttons
     func yesButtonClicked() {
-        guard let currentQuestion = currentQuestion else { return }
-
-        viewController?.showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
+        didAnswer(isYes: true)
     }
 
     func noButtonClicked() {
-        guard let currentQuestion = currentQuestion else { return }
-
-        viewController?.showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
+        didAnswer(isYes: false)
     }
 
+    private func didAnswer(isYes: Bool) {
+        guard let currentQuestion = currentQuestion else { return }
+
+        let givenAnswer = isYes
+
+        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
 }
