@@ -33,75 +33,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         
-        // РАБОТА С ФАЙЛАМИ
-        
-        print("Sandbox url:")
-        print(NSHomeDirectory()) // Узнаю адрес sandbox
-        UserDefaults.standard.set(true, forKey: "viewDidLoad") // Добавляю запись в UD
-        
-        print("Bundle url:")
-        print(Bundle.main.bundlePath) // Узнаю адрес bundle
-        
-        // Добавляю файл в папку Documents
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! // Записал в переменную url папки Documents
-        let fileName = "text.swift"
-        documentsURL.appendPathComponent(fileName) // Добавил в путь text.swift
-        
-        if !FileManager.default.fileExists(atPath: documentsURL.path) { // проверил нет ли такого файла
-            // Такого файла нет
-            let hello = "Hello World!" // создаю контент
-            let data = hello.data(using: .utf8) // конвертирую контент в двоичный формат Data
-            // создаю файл и добавляю в него контент
-            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
-        }
-        
-        print("ПУТЬ — \(documentsURL.path)")
-        
-        
-        // ОБРАБОТКА ОШИБОК
-        
         enum FileManagerError: Error {
             case fileDoesNotExist
         }
         
-        func string(from fileURL: URL) throws -> String {
-            // Проверяю есть ли файл
-            if !FileManager.default.fileExists(atPath: fileURL.path) {
-                throw FileManagerError.fileDoesNotExist
-            }
-            // Проверяю генерится ли строка
-            return try String(contentsOf: fileURL)
-        }
-        var str = ""
-        
-        do {
-            str = try string(from: documentsURL)
-        } catch FileManagerError.fileDoesNotExist {
-            print("ОШИБКА! Файл по адресу \(documentsURL.path) не существует")
-        } catch {
-            print("Неизвестная ошибка чтения из файла \(error)") // Дефолтный текст ошибки
-        }
-        
-        
-        
-        // JSON
-        // Скачайте файл inception.json и положите его в папку Documents песочницы
-        // вашего проекта. Далее, во viewDidLoad() создайте переменную jsonString и
-        // запишите в неё содержимое файла.
-        
-        
         // Создаю URL JSON-файла
         let jsonURL: URL = {
             var dirPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            dirPath.appendPathComponent("inception.json")
+            dirPath.appendPathComponent("top250MoviesIMDB.json")
             return dirPath
         }()
         
-        // Записываю содержимое JSON-файла
+        // Записываю данные JSON-файла в String
         var jsonString: String = {
             // Проверяю есть ли файл
             var str = ""
             do {
+                // Отправляю URL в конвертор в String
                 str = try string(from: jsonURL)
             } catch FileManagerError.fileDoesNotExist {
                 print("Файл по адресу \(jsonURL.path) не существует!")
@@ -111,136 +59,36 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return str
         }()
         
-        let data = jsonString.data(using: .utf8)! // Конвертирую стринг в Data
+        // print(jsonString)
         
-        // Возьмите файл JSON, который мы разбирали на уроке.
-        // И преобразуйте его в модель Movie со следующей структурой:
-        // cм. Movie и Actor
+        // Конвертирую данные из String в Data
+        let data = jsonString.data(using: .utf8)!
+        ParseJSON(data: data)
         
-        
-        do {
-            let movie = try JSONDecoder().decode(Movie.self, from: data)
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
+        // Конвертор URL в String
+        func string(from fileURL: URL) throws -> String {
+            // Проверяю есть ли файл
+            if !FileManager.default.fileExists(atPath: fileURL.path) {
+                throw FileManagerError.fileDoesNotExist
+            }
+            // Проверяю генерится ли строка
+            return try String(contentsOf: fileURL)
         }
-        
-        
-        
-        do {
-            let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-            guard let id = json["id"] as? String,
-                  let title = json["title"] as? String,
-                  let jsonYear = json["year"] as? String,
-                  let year = Int(jsonYear),
-                  let image = json["image"] as? String,
-                  let releaseDate = json["releaseDate"] as? String,
-                  let jsonRunTimeMins = json["runtimeMins"] as? String,
-                  let runtimeMins = Int(jsonRunTimeMins),
-                  let directors = json["directors"] as? String,
-                  let actorList = json["actorList"] as? [Any]
-            else {
-                return
-            }
-            
-            var actors: [Actor] = []
-            
-            for actor in actorList {
-                guard let actor = actor as? [String: Any],
-                      let id = actor["id"] as? String,
-                      let image = actor["image"] as? String,
-                      let name = actor["name"] as? String,
-                      let asCharacter = actor["asCharacter"] as? String
-                else {
-                    return
-                }
-                let mainActor = Actor(
-                    id: id,
-                    image: image,
-                    name: name,
-                    asCharacter: asCharacter
-                )
-                actors.append(mainActor)
-            }
-            let movie = Movie(
-                id: id,
-                title: title,
-                year: year,
-                image: image,
-                releaseDate: releaseDate,
-                runtimeMins: runtimeMins,
-                directors: directors,
-                actorList: actors
-            )
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        do {
-            let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-            guard let id = json["id"] as? String,
-                  let title = json["title"] as? String,
-                  let jsonYear = json["year"] as? String,
-                  let year = Int(jsonYear),
-                  let image = json["image"] as? String,
-                  let releaseDate = json["releaseDate"] as? String,
-                  let jsonRuntimeMins = json["runtimeMins"] as? String,
-                  let runtimeMins = Int(jsonRuntimeMins),
-                  let directors = json["directors"] as? String,
-                  let actorList = json["actorList"] as? [Any]
-            else {
-                return
-            }
-            
-            var actors: [Actor] = []
-            
-            for actor in actorList {
-                guard let actor = actor as? [String: Any],
-                      let id = actor["id"] as? String,
-                      let image = actor["image"] as? String,
-                      let name = actor["name"] as? String,
-                      let asCharacter = actor["asCharacter"] as? String
-                else {
-                    return
+
+        // Декодер данных из JSON
+        func ParseJSON(data: Data) {
+            let decoder = JSONDecoder()
+            do {
+                let decodedData = try decoder.decode(Movies.self, from: data)
+                print("YEAR: \(decodedData.moviesList[0].year)")
+                for movie in decodedData.moviesList {
+                    print(movie.fullTitle)
                 }
                 
-                let mainActor = Actor(
-                    id: id,
-                    image: image,
-                    name: name,
-                    asCharacter: asCharacter
-                )
-                actors.append(mainActor)
+            } catch {
+                print("Failed to parse: \(error.localizedDescription)")
             }
-            
-            let movie = Movie(
-                id: id,
-                title: title,
-                year: year,
-                image: image,
-                releaseDate: releaseDate,
-                runtimeMins: runtimeMins,
-                directors: directors,
-                actorList: actors
-            )
-            
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
