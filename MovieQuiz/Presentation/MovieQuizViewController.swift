@@ -112,53 +112,134 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }()
         
         let data = jsonString.data(using: .utf8)! // Конвертирую стринг в Data
-   
+        
         // Возьмите файл JSON, который мы разбирали на уроке.
         // И преобразуйте его в модель Movie со следующей структурой:
-
+        // cм. Movie и Actor
+        
+        
         do {
-            let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-            guard let id = json["id"] as? String,
-                    let title = json["title"] as? String,
-                    let jsonYear = json["year"] as? String,
-                    let year = Int(jsonYear),
-                    let image = json["image"] as? String,
-                    let releaseDate = json["releaseDate"] as? String,
-                    let jsonRuntimeMins = json["runtimeMins"] as? String,
-                    let runtimeMins = Int(jsonRuntimeMins),
-                    let directors = json["directors"] as? String,
-                    let actorList = json["actorList"] as? [Any] else {
-                return
-            }
-
-            var actors: [Actor] = []
-
-            for actor in actorList {
-                guard let actor = actor as? [String: Any],
-                        let id = actor["id"] as? String,
-                        let image = actor["image"] as? String,
-                        let name = actor["name"] as? String,
-                        let asCharacter = actor["asCharacter"] as? String else {
-                    return
-                }
-                let mainActor = Actor(id: id,
-                                        image: image,
-                                        name: name,
-                                        asCharacter: asCharacter)
-                actors.append(mainActor)
-            }
-            let movie = Movie(id: id,
-                                title: title,
-                                year: year,
-                                image: image,
-                                releaseDate: releaseDate,
-                                runtimeMins: runtimeMins,
-                                directors: directors,
-                                actorList: actors)
+            let movie = try JSONDecoder().decode(Movie.self, from: data)
         } catch {
             print("Failed to parse: \(error.localizedDescription)")
         }
         
+        
+        
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            guard let id = json["id"] as? String,
+                  let title = json["title"] as? String,
+                  let jsonYear = json["year"] as? String,
+                  let year = Int(jsonYear),
+                  let image = json["image"] as? String,
+                  let releaseDate = json["releaseDate"] as? String,
+                  let jsonRunTimeMins = json["runtimeMins"] as? String,
+                  let runtimeMins = Int(jsonRunTimeMins),
+                  let directors = json["directors"] as? String,
+                  let actorList = json["actorList"] as? [Any]
+            else {
+                return
+            }
+            
+            var actors: [Actor] = []
+            
+            for actor in actorList {
+                guard let actor = actor as? [String: Any],
+                      let id = actor["id"] as? String,
+                      let image = actor["image"] as? String,
+                      let name = actor["name"] as? String,
+                      let asCharacter = actor["asCharacter"] as? String
+                else {
+                    return
+                }
+                let mainActor = Actor(
+                    id: id,
+                    image: image,
+                    name: name,
+                    asCharacter: asCharacter
+                )
+                actors.append(mainActor)
+            }
+            let movie = Movie(
+                id: id,
+                title: title,
+                year: year,
+                image: image,
+                releaseDate: releaseDate,
+                runtimeMins: runtimeMins,
+                directors: directors,
+                actorList: actors
+            )
+        } catch {
+            print("Failed to parse: \(error.localizedDescription)")
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            guard let id = json["id"] as? String,
+                  let title = json["title"] as? String,
+                  let jsonYear = json["year"] as? String,
+                  let year = Int(jsonYear),
+                  let image = json["image"] as? String,
+                  let releaseDate = json["releaseDate"] as? String,
+                  let jsonRuntimeMins = json["runtimeMins"] as? String,
+                  let runtimeMins = Int(jsonRuntimeMins),
+                  let directors = json["directors"] as? String,
+                  let actorList = json["actorList"] as? [Any]
+            else {
+                return
+            }
+            
+            var actors: [Actor] = []
+            
+            for actor in actorList {
+                guard let actor = actor as? [String: Any],
+                      let id = actor["id"] as? String,
+                      let image = actor["image"] as? String,
+                      let name = actor["name"] as? String,
+                      let asCharacter = actor["asCharacter"] as? String
+                else {
+                    return
+                }
+                
+                let mainActor = Actor(
+                    id: id,
+                    image: image,
+                    name: name,
+                    asCharacter: asCharacter
+                )
+                actors.append(mainActor)
+            }
+            
+            let movie = Movie(
+                id: id,
+                title: title,
+                year: year,
+                image: image,
+                releaseDate: releaseDate,
+                runtimeMins: runtimeMins,
+                directors: directors,
+                actorList: actors
+            )
+            
+        } catch {
+            print("Failed to parse: \(error.localizedDescription)")
+        }
         
     }
     
@@ -177,7 +258,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let question = question else {
             return
         }
-
+        
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
@@ -319,7 +400,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         analytic.gameRestart()
         viewDidLoad()
     }
-
+    
 }
 
 
@@ -385,7 +466,7 @@ extension MovieQuizViewController {
             accuracyCollect += accuracyCurrent
             return String(format: "%.2f", accuracyCollect / Float(gamesPlayed))
         }
-
+        
         mutating func isItRecord() {
             // проверка на рекорд
             if score >= record {
@@ -398,7 +479,7 @@ extension MovieQuizViewController {
             gamesPlayed += 1
             score = 0
         }
-
+        
     }
     
 }
