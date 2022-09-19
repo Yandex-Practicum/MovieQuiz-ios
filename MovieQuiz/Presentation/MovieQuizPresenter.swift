@@ -2,7 +2,7 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     // MARK: - Variables
-    let questionsAmount: Int = 3
+    let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     private var counterCorrectAnswers: Int = 0
     var correctAnswers: Int = 0
@@ -120,7 +120,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func getResultQuiz() {
         let title = correctAnswers == self.questionsAmount ?
         "Поздравляем, вы ответили на все вопросы верно!" :
-        "Вы ответили на \(correctAnswers) из \(numberOfQuizGames), попробуйте еще раз!"
+        "В этот раз не вышло, попробуйте еще раз!"
 
         let resultMessage = makeResultsMessage()
         let resultQuiz = ResultAlertPresenter(

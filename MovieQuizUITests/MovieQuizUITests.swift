@@ -25,7 +25,7 @@ final class MovieQuizUITests: XCTestCase {
         app.buttons["Yes"].tap()
         let secondPoster = app.images["Poster"]
         let indexLabel = app.staticTexts["Index"]
-        sleep(3)
+        sleep(2)
         XCTAssertTrue(indexLabel.label == "2/10")
         XCTAssertFalse(firstPoster == secondPoster)
     }
@@ -35,7 +35,7 @@ final class MovieQuizUITests: XCTestCase {
         app.buttons["No"].tap()
         let secondPoster = app.images["Poster"]
         let indexLabel = app.staticTexts["Index"]
-        sleep(3)
+        sleep(2)
         XCTAssertTrue(indexLabel.label == "2/10")
         XCTAssertFalse(firstPoster == secondPoster)
     }
@@ -51,7 +51,7 @@ final class MovieQuizUITests: XCTestCase {
 
         let resultAlert = app.alerts["Result_Alert"]
         XCTAssert(app.alerts["Result_Alert"].waitForExistence(timeout: 5)) // здесь мы ожидаем появление алерта
-        XCTAssertTrue(resultAlert.label == "Этот раунд окончен!") // проверяем что текст на алерте соответствует
+        XCTAssertTrue(resultAlert.label == "В этот раз не вышло, попробуйте еще раз!") // проверяем что текст на алерте соответствует
     }
 
     func testHideAlert() throws {
@@ -65,7 +65,7 @@ final class MovieQuizUITests: XCTestCase {
 
         let resultAlert = app.alerts["Result_Alert"]
         XCTAssert(app.alerts["Result_Alert"].waitForExistence(timeout: 5)) // здесь мы ожидаем появление алерта
-        XCTAssertTrue(resultAlert.label == "Этот раунд окончен!") // проверяем что текст на алерте соответствует
+        XCTAssertTrue(resultAlert.label == "В этот раз не вышло, попробуйте еще раз!") // проверяем что текст на алерте соответствует
 
         resultAlert.buttons.firstMatch.tap() // ищем кнопку в алерте
         sleep(2) // ждем

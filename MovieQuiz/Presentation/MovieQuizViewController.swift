@@ -73,7 +73,6 @@ final class MovieQuizViewController: UIViewController {
             actionHandler: { [weak self] _ in
                 guard let self = self else { return }
                 self.presenter.restartGame()
-//                self.questionFactory?.requestNextQuestion()
             })
         self.presenter.restartGame()
         self.presenter.correctAnswers = 0
