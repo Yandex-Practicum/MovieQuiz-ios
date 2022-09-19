@@ -5,9 +5,9 @@ class QuestionFactory: QuestionFactoryProtocol {
     private let delegate: QuestionFactoryDelegate
     private var movies: [MostPopularMovie] = []
 
-    init(moviesLoder: MoviesLoading, delegate: QuestionFactoryDelegate) {
+    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate) {
         self.delegate = delegate
-        self.moviesLoader = moviesLoder
+        self.moviesLoader = moviesLoader
     }
 //    private let questions: [QuizQuestion] = [
 //        QuizQuestion(

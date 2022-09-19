@@ -1,9 +1,8 @@
 import UIKit
 
-final class MovieQuizPresenter {
-
+final class MovieQuizPresenter: QuestionFactoryDelegate {
     // MARK: - Variables
-    let questionsAmount: Int = 1
+    let questionsAmount: Int = 3
     private var currentQuestionIndex: Int = 0
     private var counterCorrectAnswers: Int = 0
     var correctAnswers: Int = 0
@@ -13,13 +12,39 @@ final class MovieQuizPresenter {
     private var recordDate = Date()
     private var averageAccuracy: Double = 0.0
 
-    private var statisticService: StatisticService = StatisticServiceImpl()
-    private var moviesLoader = MoviesLoader()
     private var gameCount: Int = 0
 
-    weak var viewController: MovieQuizViewController?
     var currentQuestion: QuizQuestion?
+    private var statisticService: StatisticService!
+    private weak var viewController: MovieQuizViewController?
     var questionFactory: QuestionFactoryProtocol?
+
+    init(viewController: MovieQuizViewController) {
+        self.viewController = viewController
+
+        statisticService = StatisticServiceImpl()
+
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+    }
+
+    func didLoadDataFromServer() {
+        viewController?.hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didReceiveEmptyJson(errorMessage errorMessage: String) {
+        viewController?.showErrorEmptyJson(message: errorMessage)
+    }
+
+    func didFailToLoadData(with error: Error) {
+            viewController?.showNetworkError(message: error.localizedDescription)
+    }
+
+    func didFailToLoadImage(with error: Error) {
+            viewController?.showImageError(message: error.localizedDescription)
+    }
 
     func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
@@ -37,12 +62,18 @@ final class MovieQuizPresenter {
         didAnswer(isYes: false)
     }
 
+    func didAnswer(isCorrectAnswer: Bool) {
+        if isCorrectAnswer {
+            counterCorrectAnswers += 1
+        }
+    }
+
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else { return }
 
         let givenAnswer = isYes
 
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 
     // MARK: - Functions
@@ -53,7 +84,7 @@ final class MovieQuizPresenter {
     func restartGame() {
         currentQuestionIndex = 0
         counterCorrectAnswers = 0
-        questionFactory?.loadData()
+        questionFactory?.requestNextQuestion() // надо ли?
     }
 
     func switchToNextQuestion() {
@@ -87,15 +118,11 @@ final class MovieQuizPresenter {
     }
 
     func getResultQuiz() {
-//        statisticService.store(correct: correctAnswers, total: self.questionsAmount)
-
         let title = correctAnswers == self.questionsAmount ?
         "Поздравляем, вы ответили на все вопросы верно!" :
-        "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
+        "Вы ответили на \(correctAnswers) из \(numberOfQuizGames), попробуйте еще раз!"
 
         let resultMessage = makeResultsMessage()
-
-        averageAccuracy = Double(correctAnswers * 100) / Double(self.questionsAmount * numberOfQuizGames)
         let resultQuiz = ResultAlertPresenter(
             title: title,
             message: resultMessage,
@@ -111,6 +138,8 @@ final class MovieQuizPresenter {
     func makeResultsMessage() -> String {
         statisticService.store(correct: correctAnswers, total: questionsAmount)
 
+        averageAccuracy = Double(correctAnswers * 100) / Double(questionsAmount * numberOfQuizGames)
+
         let bestGame = statisticService.bestGame
 
         let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
@@ -123,9 +152,18 @@ final class MovieQuizPresenter {
         return resultMessage
     }
 
-//    private func restart() {
-//        counterCorrectAnswers = 0
-//        resetQuestionIndex()
-//        questionFactory?.loadData()
-//    }
+    func showAnswerResult(isCorrect: Bool) {
+// TODO: - Добавить блокирование кнопок Да/Нет
+        didAnswer(isCorrectAnswer: isCorrect)
+
+//        yesAnswerButton.isEnabled = false
+//        noAnswerButton.isEnabled = false
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.showNextQuestionOrResults()
+            self.viewController?.updateImageBorder()
+        }
+    }
 }
