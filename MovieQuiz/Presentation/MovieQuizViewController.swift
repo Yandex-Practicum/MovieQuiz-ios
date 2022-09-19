@@ -1,6 +1,10 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     // MARK: - Outlets and Actions
 
     @IBOutlet private weak var poster: UIImageView!
