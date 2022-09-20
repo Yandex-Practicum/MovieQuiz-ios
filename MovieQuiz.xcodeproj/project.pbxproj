@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8D236F8228D733A00025FCF0 /* StatiscticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D236F8128D733A00025FCF0 /* StatiscticService.swift */; };
-		8D236F8428D73AEE0025FCF0 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D236F8328D73AEE0025FCF0 /* GameRecord.swift */; };
 		8D3A488228BB713300961961 /* QuestionFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3A488128BB713300961961 /* QuestionFactoryProtocol.swift */; };
 		8D57FDCC28CDC89B00D5B453 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D57FDCB28CDC89B00D5B453 /* AlertPresenter.swift */; };
 		8D6C6E3A28969891006A7EF6 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D6C6E3828969891006A7EF6 /* YS Display-Bold.ttf */; };
@@ -32,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		8D236F8128D733A00025FCF0 /* StatiscticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatiscticService.swift; sourceTree = "<group>"; };
-		8D236F8328D73AEE0025FCF0 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
 		8D3A488128BB713300961961 /* QuestionFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryProtocol.swift; sourceTree = "<group>"; };
 		8D57FDCB28CDC89B00D5B453 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		8D6C6E3828969891006A7EF6 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
@@ -81,7 +79,6 @@
 				8DFDF38A28BA248300D1DD3D /* QuizResultViewModel.swift */,
 				8DFDF38C28BA253900D1DD3D /* QuizQuestion.swift */,
 				8DEEDDCF28D5DBBD00E929A7 /* Movies.swift */,
-				8D236F8328D73AEE0025FCF0 /* GameRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,7 +257,6 @@
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				8D236F8228D733A00025FCF0 /* StatiscticService.swift in Sources */,
-				8D236F8428D73AEE0025FCF0 /* GameRecord.swift in Sources */,
 				8D3A488228BB713300961961 /* QuestionFactoryProtocol.swift in Sources */,
 				8D96758A28CBA3F400B3277B /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
