@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -25,11 +25,23 @@ final class MovieQuizViewController: UIViewController {
         presenter.yesButtonClicked()
     }
 
+    // MARK: - Buttons interactions
+    func disableButtons() {
+        yesAnswerButton.isUserInteractionEnabled = false
+        noAnswerButton.isUserInteractionEnabled = false
+    }
+
+    func enableButtons() {
+        yesAnswerButton.isUserInteractionEnabled = true
+        noAnswerButton.isUserInteractionEnabled = true
+    }
+
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
         presenter.didReceiveNextQuestion(question: question)
     }
 
+    // MARK: - Loading indicator
     func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
@@ -41,16 +53,44 @@ final class MovieQuizViewController: UIViewController {
         }
     }
 
+    // MARK: - Setup Method
+    private func setupViewModel() {
+        presenter.questionFactory?.loadData()
+    }
+
+    func updateImageBorder() {
+        imageView.layer.borderColor = UIColor.clear.cgColor
+    }
+
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
+
+    // MARK: - View
+    func show(quiz result: QuizResultsViewModel) {
+        let message = presenter.makeResultsMessage()
+
+        let alert = ResultAlertPresenter(
+            title: result.title,
+            message: message,
+            controller: self,
+            actionHandler: { [weak self] _ in
+                guard let self = self else { return }
+            })
+        DispatchQueue.main.async {
+            alert.showResultAlert()
+        }
+    }
+
     func show(quiz step: QuizStepViewModel) {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.image = step.image
     }
 
-    private func setupViewModel() {
-        presenter.questionFactory?.loadData()
-    }
-
+    // MARK: - Error's Methods
     func showErrorEmptyJson(message: String) {
         let alert = ResultAlertPresenter(
             title: "Упс! Кажется мы не получили данные о фильме",
@@ -92,31 +132,6 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.async {
             alert.showErrorAlert()
         }
-    }
-
-    private func show(quiz result: QuizResultsViewModel) {
-        let message = presenter.makeResultsMessage()
-
-        let alert = ResultAlertPresenter(
-            title: result.title,
-            message: message,
-            controller: self,
-            actionHandler: { [weak self] _ in
-                guard let self = self else { return }
-            })
-        DispatchQueue.main.async {
-            alert.showResultAlert()
-        }
-    }
-
-    func updateImageBorder() {
-        imageView.layer.borderColor = UIColor.clear.cgColor
-    }
-
-    func highlightImageBorder(isCorrectAnswer: Bool) {
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
 
     // MARK: - Status bar and orientations settings

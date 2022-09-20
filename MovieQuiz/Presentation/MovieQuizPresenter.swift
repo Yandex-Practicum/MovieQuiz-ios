@@ -1,5 +1,18 @@
 import UIKit
 
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    func show(quiz step: QuizStepViewModel)
+    func show(quiz result: QuizResultsViewModel)
+    func highlightImageBorder(isCorrectAnswer: Bool)
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
+    func updateImageBorder()
+    func showNetworkError(message: String)
+    func showErrorEmptyJson(message: String)
+    func showImageError(message: String)
+
+}
+
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     // MARK: - Variables
     let questionsAmount: Int = 10
@@ -11,15 +24,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var recordCorrectAnswers: Int = 0
     private var recordDate = Date()
     private var averageAccuracy: Double = 0.0
-
     private var gameCount: Int = 0
 
     var currentQuestion: QuizQuestion?
     private var statisticService: StatisticService!
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     var questionFactory: QuestionFactoryProtocol?
 
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
 
         statisticService = StatisticServiceImpl()
@@ -64,7 +76,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     func didAnswer(isCorrectAnswer: Bool) {
         if isCorrectAnswer {
-            counterCorrectAnswers += 1
+            correctAnswers += 1
         }
     }
 
@@ -83,8 +95,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     func restartGame() {
         currentQuestionIndex = 0
-        counterCorrectAnswers = 0
-        questionFactory?.requestNextQuestion() // надо ли?
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
     }
 
     func switchToNextQuestion() {
@@ -104,9 +116,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
 
     func showNextQuestionOrResults() {
-//        yesAnswerButton.isEnabled = true
-//        noAnswerButton.isEnabled = true
-        
         if self.isLastQuestion() {
             numberOfQuizGames += 1
             correctAnswers += counterCorrectAnswers
@@ -126,7 +135,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         let resultQuiz = ResultAlertPresenter(
             title: title,
             message: resultMessage,
-            controller: viewController!,
+            controller: viewController! as! UIViewController,
             actionHandler: { [weak self] _ in
                 guard let self = self else { return }
                 self.restartGame()
@@ -153,7 +162,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
 
     func showAnswerResult(isCorrect: Bool) {
-// TODO: - Добавить блокирование кнопок Да/Нет
+        // TODO: - Добавить блокирование кнопок Да/Нет
         didAnswer(isCorrectAnswer: isCorrect)
 
 //        yesAnswerButton.isEnabled = false
