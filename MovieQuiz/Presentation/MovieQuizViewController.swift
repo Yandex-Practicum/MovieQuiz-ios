@@ -5,6 +5,92 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
+    struct QuizStepViewModel {
+      let image: UIImage
+      let question: String
+      let questionNumber: String
+    }
+    
+    struct QuizResultsViewModel {
+      let title: String
+      let text: String
+      let buttonText: String
+    }
+    
+    struct QuizQuestion {
+        let image: String
+        let text: String
+        let correctAnswer: Bool
+    }
+    
+    private let question: [QuizQuestion] = [
+            QuizQuestion(
+                image: "The Godfather",
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+            QuizQuestion(
+                image: "The Dark Knight",
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+            QuizQuestion(
+                image: "Kill Bill",
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+            QuizQuestion(
+                image: "The Avengers",
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+            QuizQuestion(
+                image: "Deadpool",
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+            QuizQuestion(
+                image: "The Green Knight",
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: true),
+            QuizQuestion(
+                image: "Old",
+                text: "Рейтинг этого фильма больше чем 6?",
+                correctAnswer: false),
+            QuizQuestion(
+                image: "The Ice Age Adventures of Buck Wild",
+                text: "Рейтинг этого фильма больше чем 6",
+                correctAnswer: false),
+            QuizQuestion(
+                image: "Tesla",
+                text: "Рейтинг этого фильма больше чем 6",
+                correctAnswer: false),
+            QuizQuestion(
+                image: "Vivarium",
+                text: "Рейтинг этого фильма больше чем 6",
+                correctAnswer: false),
+            QuizQuestion(
+                image: "The Room",
+                text: "Рейтинг этого фильма больше чем 6",
+                correctAnswer: false),
+            QuizQuestion(
+                image: "Lord of the ring",
+                text: "Рейтинг этого фильма больше чем 6",
+                correctAnswer: true)
+            ]
+    
 }
 
 /*
