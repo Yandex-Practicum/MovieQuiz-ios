@@ -1,6 +1,18 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var textLabel: UILabel!
+    
+    
+    
+    
+    
+    
+    
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +102,16 @@ final class MovieQuizViewController: UIViewController {
                 text: "Рейтинг этого фильма больше чем 6",
                 correctAnswer: true)
             ]
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        
+    }
+    
+    
     
 }
 
