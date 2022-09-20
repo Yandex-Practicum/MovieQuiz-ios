@@ -8,6 +8,9 @@ final class MovieQuizViewController: UIViewController {
     
     
     
+
+    
+    
     
     
     
@@ -52,7 +55,7 @@ final class MovieQuizViewController: UIViewController {
         let correctAnswer: Bool
     }
     
-    private let question: [QuizQuestion] = [
+    private let questions: [QuizQuestion] = [
             QuizQuestion(
                 image: "The Godfather",
                 text: "Рейтинг этого фильма больше чем 6?",
@@ -98,10 +101,13 @@ final class MovieQuizViewController: UIViewController {
                 text: "Рейтинг этого фильма больше чем 6",
                 correctAnswer: false),
             QuizQuestion(
-                image: "Lord of the ring",
+                image: "LOTR",
                 text: "Рейтинг этого фильма больше чем 6",
                 correctAnswer: true)
             ]
+    
+    private var currentQuestionIndex = 0
+    lazy private var currentQuestion = questions[currentQuestionIndex]
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         
@@ -111,8 +117,20 @@ final class MovieQuizViewController: UIViewController {
         
     }
     
+    private func show(quiz step: QuizStepViewModel) {
+        
+    }
     
+    private func show(quiz result: QuizResultsViewModel) {
+        
+    }
     
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+    }
 }
 
 /*
