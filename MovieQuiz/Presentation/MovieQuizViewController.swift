@@ -139,6 +139,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
+    
+    
     // MARK: - QUIZ STEP
     
     // Конвертор данных вопроса в данные для заполнения вью
