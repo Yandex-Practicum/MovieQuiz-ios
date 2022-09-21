@@ -4,6 +4,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -15,7 +16,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private var currentQuestion: QuizQuestion?
     private var currentQuestionCounter: Int = 0
-    private var analytic = QuizAnalytics()
+    
+    // Statistic
+    private var statisticService = StatisticServiceImplementation()
+    private var correctAnswersCounter = 0
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         processUserAnswer(answer: false)
@@ -23,7 +27,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         processUserAnswer(answer: true)
     }
-    
     
     // MARK: - LIFECYCLE
     
@@ -114,7 +117,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    // MARK: - NETWORK
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // показываю
+        activityIndicator.startAnimating() // анимирую
+    }
+    
+    private func showNetworkError(message: String) {
+        activityIndicator.isHidden = true
+        let alert = AlertPresenter(
+            title: "Сетевая ошибка",
+            text: message,
+            buttonText: "Продолжить",
+            controller: self,
+            onAction: { _ in }
+        )
+        DispatchQueue.main.async {
+            alert.showAlert()
+        }
+    }
     
     
     // MARK: - QUIZ STEP
@@ -147,7 +169,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             buttonText: result.buttonText,
             controller: self,
             onAction: { _ in
-                self.analytic.gameRestart()
+                self.correctAnswersCounter = 0
                 self.currentQuestionCounter = 0
                 self.questionFactory?.requestNextQuestion()
             }
@@ -179,7 +201,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if let currentQuestion = currentQuestion {
             if answer == currentQuestion.correctAnswer {
                 showAnswerResult(isCorrect: true)
-                analytic.score += 1 // Записал успешный результат
+                correctAnswersCounter += 1 // Записал успешный результат
             } else {
                 showAnswerResult(isCorrect: false)
             }
@@ -196,17 +218,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // Показываем следующий вопрос или результат всей викторины
     private func showNextQuestionOrResults() {
         if currentQuestionCounter == questionsAmount - 1 { // это последний вопрос
-            analytic.isItRecord() // Проверил на рекорд
-            if analytic.score == 10 {
-                // Статистика для победителя - 10 из 10 правильных ответов
+            statisticService.store(correct: correctAnswersCounter, total: questionsAmount) // Проверил на рекорд
+            if correctAnswersCounter == questionsAmount {
+                // Статистика для победителя - X из X правильных ответов
                 let winResult = QuizResultViewModel(
                     title: "Вы выиграли!",
                     text:
                     """
-                    Ваш результат: \(analytic.score)/\(questionsAmount)
-                    Количество сыгранных квизов: \(analytic.gamesPlayed)
-                    Рекорд: \(analytic.record) /\(questionsAmount) (\(analytic.recordTime))
-                    Средняя точность: \(analytic.accuracyAverage())%
+                    Ваш результат: \(correctAnswersCounter)/\(questionsAmount)
+                    Количество сыгранных квизов: \(statisticService.gamesCount)
+                    Рекорд: \(statisticService.bestGame.correct) /\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
+                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))
                     """,
                     buttonText: "Сыграть еще раз"
                 )
@@ -217,10 +239,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     title: "Этот раунд окончен!",
                     text:
                     """
-                    Ваш результат: \(analytic.score)/\(questionsAmount)
-                    Количество сыгранных квизов: \(analytic.gamesPlayed)
-                    Рекорд: \(analytic.record) /\(questionsAmount) (\(analytic.recordTime))
-                    Средняя точность: \(analytic.accuracyAverage())%
+                    Ваш результат: \(correctAnswersCounter)/\(questionsAmount)
+                    Количество сыгранных квизов: \(statisticService.gamesCount)
+                    Рекорд: \(statisticService.bestGame.correct) /\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
+                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
                     """,
                     buttonText: "Сыграть еще раз"
                 )
@@ -241,12 +263,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.yesButton.isEnabled = false
             self.noButton.isEnabled = false
         }
-    }
-    
-    private func restart() {
-        currentQuestionCounter = 0 // Сбросил вопрос на первый
-        analytic.gameRestart()
-        viewDidLoad()
     }
     
 }
@@ -291,7 +307,10 @@ extension MovieQuizViewController {
 
 
 
+
+
 // СБОРЩИК АНАЛИТИКИ
+/*
 extension MovieQuizViewController {
     
     private struct QuizAnalytics {
@@ -331,3 +350,4 @@ extension MovieQuizViewController {
     }
     
 }
+*/

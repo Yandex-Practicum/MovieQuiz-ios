@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ntk-Qb-EHG" userLabel="Main Stack View">
-                                <rect key="frame" x="20" y="54" width="350" height="756"/>
+                                <rect key="frame" x="20" y="57" width="350" height="753"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nc3-bm-iUG" userLabel="Label Stack">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="23.666666666666668"/>
@@ -46,14 +46,14 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Rct-2A-3YO" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.666666666666686" width="350" height="525"/>
+                                        <rect key="frame" x="0.0" y="43.666666666666686" width="350" height="522"/>
                                         <color key="backgroundColor" name="ypWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="Rct-2A-3YO" secondAttribute="height" multiplier="2:3" id="bqE-KB-q7v"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NQB-es-YgV" userLabel="Question Stack">
-                                        <rect key="frame" x="0.0" y="588.66666666666663" width="350" height="87.333333333333371"/>
+                                        <rect key="frame" x="0.0" y="585.66666666666663" width="350" height="87.333333333333371"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pra-uc-TAj" userLabel="Question Label">
                                                 <rect key="frame" x="20" y="5" width="310" height="77.333333333333329"/>
@@ -70,7 +70,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="odS-dW-t44">
-                                        <rect key="frame" x="0.0" y="696" width="350" height="60"/>
+                                        <rect key="frame" x="0.0" y="693" width="350" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRi-6W-GI3" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="165" height="60"/>
@@ -115,6 +115,9 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="0vp-lY-zFs">
+                                <rect key="frame" x="185" y="412" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="ypBlack"/>
@@ -122,10 +125,13 @@
                             <constraint firstItem="ntk-Qb-EHG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="76b-hv-5IZ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ntk-Qb-EHG" secondAttribute="trailing" constant="20" id="D9G-Hr-cxt"/>
                             <constraint firstItem="ntk-Qb-EHG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ezf-Zk-4MW"/>
+                            <constraint firstItem="0vp-lY-zFs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mwX-mG-ibc"/>
+                            <constraint firstItem="0vp-lY-zFs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pUy-jZ-yqR"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ntk-Qb-EHG" secondAttribute="bottom" id="tcR-OC-2Ak"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="0vp-lY-zFs" id="2yR-TK-f3s"/>
                         <outlet property="counterLabel" destination="rbL-w6-oNO" id="lzw-0b-7zp"/>
                         <outlet property="imageView" destination="Rct-2A-3YO" id="CqL-sP-ZIa"/>
                         <outlet property="noButton" destination="MRi-6W-GI3" id="D2E-4p-i8y"/>

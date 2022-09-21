@@ -1,4 +1,8 @@
 // swiftlint:disable all
+//
+// Model данных для фильмов
+//
+
 import Foundation
 
 struct Movies: Codable {
@@ -21,8 +25,6 @@ struct Movies: Codable {
     }
     
 }
-
-
 
 //enum ParseError: Error {
 //    case yearFailure
