@@ -3,6 +3,15 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // сообщение об ошибке
+    }
+    
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
@@ -146,7 +155,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // Конвертор данных вопроса в данные для заполнения вью
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let quiz = QuizStepViewModel(
-            image: UIImage(named: model.image)!, // TODO: подставить дефолтную картинку
+            image: model.image,
             question: model.text,
             questionNumber: "\(currentQuestionCounter + 1)/\(questionsAmount)")
         return quiz
@@ -154,7 +163,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // Вывод данных на экран
     private func show(quiz step: QuizStepViewModel) {
-        imageView.image = step.image
+        imageView.image = UIImage(data: step.image)
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
