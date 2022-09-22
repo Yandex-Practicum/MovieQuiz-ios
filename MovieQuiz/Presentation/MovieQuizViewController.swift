@@ -5,10 +5,12 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
     
     private var currentQuestionIndex = 0
     private var correctAnswer = 0
-    private var gamesCount = 0
+    private var gamesCount = 1
     
     struct QuizQuestion {
         let image: String
@@ -98,8 +100,12 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor().ypGreen : UIColor().ypRed
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
     }
     
