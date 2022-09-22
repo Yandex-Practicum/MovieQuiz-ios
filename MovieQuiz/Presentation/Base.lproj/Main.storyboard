@@ -22,6 +22,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="49X-Zm-Xyj">
+                                <rect key="frame" x="177.66666666666666" y="396" width="20" height="20"/>
+                            </activityIndicatorView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="LQ8-Iu-AR5" userLabel="Stack View Main">
                                 <rect key="frame" x="20" y="54" width="335" height="724"/>
                                 <subviews>
@@ -44,7 +47,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="700" image="Deadpool" translatesAutoresizingMaskIntoConstraints="NO" id="dTU-nb-L7X" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="dTU-nb-L7X" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.666666666666686" width="335" height="477.00000000000006"/>
                                         <color key="backgroundColor" name="black"/>
                                         <color key="tintColor" name="white"/>
@@ -55,7 +58,7 @@
                                     <view contentMode="scaleToFill" verticalHuggingPriority="50" translatesAutoresizingMaskIntoConstraints="NO" id="VHj-OB-Pu6">
                                         <rect key="frame" x="0.0" y="540.66666666666663" width="335" height="103.33333333333337"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Рейтинг этого фильма больше, чем 6? " textAlignment="center" lineBreakMode="clip" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="c23-Jz-LAM" userLabel="Question Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Рейтинг этого фильма больше, чем 7? " textAlignment="center" lineBreakMode="clip" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="c23-Jz-LAM" userLabel="Question Label">
                                                 <rect key="frame" x="20" y="5" width="295" height="93.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="white"/>
@@ -123,10 +126,13 @@
                             <constraint firstItem="LQ8-Iu-AR5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="FPo-FT-9E7"/>
                             <constraint firstItem="LQ8-Iu-AR5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="NcR-Wc-nvm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="LQ8-Iu-AR5" secondAttribute="bottom" id="PW9-qU-Kz9"/>
+                            <constraint firstItem="49X-Zm-Xyj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QLE-fy-l89"/>
+                            <constraint firstItem="49X-Zm-Xyj" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="WOq-od-yLv"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="LQ8-Iu-AR5" secondAttribute="trailing" constant="20" id="Ynu-aV-sxv"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="49X-Zm-Xyj" id="v3a-E3-FCB"/>
                         <outlet property="imageView" destination="dTU-nb-L7X" id="WBg-YJ-9eP"/>
                         <outlet property="noButton" destination="eSH-Lr-7z1" id="Lnb-r6-puf"/>
                         <outlet property="questionLabel" destination="c23-Jz-LAM" id="T6s-94-M3b"/>
@@ -140,7 +146,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Deadpool" width="2000" height="3000"/>
         <namedColor name="black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -3,7 +3,28 @@
 
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+
+    //MARK: - QuestionFactoryDelegate
+
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+
+        currentQuestion = question
+        hideLoadingIndicator()
+        showQuestion(question: question)
+    }
+
+    func didLoadDataFromServer() {
+        questionFactory.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with: Error) {
+        DispatchQueue.main.async { [weak self] in
+            self?.showNetworkError(message: with.localizedDescription)
+        }
+    }
+
     // MARK: - Outlets
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var questionLabel: UILabel!
@@ -11,13 +32,23 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
 
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    
+    
     // MARK: - Properties
-    // private let questions: [QuizQuestion] = mockQuestions
+
     private var currentQuestionIndex: Int = 0
-    private var gamesScore: QuizScores = QuizScores()
-    private var questionsAmount: Int = 10
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    private var gameScore: Int = 0
+
+    private let questionsAmount: Int = 10
+    private var questionFactory: QuestionFactoryProtocol!
+
     private var currentQuestion: QuizQuestion?
+
+    private var statisticService: StatisticService?
+
+    private var resultAlertPresenter: ResultAlertPresenter? = nil
+  
     
 
 
@@ -26,13 +57,20 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
 
-        if let firstQuestion = self.questionFactory.requestNextQuestion() {
-            self.currentQuestion = firstQuestion
-            let viewModel = self.convert(model: firstQuestion)
-            self.showQuestion()
-        }
+        questionFactory = QuestionFactory(
+            moviesLoader: MoviesLoader(),
+            delegate: self)
+
+       statisticService = StatisticServiceImplementation()
+       resultAlertPresenter = ResultAlertPresenter(viewController: self)
+       showLoadingIndicator()
+        questionFactory.loadData()
 
     }
+
+
+
+
     // MARK: - Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         showAnswerResult(answer: false)
@@ -46,18 +84,45 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Logic
 
-    private func showQuestion() {
-        /// Установили текущий вопрос. Так как у нас квиз начинается с 1го вопроса,
-        /// то и берем из массива вопросов 1й элемент
-        currentQuestion = QuestionFactory.questions[safe: currentQuestionIndex] // метод лежит в Array+Extensions
-        guard let currentQuestion = currentQuestion else {
-            return
+    private func showLoadingIndicator() {
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+
+    private func hideLoadingIndicator() {
+        activityIndicator.stopAnimating()
+    }
+
+    private func showNetworkError(message: String) {
+    hideLoadingIndicator() // скрываем индикатор загрузки
+        // алерт
+
+        let alertController = UIAlertController(
+            title: "Ошибка",
+            message: message,
+            preferredStyle: .alert)
+
+        let tryAgainAction = UIAlertAction(
+            title: "Попробуйте снова",
+            style: .default) { [weak self] _ in
+        self?.showLoadingIndicator()
+        self?.questionFactory.loadData()
         }
 
-        let questionViewModel = convert(model: currentQuestion)
+        alertController.addAction(tryAgainAction)
+        present(alertController, animated: true)
+    }
+
+
+    private func showQuestion(question: QuizQuestion) {
+        /// Установили текущий вопрос. Так как у нас квиз начинается с 1го вопроса,
+        /// берем из массива вопросов 1й элемент
+
+        let questionViewModel = convert(model: question)
         show(quiz: questionViewModel)
 
     }
+
+
 
     private func show(quiz step: QuizStepViewModel) { // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.layer.borderWidth = 0
@@ -67,12 +132,11 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func show(quiz result: QuizResultsViewModel) {
-        showResultAlert(result: result)
+        resultAlertPresenter?.showResultAlert(result: result) { [weak self] in
+            self?.restart()
+        }
     }
 
-    private func correctAnswerCounter() {
-        gamesScore.score += 1
-    }
 
 
     private func showAnswerResult(answer: Bool) {
@@ -88,7 +152,7 @@ final class MovieQuizViewController: UIViewController {
         let borderColor = isCorrect ? greenColor : redColor
 
     if answer == currentQuestion.correctAnswer {
-        gamesScore.score += 1
+        gameScore += 1
     } else {}
 
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
@@ -104,6 +168,9 @@ final class MovieQuizViewController: UIViewController {
     }
 
 
+   /* private func correctAnswerCounter() {
+        gamesScore.score += 1
+    } */
 
 
     private func buttonsEnabled(is state: Bool) { //определяем состояние кнопок
@@ -117,88 +184,65 @@ final class MovieQuizViewController: UIViewController {
     }
 
 
-    private func showNextQuestionOrResults() {
-        if currentQuestionIndex == QuestionFactory.questions.count - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
-            print("Пора показать результат")
-            gamesScore.itIsRecord() // проверяем рекорд ли это
-            if gamesScore.score == 10 {
-                let winResult = QuizResultsViewModel (
-                    title: "Вы выиграли!",
-                    text:  """
-                    Ваш результат: \(gamesScore.score)/\(QuestionFactory.questions.count)
-                    Количество сыгранных квизов: \(gamesScore.gamesPlayed)
-                    Рекорд: \(gamesScore.record)/\(QuestionFactory.questions.count) (\(gamesScore.recordTime))
-                    Средняя точность: \(gamesScore.accuracyAverage())%
-                    """,
-                    buttonText: "Сыграть еще раз"
-                )
-                show(quiz: winResult)
-            } else {
-                let result = QuizResultsViewModel(
-                    title: "Этот раунд окончен!",
-                    text:
-                    """
-                    Ваш результат: \(gamesScore.score)/\(QuestionFactory.questions.count)
-                    Количество сыгранных квизов: \(gamesScore.gamesPlayed)
-                    Рекорд: \(gamesScore.record)/\(QuestionFactory.questions.count) (\(gamesScore.recordTime))
-                    Средняя точность: \(gamesScore.accuracyAverage())%
-                    """,
-                    buttonText: "Сыграть еще раз"
-                )
-                show(quiz: result)
-            }
-                
-            // создаём объекты всплывающего окна
-            // показать результат квиза
+    private func showResults() {
+        guard let statisticService = statisticService else { return }
+        print("Пора показать результат")
 
+        statisticService.store(
+            correct: gameScore,
+            total: questionsAmount
+        )
+
+        let title = gameScore == questionsAmount ? "Вы выиграли!" : "Этот раунд завершен!"
+        let totalGames = statisticService.gamesCount
+        let bestGame = statisticService.bestGame
+
+        let accuracy = statisticService.totalAccuracy * 100
+        let accuracyString = String(format: "%.2f", accuracy)
+        let winResult = QuizResultsViewModel (
+            title: title,
+            text:  """
+                        Ваш результат: \(gameScore)/\(questionsAmount)
+                        Количество сыгранных квизов: \(totalGames)
+                        Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
+                        Средняя точность: \(accuracyString)%
+                        """,
+            buttonText: "Сыграть еще раз" )
+        show(quiz: winResult)
+    }
+
+
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questionsAmount - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
+            showResults()
         } else {
             currentQuestionIndex += 1
             // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
-            showQuestion()
+            showLoadingIndicator()
+            questionFactory.requestNextQuestion()
             // показать следующий вопрос
         }
     }
 
+
     private func restart() {
         currentQuestionIndex = 0 // Сбросил вопрос на первый
-        gamesScore.restartQuiz()
-        showQuestion()
+        gameScore = 0
+
+        showLoadingIndicator()
+        questionFactory.requestNextQuestion()
     }
 
 
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? .remove,
+            image: UIImage(data: model.image) ?? .remove,
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
     }
 
-
-    // Выносим показ окна алерта в отдельную функцию
-    private func showResultAlert (result: QuizResultsViewModel) {
-            let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
-                                          message: result.text, /* текст во всплывающем окне */
-                                          preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
-
-            // создаём для него кнопки с действиями
-            let action = UIAlertAction(title: "Сыграть ещё раз",
-                                       style: .default, handler: { _ in
-              print("Игра началась заново")
-                self.restart() // заново запускаем квиз с номера 1
-            })
-
-            // добавляем в алерт кнопки
-            alert.addAction(action)
-
-            // показываем всплывающее окно
-            self.present(alert, animated: true, completion: nil)
-        }
-
-
-
-
-
-
 }
+
+
