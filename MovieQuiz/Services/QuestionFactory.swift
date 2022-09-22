@@ -15,12 +15,9 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     // Получаем следующий рандомный вопрос из массива
     func requestNextQuestion() {
-        print("Riders")
         DispatchQueue.global().async { [weak self] in
-            print("on the")
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
-            print("storm")
             guard let movie = self.movies[safe: index] else { return }
             
             var imageData = Data()
