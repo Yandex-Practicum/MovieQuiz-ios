@@ -10,7 +10,7 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
     }
     @IBAction func noButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
+        showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer)
     }
     private var currentQuestionIndex = 0
     private var corrrectAnswers = 0
