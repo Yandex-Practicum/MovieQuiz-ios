@@ -1,7 +1,9 @@
+// swiftlint:disable all
+
 import Foundation
 
 struct MostPopularMovies: Codable {
-    let errorMesage: String
+    let errorMessage: String
     let items: [MostPopularMovie]
 }
 

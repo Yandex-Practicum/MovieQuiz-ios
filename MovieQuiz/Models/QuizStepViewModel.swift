@@ -1,7 +1,6 @@
 //
 // ViewModel отдельного вопроса
 //
-
 import UIKit
 
 struct QuizStepViewModel {

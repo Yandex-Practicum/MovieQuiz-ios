@@ -1,4 +1,6 @@
-import Foundation
+// swiftlint:disable all
+
+import UIKit
 
 protocol MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
@@ -20,9 +22,9 @@ struct MoviesLoader: MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl, handler: { result in
             switch result {
-            case .success(let rawData):
+            case .success(let data):
                 do {
-                    let JSONtoStruct = try JSONDecoder().decode(MostPopularMovies.self, from: rawData)
+                    let JSONtoStruct = try JSONDecoder().decode(MostPopularMovies.self, from: data)
                     handler(.success(JSONtoStruct))
                 } catch {
                     handler(.failure(error))

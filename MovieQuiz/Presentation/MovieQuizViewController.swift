@@ -3,15 +3,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
-        questionFactory?.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription) // сообщение об ошибке
-    }
-    
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
@@ -22,10 +13,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private var questionFactory: QuestionFactoryProtocol?
     private let questionsAmount: Int = 10
-    
     private var currentQuestion: QuizQuestion?
     private var currentQuestionCounter: Int = 0
-    
+    private let moviesLoader = MoviesLoader()
+        
     // Statistic
     private var statisticService = StatisticServiceImplementation()
     private var correctAnswersCounter = 0
@@ -41,66 +32,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        showLoadingIndicator()
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: moviesLoader)
+        questionFactory?.loadData()
         
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
         
-        enum FileManagerError: Error {
-            case fileDoesNotExist
-        }
-        
-        // Создаю URL JSON-файла
-        let jsonURL: URL = {
-            var dirPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            dirPath.appendPathComponent("top250MoviesIMDB.json")
-            return dirPath
-        }()
-        
-        // Записываю данные JSON-файла в String
-        var jsonString: String = {
-            // Проверяю есть ли файл
-            var str = ""
-            do {
-                // Отправляю URL в конвертор в String
-                str = try string(from: jsonURL)
-            } catch FileManagerError.fileDoesNotExist {
-                print("Файл по адресу \(jsonURL.path) не существует!")
-            } catch {
-                print("Неизвестная ошибка \(error)")
-            }
-            return str
-        }()
-        
-        // print(jsonString)
-        
-        // Конвертирую данные из String в Data
-        let data = jsonString.data(using: .utf8)!
-        ParseJSON(data: data)
-        
-        // Конвертор URL в String
-        func string(from fileURL: URL) throws -> String {
-            // Проверяю есть ли файл
-            if !FileManager.default.fileExists(atPath: fileURL.path) {
-                throw FileManagerError.fileDoesNotExist
-            }
-            // Проверяю генерится ли строка
-            return try String(contentsOf: fileURL)
-        }
-
-        // Декодер данных из JSON
-        func ParseJSON(data: Data) {
-            let decoder = JSONDecoder()
-            do {
-                let decodedData = try decoder.decode(Movies.self, from: data)
-                print("YEAR: \(decodedData.moviesList[0].year)")
-                for movie in decodedData.moviesList {
-                    print(movie.fullTitle)
-                }
-                
-            } catch {
-                print("Failed to parse: \(error.localizedDescription)")
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -112,13 +48,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // QuestionFactoryDelegate
-    
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        
         guard let question = question else {
             return
         }
         
+        hideLoadingIndicator()
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
@@ -131,6 +66,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showLoadingIndicator() {
         activityIndicator.isHidden = false // показываю
         activityIndicator.startAnimating() // анимирую
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true //спрятал
     }
     
     private func showNetworkError(message: String) {
@@ -147,8 +86,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        DispatchQueue.main.async {
+            self.activityIndicator.isHidden = true
+        }
+        questionFactory?.requestNextQuestion()
+    }
     
-    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // сообщение об ошибке
+    }
     
     // MARK: - QUIZ STEP
     

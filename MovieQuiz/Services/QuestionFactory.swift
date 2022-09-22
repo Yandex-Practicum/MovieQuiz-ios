@@ -6,24 +6,26 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     private let delegate: QuestionFactoryDelegate
     private let moviesLoader: MoviesLoading
-    private var movies: [MostPopularMovies] = []
+    private var movies: [MostPopularMovie] = []
   
     init(delegate: QuestionFactoryDelegate, moviesLoader: MoviesLoading) {
         self.delegate = delegate
-        self.delegate = moviesLoader
+        self.moviesLoader = moviesLoader
     }
     
     // Получаем следующий рандомный вопрос из массива
     func requestNextQuestion() {
+        print("Riders")
         DispatchQueue.global().async { [weak self] in
+            print("on the")
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
-            
+            print("storm")
             guard let movie = self.movies[safe: index] else { return }
             
             var imageData = Data()
-           
-           do {
+
+            do {
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
                 print("Failed to load image")
