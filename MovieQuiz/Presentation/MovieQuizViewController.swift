@@ -4,24 +4,27 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
-    @IBOutlet var counterLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
     
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
-    }
-    @IBAction func noButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer)
-    }
+    @IBOutlet var yesButton: UIButton!
+    @IBOutlet var noButton: UIButton!
+    
+    
     private var currentQuestionIndex = 0
     private var corrrectAnswers = 0
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        textLabel.font = UIFont(name: "YS Display-Bold", size: 23.0)
-        counterLabel.font = UIFont(name: "YS Display-Medium", size: 20.0)
         let viewModel = convert(model: questions[currentQuestionIndex])
         self.show(quiz: viewModel)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
+    }
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer)
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -61,28 +64,35 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.masksToBounds = true
             imageView.layer.borderWidth = 8
             imageView.layer.cornerRadius = 20
-            imageView.layer.borderColor = isCorrect ? UIColor().customGreen.cgColor : UIColor().customRed.cgColor
+            imageView.layer.borderColor = isCorrect ? UIColor.customGreen.cgColor : UIColor.customRed.cgColor
+            self.yesButton.isEnabled = false
+            self.noButton.isEnabled = false
+
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             // запускаем задачу через 1 секунду
-            self.showNextQestionOrResults()
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
             self.imageView.layer.borderWidth = 0
+            self.showNextQestionOrResults()
+           
 
         }
+        
     }
     
     private func showNextQestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
            let text = "Ваш результат: \(corrrectAnswers) из 10"
            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен", text: text, buttonText: "Сыграть еще раз")
-           show(quiz: viewModel)
-            // show result
+           show(quiz: viewModel) // show result
         } else {
             currentQuestionIndex += 1
             let nexQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nexQuestion)
             show(quiz: viewModel)// показать следующий вопрос
         }
+
     }
     
     

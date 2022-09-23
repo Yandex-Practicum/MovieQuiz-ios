@@ -2,11 +2,7 @@ import Foundation
 import UIKit
 
 extension UIColor {
-    var customRed: UIColor {
-        return UIColor(named: "red") ?? UIColor.red
-    }
-    var customGreen: UIColor {
-        return UIColor(named: "green") ?? UIColor.green
-    }
+    static let customRed = UIColor(named: "red") ?? UIColor.red
+    static let customGreen = UIColor(named: "green") ?? UIColor.green
   
 }

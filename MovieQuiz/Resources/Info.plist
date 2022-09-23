@@ -5,8 +5,12 @@
     <key>UIAppFonts</key>
          <array>
              <string>YS Display-Bold</string>
+             <string>YS Display-Heavy</string>
+             <string>YS Display-Light</string>
              <string>YS Display-Medium</string>
-         </array>
+             <string>YS Display-Regular</string>
+             <string>YS Display-Thin</string>
+    </array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
