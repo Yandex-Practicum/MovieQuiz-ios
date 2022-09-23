@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="duB-DX-8qv">
-                                <rect key="frame" x="20" y="54" width="335" height="774.66666666666663"/>
+                                <rect key="frame" x="20" y="54" width="335" height="724"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8PZ-Oc-Qve">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="24"/>
@@ -45,10 +45,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bgC-kP-9Z5">
-                                        <rect key="frame" x="0.0" y="566.66666666666663" width="335" height="128"/>
+                                        <rect key="frame" x="0.0" y="566.66666666666663" width="335" height="77.333333333333371"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Q2-hA-sz7" userLabel="Label">
-                                                <rect key="frame" x="63" y="13" width="209" height="102"/>
+                                                <rect key="frame" x="63" y="13.000000000000004" width="209" height="51.333333333333343"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -60,7 +60,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="yge-TS-hv4">
-                                        <rect key="frame" x="0.0" y="714.66666666666663" width="335" height="60"/>
+                                        <rect key="frame" x="0.0" y="664" width="335" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCJ-Z6-ok9">
                                                 <rect key="frame" x="0.0" y="0.0" width="157.66666666666666" height="60"/>
@@ -118,6 +118,7 @@
                         <color key="backgroundColor" name="YP Background"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="duB-DX-8qv" secondAttribute="trailing" constant="20" id="3xt-ef-UPa"/>
+                            <constraint firstItem="duB-DX-8qv" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="BII-Ic-x0X"/>
                             <constraint firstItem="duB-DX-8qv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="aBr-rQ-lEE"/>
                             <constraint firstItem="duB-DX-8qv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="cyu-y3-1ad"/>
                         </constraints>
@@ -125,7 +126,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="By9-Kq-JCS" id="GhA-4h-BI5"/>
                         <outlet property="imageView" destination="DdM-27-hIm" id="vcQ-j5-ZRS"/>
+                        <outlet property="noButton" destination="kCJ-Z6-ok9" id="yRi-p9-tHN"/>
                         <outlet property="textLabel" destination="6Q2-hA-sz7" id="6LM-SY-BdT"/>
+                        <outlet property="yesButton" destination="OvJ-Xb-kJf" id="1B9-QD-MNP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
