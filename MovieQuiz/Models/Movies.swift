@@ -25,8 +25,3 @@ struct Movies: Codable {
     }
     
 }
-
-//enum ParseError: Error {
-//    case yearFailure
-//    case runtimeMins
-//}
