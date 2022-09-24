@@ -8,14 +8,14 @@ struct GameRecord: Codable {
 }
 
 class StatisticServiceImplementation: StatisticService {
-        
+    
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
     
     // Метод для сохранения результатов игры
     func store(correct count: Int, total amount: Int) {
-    
+        
         // Проверка на рекорд
         let currentGameResults = GameRecord(correct: count, total: amount, date: Date())
         
@@ -24,26 +24,17 @@ class StatisticServiceImplementation: StatisticService {
         }
         
         // Запись общего кол-ва правильных ответов
-        if let correctStored = Int(userDefaults.string(forKey: Keys.correct.rawValue) ?? "0") {
-            userDefaults.set(correctStored + count, forKey: Keys.correct.rawValue)
-        } else {
-            userDefaults.set(count, forKey: Keys.correct.rawValue)
-        }
+        let correctStored = userDefaults.integer(forKey: Keys.correct.rawValue)
+        userDefaults.set(correctStored + count, forKey: Keys.correct.rawValue)
         
         // Запись общего кол-ва заданных вопросов
-        if let totalStored = Int(userDefaults.string(forKey: Keys.total.rawValue) ?? "0") {
-            userDefaults.set(totalStored + amount, forKey: Keys.total.rawValue)
-        } else {
-            userDefaults.set(amount, forKey: Keys.total.rawValue)
-        }
+        let totalStored = userDefaults.integer(forKey: Keys.total.rawValue)
+        userDefaults.set(totalStored + amount, forKey: Keys.total.rawValue)
         
-        // Записаь общего число сыгранных партий
-        if let gamesCount = Int(userDefaults.string(forKey: Keys.gamesCount.rawValue) ?? "0") {
-            userDefaults.set(gamesCount + 1, forKey: Keys.gamesCount.rawValue)
-        } else {
-            userDefaults.set(1, forKey: Keys.gamesCount.rawValue)
-        }
-    
+        // Запись общего числа сыгранных партий
+        let gamesCount = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
+        userDefaults.set(gamesCount + 1, forKey: Keys.gamesCount.rawValue)
+        
     }
     
     var totalAccuracy: Double {
@@ -87,7 +78,7 @@ class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
-
+    
 }
 
 // MARK: - Протоколы и расширения
@@ -103,4 +94,4 @@ protocol StatisticService {
     var totalAccuracy: Double { get } // В процентах от всех игр, включая текущую
     var gamesCount: Int { get } // Всего сыграно игр, включая текущую
     var bestGame: GameRecord { get } // Рекорд
-    }
+}
