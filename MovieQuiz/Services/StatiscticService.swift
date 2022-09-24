@@ -32,7 +32,6 @@ class StatisticServiceImplementation: StatisticService {
         userDefaults.set(totalStored + amount, forKey: Keys.total.rawValue)
         
         // Запись общего числа сыгранных партий
-        let gamesCount = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         userDefaults.set(gamesCount + 1, forKey: Keys.gamesCount.rawValue)
         
     }
