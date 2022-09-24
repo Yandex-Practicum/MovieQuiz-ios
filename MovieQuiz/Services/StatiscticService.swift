@@ -38,20 +38,15 @@ class StatisticServiceImplementation: StatisticService {
     }
     
     var totalAccuracy: Double {
-        guard let correctStored = Double(userDefaults.string(forKey: Keys.correct.rawValue) ?? "0.0"),
-              let totalStored = Double(userDefaults.string(forKey: Keys.total.rawValue) ?? "0.0") else {
-            return 0.0
-        }
+        let correctStored = userDefaults.double(forKey: Keys.correct.rawValue)
+        let totalStored = userDefaults.double(forKey: Keys.total.rawValue)
         return (correctStored / totalStored) * 100
     }
     
     var gamesCount: Int {
         get {
-            guard let gamesCountStored = Int(userDefaults.string(forKey: Keys.gamesCount.rawValue) ?? "0") else {
-                return 0
+            userDefaults.integer(forKey: Keys.gamesCount.rawValue)
             }
-            return gamesCountStored
-        }
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
