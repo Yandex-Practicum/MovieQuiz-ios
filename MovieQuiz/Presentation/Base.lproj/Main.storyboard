@@ -70,8 +70,8 @@
                                         <color key="backgroundColor" name="YP Black"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="AnN-QQ-tFP" secondAttribute="trailing" constant="20" id="Jvb-0r-qdF"/>
-                                            <constraint firstItem="AnN-QQ-tFP" firstAttribute="top" secondItem="Dsp-IF-9UA" secondAttribute="top" constant="5" id="R7g-yE-ZPs"/>
-                                            <constraint firstAttribute="bottom" secondItem="AnN-QQ-tFP" secondAttribute="bottom" constant="5" id="Vdo-Ki-bve"/>
+                                            <constraint firstItem="AnN-QQ-tFP" firstAttribute="top" relation="lessThanOrEqual" secondItem="Dsp-IF-9UA" secondAttribute="top" constant="5" id="R7g-yE-ZPs"/>
+                                            <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="AnN-QQ-tFP" secondAttribute="bottom" constant="5" id="Vdo-Ki-bve"/>
                                             <constraint firstItem="AnN-QQ-tFP" firstAttribute="leading" secondItem="Dsp-IF-9UA" secondAttribute="leading" constant="20" id="hgA-gq-DjV"/>
                                         </constraints>
                                     </view>
@@ -137,6 +137,7 @@
                         <outlet property="noButton" destination="PRu-wB-Eix" id="9AJ-5O-fqk"/>
                         <outlet property="questionLabel" destination="AnN-QQ-tFP" id="ZhQ-PV-BMg"/>
                         <outlet property="questionTitleLabel" destination="scy-B8-Vex" id="iF0-et-MIb"/>
+                        <outlet property="stackView" destination="TeV-BY-LgL" id="jNE-Xq-7fl"/>
                         <outlet property="yesButton" destination="EnZ-cC-Zw2" id="GmV-eX-xdn"/>
                     </connections>
                 </viewController>

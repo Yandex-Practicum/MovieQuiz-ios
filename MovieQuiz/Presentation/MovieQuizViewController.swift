@@ -76,21 +76,30 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var stackView: UIStackView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        yesButton.titleLabel!.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        noButton.titleLabel!.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
-        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        imageView.layer.masksToBounds = true
-        
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+                case 1334, 1920, 2208:
+                stackView.spacing = 0
+                questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 18)
+            default:
+                stackView.spacing = 20
+                questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+            }
+        }
+
         let viewModel = convert(model: questions[currentQuestionIndex])
         show(quiz: viewModel)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let answer = true
         let result = answer == questions[currentQuestionIndex].correctAnswer ? true : false
@@ -115,7 +124,7 @@ final class MovieQuizViewController: UIViewController {
             title: result.title,
             message: result.text,
             preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [self]_ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [self] _ in
             currentQuestionIndex = 0
             correctAnswers = 0
 
@@ -124,7 +133,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
         alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
