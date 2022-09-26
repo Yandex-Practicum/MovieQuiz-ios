@@ -12,8 +12,7 @@ class QuestionFactory: QuestionFactoryProtocol {
 
     func requestNextQuestion() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.delegate.didRequestNextQuestion()
+            self?.delegate.didRequestNextQuestion()
         }
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
@@ -25,7 +24,10 @@ class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
-                print("Failed to load image")
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate.didFailToLoadData(with: error)
+                }
+                return
             }
 
             let rating = Float(movie.rating) ?? 0
@@ -39,26 +41,24 @@ class QuestionFactory: QuestionFactoryProtocol {
                 correctAnswer: correctAnswer)
 
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate.didReceiveNextQuestion(question: question)
+                self?.delegate.didReceiveNextQuestion(question: question)
             }
         }
     }
+    
     func loadData() {
-          moviesLoader.loadMovies { [weak self] result in
-              guard let self = self else { return }
-              switch result {
-              case .success(let mostPopularMovies):
-                  DispatchQueue.main.async {
-                      self.movies = mostPopularMovies.items
-                      self.delegate.didLoadDataFromServer()
-                  }
-
-              case .failure(let error):
-                  DispatchQueue.main.async {
-                      self.delegate.didFailToLoadData(with: error)
-                  }
-              }
-          }
-      }
+        moviesLoader.loadMovies { result in
+            switch result {
+            case .success(let mostPopularMovies):
+                DispatchQueue.main.async {
+                    self.movies = mostPopularMovies.items
+                    self.delegate.didLoadDataFromServer()
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.delegate.didFailToLoadData(with: error)
+                }
+            }
+        }
+    }
 }
