@@ -3,21 +3,47 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
 
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var imageView: UIImageView!
     
-    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet private weak var textLabel: UILabel!
     
-    @IBOutlet weak var counterLabel: UILabel!
+    @IBOutlet weak var buttonNo: UIButton!
+    @IBOutlet weak var buttonYes: UIButton!
+    /*
+     Анастасия, хочется вас поблагодарить за столь приятные ревью. Не знаю почему,
+     но мне комфортно читать ваши замечания, я не чувствую напряжения или недовольства,
+     в чате, например, некоторые жаловались на своих ревьюеров ;( Поэтому вам спасибо,
+     я очень рад, что вы проверяете мои работы.
+     
+     На счёт гита, я испытываю пока сильный стресс при работе с ним ._. , я не понимаю, что
+     я должен сделать, в учебнике очень плохо расписан этот материал, по этому приходится
+     просить помощи у уже опытных однокурсников на ЯП. Надеюсь, вас не сильно расстроит тот
+     факт, что я проигнорировал вашу просьбу, так как не понимаю, как её исправить.
+     Попрошу человека мне помочь с этим.
+     
+     Некоторые комментарии я оставляю для себя, чтобы потом в будущем что-то сверять, так
+     что вашу просьбу я не игнорирую.
+     
+     Обратиться к вам через сайт нельзя, поэтому пишу сообщение здесь,
+     надеюсь вы не против :)
+     
+     Спасибо вам! Я стараюсь!
+     */
     
-    @IBAction func noButtonClicked(_ sender: UIButton) {
+    @IBOutlet private weak var counterLabel: UILabel!
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        buttonNo.isEnabled = false
         if questions[currentQuestionIndex].correctAnswer == false {
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
         }
     }
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        buttonYes.isEnabled = false
         if questions[currentQuestionIndex].correctAnswer == true {
+            
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
@@ -106,6 +132,9 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
+        //вроде бы исправил этот баг ;) жду ответа в ревью!
+        buttonNo.isEnabled = true
+        buttonYes.isEnabled = true
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers) из 10"
             let viewModel = QuizResultsViewModel(
@@ -124,12 +153,10 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(quiz step: QuizStepViewModel) {
+        // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image = step.image
-        //imageView.layer.cornerRadius = 20
         textLabel.text = step.question
         counterLabel.text = "\(step.questionNumber)"
-      // здесь мы заполняем нашу картинку, текст и счётчик данными
-    
     }
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -158,20 +185,20 @@ final class MovieQuizViewController: UIViewController {
 }
 
 // для состояния "Вопрос задан"
-struct QuizStepViewModel {
+private struct QuizStepViewModel {
   let image: UIImage
   let question: String
   let questionNumber: String
 }
 
 // для состояния "Результат квиза"
-struct QuizResultsViewModel {
+private struct QuizResultsViewModel {
   let title: String
   let text: String
   let buttonText: String
 }
 
-struct QuizQuestion {
+private struct QuizQuestion {
     let image: String
     let text: String
     let correctAnswer: Bool
