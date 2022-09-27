@@ -55,7 +55,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MDg-rZ-t4d">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="103.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIs-5N-TOr" userLabel="Question Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mIs-5N-TOr" userLabel="Question Label">
                                                 <rect key="frame" x="43.5" y="13" width="287" height="77.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -92,7 +92,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="clickAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ycc-3F-oCI"/>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cXd-om-ajQ"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tbw-26-fbm" userLabel="Yes button">
@@ -110,7 +110,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="clickAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZR2-zt-BSL"/>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cgl-ur-11Z"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -133,7 +133,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="yEO-jE-0Rf" id="Xpa-Vk-Z6V"/>
                         <outlet property="imageView" destination="4Zr-EN-6um" id="eAv-B1-C8t"/>
+                        <outlet property="noButton" destination="vmS-jY-9Yv" id="lMm-oN-ECZ"/>
                         <outlet property="textLabel" destination="mIs-5N-TOr" id="sk0-LE-qL3"/>
+                        <outlet property="yesButton" destination="Tbw-26-fbm" id="Evb-30-hg7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
