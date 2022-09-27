@@ -2,10 +2,181 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
+
+    @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var textLabel: UILabel!
+    
+    @IBOutlet weak var counterLabel: UILabel!
+    
+    @IBAction func noButtonClicked(_ sender: UIButton) {
+        if questions[currentQuestionIndex].correctAnswer == false {
+            showAnswerResult(isCorrect: true)
+        } else {
+            showAnswerResult(isCorrect: false)
+        }
+    }
+    @IBAction func yesButtonClicked(_ sender: UIButton) {
+        if questions[currentQuestionIndex].correctAnswer == true {
+            showAnswerResult(isCorrect: true)
+        } else {
+            showAnswerResult(isCorrect: false)
+        }
+    }
+
+    private let questions: [QuizQuestion] = [
+        QuizQuestion(
+            image: "The Godfather",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Dark Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Kill Bill",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Avengers",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Deadpool",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Green Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Old",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "The Ice Age Adventures of Buck Wild",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "Tesla",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "Vivarium",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false)
+    ]
+    
+    //Рамка картинки
+    /*
+    imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+    imageView.layer.borderWidth = 1 // толщина рамки
+    imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
+    imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
+    */
+    
+    private var currentQuestionIndex = 0
+    private var correctAnswers = 0
+    //let currentQuestion = questions[currentQuestionIndex]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        show(quiz: convert(model: questions[currentQuestionIndex]))
+    }
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
+            question: model.text, // берём текст вопроса
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // высчитываем номер вопроса
+    }
+    
+    private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            correctAnswers += 1
+        }
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        //imageView.layer.cornerRadius = 20
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { 
+            self.showNextQuestionOrResults()
+        }
+    }
+    
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 {
+            let text = "Ваш результат: \(correctAnswers) из 10"
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            imageView.layer.borderWidth = 0
+            show(quiz: viewModel)
+        } else {
+            currentQuestionIndex += 1
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            imageView.layer.borderWidth = 0
+            show(quiz: viewModel)
+        }
+    }
+    
+    private func show(quiz step: QuizStepViewModel) {
+        imageView.image = step.image
+        //imageView.layer.cornerRadius = 20
+        textLabel.text = step.question
+        counterLabel.text = "\(step.questionNumber)"
+      // здесь мы заполняем нашу картинку, текст и счётчик данными
+    
+    }
+    
+    private func show(quiz result: QuizResultsViewModel) {
+        // здесь мы показываем результат прохождения квиза
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            self.currentQuestionIndex = 0
+            
+            // скидываем счётчик правильных ответов
+            self.correctAnswers = 0
+            
+            // заново показываем первый вопрос
+            let firstQuestion = self.questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+        }
+        
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
+
+// для состояния "Вопрос задан"
+struct QuizStepViewModel {
+  let image: UIImage
+  let question: String
+  let questionNumber: String
+}
+
+// для состояния "Результат квиза"
+struct QuizResultsViewModel {
+  let title: String
+  let text: String
+  let buttonText: String
+}
+
+struct QuizQuestion {
+    let image: String
+    let text: String
+    let correctAnswer: Bool
+}
+
 
 /*
  Mock-данные
