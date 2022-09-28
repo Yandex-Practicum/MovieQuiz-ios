@@ -28,6 +28,8 @@ final class MovieQuizViewController: UIViewController {
      надеюсь вы не против :)
      
      Спасибо вам! Я стараюсь!
+     
+     upd: Спасибо большое за информацию по гиту!
      */
     
     @IBOutlet private weak var counterLabel: UILabel!
