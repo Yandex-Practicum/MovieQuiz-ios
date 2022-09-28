@@ -185,24 +185,6 @@ final class MovieQuizViewController: UIViewController {
     }
 }
 
-// MARK: - Extensions
-
-extension UIColor {
-    static var ypGreen: UIColor {
-        UIColor(named: "green" ) ?? UIColor.green
-    }
-
-    static var ypRed: UIColor {
-        UIColor(named: "red" ) ?? UIColor.red
-    }
-}
-
-extension Collection {
-    subscript (safe index: Index) -> Element? {
-        return indices.contains(index) ? self[index] : nil
-    }
-}
-
 /*
  Mock-данные
  
