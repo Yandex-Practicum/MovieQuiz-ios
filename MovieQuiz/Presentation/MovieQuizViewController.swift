@@ -99,6 +99,14 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = quizStep.questionNumber
     }
     
+    private func restartQuiz() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        let firstQuestion = questions[currentQuestionIndex]
+        let viewModel = convert(model: firstQuestion)
+        show(quizStep: viewModel)
+    }
+    
     private func show(quizResult: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: quizResult.title,
@@ -106,12 +114,8 @@ final class MovieQuizViewController: UIViewController {
             preferredStyle: .alert)
         let action = UIAlertAction(
             title: quizResult.buttonText,
-            style: .default) { _ in
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                let firstQuestion = self.questions[self.currentQuestionIndex]
-                let viewModel = self.convert(model: firstQuestion)
-                self.show(quizStep: viewModel)
+            style: .default) { [weak self] _ in
+                self?.restartQuiz()
             }
         
         alert.addAction(action)
