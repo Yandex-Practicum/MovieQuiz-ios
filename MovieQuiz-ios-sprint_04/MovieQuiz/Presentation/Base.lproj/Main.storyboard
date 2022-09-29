@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="WYK-oF-iPp">
-                                <rect key="frame" x="20" y="62" width="374" height="861"/>
+                                <rect key="frame" x="20" y="54" width="374" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eph-G0-V1s">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -55,10 +55,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sRx-Up-pvL">
-                                        <rect key="frame" x="0.0" y="626" width="374" height="155"/>
+                                        <rect key="frame" x="0.0" y="626" width="374" height="102"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuW-Tp-LRH" userLabel="Question Label">
-                                                <rect key="frame" x="20" y="5" width="334" height="145"/>
+                                                <rect key="frame" x="20" y="5" width="334" height="92"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2JR-5u-vUU">
-                                        <rect key="frame" x="0.0" y="801" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="748" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JKV-Os-L00" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="179" height="60"/>
@@ -120,12 +120,12 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="WYK-oF-iPp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="18" id="LFk-qz-4Pu"/>
+                            <constraint firstItem="WYK-oF-iPp" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="7pC-Gy-NHo"/>
+                            <constraint firstItem="WYK-oF-iPp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="LFk-qz-4Pu"/>
                             <constraint firstItem="WYK-oF-iPp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="eNk-tZ-tZN"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WYK-oF-iPp" secondAttribute="trailing" constant="20" id="h6L-fQ-wqv"/>
-                            <constraint firstItem="WYK-oF-iPp" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="mDd-Mc-f85"/>
                         </constraints>
                     </view>
                     <connections>

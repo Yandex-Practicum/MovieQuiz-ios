@@ -7,10 +7,29 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: convert(model: questions[currentQuestionIndex]))
     }
     
+    private var currentQuestionIndex: Int = 0
+    
+    private var correctAnswers: Int = 0
+    
+    private var isEnabled: Bool = false
+    
+    
     struct QuizQuestion {
       let image: String
       let text: String
       let correctAnswer: Bool
+    }
+    
+    struct QuizStepViewModel {
+      let image: UIImage
+      let question: String
+      let questionNumber: String
+    }
+    
+    struct QuizResultsViewModel {
+      let title: String
+      let text: String
+      let buttonText: String
     }
     
     private let questions: [QuizQuestion] = [
@@ -70,40 +89,32 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     
     
-    private var currentQuestionIndex: Int = 0
-    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        if questions[currentQuestionIndex].correctAnswer {
-            showAnswerResult(isCorrect: true)
-        } else {
-            showAnswerResult(isCorrect: false)
+        if isEnabled{
+            if questions[currentQuestionIndex].correctAnswer {
+                showAnswerResult(isCorrect: true)
+            } else {
+                showAnswerResult(isCorrect: false)
+            }
         }
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        if !questions[currentQuestionIndex].correctAnswer {
-            showAnswerResult(isCorrect: true)
-        } else {
-            showAnswerResult(isCorrect: false)
+        if isEnabled {
+            if !questions[currentQuestionIndex].correctAnswer {
+                showAnswerResult(isCorrect: true)
+            } else {
+                showAnswerResult(isCorrect: false)
+            }
         }
     }
     
-    struct QuizStepViewModel {
-      let image: UIImage
-      let question: String
-      let questionNumber: String
-    }
-    
-    struct QuizResultsViewModel {
-      let title: String
-      let text: String
-      let buttonText: String
-    }
     
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = convert(model: questions[currentQuestionIndex]).questionNumber
         textLabel.text = convert(model: questions[currentQuestionIndex]).question
         imageView.image = convert(model: questions[currentQuestionIndex]).image
+        isEnabled = true
     }
 
     private func show(quiz result: QuizResultsViewModel) {
@@ -155,7 +166,6 @@ final class MovieQuizViewController: UIViewController {
       }
     }
     
-    private var correctAnswers: Int = 0
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
@@ -165,12 +175,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        isEnabled = false
         
-        DispatchQueue.main.asyncAfter (deadline: .now() + 1.0) { //in
+        DispatchQueue.main.asyncAfter (deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
     }
-        
-
-    
 }
