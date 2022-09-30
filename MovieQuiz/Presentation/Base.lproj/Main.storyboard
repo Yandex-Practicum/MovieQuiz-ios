@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="0Gl-Ro-Ltm">
-                                <rect key="frame" x="20" y="79" width="390" height="789"/>
+                                <rect key="frame" x="20" y="69" width="390" height="789"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GnQ-Te-q7O">
                                         <rect key="frame" x="0.0" y="0.0" width="390" height="24"/>
@@ -62,11 +62,11 @@
                                         <color key="textColor" name="White"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="bottom" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MCE-L5-E2m">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MCE-L5-E2m">
                                         <rect key="frame" x="0.0" y="729" width="390" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yie-TU-mH3" userLabel="No Button">
-                                                <rect key="frame" x="0.0" y="24" width="185" height="36"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" name="White"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="Black"/>
@@ -84,7 +84,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73p-B5-QDj" userLabel="Yes Button">
-                                                <rect key="frame" x="205" y="24" width="185" height="36"/>
+                                                <rect key="frame" x="205" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" name="White"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="Black"/>
@@ -113,14 +113,16 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0Gl-Ro-Ltm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="huL-43-J0B"/>
-                            <constraint firstItem="0Gl-Ro-Ltm" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="kSo-At-fe7"/>
+                            <constraint firstItem="0Gl-Ro-Ltm" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="kSo-At-fe7"/>
                             <constraint firstItem="0Gl-Ro-Ltm" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="v9E-Fs-iYI"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="counterLabel" destination="cWX-Sp-li5" id="p5b-rB-yzV"/>
                         <outlet property="imageView" destination="T0B-qO-Ip3" id="pX5-47-osk"/>
+                        <outlet property="noButton" destination="yie-TU-mH3" id="EFb-fm-7wR"/>
                         <outlet property="textLabel" destination="hAB-Te-HjF" id="R9s-vg-6zk"/>
+                        <outlet property="yesButton" destination="73p-B5-QDj" id="wdd-mv-6Vz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

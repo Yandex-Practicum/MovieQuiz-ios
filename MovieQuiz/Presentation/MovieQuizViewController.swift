@@ -1,14 +1,17 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var counterLabel: UILabel!
+    
+    @IBOutlet weak private var yesButton: UIButton!
+    @IBOutlet weak private var noButton: UIButton!
+    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet weak private var counterLabel: UILabel!
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
-    override func viewDidLoad() {
+    // MARK: - Lifecycle
+    override  func viewDidLoad() {
         super.viewDidLoad()
         show(quiz: convert(model: questions[currentQuestionIndex]))
     }
@@ -54,6 +57,9 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.YPGreen.cgColor : UIColor.YPRed.cgColor
+        imageView.layer.cornerRadius = 20
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
@@ -63,6 +69,8 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers) из 10"
             let viewModel = QuizResultsViewModel(
