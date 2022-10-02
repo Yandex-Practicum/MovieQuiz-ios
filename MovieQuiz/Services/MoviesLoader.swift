@@ -7,6 +7,12 @@ protocol MoviesLoading {
 }
 
 struct MoviesLoader: MoviesLoading {
+    
+    private enum LoaderError: Error {
+        case apiError(String)
+    }
+    
+    
     // MARK: - NetworkClient
     private let networkClient = NetworkClient()
     
@@ -25,6 +31,12 @@ struct MoviesLoader: MoviesLoading {
             case .success(let data):
                 do {
                     let JSONtoStruct = try JSONDecoder().decode(MostPopularMovies.self, from: data)
+                    
+                    if !JSONtoStruct.errorMessage.isEmpty {
+                        handler(.failure(LoaderError.apiError(JSONtoStruct.errorMessage)))
+                    }
+                    
+                    
                     handler(.success(JSONtoStruct))
                 } catch {
                     handler(.failure(error))

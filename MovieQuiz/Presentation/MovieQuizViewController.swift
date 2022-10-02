@@ -33,10 +33,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoadingIndicator()
+        
         questionFactory = QuestionFactory(delegate: self, moviesLoader: moviesLoader)
+        
+        showLoadingIndicator()
         questionFactory?.loadData()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,38 +59,38 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
+            self?.hideLoadingIndicator()
         }
     }
     
     // MARK: - NETWORK
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false // показываю
-        activityIndicator.startAnimating() // анимирую
+        activityIndicator.startAnimating()
     }
     
     private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true //спрятал
+        activityIndicator.stopAnimating()
     }
     
     private func showNetworkError(message: String) {
-        activityIndicator.isHidden = true
         let alert = AlertPresenter(
             title: "Сетевая ошибка",
             text: message,
             buttonText: "Продолжить",
             controller: self,
-            onAction: { _ in }
+            onAction: { _ in
+                self.showLoadingIndicator()
+                self.questionFactory?.loadData()
+            }
         )
         DispatchQueue.main.async {
+            self.hideLoadingIndicator()
             alert.showAlert()
         }
     }
     
     func didLoadDataFromServer() {
-        DispatchQueue.main.async {
-            self.activityIndicator.isHidden = true
-        }
         questionFactory?.requestNextQuestion()
     }
     
@@ -115,7 +116,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterLabel.text = step.questionNumber
     }
     
-    
     // MARK: - QUIZ RESULT
     
     // Вывод данных на экран
@@ -129,6 +129,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             onAction: { _ in
                 self.correctAnswersCounter = 0
                 self.currentQuestionCounter = 0
+                self.showLoadingIndicator()
                 self.questionFactory?.requestNextQuestion()
             }
         )
@@ -136,7 +137,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             alert.showAlert()
         }
     }
-    
     
     // MARK: - ANSWER RESULT
     
@@ -208,19 +208,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
         } else { // это не последний вопрос
             currentQuestionCounter += 1
+            showLoadingIndicator()
             questionFactory?.requestNextQuestion()
         }
     }
     
     // Делаю кнопки "да" и "нет" активными или нет по необходимости
     private func buttonsEnabled(is state: Bool) {
-        if state {
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
-        } else {
-            self.yesButton.isEnabled = false
-            self.noButton.isEnabled = false
-        }
+        yesButton.isEnabled = state
+        noButton.isEnabled = state
     }
     
 }

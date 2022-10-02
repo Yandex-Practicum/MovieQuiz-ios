@@ -4,6 +4,10 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     
+    private enum QuesionsError: Error {
+        case noElements, noImages
+    }
+    
     private let delegate: QuestionFactoryDelegate
     private let moviesLoader: MoviesLoading
     private var movies: [MostPopularMovie] = []
@@ -18,14 +22,19 @@ class QuestionFactory: QuestionFactoryProtocol {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
-            guard let movie = self.movies[safe: index] else { return }
+            guard let movie = self.movies[safe: index] else {
+                self.delegate.didFailToLoadData(with: QuesionsError.noElements)
+                return
+            }
             
             var imageData = Data()
 
             do {
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
+                self.delegate.didFailToLoadData(with: QuesionsError.noImages)
                 print("Failed to load image")
+                return
             }
             
             let rating = Float(movie.rating) ?? 0
@@ -58,7 +67,8 @@ class QuestionFactory: QuestionFactoryProtocol {
             }
         }
     }
-    
+}
+
     
     
     /*
@@ -105,4 +115,3 @@ class QuestionFactory: QuestionFactoryProtocol {
             correctAnswer: false)
     ]
 */
-}
