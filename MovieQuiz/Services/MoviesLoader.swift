@@ -34,10 +34,9 @@ struct MoviesLoader: MoviesLoading {
                     
                     if !JSONtoStruct.errorMessage.isEmpty {
                         handler(.failure(LoaderError.apiError(JSONtoStruct.errorMessage)))
+                    } else {
+                        handler(.success(JSONtoStruct))
                     }
-                    
-                    
-                    handler(.success(JSONtoStruct))
                 } catch {
                     handler(.failure(error))
                 }
