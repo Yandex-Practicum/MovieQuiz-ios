@@ -37,6 +37,7 @@ struct MoviesLoader: MoviesLoading {
                     } else {
                         handler(.success(JSONtoStruct))
                     }
+                    
                 } catch {
                     handler(.failure(error))
                 }

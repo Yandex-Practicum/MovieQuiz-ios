@@ -1,6 +1,4 @@
 // swiftlint:disable all
-
-
 import UIKit
 
 class AlertPresenter {
@@ -8,7 +6,7 @@ class AlertPresenter {
     private let title: String
     private let text: String
     private let buttonText: String
-    private let controller: UIViewController
+    private weak var controller: UIViewController?
     private let onAction: ((UIAlertAction) -> Void)?
     
     init(title: String, text: String, buttonText: String, controller: UIViewController, onAction: ((UIAlertAction) -> Void)?
@@ -30,8 +28,9 @@ class AlertPresenter {
         
         alert.addAction(action)
         DispatchQueue.main.async {
-            self.controller.present(alert, animated: true, completion: nil)
+            if let safeController = self.controller {
+                safeController.present(alert, animated: true, completion: nil)
+            }
         }
     }
-    
 }
