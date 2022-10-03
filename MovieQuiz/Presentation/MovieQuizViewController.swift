@@ -86,18 +86,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
+        let alert = AlertPresenter(controller: self)
+        let content = AlertModel(
             title: result.title,
             message: result.text,
-            preferredStyle: .alert)
+            buttonText: result.buttonText,
+            completion: self.restartQuiz)
         
-        let action = UIAlertAction(title: result.buttonText, style: .cancel) { [weak self] _ in
-            self?.restartQuiz()
-        }
-
-        alert.addAction(action)
-
-        self.present(alert, animated: true, completion: nil)
+        alert.showAlert(with: content)
     }
 
     private func showAnswerResult(isCorrect: Bool) {
