@@ -133,7 +133,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    func isAnswerCorrect(_ userAnswer: Bool) {
+    private func isAnswerCorrect(_ userAnswer: Bool) {
        let isCorrect = questions[currentQuestionIndex].correctAnswer == userAnswer
         showAnswerResult(isCorrect: isCorrect)
     }
