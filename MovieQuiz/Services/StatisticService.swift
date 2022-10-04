@@ -21,7 +21,7 @@ struct GameRecord: Codable, Comparable {
     let date: Date
     
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        if lhs.total == 0 {
+        if lhs.total == 0 || rhs.total == 0 {
             return true
         }
         
@@ -87,10 +87,10 @@ final class StatisticServiceImplementation: StatisticService {
         }
         
         gamesCount += 1
-        totalAccuracy = updateTotalAccuracy(currentGameAccuracy: Double(count) / Double(amount) * 100.0)
+        totalAccuracy = getTotalAccuracy(currentGameAccuracy: Double(count) / Double(amount) * 100.0)
     }
     
-    private func updateTotalAccuracy(currentGameAccuracy: Double) -> Double {
+    private func getTotalAccuracy(currentGameAccuracy: Double) -> Double {
         ((totalAccuracy * Double(gamesCount - 1)) + currentGameAccuracy) / Double(gamesCount)
     }
 }

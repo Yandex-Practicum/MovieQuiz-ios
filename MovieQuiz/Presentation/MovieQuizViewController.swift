@@ -1,10 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     // MARK: - Outlets and Actions
 
     @IBOutlet private weak var poster: UIImageView!
@@ -43,6 +39,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
         
         statisticService = StatisticServiceImplementation()
+    }
+    
+    // MARK: - Overridden functions
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: - QuestionFactoryDelegate
