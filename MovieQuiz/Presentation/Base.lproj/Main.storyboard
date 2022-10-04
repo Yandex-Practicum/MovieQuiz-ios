@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -49,6 +48,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="HZF-gD-kL5" secondAttribute="height" multiplier="2:3" id="gUU-fh-y3a"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VFo-P3-prQ">
                                         <rect key="frame" x="0.0" y="593.33333333333337" width="353" height="75.666666666666629"/>
@@ -56,11 +60,10 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gnO-w1-LXj" userLabel="Question Label">
                                                 <rect key="frame" x="20" y="5" width="313" height="65.666666666666671"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="gnO-w1-LXj" firstAttribute="top" secondItem="VFo-P3-prQ" secondAttribute="top" constant="5" id="a08-pM-VEi"/>
                                             <constraint firstItem="gnO-w1-LXj" firstAttribute="leading" secondItem="VFo-P3-prQ" secondAttribute="leading" constant="20" id="dBp-We-0Nt"/>
@@ -131,6 +134,7 @@
                     <connections>
                         <outlet property="counterLabel" destination="mW0-Ja-Osr" id="fdR-ja-huJ"/>
                         <outlet property="imageView" destination="HZF-gD-kL5" id="Qld-KN-SVN"/>
+                        <outlet property="mainQuestionLabel" destination="gnO-w1-LXj" id="8Hz-d1-cDr"/>
                         <outlet property="questionLabel" destination="kZ6-nT-4hI" id="rVw-37-UST"/>
                     </connections>
                 </viewController>
@@ -146,8 +150,5 @@
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
