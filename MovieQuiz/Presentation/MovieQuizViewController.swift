@@ -1,15 +1,35 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var questionLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var mainQuestionLabel: UILabel!
+    
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
     //структура для mock-данных
     struct QuizQuestion {
-            let image: String
-            let text: String
-            let correctAnswer: Bool
-        }
+        let image: String
+        let text: String
+        let correctAnswer: Bool
+    }
+    
+    //вью-модели для каждого из состояний:
+    // для состояния "Вопрос задан"
+    struct QuizStepViewModel {
+        let image: UIImage
+        let question: String
+        let questionNumber: String
+    }
+    // для состояния "Результат квиза"
+    struct QuizResultsViewModel {
+        let title: String
+        let text: String
+        let buttonText: String
+    }
+    
     //массив mock-данных
     private let questions: [QuizQuestion] = [
         QuizQuestion(image: "The Godfather", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
@@ -23,23 +43,28 @@ final class MovieQuizViewController: UIViewController {
         QuizQuestion(image: "Tesla", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
         QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)]
     
-    //вью-модели для каждого из состояний:
-    // для состояния "Вопрос задан"
-    struct QuizStepViewModel {
-      let image: UIImage
-      let question: String
-      let questionNumber: String
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let firstQuestion = convert(model: questions[0])
+        imageView.image = firstQuestion.image
+        mainQuestionLabel.text = firstQuestion.question
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
-    // для состояния "Результат квиза"
-    struct QuizResultsViewModel {
-      let title: String
-      let text: String
-      let buttonText: String
+    
+    @IBAction private func yesButtonPressed(_ sender: UIButton) {
+        isAnswerCorrect(true)
+    }
+    
+    @IBAction private func noButtonPressed(_ sender: UIButton) {
+        isAnswerCorrect(false)
     }
     
     //функции, которые будут показывать View-модели на экране
     private func show(quiz step: QuizStepViewModel) {
-      // здесь мы заполняем нашу картинку, текст и счётчик данными
+        // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image = step.image
         mainQuestionLabel.text = step.question
         counterLabel.text = "\(currentQuestionIndex+1)/10"
@@ -55,7 +80,7 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0
             
             // скидываем счётчик правильных ответов
-                self.correctAnswers = 0
+            self.correctAnswers = 0
             
             // заново показываем первый вопрос
             let firstQuestion = self.questions[self.currentQuestionIndex]
@@ -95,8 +120,8 @@ final class MovieQuizViewController: UIViewController {
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
-                correctAnswers += 1
-            }
+            correctAnswers += 1
+        }
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
@@ -104,48 +129,12 @@ final class MovieQuizViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
-            self.imageView.layer.borderColor = UIColor.white.cgColor
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
     
-    private func isAnswerCorrect(button: Bool) {
-        if button {
-            if questions[currentQuestionIndex].correctAnswer == true {
-                showAnswerResult(isCorrect: true)
-            } else {
-                showAnswerResult(isCorrect: false)
-            }
-        } else {
-            if questions[currentQuestionIndex].correctAnswer == true {
-                showAnswerResult(isCorrect: false)
-            } else {
-                showAnswerResult(isCorrect: true)
-            }
-        }
-    }
-    
-    //IB Action и Outlet (привязка к интерфейсу)
-    @IBAction private func yesButtonPressed(_ sender: UIButton) {
-        isAnswerCorrect(button: true)
-    }
-    
-    @IBAction private func noButtonPressed(_ sender: UIButton) {
-        isAnswerCorrect(button: false)
-    }
-    
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var questionLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet weak var mainQuestionLabel: UILabel!
-    
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        var firstQuestion = convert(model: questions[0])
-        imageView.image = firstQuestion.image
-        mainQuestionLabel.text = firstQuestion.question
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = UIColor.white.cgColor
+    func isAnswerCorrect(_ userAnswer: Bool) {
+       let isCorrect = questions[currentQuestionIndex].correctAnswer == userAnswer
+        showAnswerResult(isCorrect: isCorrect)
     }
 }
