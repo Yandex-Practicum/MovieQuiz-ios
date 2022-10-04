@@ -73,7 +73,7 @@ final class StatisticServiceImplementation: StatisticService {
         total += amount
         
         let newResult = GameRecord(correct: count, total: amount, date: Date())
-        if (bestGame < newResult) {
+        if bestGame < newResult {
             bestGame = newResult
         }
     }
