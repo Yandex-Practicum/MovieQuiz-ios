@@ -23,9 +23,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
             guard let movie = self.movies[safe: index] else {
-                if let safeDelegate = self.delegate {
-                    safeDelegate.didFailToLoadData(with: QuesionsError.noElements)
-                }
+                self.delegate?.didFailToLoadData(with: QuesionsError.noElements)
                 return
             }
             
@@ -34,9 +32,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
-                if let safeDelegate = self.delegate {
-                    safeDelegate.didFailToLoadData(with: QuesionsError.noImages)
-                }
+                self.delegate?.didFailToLoadData(with: QuesionsError.noImages)
                 print("Failed to load image")
                 return
             }
@@ -54,9 +50,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                if let safeDelegate = self.delegate {
-                    safeDelegate.didReceiveNextQuestion(question: question)
-                }
+                self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
     }
@@ -67,15 +61,10 @@ class QuestionFactory: QuestionFactoryProtocol {
             switch result {
             case .success(let mostPopularMovies):
                 self.movies = mostPopularMovies.items // сохраняем фильм в нашу новую переменную
-                if let safeDelegate = self.delegate {
-                    safeDelegate.didLoadDataFromServer() // сообщаем, что данные загрузились
-                }
+                self.delegate?.didLoadDataFromServer() // сообщаем, что данные загрузились
             case .failure(let error):
-                if let safeDelegate = self.delegate {
-                    safeDelegate.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
-                }
+                self.delegate?.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
             }
-            
         }
     }
 }
