@@ -28,9 +28,7 @@ class AlertPresenter {
         
         alert.addAction(action)
         DispatchQueue.main.async {
-            if let safeController = self.controller {
-                safeController.present(alert, animated: true, completion: nil)
-            }
+            self.controller?.present(alert, animated: true, completion: nil)
         }
     }
 }
