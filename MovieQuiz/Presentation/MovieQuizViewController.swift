@@ -102,7 +102,6 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
         }
-        
     }
     
     private struct QuizStepViewModel {
@@ -166,5 +165,7 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false)
     ]
 }
+
+
 
 
