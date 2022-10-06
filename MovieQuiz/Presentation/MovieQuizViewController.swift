@@ -6,9 +6,7 @@ struct QuizQuestion {
     let correctAnswer: Bool
     
     static func == (lhs: Self, rhs: Self) -> Bool {
-        if lhs.text != rhs.text { return false }
-        if lhs.image != rhs.image { return false }
-        if lhs.correctAnswer != rhs.correctAnswer { return false }
+        if lhs.text != rhs.text, lhs.image != rhs.image, lhs.correctAnswer != rhs.correctAnswer { return false }
         return true
     }
 }
@@ -41,13 +39,16 @@ final class MovieQuizViewController: UIViewController {
                                      QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
                                      ]
     
-    @IBOutlet weak var counterLabel: UILabel!
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var questionLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
     private var currentQuestionIndex: Int = 0
     private var roundCount = 0
     private var correctAnswers: Int = 0
     
+   
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,11 +56,11 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: convert(model: currentQuestion))
     }
     
-    @IBAction func noButtonClicked(_ sender: Any) {
+    @IBAction private func noButtonClicked(_ sender: Any) {
         answerIs(answer: false)
     }
     
-    @IBAction func yesButtonClicked(_ sender: Any) {
+    @IBAction private func yesButtonClicked(_ sender: Any) {
         answerIs(answer: true)
     }
     
@@ -80,15 +81,20 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-        imageView.layer.borderColor = isCorrect ? UIColor.YPGreen.cgColor : UIColor.YPRed.cgColor // делаем рамку цветной
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // делаем рамку цветной
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.showNextQuestionOrResults()
             self?.imageView.layer.borderColor = UIColor.clear.cgColor
+            self?.yesButton.isEnabled = true
+            self?.noButton.isEnabled = true
         }
         if isCorrect { correctAnswers += 1 }
+
     }
             
     
@@ -123,7 +129,12 @@ final class MovieQuizViewController: UIViewController {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let index = questions.firstIndex(where: { $0 == model })
-        let indexText = index == nil ? "?" : "\(index! + 1)"
+        let indexText: String
+        if let index = index {
+          indexText = "\(index + 1)"
+        } else {
+          indexText = "?"
+        }
         let questionNumberText = "\(indexText)/\(questions.count)"
         let converted = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: questionNumberText)
         return converted
