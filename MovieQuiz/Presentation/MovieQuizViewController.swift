@@ -79,6 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             text: message,
             buttonText: "Продолжить",
             controller: self,
+            accessibilityIdentifier: "error_alert",
             onAction: { _ in
                 self.showLoadingIndicator()
                 self.questionFactory?.loadData()
@@ -126,6 +127,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             text: result.text,
             buttonText: result.buttonText,
             controller: self,
+            accessibilityIdentifier: "shown_alert",
             onAction: { _ in
                 self.correctAnswersCounter = 0
                 self.currentQuestionCounter = 0
