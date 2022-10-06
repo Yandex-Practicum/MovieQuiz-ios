@@ -1,6 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+  
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
