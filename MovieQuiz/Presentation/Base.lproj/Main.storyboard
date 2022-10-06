@@ -39,6 +39,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbL-w6-oNO" userLabel="Index Label">
                                                 <rect key="frame" x="314" y="0.0" width="36" height="23.666666666666668"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Index"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="ypWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -48,6 +49,9 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Rct-2A-3YO" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.666666666666686" width="350" height="522"/>
                                         <color key="backgroundColor" name="ypWhite"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Poster">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="Rct-2A-3YO" secondAttribute="height" multiplier="2:3" id="bqE-KB-q7v"/>
                                         </constraints>
@@ -75,6 +79,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRi-6W-GI3" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="165" height="60"/>
                                                 <color key="backgroundColor" name="ypWhite"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="No"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="ypBlack"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -93,6 +98,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajO-iz-elZ" userLabel="Yes Button">
                                                 <rect key="frame" x="185" y="0.0" width="165" height="60"/>
                                                 <color key="backgroundColor" name="ypWhite"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Yes"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="ypBlack"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>

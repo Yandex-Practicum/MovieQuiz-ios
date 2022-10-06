@@ -133,6 +133,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.questionFactory?.requestNextQuestion()
             }
         )
+    
         DispatchQueue.main.async {
             alert.showAlert()
         }
