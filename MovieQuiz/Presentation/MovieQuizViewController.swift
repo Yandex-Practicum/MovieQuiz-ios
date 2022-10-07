@@ -13,11 +13,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private let presenter = MovieQuizPresenter()
     private var questionFactory: QuestionFactoryProtocol?
-//    private let questionsAmount: Int = 10
+    //    private let questionsAmount: Int = 10
     private var currentQuestion: QuizQuestion?
-//    private var currentQuestionCounter: Int = 0
+    //    private var currentQuestionCounter: Int = 0
     private let moviesLoader = MoviesLoader()
-        
+    
     // Statistic
     private var statisticService = StatisticServiceImplementation()
     private var correctAnswersCounter = 0
@@ -127,7 +127,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.questionFactory?.requestNextQuestion()
             }
         )
-    
+        
         DispatchQueue.main.async {
             alert.showAlert()
         }
@@ -142,6 +142,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
         } else {
             imageBorderColor(for: "incorrect")
+        }
+        buttonsEnabled(is: false) // временно отключил кнопки
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.imageBorderDefaultStyle()
+            self.showNextQuestionOrResults()
+            self.buttonsEnabled(is: true) // включил кнопки
         }
     }
     
@@ -158,14 +164,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             } else {
                 showAnswerResult(isCorrect: false)
             }
-            buttonsEnabled(is: false) // временно отключил кнопки
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.imageBorderDefaultStyle()
-                self.showNextQuestionOrResults()
-                self.buttonsEnabled(is: true) // включил кнопки
-            }
         }
-        
     }
     
     // Показываем следующий вопрос или результат всей викторины
