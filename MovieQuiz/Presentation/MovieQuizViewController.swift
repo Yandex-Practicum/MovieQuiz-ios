@@ -11,10 +11,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     
+    private let presenter = MovieQuizPresenter()
     private var questionFactory: QuestionFactoryProtocol?
-    private let questionsAmount: Int = 10
+//    private let questionsAmount: Int = 10
     private var currentQuestion: QuizQuestion?
-    private var currentQuestionCounter: Int = 0
+//    private var currentQuestionCounter: Int = 0
     private let moviesLoader = MoviesLoader()
         
     // Statistic
@@ -56,7 +57,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         hideLoadingIndicator()
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
             self?.hideLoadingIndicator()
@@ -101,15 +102,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - QUIZ STEP
     
-    // Конвертор данных вопроса в данные для заполнения вью
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let quiz = QuizStepViewModel(
-            image: model.image,
-            question: model.text,
-            questionNumber: "\(currentQuestionCounter + 1)/\(questionsAmount)")
-        return quiz
-    }
-    
     // Вывод данных на экран
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = UIImage(data: step.image)
@@ -130,7 +122,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             accessibilityIdentifier: "shown_alert",
             onAction: { _ in
                 self.correctAnswersCounter = 0
-                self.currentQuestionCounter = 0
+                self.presenter.resetQuestionIndex()
                 self.showLoadingIndicator()
                 self.questionFactory?.requestNextQuestion()
             }
@@ -178,17 +170,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // Показываем следующий вопрос или результат всей викторины
     private func showNextQuestionOrResults() {
-        if currentQuestionCounter == questionsAmount - 1 { // это последний вопрос
-            statisticService.store(correct: correctAnswersCounter, total: questionsAmount) // Проверил на рекорд
-            if correctAnswersCounter == questionsAmount {
+        if presenter.isLastQuestion() { // это последний вопрос
+            statisticService.store(correct: correctAnswersCounter, total: presenter.questionsAmount) // Проверил на рекорд
+            if correctAnswersCounter == presenter.questionsAmount {
                 // Статистика для победителя - X из X правильных ответов
                 let winResult = QuizResultViewModel(
                     title: "Вы выиграли!",
                     text:
                     """
-                    Ваш результат: \(correctAnswersCounter)/\(questionsAmount)
+                    Ваш результат: \(correctAnswersCounter)/\(presenter.questionsAmount)
                     Количество сыгранных квизов: \(statisticService.gamesCount)
-                    Рекорд: \(statisticService.bestGame.correct) /\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
+                    Рекорд: \(statisticService.bestGame.correct) /\(presenter.questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
                     Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))
                     """,
                     buttonText: "Сыграть еще раз"
@@ -200,9 +192,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     title: "Этот раунд окончен!",
                     text:
                     """
-                    Ваш результат: \(correctAnswersCounter)/\(questionsAmount)
+                    Ваш результат: \(correctAnswersCounter)/\(presenter.questionsAmount)
                     Количество сыгранных квизов: \(statisticService.gamesCount)
-                    Рекорд: \(statisticService.bestGame.correct) /\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
+                    Рекорд: \(statisticService.bestGame.correct) /\(presenter.questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
                     Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
                     """,
                     buttonText: "Сыграть еще раз"
@@ -210,7 +202,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 show(quiz: result)
             }
         } else { // это не последний вопрос
-            currentQuestionCounter += 1
+            presenter.switchToNextQuestion()
             showLoadingIndicator()
             questionFactory?.requestNextQuestion()
         }
