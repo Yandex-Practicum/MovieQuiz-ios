@@ -67,12 +67,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func showLoadingIndicator() {
-        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
-        activityIndicator.startAnimating() // включаем анимацию
+        self.activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        self.activityIndicator.startAnimating() // включаем анимацию
     }
     
     func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
+        self.activityIndicator.isHidden = true
     }
     
     func showNetworkError(message: String) {
@@ -121,7 +121,6 @@ extension MovieQuizViewController {
     }
     
 }
-
 
 protocol MovieQuizViewControllerProtocol: AnyObject {
     func show(quiz step: QuizStepViewModel)
