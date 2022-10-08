@@ -42,20 +42,24 @@ final class MovieQuizUITests: XCTestCase {
         XCTAssertFalse(firstPoster == secondPoster)
     }
     
+    
     func testAlertShown() {
         while app.staticTexts["Index"].label != "10/10" {
             app.buttons["No"].tap()
             sleep(1)
         }
-        let alert = app.alerts["shown_alert"]
+
+        app.buttons["No"].tap()
+        sleep(1)
+
+        let alert = app.alerts.firstMatch
         let alertIsExists = alert.exists
-        let titleIsCorrect1 = alert.label == "Этот раунд окончен!"
-        let titleIsCorrect2 = alert.label == "Вы выиграли!"
-        let buttonIsCorrect = alert.buttons.firstMatch.label == "Сыграть еще раз"
+        let titleIsCorrect = (alert.label == "Этот раунд окончен!")
+        let buttonIsCorrect = alert.buttons.firstMatch.label == "Сыграть ещё раз"
         XCTAssertNotNil(alert)
-        XCTAssertTrue((alert.label == "Этот раунд окончен!") || (alert.label == "Вы выиграли!"))
-        XCTAssertEqual(alert.buttons.firstMatch.label, "Сыграть еще раз")
-        XCTAssertTrue(alertIsExists && (titleIsCorrect1 || titleIsCorrect2) && buttonIsCorrect)
+        XCTAssertEqual(alert.label, "Этот раунд окончен!")
+        XCTAssertEqual(alert.buttons.firstMatch.label, "Сыграть ещё раз")
+        XCTAssertTrue(alertIsExists && titleIsCorrect && buttonIsCorrect)
     }
 
     func testExample() throws {
