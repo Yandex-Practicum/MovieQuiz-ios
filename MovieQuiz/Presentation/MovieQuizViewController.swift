@@ -9,28 +9,6 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet weak var buttonNo: UIButton!
     @IBOutlet weak var buttonYes: UIButton!
-    /*
-     Анастасия, хочется вас поблагодарить за столь приятные ревью. Не знаю почему,
-     но мне комфортно читать ваши замечания, я не чувствую напряжения или недовольства,
-     в чате, например, некоторые жаловались на своих ревьюеров ;( Поэтому вам спасибо,
-     я очень рад, что вы проверяете мои работы.
-     
-     На счёт гита, я испытываю пока сильный стресс при работе с ним ._. , я не понимаю, что
-     я должен сделать, в учебнике очень плохо расписан этот материал, по этому приходится
-     просить помощи у уже опытных однокурсников на ЯП. Надеюсь, вас не сильно расстроит тот
-     факт, что я проигнорировал вашу просьбу, так как не понимаю, как её исправить.
-     Попрошу человека мне помочь с этим.
-     
-     Некоторые комментарии я оставляю для себя, чтобы потом в будущем что-то сверять, так
-     что вашу просьбу я не игнорирую.
-     
-     Обратиться к вам через сайт нельзя, поэтому пишу сообщение здесь,
-     надеюсь вы не против :)
-     
-     Спасибо вам! Я стараюсь!
-     
-     upd: Спасибо большое за информацию по гиту!
-     */
     
     @IBOutlet private weak var counterLabel: UILabel!
     
@@ -128,7 +106,8 @@ final class MovieQuizViewController: UIViewController {
         //imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
             self.showNextQuestionOrResults()
         }
     }
@@ -168,13 +147,12 @@ final class MovieQuizViewController: UIViewController {
             message: result.text,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-            self.currentQuestionIndex = 0
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
             
-            // скидываем счётчик правильных ответов
+            self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            // заново показываем первый вопрос
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
