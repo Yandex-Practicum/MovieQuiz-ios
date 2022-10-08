@@ -13,20 +13,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private let presenter = MovieQuizPresenter()
     private var questionFactory: QuestionFactoryProtocol?
-    //    private let questionsAmount: Int = 10
-    private var currentQuestion: QuizQuestion?
-    //    private var currentQuestionCounter: Int = 0
+    var correctAnswersCounter = 0
     private let moviesLoader = MoviesLoader()
-    
-    // Statistic
     private var statisticService = StatisticServiceImplementation()
-    private var correctAnswersCounter = 0
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        processUserAnswer(answer: false)
+        presenter.noButtonClicked()
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        processUserAnswer(answer: true)
+        presenter.yesButtonClicked()
     }
     
     // MARK: - LIFECYCLE
@@ -56,7 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         
         hideLoadingIndicator()
-        currentQuestion = question
+        presenter.currentQuestion = question
         let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
@@ -136,7 +131,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - ANSWER RESULT
     
     // Вывод на экран рамки для фото в зависимости от правильности
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             imageBorderColor(for: "correct")
             
@@ -144,6 +139,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             imageBorderColor(for: "incorrect")
         }
         buttonsEnabled(is: false) // временно отключил кнопки
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.imageBorderDefaultStyle()
             self.showNextQuestionOrResults()
@@ -153,19 +149,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     
     // MARK: - QUIZ BRAIN
-    
-    // Определяю правильность ответа
-    private func processUserAnswer(answer: Bool) {
-        
-        if let currentQuestion = currentQuestion {
-            if answer == currentQuestion.correctAnswer {
-                showAnswerResult(isCorrect: true)
-                correctAnswersCounter += 1 // Записал успешный результат
-            } else {
-                showAnswerResult(isCorrect: false)
-            }
-        }
-    }
     
     // Показываем следующий вопрос или результат всей викторины
     private func showNextQuestionOrResults() {
