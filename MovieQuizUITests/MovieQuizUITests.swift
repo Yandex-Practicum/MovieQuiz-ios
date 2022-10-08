@@ -23,7 +23,7 @@ final class MovieQuizUITests: XCTestCase {
         let secondPoster = app.images["Poster"] // ещё раз находим постер
         let indexLabel = app.staticTexts["Index"]
         
-        sleep(3)
+        sleep(5)
         
         XCTAssertTrue(indexLabel.label == "2/10")
         XCTAssertFalse(firstPoster == secondPoster)
@@ -36,7 +36,7 @@ final class MovieQuizUITests: XCTestCase {
         let secondPoster = app.images["Poster"] // ещё раз находим постер
         let indexLabel = app.staticTexts["Index"]
         
-        sleep(3)
+        sleep(5)
         
         XCTAssertTrue(indexLabel.label == "2/10")
         XCTAssertFalse(firstPoster == secondPoster)
