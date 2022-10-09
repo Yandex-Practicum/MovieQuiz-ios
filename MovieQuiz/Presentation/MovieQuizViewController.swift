@@ -48,12 +48,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             title: result.title,
             message: message,
             preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
             
-            let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                
-                self.presenter.restartGame()
-            }
+            self.presenter.restartGame()
+        }
         
         alert.addAction(action)
         
@@ -72,7 +72,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
+        DispatchQueue.main.async {
+            self.activityIndicator.isHidden = true
+        }
     }
     
     func showNetworkError(message: String) {
@@ -82,13 +84,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             title: "Ошибка",
             message: message,
             preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Попробовать ещё раз",
+                                   style: .default) { [weak self] _ in
+            guard let self = self else { return }
             
-            let action = UIAlertAction(title: "Попробовать ещё раз",
-            style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                
-                self.presenter.restartGame()
-            }
+            self.presenter.restartGame()
+        }
         
         alert.addAction(action)
     }
