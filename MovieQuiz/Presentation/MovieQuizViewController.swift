@@ -57,7 +57,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         alert.addAction(action)
         
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
@@ -67,12 +67,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func showLoadingIndicator() {
-        self.activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
-        self.activityIndicator.startAnimating() // включаем анимацию
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
     }
     
     func hideLoadingIndicator() {
-        self.activityIndicator.isHidden = true
+        activityIndicator.isHidden = true
     }
     
     func showNetworkError(message: String) {

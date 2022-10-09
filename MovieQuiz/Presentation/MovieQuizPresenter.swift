@@ -71,8 +71,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
     }
-    // imageView.image = UIImage(data: step.image)
-
     
     func yesButtonClicked() {
         didAnswer(isYes: true)
@@ -106,8 +104,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults() {
-        if self.isLastQuestion() {
-            let text = correctAnswers == self.questionsAmount ?
+        if isLastQuestion() {
+            let text = correctAnswers == questionsAmount ?
             "Поздравляем, вы ответили на 10 из 10!" :
             "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             
@@ -117,7 +115,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                 buttonText: "Сыграть ещё раз")
                 viewController?.show(quiz: viewModel)
         } else {
-            self.switchToNextQuestion()
+            switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
