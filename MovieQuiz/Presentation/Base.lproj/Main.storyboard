@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="hY5-La-qUN">
-                                <rect key="frame" x="20" y="54" width="374" height="771.5"/>
+                                <rect key="frame" x="20" y="54" width="374" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ssI-Ba-8Bs">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -46,14 +46,19 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GkE-wk-udW" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="GkE-wk-udW" secondAttribute="height" multiplier="2:3" id="nU3-6k-vbz"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z1o-M5-XvE">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="67"/>
+                                        <rect key="frame" x="0.0" y="649" width="374" height="67"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbe-Hw-zWJ" userLabel="Question Label">
                                                 <rect key="frame" x="20" y="5" width="334" height="57"/>
@@ -70,7 +75,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ynH-YQ-9yv">
-                                        <rect key="frame" x="0.0" y="711.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="748" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jd2-9b-K8m" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -121,6 +126,7 @@
                         <constraints>
                             <constraint firstItem="hY5-La-qUN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="eaG-Fq-8NU"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hY5-La-qUN" secondAttribute="trailing" constant="20" id="kLZ-2t-qCC"/>
+                            <constraint firstItem="hY5-La-qUN" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="vWh-TC-4sf"/>
                             <constraint firstItem="hY5-La-qUN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="zMO-LA-DjK"/>
                         </constraints>
                     </view>

@@ -2,11 +2,11 @@ import UIKit
 // расширение для добавления цветов в UIColor
 extension UIColor {
     static var ypGreen: UIColor {
-        UIColor(named: "green" ) ?? UIColor.green
+        UIColor(named: "ypGreen" ) ?? UIColor.green
     }
 
     static var ypRed: UIColor {
-        UIColor(named: "red" ) ?? UIColor.red
+        UIColor(named: "ypRed" ) ?? UIColor.red
     }
 }
 
@@ -104,12 +104,14 @@ final class MovieQuizViewController: UIViewController {
 
     
     private func showAnswerResult(isCorrect: Bool) {
+        
         if isCorrect {
             correctAnswers += 1
         }
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 6
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -126,32 +128,18 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak private var counterLabel: UILabel!
         
     
-    @IBAction func noButtonClicked(_ sender: UIButton) {
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = self.questions[self.currentQuestionIndex]
-        let isCorrect: Bool
-        if currentQuestion.correctAnswer == false {
-            isCorrect = true
-        }
-        else {
-            isCorrect = false
-        }
+        let isCorrect = !currentQuestion.correctAnswer
         self.showAnswerResult(isCorrect: isCorrect)
     }
     
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = self.questions[self.currentQuestionIndex]
-        let isCorrect: Bool
-        if currentQuestion.correctAnswer == true {
-            isCorrect = true
-        }
-        else {
-            isCorrect = false
-        }
+        let isCorrect = currentQuestion.correctAnswer
         self.showAnswerResult(isCorrect: isCorrect)
-        
     }
   
-
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers) из 10"
