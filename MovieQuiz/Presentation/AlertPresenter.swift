@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 struct AlertPresenter {
-    let controller: UIViewController
+    weak var controller: UIViewController?
     
     func showAlert(with content: AlertModel) {
         let alert = UIAlertController(
@@ -23,6 +23,6 @@ struct AlertPresenter {
 
         alert.addAction(action)
 
-        controller.present(alert, animated: true, completion: nil)
+        controller?.present(alert, animated: true, completion: nil)
     }
 }
