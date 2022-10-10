@@ -1,26 +1,25 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
   
-    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     
-    
-    
+    //MARK: - Private var
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    
     private let questionsAmout = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenterProtocol?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter = AlertPresenter(alertVC: self, delegate: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         imageView.layer.masksToBounds = true
@@ -38,7 +37,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    
+    //MARK: - AlertPresenterDelegate
+    func didShowAlert() {
+        restartQuiz()
+    }
     
     //MARK: - Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -64,22 +66,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
-    }
-    
-    private func show(quizResult: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: quizResult.title,
-            message: quizResult.text,
-            preferredStyle: .alert)
-        let action = UIAlertAction(
-            title: quizResult.buttonText,
-            style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                self.restartQuiz()
-            }
-        
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -114,11 +100,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         if currentQuestionIndex == questionsAmout - 1 {
             let text = "Ваш результат: \(correctAnswers) из \(questionsAmout)"
-            let viewModel = QuizResultsViewModel(
+            let viewModel = AlertModel(
                 title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть еще раз?")
-            show(quizResult: viewModel)
+                message: text,
+                buttonText: "Сыграть еще раз?",
+                completion: nil)
+            alertPresenter?.showAlert(model: viewModel)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
