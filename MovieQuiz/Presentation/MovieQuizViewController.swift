@@ -75,6 +75,8 @@ final class MovieQuizViewController: UIViewController {
 
 // тут мы заполняем картинку, текст и счётчик данными
     private func show(quiz step: QuizStepViewModel) {
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -108,25 +110,25 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        
+
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 6
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
-    }
-    
-    
-//Это привязка кнопок
-    @IBOutlet weak private var imageView: UIImageView!
-    
-    @IBOutlet weak private var textLabel: UILabel!
-    
-    @IBOutlet weak private var counterLabel: UILabel!
         
+    }
+
+    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet weak private var noButton: UIButton!
+    @IBOutlet weak private var yesButton: UIButton!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = self.questions[self.currentQuestionIndex]
