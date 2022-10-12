@@ -51,7 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
-     
+        
         showAnswerResult(isCorrect:currentQuestion.correctAnswer == true)
         
     }
@@ -104,7 +104,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText) { [weak self]  in
+        let alertModel = AlertModel(alertTitle: result.title, alertMessage: result.text, alertButtonText: result.buttonText) {  [weak self] _ in
             guard let self = self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
