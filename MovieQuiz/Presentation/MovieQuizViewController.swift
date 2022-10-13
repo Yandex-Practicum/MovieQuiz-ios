@@ -27,8 +27,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     // Переменная индекса текущего вопроса в MovieQuizViewController
     private var currentQuestionIndex: Int = 0
@@ -38,7 +38,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let firstQuestion = startGame(question: questions)
+        startGame(question: questions)
     }
     //MARK: - Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {

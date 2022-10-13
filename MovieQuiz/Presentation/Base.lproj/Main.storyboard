@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="i8W-ER-WKS" userLabel="Stack View Main">
-                                <rect key="frame" x="20" y="57" width="350" height="743"/>
+                                <rect key="frame" x="20" y="57" width="350" height="753"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jbb-Ds-MNY" userLabel="Stack View Top">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="23.666666666666668"/>
@@ -58,10 +58,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="pz3-4P-P7d">
-                                        <rect key="frame" x="0.0" y="588.66666666666663" width="350" height="74.333333333333371"/>
+                                        <rect key="frame" x="0.0" y="588.66666666666663" width="350" height="84.333333333333371"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма  меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z9H-4F-Xbu" userLabel="Question Label">
-                                                <rect key="frame" x="20" y="5" width="310" height="64.333333333333329"/>
+                                                <rect key="frame" x="20" y="5" width="310" height="74.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
                                                 <color key="highlightedColor" name="background"/>
@@ -75,7 +75,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tjn-Xu-i4J" userLabel="Stack View Buttons">
-                                        <rect key="frame" x="0.0" y="683" width="350" height="60"/>
+                                        <rect key="frame" x="0.0" y="693" width="350" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnI-c6-ngP" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="165" height="60"/>
@@ -115,7 +115,6 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="cnI-c6-ngP" firstAttribute="width" secondItem="vST-eB-yRa" secondAttribute="width" id="LnD-Ro-Mfd"/>
                                             <constraint firstAttribute="height" constant="60" id="Xcc-z1-RKy"/>
                                         </constraints>
                                     </stackView>
@@ -123,10 +122,10 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="background"/>
                         <constraints>
                             <constraint firstItem="i8W-ER-WKS" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="4zb-EC-6cL"/>
-                            <constraint firstItem="i8W-ER-WKS" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-10" id="GKy-VF-rYA"/>
+                            <constraint firstItem="i8W-ER-WKS" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="GKy-VF-rYA" userLabel="Stack View Main.bottom = Safe Area.bottom"/>
                             <constraint firstItem="i8W-ER-WKS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="vS8-lh-En5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="i8W-ER-WKS" secondAttribute="top" constant="-10" id="wnc-BS-fVr"/>
                         </constraints>
