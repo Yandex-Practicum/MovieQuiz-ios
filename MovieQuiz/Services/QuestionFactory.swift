@@ -29,7 +29,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                 
                 switch result {
                 case .success(let movies):
-                    if (movies.items.isEmpty) {
+                    if movies.items.isEmpty {
                         self.delegate?.didFailToLoadData(with: MoviesNotFound.codeError)
                     } else {
                         self.movies = movies.items
@@ -56,6 +56,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                 imageData = try Data(contentsOf: movie.resizedImageUrl)
             } catch {
                 self.delegate?.didFailToLoadData(with: error)
+                return
             }
             
             let rating = Float(movie.rating) ?? 0
