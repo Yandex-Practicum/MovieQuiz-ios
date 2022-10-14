@@ -115,6 +115,9 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="P6K-yd-KeD">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -122,10 +125,13 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ogY-RE-buR" secondAttribute="bottom" id="4CL-vw-H2q"/>
                             <constraint firstItem="ogY-RE-buR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="UQo-NP-um4"/>
                             <constraint firstItem="ogY-RE-buR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="cSJ-6I-J1P"/>
+                            <constraint firstItem="P6K-yd-KeD" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jgj-xl-Ao5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ogY-RE-buR" secondAttribute="trailing" constant="20" id="sbz-xq-Xid"/>
+                            <constraint firstItem="P6K-yd-KeD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vbg-jQ-dyp"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="P6K-yd-KeD" id="jfw-YT-XLw"/>
                         <outlet property="counterLabel" destination="iBn-IX-rGa" id="VMB-e8-b1q"/>
                         <outlet property="imageView" destination="zob-Ir-F2X" id="gSc-mp-8eR"/>
                         <outlet property="noButton" destination="9HZ-fh-pe8" id="hrN-X3-rUp"/>
