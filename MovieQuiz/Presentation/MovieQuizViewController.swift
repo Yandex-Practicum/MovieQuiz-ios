@@ -52,19 +52,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return .lightContent
     }
     
-    // MARK: - QuestionFactoryDelegate
-    
-    func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else { return }
-        
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
-        
-    }
-    
     // MARK: - Private methods
     
     private func toggleButtonsEnableProperty(to value: Bool) {
@@ -173,5 +160,29 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         correctAnswersCount = 0
 
         questionFactory?.requestNextQuestion()
+    }
+}
+
+// MARK: - QuestionFactoryDelegate
+
+extension MovieQuizViewController {
+    func didRecieveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+        
+    }
+    
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        restartQuiz()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
     }
 }
