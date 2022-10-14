@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private let questionsAmount = 10
     private var correctAnswers: Int = 0
@@ -117,11 +117,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             
             let alertText = """
-Ваш результат: \(correctAnswers)/\(questionsAmount)
-Количество сыгранных квизов: \(statisticService.gamesCount)
-Рекорд: \(statisticService.bestGame.toString())
-Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
-"""
+            Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд: \(statisticService.bestGame.toString())
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+            """
             
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
                                                  text: alertText,
@@ -134,12 +134,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
     private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
     
@@ -151,6 +149,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                     buttonText: "Попробовать еще раз") { [weak self] _ in
             guard let self = self else { return }
             self.questionFactory?.loadData()
+            self.showLoadingIndicator()
         }
         
         alertPresenter?.showAlert(alertModel: alertModel)

@@ -18,6 +18,10 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     private var movies: [MostPopularMovie] = []
     
+    private enum MoviesNotFound: Error {
+        case codeError
+    }
+    
     func loadData() {
         moviesLoader.loadMovies { result in
             DispatchQueue.main.async { [weak self] in
@@ -25,8 +29,13 @@ class QuestionFactory: QuestionFactoryProtocol {
                 
                 switch result {
                 case .success(let movies):
-                    self.movies = movies.items
-                    self.delegate?.didLoadDataFromServer()
+                    if (movies.items.isEmpty) {
+                        self.delegate?.didFailToLoadData(with: MoviesNotFound.codeError)
+                    } else {
+                        self.movies = movies.items
+                        self.delegate?.didLoadDataFromServer()
+                    }
+
                 case .failure(let error):
                     self.delegate?.didFailToLoadData(with: error)
                 }
@@ -46,7 +55,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.resizedImageUrl)
             } catch {
-                print("Failed to load image")
+                self.delegate?.didFailToLoadData(with: error)
             }
             
             let rating = Float(movie.rating) ?? 0
