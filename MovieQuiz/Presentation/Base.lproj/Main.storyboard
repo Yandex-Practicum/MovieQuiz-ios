@@ -46,7 +46,7 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="WSZ-mx-Uav" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                        <rect key="frame" x="71.5" y="43.5" width="231" height="347"/>
                                         <color key="backgroundColor" name="white"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="WSZ-mx-Uav" secondAttribute="height" multiplier="2:3" id="GAX-KG-0gj"/>
@@ -58,10 +58,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="xh7-Ra-doQ">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
+                                        <rect key="frame" x="0.0" y="410.5" width="374" height="313.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HCq-oy-qO2" userLabel="Question Label">
-                                                <rect key="frame" x="20" y="5" width="334" height="89.5"/>
+                                                <rect key="frame" x="20" y="5" width="334" height="303.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
@@ -126,17 +126,23 @@
                                     <constraint firstAttribute="trailing" secondItem="3fk-wf-WdO" secondAttribute="trailing" id="yRg-YU-K6C"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="lJK-tb-AOB">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="black"/>
                         <constraints>
+                            <constraint firstItem="lJK-tb-AOB" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="5bA-PC-R44"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cDX-Bb-P1L" secondAttribute="trailing" constant="20" id="ATr-b5-abI"/>
                             <constraint firstItem="cDX-Bb-P1L" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="L9S-RE-S1b"/>
+                            <constraint firstItem="lJK-tb-AOB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NW4-vg-1Ct"/>
                             <constraint firstItem="cDX-Bb-P1L" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="n88-if-g6h"/>
                             <constraint firstItem="cDX-Bb-P1L" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="tWI-Bb-5F7"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="lJK-tb-AOB" id="sQl-Ll-4Bl"/>
                         <outlet property="poster" destination="WSZ-mx-Uav" id="Iuk-LB-xqn"/>
                         <outlet property="questionCounter" destination="T8S-tk-V3K" id="XXp-sb-bhx"/>
                         <outlet property="questionText" destination="HCq-oy-qO2" id="qss-SS-7k2"/>
