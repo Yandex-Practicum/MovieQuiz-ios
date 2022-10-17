@@ -15,6 +15,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
+    private var statisticServise: StatisticService?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -24,6 +25,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         questionFactory?.requestNextQuestion()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
+        statisticServise = StatisticServiceImplementation()
     }
     
     //MARK: - QuestionFactoryDelegate
@@ -99,10 +101,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         imageView.layer.borderWidth = 0
         
         if currentQuestionIndex == questionsAmout - 1 {
-            let text = "Ваш результат: \(correctAnswers) из \(questionsAmout)"
+            
+            let text = statisticServise?.store(correct: correctAnswers, total: questionsAmout)
             let viewModel = AlertModel(
                 title: "Этот раунд окончен!",
-                message: text,
+                message: text ?? "nil",
                 buttonText: "Сыграть еще раз?",
                 completion: nil)
             alertPresenter?.showAlert(model: viewModel)
@@ -112,4 +115,3 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
 }
-
