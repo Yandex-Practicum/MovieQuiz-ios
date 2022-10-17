@@ -110,13 +110,15 @@ final class MovieQuizViewController: UIViewController {
       let question: String
       let questionNumber: String
     }
-
+     
+    
     // для состояния "Результат квиза"
     struct QuizResultsViewModel {
       let title: String
       let text: String
       let buttonText: String
     }
+    
     
     struct QuizQuestion {
       let image: String
