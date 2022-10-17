@@ -24,6 +24,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private var currentQuestion: QuizQuestion?
     
+    private let statisticService: StatisticService = StatisticServiceImplementation()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         alertPresenter = AlertPresenter(viewController: self)
@@ -107,24 +109,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             alertTitle: result.title,
             alertMessage: result.text,
             alertButtonText: result.buttonText) {  [weak self] _ in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
-            
-        }
+                guard let self = self else { return }
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                self.questionFactory?.requestNextQuestion()
+                
+            }
         alertPresenter?.showAlert(alertModel: alertModel)
     }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-            "Поздравляем, Вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
+            let alertText = """
+            Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд: \(statisticService.bestGame.toString())
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+            """
+            
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз")
+                text: alertText,
+                buttonText: "Сыграть еще раз")
+            
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
