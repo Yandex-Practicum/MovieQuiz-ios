@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="bjH-0M-9qJ">
-                                <rect key="frame" x="20" y="58" width="374" height="832.5"/>
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="bmq-O5-qFF">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -69,10 +69,10 @@ YP White (iOS)</string>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hnF-By-LJK">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="128"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DbV-eM-NJH" userLabel="Question label">
-                                                <rect key="frame" x="42" y="13" width="290" height="102"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DbV-eM-NJH" userLabel="Question label">
+                                                <rect key="frame" x="42" y="13" width="290" height="73.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor">
                                                     <string key="name">
@@ -89,7 +89,7 @@ YP White (iOS)</string>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Kyd-Kc-qZe">
-                                        <rect key="frame" x="0.0" y="772.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yHa-wI-Yyv" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -136,8 +136,9 @@ YP White (iOS)</string>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YPBackground"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="bjH-0M-9qJ" secondAttribute="bottom" constant="34" id="JB8-CM-BNs"/>
                             <constraint firstItem="bjH-0M-9qJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Jtu-j0-rMe"/>
                             <constraint firstItem="bjH-0M-9qJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="KXP-Zn-llf"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bjH-0M-9qJ" secondAttribute="trailing" constant="20" id="eYc-9W-KJd"/>
@@ -159,6 +160,9 @@ YP White (iOS)</string>
             <string key="name">
 YP White (iOS)</string>
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YPBackground">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.59799998998641968" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
