@@ -1,4 +1,7 @@
+
+
 import UIKit
+
 
 final class MovieQuizViewController: UIViewController {
     
@@ -13,8 +16,8 @@ final class MovieQuizViewController: UIViewController {
     private let questions = QuizQuestion.questions
     private var currentQuestionsIndex = 0
     private var score = 0
-    private  var convertStepViewModel: QuizStepViewModel {
-            convertToQuizStepViewModel(model: questions[currentQuestionsIndex])
+    private var convertStepViewModel: QuizStepViewModel {
+        convertToQuizStepViewModel(model: questions[currentQuestionsIndex])
     }
     
     // MARK: - Lifecyclequestions
@@ -64,7 +67,6 @@ extension MovieQuizViewController {
     }
     
     private func convertToQuizStepViewModel(model: QuizQuestion) -> QuizStepViewModel {
-        //print(model.correctAnswer)
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
@@ -72,15 +74,13 @@ extension MovieQuizViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
         if isCorrect {
             imageView.layer.borderColor = UIColor.YPGreen?.cgColor
             score += 1
         } else {
             imageView.layer.borderColor = UIColor.YPRed?.cgColor
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
             self.imageView.layer.borderColor = UIColor.clear.cgColor
         }
