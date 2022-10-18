@@ -1,6 +1,7 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate  {
+    
     
     // MARK: - Lifecycle
 
@@ -12,6 +13,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     private var correctAnswers = 0
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
     private var currentQuestion: QuizQuestion?
     
     @IBOutlet weak var buttonNo: UIButton!
@@ -38,6 +40,82 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(NSHomeDirectory())
+        print(Bundle.main.bundlePath)
+        
+        //Еррор
+//        enum FileManagerError: Error {
+//            case fileDoesntExist
+//        }
+        
+        // MARK: - JSON
+        let fileManager = FileManager.default
+        let fileDoc = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+        let jsonString = "inception.json"
+        guard let jsonStringUrl = fileDoc?.appendingPathComponent(jsonString) else { return }
+        guard let jsonString = try? String(contentsOf: jsonStringUrl) else { return }
+        let data = jsonString.data(using: .utf8)!
+        
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+
+              guard let json = json,
+                    let id = json["id"] as? String,
+                    let title = json["title"] as? String,
+                    let jsonYear = json["year"] as? String,
+                    let year = Int(jsonYear),
+                    let image = json["image"] as? String,
+                    let releaseDate = json["releaseDate"] as? String,
+                    let jsonRuntimeMins = json["runtimeMins"] as? String,
+                    let runtimeMins = Int(jsonRuntimeMins),
+                    let directors = json["directors"] as? String,
+                    let actorList = json["actorList"] as? [Any] else {
+                  return
+              }
+            
+            var actors: [Actor] = []
+            
+            for actor in actorList {
+                guard let actor = actor as? [String: Any],
+                      let id = actor["id"] as? String,
+                      let name = actor["name"] as? String,
+                      let asCharacter = actor["asCharacter"] as? String else {
+                    return
+                }
+                let mainActor = Actor(id: id,
+                                      image: image,
+                                      name: name,
+                                      asCharacter: asCharacter)
+                actors.append(mainActor)
+            }
+            
+            let movie = Movie(id: id,
+                              title: title,
+                              year: year,
+                              image: image,
+                              releaseDate: releaseDate,
+                              runtimeMins: runtimeMins,
+                              directors: directors,
+                              actorList: actors)
+        } catch {
+            print("Failed to parse: \(jsonString)")
+        }
+        
+        //Создание файла
+        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        print(documentsURL)
+        let fileName = "text.swift"
+        documentsURL.appendPathComponent(fileName)
+        if !FileManager.default.fileExists(atPath: documentsURL.path) {
+            let hello = "Hello world!"
+            let data = hello.data(using: .utf8)
+            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
+        }
+        
+        UserDefaults.standard.set(true, forKey: "viewDidLoad")
+        
+        alertPresenter = AlertPresenter(delegate: self)
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
@@ -48,14 +126,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
-    }
-        
+        }
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
     }
+    
+    // MARK: - AlertPresenterDelegate
+    
+    func didShowAlert(controller: UIAlertController?) {
+            guard let controller = controller else {
+                return
+            }
+            present(controller, animated: true, completion: nil)
+        }
+
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -83,15 +170,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         buttonNo.isEnabled = true
         buttonYes.isEnabled = true
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-                    "Поздравляем, Вы ответили на 10 из 10!" :
-                    "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuizResultsViewModel(
-                  title: "Этот раунд окончен!",
-                  text: text,
-                  buttonText: "Сыграть ещё раз")
+            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
+            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
+            show(quiz: viewModel) // show result
+
             imageView.layer.borderWidth = 0
-            show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             imageView.layer.borderWidth = 0
@@ -107,39 +190,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        // здесь мы показываем результат прохождения квиза
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            
+        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText, completion: {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
             self.questionFactory?.requestNextQuestion()
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
+        })
+        alertPresenter?.showAlert(model: alertModel)
+
     }
 }
-
-//Рамка картинки
-/*
-imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-imageView.layer.borderWidth = 1 // толщина рамки
-imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
-imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
-*/
-
-/*
-private func convert(model: QuizQuestion) -> QuizStepViewModel {
-    return QuizStepViewModel(
-        image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
-        question: model.text, // берём текст вопроса
-        questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // высчитываем номер вопроса
- }*/
