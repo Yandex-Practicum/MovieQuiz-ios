@@ -51,7 +51,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         let question = questions[safe: index]
         delegate?.didRecieveNextQuestion(question: question)
         
-        }
+    }
     
     init(delegate: QuestionFactoryDelegate?) {
         self.delegate = delegate
