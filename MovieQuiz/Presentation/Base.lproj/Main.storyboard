@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="rcZ-Df-TL0">
-                                <rect key="frame" x="20" y="58" width="374" height="770"/>
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qTh-94-yod">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="24"/>
@@ -49,7 +49,7 @@
                                         </constraints>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Kill Bill" translatesAutoresizingMaskIntoConstraints="NO" id="Sb8-EZ-iKK" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="44" width="374" height="546"/>
+                                        <rect key="frame" x="0.0" y="44" width="374" height="580"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Sb8-EZ-iKK" secondAttribute="height" multiplier="2:3" priority="750" id="406-8G-bUv"/>
@@ -65,7 +65,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="IGd-ye-ay4">
-                                        <rect key="frame" x="0.0" y="610" width="374" height="80"/>
+                                        <rect key="frame" x="0.0" y="644" width="374" height="80"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPM-KI-ryZ" userLabel="Question Label">
                                                 <rect key="frame" x="42" y="13" width="290" height="54"/>
@@ -84,7 +84,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="rZk-kQ-Mo1">
-                                        <rect key="frame" x="0.0" y="710" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LuP-Sr-uFo" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -129,9 +129,9 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="YP Background"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="rcZ-Df-TL0" secondAttribute="bottom" constant="34" id="0vy-e1-MVB"/>
+                            <constraint firstAttribute="bottom" secondItem="rcZ-Df-TL0" secondAttribute="bottom" constant="34" id="0vy-e1-MVB"/>
                             <constraint firstItem="rcZ-Df-TL0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="5BF-wy-yt1"/>
                             <constraint firstItem="rcZ-Df-TL0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="s6x-ft-zsa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rcZ-Df-TL0" secondAttribute="trailing" constant="20" id="t79-fu-1tI"/>
@@ -150,9 +150,6 @@
     </scenes>
     <resources>
         <image name="Kill Bill" width="860" height="1449"/>
-        <namedColor name="YP Background">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
