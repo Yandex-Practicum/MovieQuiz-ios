@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 struct AlertPresenter {
-    let viewController: UIViewController?
+    weak var viewController: UIViewController?
     
     func showAlert (alertModel:AlertModel) {
         let alert = UIAlertController(
