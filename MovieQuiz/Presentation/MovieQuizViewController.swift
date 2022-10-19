@@ -1,72 +1,101 @@
+
+
 import UIKit
 
+
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
+    
+    //MARK: - IBOutlet
+
+    @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet weak private var imageView: UIImageView!
+    
+    // MARK: - Private Properties
+    
+    private let questions = QuizQuestion.questions
+    private var currentQuestionsIndex = 0
+    private var score = 0
+    private var convertStepViewModel: QuizStepViewModel {
+        convertToQuizStepViewModel(model: questions[currentQuestionsIndex])
+    }
+    
+    // MARK: - Lifecyclequestions
     override func viewDidLoad() {
         super.viewDidLoad()
+        show(quiz: convertStepViewModel)
+    }
+    
+    // MARK: - IBAction
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        let answer = false
+        let currentQuestion = questions[currentQuestionsIndex]
+        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        let answer = true
+        let currentQuestion = questions[currentQuestionsIndex]
+        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
     }
 }
 
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
+// MARK: - Logic MovieQuizViewController
+extension MovieQuizViewController {
+    
+    // MARK: - Private Methods
+    
+    private func show(quiz step: QuizStepViewModel) {
+        counterLabel.text = step.questionNumber
+        textLabel.text = step.question
+        imageView.image = step.image
+    }
+    
+    private func show(quiz result: QuizResultsViewModel) {
+        let alert = UIAlertController(
+            title: result.title,
+            message: "\(Constatns.AlertLable.message) \(result.text)/ \(questions.count)",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            self.currentQuestionsIndex = 0
+            self.score = 0
+            self.show(quiz: self.convertStepViewModel)
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func convertToQuizStepViewModel(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: ("\(currentQuestionsIndex + 1) / \(questions.count)"))
+    }
+    
+    private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            imageView.layer.borderColor = UIColor.YPGreen?.cgColor
+            score += 1
+        } else {
+            imageView.layer.borderColor = UIColor.YPRed?.cgColor
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
+        }
+    }
+    
+    private func showNextQuestionOrResults() {
+        if currentQuestionsIndex == questions.count - 1 {
+            let addResultQuestion = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: "\(score)",
+                buttonText: "Сыграть еще раз")
+            show(quiz: addResultQuestion)
+        } else {
+            currentQuestionsIndex += 1
+            show(quiz: convertStepViewModel)
+        }
+    }
+}
