@@ -15,8 +15,19 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="AIQ-6H-O42">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="top" secondItem="AIQ-6H-O42" secondAttribute="top" id="9gm-8X-huv"/>
+                            <constraint firstItem="AIQ-6H-O42" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="CSs-3N-HZn"/>
+                            <constraint firstItem="AIQ-6H-O42" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="RNw-f7-DQK"/>
+                            <constraint firstAttribute="leading" secondItem="AIQ-6H-O42" secondAttribute="leading" id="yf9-3k-pqU"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -24,4 +35,7 @@
             <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="LaunchScreen" width="375" height="812"/>
+    </resources>
 </document>
