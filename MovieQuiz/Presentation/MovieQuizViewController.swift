@@ -139,7 +139,7 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .black
+        view.backgroundColor = .ypBlack
         throwAllElementsOnScreen()
         createConstraints()
         
