@@ -5,12 +5,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private let questionsAmount: Int = 10
     
-    private var isEnabled: Bool = false
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
@@ -20,10 +21,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         
-        
-        statisticService = StatisticServiceImplementation()
         super.viewDidLoad()
-        
+        statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
     }
@@ -42,21 +41,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     // MARK: - Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        if isEnabled{
             guard let currentQuestion = currentQuestion else { return }
             let givenAnswer = true
             
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         }
-    }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        if isEnabled {
             guard let currentQuestion = currentQuestion else { return }
             let givenAnswer = false
             
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        }
     }
     
     // MARK: - Private functions
@@ -71,7 +66,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterLabel.text = convert(model: currentQuestion).questionNumber
         textLabel.text = convert(model: currentQuestion).question
         imageView.image = convert(model: currentQuestion).image
-        isEnabled = true
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -92,7 +86,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             
             
-            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy as CVarArg))%"
+            let text = """
+Ваш результат: \(correctAnswers) из \(questionsAmount)
+Количество сыгранных квизов: \(statisticService.gamesCount)
+Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy as CVarArg))%
+"""
             
             alertPresenter = AlertPresenter(modelToShowAlert:
                                                 AlertModel.init(
@@ -123,11 +122,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        isEnabled = false
+        
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         
         DispatchQueue.main.asyncAfter (deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
     }
 }
