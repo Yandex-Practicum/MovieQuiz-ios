@@ -1,90 +1,73 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Creating glabal variables
+    // MARK: - Creating global variables
     private var currentQuestionIndex = 0
     private var correctAnswersToQuestions = 0
     private var numberOfRoundsPlayed = 0
     private var resultsOfEachPlayedRound: [(maxResult: Int, date: String)] = []
-   
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     // MARK: - Creating all UIViews for screen
     private let questionTitleLabel: UILabel = {
-        let questionTopLabe = UILabel()
-        questionTopLabe.textColor = .ypWhite
-        questionTopLabe.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionTopLabe.translatesAutoresizingMaskIntoConstraints = false
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.02
-        questionTopLabe.attributedText =
-        NSMutableAttributedString(string: "Вопрос:",
-                                  attributes: [
-                                    NSAttributedString.Key.kern: 0.38,
-                                    NSAttributedString.Key.paragraphStyle: paragraphStyle
-                                  ])
-        return questionTopLabe
+        let questionTopLabel = UILabel()
+        questionTopLabel.textColor = .ypWhite
+        questionTopLabel.font = .ysMedium
+        questionTopLabel.translatesAutoresizingMaskIntoConstraints = false
+        questionTopLabel.text = "Вопрос:"
+        
+        return questionTopLabel
     }()
     
     private let indexLabel: UILabel = {
-        let indexLab = UILabel()
-        indexLab.textColor = .ypWhite
-        indexLab.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        indexLab.setContentHuggingPriority(UILayoutPriority(252), for: .horizontal)
-        indexLab.translatesAutoresizingMaskIntoConstraints = false
+        let indexLabel = UILabel()
+        indexLabel.textColor = .ypWhite
+        indexLabel.font = .ysMedium
+        indexLabel.setContentHuggingPriority(UILayoutPriority(252), for: .horizontal)
+        indexLabel.translatesAutoresizingMaskIntoConstraints = false
+        indexLabel.text = "1/10"
         
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.02
-        indexLab.attributedText =
-        NSMutableAttributedString(string: "1/10",
-                                  attributes: [
-                                    NSAttributedString.Key.kern: 0.38,
-                                    NSAttributedString.Key.paragraphStyle: paragraphStyle
-                                  ])
-        return indexLab
+        return indexLabel
     }()
     
     private let previewImage: UIImageView = {
-       let previewImg = UIImageView(image: UIImage())
+       let previewImage = UIImageView(image: UIImage())
         
-        previewImg.contentMode = .scaleAspectFill
-        previewImg.backgroundColor = .ypWhite
-        previewImg.translatesAutoresizingMaskIntoConstraints = false
-        previewImg.layer.masksToBounds = true
-        previewImg.layer.cornerRadius = 20
-        return previewImg
+        previewImage.contentMode = .scaleAspectFill
+        previewImage.backgroundColor = .ypWhite
+        previewImage.translatesAutoresizingMaskIntoConstraints = false
+        previewImage.layer.masksToBounds = true
+        previewImage.layer.cornerRadius = 20
+        return previewImage
     }()
     
     private let questionLabel: UILabel = {
-        let questionLab = UILabel()
-        questionLab.textColor = .ypWhite
-        questionLab.font = UIFont(name: "YSDisplay-Bold", size: 23)
-        questionLab.numberOfLines = 2
-        questionLab.setContentCompressionResistancePriority(UILayoutPriority(751.0), for: .vertical)
-        questionLab.textAlignment = .center
-        questionLab.translatesAutoresizingMaskIntoConstraints = false
-        questionLab.text = "Рэйтинг этого фильма меньше чем 5?"
+        let questionLabel = UILabel()
+        questionLabel.textColor = .ypWhite
+        questionLabel.font = .ysBold
+        questionLabel.numberOfLines = 2
+        questionLabel.setContentCompressionResistancePriority(UILayoutPriority(751.0), for: .vertical)
+        questionLabel.textAlignment = .center
+        questionLabel.translatesAutoresizingMaskIntoConstraints = false
+        questionLabel.text = "Рэйтинг этого фильма меньше чем 5?"
 
-        return questionLab
+        return questionLabel
     }()
     
-    private let viewForQuestionLabel: UIView = {
-        let viewForLab = UIView()
-        
-        return viewForLab
-    }()
-    
+    private let viewForQuestionLabel = UIView()
+   
     // I use lazy because of function in selector
-    lazy private var nooButton: UIButton = {
+    lazy private var noButton: UIButton = {
         let noButton = UIButton(type: .system)
         noButton.backgroundColor = .ypGray
         noButton.layer.cornerRadius = 15
-        noButton.setAttributedTitle(NSMutableAttributedString(string: "Нет", attributes: [NSAttributedString.Key.kern: 0.38]), for: .normal)
-        noButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
+        noButton.setTitle("Нет", for: .normal)
+        noButton.titleLabel?.font =  .ysMedium
         noButton.setTitleColor(.ypBlack, for: .normal)
         noButton.titleLabel?.textAlignment = .center
         
        
-        noButton.addTarget(self, action: #selector(nooButtonPressed(sender: )), for: .touchUpInside)
+        noButton.addTarget(self, action: #selector(noButtonPressed(sender: )), for: .touchUpInside)
         noButton.translatesAutoresizingMaskIntoConstraints = false
         return noButton
     }()
@@ -94,8 +77,8 @@ final class MovieQuizViewController: UIViewController {
         let yeButton = UIButton(type: .system)
         yeButton.backgroundColor = .ypGray
         yeButton.layer.cornerRadius = 15
-        yeButton.setAttributedTitle(NSMutableAttributedString(string: "Да", attributes: [NSAttributedString.Key.kern: 0.38]), for: .normal)
-        yeButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
+        yeButton.setTitle("Да", for: .normal)
+        yeButton.titleLabel?.font =  .ysMedium
         yeButton.setTitleColor(.ypBlack, for: .normal)
         yeButton.titleLabel?.textAlignment = .center
         yeButton.addTarget(self, action: #selector(yesButtonPressed(sender: )), for: .touchUpInside)
@@ -104,24 +87,24 @@ final class MovieQuizViewController: UIViewController {
     }()
     
     private let stackViewForButtons: UIStackView = {
-        let stackViewForBut = UIStackView()
-        stackViewForBut.axis = NSLayoutConstraint.Axis.horizontal
-        stackViewForBut.distribution = .fillEqually
-        stackViewForBut.alignment = .fill
-        stackViewForBut.spacing = 20
-        stackViewForBut.translatesAutoresizingMaskIntoConstraints = false
-        return stackViewForBut
+        let stackViewForButtons = UIStackView()
+        stackViewForButtons.axis = NSLayoutConstraint.Axis.horizontal
+        stackViewForButtons.distribution = .fillEqually
+        stackViewForButtons.alignment = .fill
+        stackViewForButtons.spacing = 20
+        stackViewForButtons.translatesAutoresizingMaskIntoConstraints = false
+        return stackViewForButtons
     }()
     
     private let stackViewForLabels: UIStackView = {
-        let stackViewForLab = UIStackView()
-        stackViewForLab.axis = NSLayoutConstraint.Axis.horizontal
-        stackViewForLab.distribution = .fill
-        stackViewForLab.alignment = .fill
-        stackViewForLab.spacing = 0
-        stackViewForLab.translatesAutoresizingMaskIntoConstraints = false
+        let stackViewForLabels = UIStackView()
+        stackViewForLabels.axis = NSLayoutConstraint.Axis.horizontal
+        stackViewForLabels.distribution = .fill
+        stackViewForLabels.alignment = .fill
+        stackViewForLabels.spacing = 0
+        stackViewForLabels.translatesAutoresizingMaskIntoConstraints = false
         
-        return stackViewForLab
+        return stackViewForLabels
     }()
     
     private let stackViewForAll: UIStackView = {
@@ -149,13 +132,13 @@ final class MovieQuizViewController: UIViewController {
     // set all views in one function
     private func throwAllElementsOnScreen() {
         
-        stackViewForLabels.addArrSubViews(questionTitleLabel,
+        stackViewForLabels.addArrangedSubViews(questionTitleLabel,
                                           indexLabel)
-        stackViewForButtons.addArrSubViews(nooButton,
+        stackViewForButtons.addArrangedSubViews(noButton,
                                            yesButton)
         viewForQuestionLabel.addSubview(questionLabel)
     
-        stackViewForAll.addArrSubViews(stackViewForLabels,
+        stackViewForAll.addArrangedSubViews(stackViewForLabels,
                                        previewImage,
                                        viewForQuestionLabel,
                                        stackViewForButtons)
@@ -184,7 +167,7 @@ final class MovieQuizViewController: UIViewController {
                                             multiplier: (2/3)),
         
         // set height for buttons
-        nooButton.heightAnchor.constraint(equalToConstant: 60),
+        noButton.heightAnchor.constraint(equalToConstant: 60),
         
         // set  constraints from label to view, label sits inside
         questionLabel.leadingAnchor.constraint(equalTo: viewForQuestionLabel.leadingAnchor,
@@ -200,20 +183,20 @@ final class MovieQuizViewController: UIViewController {
     }
     
     
-    // MARK: - All nessesary structs for logic of the game
-    struct QuizQuestion {
+    // MARK: - All necessary structs for logic of the game
+    private struct QuizQuestion {
         // struct for mock data we use
         let image: String
         let text: String
         let correctAnswer: Bool
     }
-    struct QuizStepViewModel {
-        // struct to fill up nessesary fields on main game screen
+    private struct QuizStepViewModel {
+        // struct to fill up necessary fields on main game screen
         let question: String
         let image: UIImage
         let questionNumber: String
     }
-    struct QuizResultViewModel {
+    private struct QuizResultViewModel {
         let label: String
         let text: String
         let buttonText: String
@@ -239,15 +222,19 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.cornerRadius = 20
         previewImage.layer.borderWidth = 8
         
-        let corectAnswer = quizQuestions[currentQuestionIndex].correctAnswer
-        if isCorrect == corectAnswer {
+        let correctAnswer = quizQuestions[currentQuestionIndex].correctAnswer
+        if isCorrect == correctAnswer {
             (previewImage.layer.borderColor = UIColor.ypGreen.cgColor)
             correctAnswersToQuestions += 1
         } else {
             (previewImage.layer.borderColor = UIColor.ypRed.cgColor)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.showNextQuestionOrResult()
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            noButton.isEnabled = true
+            yesButton.isEnabled = true
+            showNextQuestionOrResult()
         }
     }
     
@@ -258,12 +245,12 @@ final class MovieQuizViewController: UIViewController {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: result.buttonText,
-                                   style: .default) { _ in
+                                   style: .default) { [self] _ in
             
-            self.currentQuestionIndex = 0
-            self.correctAnswersToQuestions = 0
+            currentQuestionIndex = 0
+            correctAnswersToQuestions = 0
             // show main screen again using show and convert functions and mock data when alert button touched
-            self.show(quiz: self.convert(model: self.quizQuestions[self.currentQuestionIndex]))
+            show(quiz: convert(model: quizQuestions[currentQuestionIndex]))
         }
         
         alert.addAction(action)
@@ -287,7 +274,7 @@ final class MovieQuizViewController: UIViewController {
                                            text: """
                                             Ваш результат: \(correctAnswersToQuestions)/\(quizQuestions.count)
                                             Количество сыгранных квизов: \(numberOfRoundsPlayed)
-                                            Рекорд: \(showPesronalBestResult())
+                                            Рекорд: \(showPersonalBestResult())
                                             Средняя точность: \(String(format: "%.2f", calculateAccuracy()))%
                                             """,
                                            buttonText: "Сыграть еще раз"))
@@ -298,18 +285,17 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    func showPesronalBestResult() -> String {
+    func showPersonalBestResult() -> String {
          
         let maxResult = resultsOfEachPlayedRound
             .map { $0.maxResult } // transform array from tuple to array of numbers
             .max() // get the max number
         
-        // get the array of String with our result in good appearence
+        // get the array of String with our result in good appearance
         let recordInfo: [String?] = resultsOfEachPlayedRound
             .filter { $0.maxResult == maxResult }
-            .map { i in
-                "\(i.maxResult)/\(quizQuestions.count) (\(i.date))"
-            }
+            .map { "\($0.maxResult)/\(quizQuestions.count) (\($0.date))"}
+        
         // get data from array
         guard let infoExist = recordInfo[0] else {
             return "this case impossible"
@@ -321,14 +307,12 @@ final class MovieQuizViewController: UIViewController {
     func calculateAccuracy() -> Float {
         let accuracy = resultsOfEachPlayedRound
             .map { $0.maxResult }
-            .reduce(0) { (i, j) in
-                return i + j
-            }
+            .reduce(0, +)
         return Float(accuracy * 100) / Float(quizQuestions.count * numberOfRoundsPlayed)
     }
     
     // buttons action
-    @objc func nooButtonPressed(sender: UIButton) {
+    @objc func noButtonPressed(sender: UIButton) {
        
         showAnswerResult(isCorrect: false)
     }
@@ -375,45 +359,41 @@ final class MovieQuizViewController: UIViewController {
 extension UIView { // extension for safe area
 
   var safeTopAnchor: NSLayoutYAxisAnchor {
-    if #available(iOS 11.0, *) {
+   
       return safeAreaLayoutGuide.topAnchor
-    }
-    return topAnchor
+   
   }
 
   var safeLeadingAnchor: NSLayoutXAxisAnchor {
-    if #available(iOS 11.0, *){
+   
         return safeAreaLayoutGuide.leadingAnchor
-    }
-    return leadingAnchor
+   
 }
 
   var safeTrailingAnchor: NSLayoutXAxisAnchor {
-    if #available(iOS 11.0, *){
+   
     return safeAreaLayoutGuide.trailingAnchor
-    }
-    return leftAnchor
+   
 }
 
   var safeBottomAnchor: NSLayoutYAxisAnchor {
-    if #available(iOS 11.0, *) {
+    
       return safeAreaLayoutGuide.bottomAnchor
-    }
-    return bottomAnchor
+   
   }
  
 }
 
 extension UIStackView {
-    // extension to add multiple arranged subviews (as Variadic parametrs)
-    func addArrSubViews( _ arrViews: UIView...) {
-        for arrView in arrViews {
-            addArrangedSubview(arrView)
+    // extension to add multiple arranged subviews (as Variadic parameters)
+    func addArrangedSubViews( _ arrangedViews: UIView...) {
+        for arrangedView in arrangedViews {
+            addArrangedSubview(arrangedView)
         }
     }
 }
 
-
-    
-
-
+extension UIFont {
+   static let ysMedium = UIFont(name: "YSDisplay-Medium", size: 20)
+   static let ysBold = UIFont(name: "YSDisplay-Bold", size: 23)
+}
