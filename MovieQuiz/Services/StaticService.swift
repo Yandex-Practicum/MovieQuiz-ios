@@ -22,9 +22,6 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    
-    
-    
     var totalAccuracy: Double {
         get {
             return (Double(correct) / Double(total)) * 100
