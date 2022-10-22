@@ -6,10 +6,10 @@ struct GameRecord: Codable, Comparable {
     let date: Date
     
     static func < (oldValue: GameRecord, newValue: GameRecord) -> Bool {
-           return oldValue.correct < newValue.correct
-       }
-
-       func toString() -> String {
-           return "\(correct)/\(total) (\(date.dateTimeString))"
-       }
+        return oldValue.correct < newValue.correct
+    }
+    
+    func toString() -> String {
+        return "\(correct)/\(total) (\(date.dateTimeString))"
+    }
 }
