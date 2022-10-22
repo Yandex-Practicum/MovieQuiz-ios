@@ -107,7 +107,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let alertModel = AlertModel(
             alertTitle: result.title,
             alertMessage: result.text,
-            alertButtonText: result.buttonText) {  [weak self] _ in
+            alertButtonText: result.buttonText) { [weak self] _ in
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
