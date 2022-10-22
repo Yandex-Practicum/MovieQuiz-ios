@@ -4,7 +4,7 @@ import UIKit
 struct AlertPresenter {
     weak var viewController: UIViewController?
     
-    func showAlert (alertModel:AlertModel) {
+    func showAlert(alertModel: AlertModel) {
         let alert = UIAlertController(
             title: alertModel.alertTitle,
             message: alertModel.alertMessage,
