@@ -19,6 +19,7 @@
 		B30146C928FC04C3008E2BB0 /* StatisticServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30146C828FC04C3008E2BB0 /* StatisticServices.swift */; };
 		B30146CD28FC6002008E2BB0 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30146CC28FC6002008E2BB0 /* GameRecord.swift */; };
 		B38832262904207900EAAE7E /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38832252904207900EAAE7E /* NetworkClient.swift */; };
+		B3883228290424AF00EAAE7E /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3883227290424AF00EAAE7E /* MostPopularMovies.swift */; };
 		B399F3D128E4150400E1A428 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3C7F62028D484D00058A42E /* YS Display-Bold.ttf */; };
 		B399F3D228E4150700E1A428 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3C7F62128D484D00058A42E /* YS Display-Medium.ttf */; };
 		B3CB241528F17C0F009B5598 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB241428F17C0F009B5598 /* QuestionFactory.swift */; };
@@ -48,6 +49,7 @@
 		B30146C828FC04C3008E2BB0 /* StatisticServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServices.swift; sourceTree = "<group>"; };
 		B30146CC28FC6002008E2BB0 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
 		B38832252904207900EAAE7E /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		B3883227290424AF00EAAE7E /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
 		B3C7F62028D484D00058A42E /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		B3C7F62128D484D00058A42E /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		B3CB241428F17C0F009B5598 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				B3CB241928F1873E009B5598 /* QuizResultsViewModel.swift */,
 				B3CB243F28F45B42009B5598 /* AlertModel.swift */,
 				B30146CC28FC6002008E2BB0 /* GameRecord.swift */,
+				B3883227290424AF00EAAE7E /* MostPopularMovies.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				B38832262904207900EAAE7E /* NetworkClient.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				B3CB244228F45BA7009B5598 /* AlertPresenter.swift in Sources */,
+				B3883228290424AF00EAAE7E /* MostPopularMovies.swift in Sources */,
 				B3CB244628F45C72009B5598 /* AlertPresenterDelegate.swift in Sources */,
 				B3CB244028F45B42009B5598 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
