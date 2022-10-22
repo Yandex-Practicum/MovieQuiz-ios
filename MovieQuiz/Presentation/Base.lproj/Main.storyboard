@@ -120,17 +120,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="s0f-yX-CBn">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Background"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yjo-LI-Ah1" secondAttribute="trailing" constant="20" id="3Id-C8-KzD"/>
+                            <constraint firstItem="s0f-yX-CBn" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="5oJ-Fh-eno"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yjo-LI-Ah1" secondAttribute="bottom" id="8ZL-Ua-dpx"/>
+                            <constraint firstItem="s0f-yX-CBn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Hgq-kZ-OMa"/>
                             <constraint firstItem="yjo-LI-Ah1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="fhx-ZU-a0v"/>
                             <constraint firstItem="yjo-LI-Ah1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="jXu-GX-Veo"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="s0f-yX-CBn" id="dV3-Ti-0X5"/>
                         <outlet property="counterLabel" destination="yEO-jE-0Rf" id="Xpa-Vk-Z6V"/>
                         <outlet property="imageView" destination="4Zr-EN-6um" id="eAv-B1-C8t"/>
                         <outlet property="noButton" destination="vmS-jY-9Yv" id="lMm-oN-ECZ"/>
@@ -148,7 +154,7 @@
             <color red="0.10000000149011612" green="0.10999999940395355" blue="0.12999999523162842" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP Black">
-            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10000000149011612" green="0.10999999940395355" blue="0.12999999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
