@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     private var currentQuestionIndex: Int = 0
     private var currentGame = GameRecord(correct: 0, total: 10, date: Date())
     private var statisticService: StatisticService = StatisticServiceImplementation()
@@ -26,7 +26,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         statisticService = StatisticServiceImplementation()
         showLoadingIndicator()
-        questionFactory?.questionShuffle()
         questionFactory?.loadData()
         
     }
@@ -135,7 +134,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 return
             }
             self.show(quiz: self.convert(model: currentQuestion))
-            self.questionFactory?.questionShuffle()
             self.questionFactory?.requestNextQuestion()
         }
         

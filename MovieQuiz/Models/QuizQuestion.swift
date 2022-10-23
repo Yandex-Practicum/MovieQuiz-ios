@@ -1,12 +1,11 @@
 import Foundation
 
-struct QuizQuestion {
+struct QuizQuestion: Equatable {
     let image: Data
     let text: String
     let correctAnswer: Bool
     
     static func == (lhs: Self, rhs: Self) -> Bool {
-        if lhs.text != rhs.text, lhs.image != rhs.image, lhs.correctAnswer != rhs.correctAnswer { return false }
-        return true
+        lhs.text == rhs.text && lhs.image == rhs.image && lhs.correctAnswer == rhs.correctAnswer
     }
 }
