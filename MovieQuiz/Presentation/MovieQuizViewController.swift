@@ -2,12 +2,12 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterProtocol {
     
-    
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     private var currentQuestionIndex: Int = 0
     private var currentGame = GameRecord(correct: 0, total: 10, date: Date())
     private var statisticService: StatisticService = StatisticServiceImplementation()
@@ -18,17 +18,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.questionShuffle()
-        questionFactory?.requestNextQuestion()
         
-        //  здесь был код с парсером джсона, но я его пока удалила, не обращайте внимания, комментарий, чтобы не забыть
+        imageView.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+        statisticService = StatisticServiceImplementation()
+        showLoadingIndicator()
+        questionFactory?.questionShuffle()
+        questionFactory?.loadData()
+        
     }
     
+    
     // MARK: - QuestionFactoryDelegate
-    func didRecieveNextQuestion(question: QuizQuestion?) {
+    func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
@@ -37,6 +42,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
     }
     
     // MARK: - Actions
@@ -53,14 +67,32 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
     }
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadindIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadindIndicator() // скрываем индикатор загрузки
+        
+        let errorModel = AlertModel(title: "Ошибка", message: message, buttonText: "Попробуйте еще раз") { [weak self] in
+            guard let self = self else { return }
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        showAlert(alertModel: errorModel)
+    }
+    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == currentGame.total - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
-            statisticService.gamesCount += 1 // счетчик сыгранных игр
-            totalCorrect += currentGame.correct // сколько всего за все игры правильных ответов
-            totalQuestions += currentGame.total // сколько всего за все игры вопросов
-            statisticService.totalAccuracy = Double(totalCorrect*100/totalQuestions) // считаем общую точность
             statisticService.store(correct: currentGame.correct, total: currentGame.total) // сравниваем рекорд с текущей игрой
-            show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(currentGame.correct) из \(currentGame.total)\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(statisticService.bestGame.date.dateTimeString)\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%", buttonText: "Сыграть еще раз"))
+            show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!",
+                                            text: "Ваш результат: \(currentGame.correct) из \(currentGame.total)\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) \(statisticService.bestGame.date.dateTimeString)\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%",
+                                            buttonText: "Сыграть еще раз"))
             questionFactory?.resetIndex()
         } else {
             currentQuestionIndex += 1 // увеличиваем индекс текущего вопроса на 1; таким образом мы сможем получить следующий вопрос
@@ -114,10 +146,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         
         QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(currentGame.total)")
         
     }
+    
+    
     
 }

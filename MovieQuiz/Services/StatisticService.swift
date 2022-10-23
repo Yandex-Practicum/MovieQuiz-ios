@@ -25,10 +25,13 @@ final class StatisticServiceImplementation: StatisticService {
     private let userDefaults = UserDefaults.standard
     
     func store(correct count: Int, total amount: Int) {
-        if bestGame.correct/bestGame.total < count/amount {
-            bestGame.date = Date()
-            bestGame.correct = count
-            bestGame.total = amount
+        gamesCount += 1
+        totalCorrect += count
+        totalQuestions += amount
+        
+        let newResult = GameRecord(correct: count, total: amount, date: Date())
+        if bestGame < newResult {
+            bestGame = newResult
         }
     }
     
@@ -51,42 +54,47 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
+    var totalCorrect: Int {
+        get {
+            userDefaults.integer(forKey: Keys.totalCorrect.rawValue)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Keys.totalCorrect.rawValue)
+        }
+    }
+    
+    var totalQuestions: Int {
+        get {
+            userDefaults.integer(forKey: Keys.totalQuestions.rawValue)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Keys.totalQuestions.rawValue)
+        }
+    }
     
     var totalAccuracy: Double {
         get {
-            let accuracy = userDefaults.double(forKey: Keys.totalAccuracy.rawValue)
-            return accuracy
+            Double(totalCorrect)*100/Double(totalQuestions)
         }
         set {
-            guard let data = try? jsonEncoder.encode(newValue) else {
-                print("Невозможно сохранить результат")
-                return
-            }
-            
-            userDefaults.set(data, forKey: Keys.totalAccuracy.rawValue)
+            userDefaults.set(newValue, forKey: Keys.totalAccuracy.rawValue)
         }
     }
     
     var gamesCount: Int {
         get {
-            let count = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
-            return count
+            userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
         
         set {
-            guard let data = try? jsonEncoder.encode(newValue) else {
-                print("Невозможно сохранить результат")
-                return
-            }
-            
-            userDefaults.set(data, forKey: Keys.gamesCount.rawValue)
+            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
         
     }
     
     
     private enum Keys: String {
-        case correct, total, bestGame, gamesCount, totalAccuracy, accuracy
+        case correct, total, bestGame, gamesCount, totalAccuracy, accuracy, totalQuestions, totalCorrect
     }
     
 }
