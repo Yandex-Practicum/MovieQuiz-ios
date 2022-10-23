@@ -25,13 +25,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="kqF-4n-9U6">
+                            <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="kqF-4n-9U6">
                                 <rect key="frame" x="20" y="57" width="350" height="753"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rCh-Zb-6Eu">
+                                    <stackView opaque="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="rCh-Zb-6Eu">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="12"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iFL-Mx-fML" userLabel="Question Title Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iFL-Mx-fML" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="12"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="ypWhite"/>
@@ -57,11 +57,11 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="z5A-qC-16f">
+                                    <view contentMode="scaleAspectFit" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="z5A-qC-16f">
                                         <rect key="frame" x="0.0" y="577" width="350" height="96"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lbh-Yb-5y8" userLabel="Question Label">
-                                                <rect key="frame" x="50" y="21" width="250" height="54"/>
+                                                <rect key="frame" x="42" y="13" width="266" height="70"/>
                                                 <color key="tintColor" name="ypWhite"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="ypWhite"/>
@@ -69,10 +69,10 @@
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="Lbh-Yb-5y8" firstAttribute="top" secondItem="z5A-qC-16f" secondAttribute="topMargin" constant="13" id="62O-C6-GwV"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="Lbh-Yb-5y8" secondAttribute="bottom" constant="13" id="SKe-jz-PXZ"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="Lbh-Yb-5y8" secondAttribute="trailing" constant="42" id="Zhp-kr-jrV"/>
-                                            <constraint firstItem="Lbh-Yb-5y8" firstAttribute="leading" secondItem="z5A-qC-16f" secondAttribute="leadingMargin" constant="42" id="lW1-Qu-sSF"/>
+                                            <constraint firstAttribute="trailing" secondItem="Lbh-Yb-5y8" secondAttribute="trailing" constant="42" id="6TU-XX-fxj"/>
+                                            <constraint firstAttribute="bottom" secondItem="Lbh-Yb-5y8" secondAttribute="bottom" constant="13" id="AKj-4d-mkW"/>
+                                            <constraint firstItem="Lbh-Yb-5y8" firstAttribute="leading" secondItem="z5A-qC-16f" secondAttribute="leading" constant="42" id="O3K-EH-t0e"/>
+                                            <constraint firstItem="Lbh-Yb-5y8" firstAttribute="top" secondItem="z5A-qC-16f" secondAttribute="top" constant="13" id="dhC-xu-aYh"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="fp0-K4-eQc">
@@ -126,7 +126,7 @@
                         <color key="backgroundColor" name="ypBackground"/>
                         <constraints>
                             <constraint firstItem="kqF-4n-9U6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="5XB-hO-jBI"/>
-                            <constraint firstAttribute="bottom" secondItem="kqF-4n-9U6" secondAttribute="bottom" constant="34" id="ihS-jd-oTK"/>
+                            <constraint firstAttribute="bottom" secondItem="kqF-4n-9U6" secondAttribute="bottom" constant="34" id="aQ7-1U-rAm"/>
                             <constraint firstItem="kqF-4n-9U6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="jw2-eb-caD"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kqF-4n-9U6" secondAttribute="trailing" constant="20" id="rS2-A4-HA1"/>
                         </constraints>
@@ -134,7 +134,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="Dy3-8l-Qyz" id="d8c-dU-J31"/>
                         <outlet property="imageView" destination="ddp-C1-VCz" id="Oia-0m-GnM"/>
+                        <outlet property="noButton" destination="TGD-mw-Clx" id="m6o-so-MLu"/>
                         <outlet property="textLabel" destination="Lbh-Yb-5y8" id="WxB-e8-fDp"/>
+                        <outlet property="yesButton" destination="aKc-2a-GbM" id="wEe-73-nuq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
