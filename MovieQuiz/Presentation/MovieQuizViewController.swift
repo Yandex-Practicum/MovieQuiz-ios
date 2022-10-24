@@ -15,6 +15,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var currentQuestion: QuizQuestion?
+    private var statisticService: StatisticService = StatisticServiceImplementation()
     
     @IBOutlet weak var buttonNo: UIButton!
     @IBOutlet weak var buttonYes: UIButton!
@@ -166,21 +167,52 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
+//    private func showNextQuestionOrResults() {
+//        buttonNo.isEnabled = true
+//        buttonYes.isEnabled = true
+//        if currentQuestionIndex == questionsAmount - 1 {
+//            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
+//            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
+//            show(quiz: viewModel) // show result
+//
+//            imageView.layer.borderWidth = 0
+//        } else {
+//            currentQuestionIndex += 1
+//            imageView.layer.borderWidth = 0
+//            questionFactory?.requestNextQuestion()
+//        }
+//    }
+    
+    
     private func showNextQuestionOrResults() {
         buttonNo.isEnabled = true
         buttonYes.isEnabled = true
+
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
+
+            if statisticService.gamesCount >= 0 {
+                statisticService.gamesCount += 1
+            }
+
+            let record = GameRecord(correct: correctAnswers, total: questionsAmount, date: Date().dateTimeString)
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let isBestRecord = GameRecord.isBest(current: record, previous: statisticService.bestGame)
+
+            if isBestRecord {
+                statisticService.bestGame = record
+            }
+
+            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)\nКоличество сыграных квизов: \(statisticService.gamesCount)\nРекорд:  \(statisticService.bestGame.correct)/\(questionsAmount) \(statisticService.bestGame.date)\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy as CVarArg))%"
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
             show(quiz: viewModel) // show result
-
-            imageView.layer.borderWidth = 0
         } else {
             currentQuestionIndex += 1
             imageView.layer.borderWidth = 0
             questionFactory?.requestNextQuestion()
         }
+
     }
+
     
     private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными

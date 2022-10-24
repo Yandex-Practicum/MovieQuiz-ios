@@ -22,6 +22,7 @@ struct Movie {
     let runtimeMins: Int
     let directors: String
     let actorList: [Actor]
+         
 }
 
 
