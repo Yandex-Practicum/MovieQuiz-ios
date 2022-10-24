@@ -17,8 +17,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var currentQuestion: QuizQuestion?
     private var statisticService: StatisticService = StatisticServiceImplementation()
     
-    @IBOutlet weak var buttonNo: UIButton!
-    @IBOutlet weak var buttonYes: UIButton!
+    @IBOutlet private weak var buttonNo: UIButton!
+    @IBOutlet private weak var buttonYes: UIButton!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         buttonNo.isEnabled = false
@@ -45,74 +45,69 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         print(NSHomeDirectory())
         print(Bundle.main.bundlePath)
         
-        //Еррор
-//        enum FileManagerError: Error {
-//            case fileDoesntExist
+        // MARK: - JSON
+//        let fileManager = FileManager.default
+//        let fileDoc = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+//        let jsonString = "inception.json"
+//        guard let jsonStringUrl = fileDoc?.appendingPathComponent(jsonString) else { return }
+//        guard let jsonString = try? String(contentsOf: jsonStringUrl) else { return }
+//        let data = jsonString.data(using: .utf8)!
+//
+//        do {
+//            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+//
+//              guard let json = json,
+//                    let id = json["id"] as? String,
+//                    let title = json["title"] as? String,
+//                    let jsonYear = json["year"] as? String,
+//                    let year = Int(jsonYear),
+//                    let image = json["image"] as? String,
+//                    let releaseDate = json["releaseDate"] as? String,
+//                    let jsonRuntimeMins = json["runtimeMins"] as? String,
+//                    let runtimeMins = Int(jsonRuntimeMins),
+//                    let directors = json["directors"] as? String,
+//                    let actorList = json["actorList"] as? [Any] else {
+//                  return
+//              }
+//
+//            var actors: [Actor] = []
+//
+//            for actor in actorList {
+//                guard let actor = actor as? [String: Any],
+//                      let id = actor["id"] as? String,
+//                      let name = actor["name"] as? String,
+//                      let asCharacter = actor["asCharacter"] as? String else {
+//                    return
+//                }
+//                let mainActor = Actor(id: id,
+//                                      image: image,
+//                                      name: name,
+//                                      asCharacter: asCharacter)
+//                actors.append(mainActor)
+//            }
+//
+//            let movie = Movie(id: id,
+//                              title: title,
+//                              year: year,
+//                              image: image,
+//                              releaseDate: releaseDate,
+//                              runtimeMins: runtimeMins,
+//                              directors: directors,
+//                              actorList: actors)
+//        } catch {
+//            print("Failed to parse: \(jsonString)")
 //        }
         
-        // MARK: - JSON
-        let fileManager = FileManager.default
-        let fileDoc = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-        let jsonString = "inception.json"
-        guard let jsonStringUrl = fileDoc?.appendingPathComponent(jsonString) else { return }
-        guard let jsonString = try? String(contentsOf: jsonStringUrl) else { return }
-        let data = jsonString.data(using: .utf8)!
-        
-        do {
-            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-
-              guard let json = json,
-                    let id = json["id"] as? String,
-                    let title = json["title"] as? String,
-                    let jsonYear = json["year"] as? String,
-                    let year = Int(jsonYear),
-                    let image = json["image"] as? String,
-                    let releaseDate = json["releaseDate"] as? String,
-                    let jsonRuntimeMins = json["runtimeMins"] as? String,
-                    let runtimeMins = Int(jsonRuntimeMins),
-                    let directors = json["directors"] as? String,
-                    let actorList = json["actorList"] as? [Any] else {
-                  return
-              }
-            
-            var actors: [Actor] = []
-            
-            for actor in actorList {
-                guard let actor = actor as? [String: Any],
-                      let id = actor["id"] as? String,
-                      let name = actor["name"] as? String,
-                      let asCharacter = actor["asCharacter"] as? String else {
-                    return
-                }
-                let mainActor = Actor(id: id,
-                                      image: image,
-                                      name: name,
-                                      asCharacter: asCharacter)
-                actors.append(mainActor)
-            }
-            
-            let movie = Movie(id: id,
-                              title: title,
-                              year: year,
-                              image: image,
-                              releaseDate: releaseDate,
-                              runtimeMins: runtimeMins,
-                              directors: directors,
-                              actorList: actors)
-        } catch {
-            print("Failed to parse: \(jsonString)")
-        }
-        
         //Создание файла
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        print(documentsURL)
-        let fileName = "text.swift"
-        documentsURL.appendPathComponent(fileName)
-        if !FileManager.default.fileExists(atPath: documentsURL.path) {
-            let hello = "Hello world!"
-            let data = hello.data(using: .utf8)
-            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
-        }
+//        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//        print(documentsURL)
+//        let fileName = "text.swift"
+//        documentsURL.appendPathComponent(fileName)
+//        if !FileManager.default.fileExists(atPath: documentsURL.path) {
+//            let hello = "Hello world!"
+//            let data = hello.data(using: .utf8)
+//            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
+//        }
         
         UserDefaults.standard.set(true, forKey: "viewDidLoad")
         
@@ -189,11 +184,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         buttonYes.isEnabled = true
 
         if currentQuestionIndex == questionsAmount - 1 {
-
+            
             if statisticService.gamesCount >= 0 {
                 statisticService.gamesCount += 1
             }
-
+            
             let record = GameRecord(correct: correctAnswers, total: questionsAmount, date: Date().dateTimeString)
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             let isBestRecord = GameRecord.isBest(current: record, previous: statisticService.bestGame)
@@ -201,15 +196,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             if isBestRecord {
                 statisticService.bestGame = record
             }
-
+            
             let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)\nКоличество сыграных квизов: \(statisticService.gamesCount)\nРекорд:  \(statisticService.bestGame.correct)/\(questionsAmount) \(statisticService.bestGame.date)\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy as CVarArg))%"
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
             show(quiz: viewModel) // show result
-        } else {
-            currentQuestionIndex += 1
-            imageView.layer.borderWidth = 0
-            questionFactory?.requestNextQuestion()
-        }
+            } else {
+                currentQuestionIndex += 1
+                imageView.layer.borderWidth = 0
+                questionFactory?.requestNextQuestion()
+            }
 
     }
 

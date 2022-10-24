@@ -62,10 +62,10 @@ final class StatisticServiceImplementation: StatisticService {
 
 struct GameRecord: Codable {
     let correct: Int
-    let total: Int
-    let date: String
+     let total: Int
+     let date: String
 
-    static func isBest(current: GameRecord, previous: GameRecord) -> Bool {
+     static func isBest(current: GameRecord, previous: GameRecord) -> Bool {
         return current.correct > previous.correct
     }
 }
