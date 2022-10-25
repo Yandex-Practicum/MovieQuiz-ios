@@ -26,23 +26,20 @@ final class MovieQuizViewController: UIViewController {
       let buttonText: String
     }
 
-    
-    // MARK: - Lifecycle
-    
+    // MARK: - Outlets
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
+    // MARK: - Properties
+    
     private var currentQuestionIndex: Int = 0 // Индекс текущего вопроса
-    
-    private var currentQuestion: QuizQuestion{
-        questions[currentQuestionIndex]
-    }
-    
     private var correctAnswers: Int = 0
     
-    private let questions: [QuizQuestion] = [
+    
+    
+    private var questions: [QuizQuestion] = [
     QuizQuestion(image: "The Godfather",
                  text: "Рейтинг этого фильма больше чем 6?",
                  correctAnswer: true),
@@ -75,15 +72,21 @@ final class MovieQuizViewController: UIViewController {
                  correctAnswer: false)
     ]
     
-   
     
     // MARK: - Func
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let currentQuestion = questions[currentQuestionIndex]    
+        showLoadingIndicator()
     }
+    
+    
+    private func showLoadingIndicator() {
+        textLabel.text = "Рейтинг этого фильма больше чем 6?"
+        imageView.image = UIImage(named: "The Godfather")
+        }
+    
     
     private func showAnswerResult(isCorrect: Bool){
         if isCorrect {
@@ -115,6 +118,7 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть еще раз")
             
+            self.correctAnswers = 0
             show(quiz: viewModel)
         }else{
             currentQuestionIndex += 1
@@ -124,7 +128,6 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-    
     
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -159,6 +162,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    
     }
     
     
@@ -166,6 +170,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+       
     }
     
     
