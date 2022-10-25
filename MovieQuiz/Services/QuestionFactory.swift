@@ -62,6 +62,4 @@ class QuestionFactory: QuestionFactoryProtocol{
     init(delegate: QuestionFactoryDelegate?) {
         self.delegate = delegate
     }
-    // И где-то в контроллере
-    //questionFactory = QuestionFactory(delegate: self)
 }

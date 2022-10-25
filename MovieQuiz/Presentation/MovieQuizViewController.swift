@@ -1,5 +1,25 @@
 import UIKit
 
+/*
+Здравствуйте, Александра. Я планирую после вашего финального ревью взять академ, не только из-за
+проблем со временем, но и из-за постоянных исправлений учебника по ходу обучения первой кагорты.
+ 
+5 спринт выдался очень сложным, принёс очень много разочарования и растерянности, а также сомнений,
+ надо ли мне вообще это. Его я выполнял с помощью ребят с кагорты, самостоятельно в такие сроки не
+ выполнил бы.
+ 
+ Хочу у вас попросить помощи, если вам будет несложно ответить, я понимаю, что это не в зоне вашх
+ обязанностей, поэтому я пойму, если не станете отвечать, я ценю ваше время. У меня два вопроса.
+ Что можно делать в ситуации сильной демотивации, когда всё не получается и очень тяжело всё
+ понять и осознать? А так же, что вы посоветуете поизучать во время академа, чтобы вернуться с пониманием
+ этого материала? Учебник мне не помогает, всё объяснено непонятно, на сложных примерах, запутанно
+ и так далее. Я буду вам очень благодарен за совет..
+ 
+ На счёт цвета, я не понимаю, в чём проблема. Цвет Background в сториборде #1A1B22 с 60% alpha,
+ как в макете фигмы.. :/
+ Плюс в прошлый раз всё было нормально, а я ничего в цвете не менял. Может дело в названии? Сменил.
+*/
+
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate  {
     
     
@@ -44,71 +64,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         print(NSHomeDirectory())
         print(Bundle.main.bundlePath)
-        
-        // MARK: - JSON
-//        let fileManager = FileManager.default
-//        let fileDoc = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-//        let jsonString = "inception.json"
-//        guard let jsonStringUrl = fileDoc?.appendingPathComponent(jsonString) else { return }
-//        guard let jsonString = try? String(contentsOf: jsonStringUrl) else { return }
-//        let data = jsonString.data(using: .utf8)!
-//
-//        do {
-//            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//
-//              guard let json = json,
-//                    let id = json["id"] as? String,
-//                    let title = json["title"] as? String,
-//                    let jsonYear = json["year"] as? String,
-//                    let year = Int(jsonYear),
-//                    let image = json["image"] as? String,
-//                    let releaseDate = json["releaseDate"] as? String,
-//                    let jsonRuntimeMins = json["runtimeMins"] as? String,
-//                    let runtimeMins = Int(jsonRuntimeMins),
-//                    let directors = json["directors"] as? String,
-//                    let actorList = json["actorList"] as? [Any] else {
-//                  return
-//              }
-//
-//            var actors: [Actor] = []
-//
-//            for actor in actorList {
-//                guard let actor = actor as? [String: Any],
-//                      let id = actor["id"] as? String,
-//                      let name = actor["name"] as? String,
-//                      let asCharacter = actor["asCharacter"] as? String else {
-//                    return
-//                }
-//                let mainActor = Actor(id: id,
-//                                      image: image,
-//                                      name: name,
-//                                      asCharacter: asCharacter)
-//                actors.append(mainActor)
-//            }
-//
-//            let movie = Movie(id: id,
-//                              title: title,
-//                              year: year,
-//                              image: image,
-//                              releaseDate: releaseDate,
-//                              runtimeMins: runtimeMins,
-//                              directors: directors,
-//                              actorList: actors)
-//        } catch {
-//            print("Failed to parse: \(jsonString)")
-//        }
-        
-        //Создание файла
-//        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//        print(documentsURL)
-//        let fileName = "text.swift"
-//        documentsURL.appendPathComponent(fileName)
-//        if !FileManager.default.fileExists(atPath: documentsURL.path) {
-//            let hello = "Hello world!"
-//            let data = hello.data(using: .utf8)
-//            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
-//        }
-        
+    
         UserDefaults.standard.set(true, forKey: "viewDidLoad")
         
         alertPresenter = AlertPresenter(delegate: self)
@@ -161,23 +117,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self.showNextQuestionOrResults()
         }
     }
-    
-//    private func showNextQuestionOrResults() {
-//        buttonNo.isEnabled = true
-//        buttonYes.isEnabled = true
-//        if currentQuestionIndex == questionsAmount - 1 {
-//            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
-//            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
-//            show(quiz: viewModel) // show result
-//
-//            imageView.layer.borderWidth = 0
-//        } else {
-//            currentQuestionIndex += 1
-//            imageView.layer.borderWidth = 0
-//            questionFactory?.requestNextQuestion()
-//        }
-//    }
-    
     
     private func showNextQuestionOrResults() {
         buttonNo.isEnabled = true
