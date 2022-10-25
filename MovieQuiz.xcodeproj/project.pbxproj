@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A35AFC7B29087AE900E73E40 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35AFC7A29087AE900E73E40 /* UIColor + Extension.swift */; };
 		A37827C028D3902D002722D4 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A37827BE28D3902D002722D4 /* YS Display-Bold.ttf */; };
 		A37827C128D3902D002722D4 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A37827BF28D3902D002722D4 /* YS Display-Medium.ttf */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A35AFC7A29087AE900E73E40 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		A37827BE28D3902D002722D4 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		A37827BF28D3902D002722D4 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +54,7 @@
 			children = (
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
+				A35AFC7A29087AE900E73E40 /* UIColor + Extension.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A35AFC7B29087AE900E73E40 /* UIColor + Extension.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,

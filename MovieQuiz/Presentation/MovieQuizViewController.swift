@@ -12,6 +12,7 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .ypBackground
         let currentQuestion = questions[currentQuestionIndex]
         let viewModel = convert(model: currentQuestion)
         show(quiz: viewModel)
@@ -28,6 +29,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
     }
     
     private func showNextQuestionOrResults() {
@@ -68,13 +73,11 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 5
-        imageView.layer.cornerRadius = 5
+      
         if !isCorrect {
-            imageView.layer.borderColor = UIColor.red.cgColor
+            imageView.layer.borderColor = UIColor.ypRed.cgColor
         } else {
-            imageView.layer.borderColor = UIColor.green.cgColor
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor
             correctAnswers += 1
         }
         

@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UYo-sC-fCk">
-                                <rect key="frame" x="20" y="54" width="374" height="768.5"/>
+                                <rect key="frame" x="20" y="54" width="374" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k1s-TN-fre">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -53,10 +53,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tdj-eN-Wl3">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="64"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="103.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmG-Pa-Tkk" userLabel="Question Label">
-                                                <rect key="frame" x="20" y="5" width="334" height="54"/>
+                                                <rect key="frame" x="20" y="5" width="334" height="93.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP white"/>
                                                 <nil key="highlightedColor"/>
@@ -70,7 +70,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="v3r-pz-I9j">
-                                        <rect key="frame" x="0.0" y="708.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="748" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vUv-1c-oZM" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -122,6 +122,7 @@
                             <constraint firstItem="UYo-sC-fCk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="7ZR-Hw-sxQ"/>
                             <constraint firstItem="UYo-sC-fCk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="NP4-Wp-V5t"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="UYo-sC-fCk" secondAttribute="trailing" constant="20" id="erS-gD-0k8"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="UYo-sC-fCk" secondAttribute="bottom" id="gCh-zm-cW1"/>
                         </constraints>
                     </view>
                     <connections>
