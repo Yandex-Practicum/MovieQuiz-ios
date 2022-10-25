@@ -15,6 +15,8 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
         let currentQuestion = questions[currentQuestionIndex]
         let currentViewModel = convert(model: currentQuestion)
         show(quiz: currentViewModel)
@@ -50,7 +52,8 @@ final class MovieQuizViewController: UIViewController {
     private func show(quiz result: QuizResultsViewModel) {
         // здесь мы показываем результат прохождения квиза
         let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default, handler: {_ in self.currentQuestionIndex = 0
+        let action = UIAlertAction(title: result.buttonText, style: .default, handler: { _ in
+            self.currentQuestionIndex = 0
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
@@ -95,10 +98,8 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func drawBorder(color: UIColor) {
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = color.cgColor // делаем рамку белой
-        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
     }
     
     private let questions: [QuizQuestion] = [ QuizQuestion(image: "The Godfather", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
