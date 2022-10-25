@@ -75,25 +75,14 @@ final class MovieQuizViewController: UIViewController {
                  correctAnswer: false)
     ]
     
-    let image1 = UIImage(named: "The Godfather")
-    let image2 = UIImage(named: "The Dark Knight")
-    let image3 = UIImage(named: "Kill Bill")
-    let image4 = UIImage(named: "The Avengers")
-    let image5 = UIImage(named: "Deadpool")
-    let image6 = UIImage(named: "The Green Knight")
-    let image7 = UIImage(named: "Old")
-    let image8 = UIImage(named: "The Ice Age Adventures of Buck Wild")
-    let image9 = UIImage(named: "Tesla")
-    let image10 = UIImage(named: "Vivarium")
-    
+   
     
     // MARK: - Func
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let currentQuestion = questions[currentQuestionIndex]
-        show(quiz: QuizStepViewModel)
+        let currentQuestion = questions[currentQuestionIndex]    
     }
     
     private func showAnswerResult(isCorrect: Bool){
@@ -112,9 +101,10 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(quiz step: QuizStepViewModel)  {
-        counterLabel.text = "\(currentQuestionIndex + 1)/\(questions.count)"
+        counterLabel.text = step.questionNumber
         imageView.image = step.image
         textLabel.text = step.question
+        imageView.layer.borderWidth = 0
     }
     
     private func showNextQuestionOrResults() {
@@ -169,7 +159,6 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        currentQuestionIndex += 1
     }
     
     
@@ -177,7 +166,6 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        currentQuestionIndex += 1
     }
     
     
