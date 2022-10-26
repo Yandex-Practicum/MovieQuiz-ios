@@ -1,3 +1,5 @@
+//Sprint 4 
+
 import UIKit
 
 fileprivate let questionString: String = "Рейтинг этого фильма больше чем 6?"
