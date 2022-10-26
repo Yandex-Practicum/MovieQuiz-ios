@@ -1,6 +1,6 @@
 import UIKit
 
-fileprivate let questionString: String = "Рейтинг этого фильма больше чем 9?"
+fileprivate let questionString: String = "Рейтинг этого фильма больше чем 6?"
 
 final class MovieQuizViewController: UIViewController {
     
