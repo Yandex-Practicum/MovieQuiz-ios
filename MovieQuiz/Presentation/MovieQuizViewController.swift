@@ -5,149 +5,59 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswersToQuestions = 0
     private var numberOfRoundsPlayed = 0
-    private var resultsOfEachPlayedRound: [(maxResult: Int, date: String)] = []
+    private var resultsOfEachPlayedRound = [Int:String]()
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
-    // MARK: - Creating all UIViews for screen
-    private let questionTitleLabel: UILabel = {
-        let questionTopLabel = UILabel()
-        questionTopLabel.textColor = .ypWhite
-        questionTopLabel.font = .ysMedium
-        questionTopLabel.translatesAutoresizingMaskIntoConstraints = false
-        questionTopLabel.text = "Вопрос:"
-        
-        return questionTopLabel
-    }()
-    
-    private let indexLabel: UILabel = {
-        let indexLabel = UILabel()
-        indexLabel.textColor = .ypWhite
-        indexLabel.font = .ysMedium
-        indexLabel.setContentHuggingPriority(UILayoutPriority(252), for: .horizontal)
-        indexLabel.translatesAutoresizingMaskIntoConstraints = false
-        indexLabel.text = "1/10"
-        
-        return indexLabel
-    }()
-    
+    // MARK: - UIElements
+    private let questionTitleLabel = UILabel()
+    private let indexLabel = UILabel()
+    private let questionLabel = UILabel()
+    private let viewForQuestionLabel = UIView()
+    private var noButton = UIButton(type: .system)
+    private var yesButton = UIButton(type: .system)
     private let previewImage: UIImageView = {
        let previewImage = UIImageView(image: UIImage())
-        
         previewImage.contentMode = .scaleAspectFill
         previewImage.backgroundColor = .ypWhite
-        previewImage.translatesAutoresizingMaskIntoConstraints = false
         previewImage.layer.masksToBounds = true
         previewImage.layer.cornerRadius = 20
         return previewImage
     }()
-    
-    private let questionLabel: UILabel = {
-        let questionLabel = UILabel()
-        questionLabel.textColor = .ypWhite
-        questionLabel.font = .ysBold
-        questionLabel.numberOfLines = 2
-        questionLabel.setContentCompressionResistancePriority(UILayoutPriority(751.0), for: .vertical)
-        questionLabel.textAlignment = .center
-        questionLabel.translatesAutoresizingMaskIntoConstraints = false
-        questionLabel.text = "Рэйтинг этого фильма меньше чем 5?"
 
-        return questionLabel
-    }()
-    
-    private let viewForQuestionLabel = UIView()
-   
-    // I use lazy because of function in selector
-    lazy private var noButton: UIButton = {
-        let noButton = UIButton(type: .system)
-        noButton.backgroundColor = .ypGray
-        noButton.layer.cornerRadius = 15
-        noButton.setTitle("Нет", for: .normal)
-        noButton.titleLabel?.font =  .ysMedium
-        noButton.setTitleColor(.ypBlack, for: .normal)
-        noButton.titleLabel?.textAlignment = .center
-        
-       
-        noButton.addTarget(self, action: #selector(noButtonPressed(sender: )), for: .touchUpInside)
-        noButton.translatesAutoresizingMaskIntoConstraints = false
-        return noButton
-    }()
-    
-    // I use lazy because of function in selector
-    lazy private var yesButton: UIButton = {
-        let yeButton = UIButton(type: .system)
-        yeButton.backgroundColor = .ypGray
-        yeButton.layer.cornerRadius = 15
-        yeButton.setTitle("Да", for: .normal)
-        yeButton.titleLabel?.font =  .ysMedium
-        yeButton.setTitleColor(.ypBlack, for: .normal)
-        yeButton.titleLabel?.textAlignment = .center
-        yeButton.addTarget(self, action: #selector(yesButtonPressed(sender: )), for: .touchUpInside)
-        yeButton.translatesAutoresizingMaskIntoConstraints = false
-        return yeButton
-    }()
-    
-    private let stackViewForButtons: UIStackView = {
-        let stackViewForButtons = UIStackView()
-        stackViewForButtons.axis = NSLayoutConstraint.Axis.horizontal
-        stackViewForButtons.distribution = .fillEqually
-        stackViewForButtons.alignment = .fill
-        stackViewForButtons.spacing = 20
-        stackViewForButtons.translatesAutoresizingMaskIntoConstraints = false
-        return stackViewForButtons
-    }()
-    
-    private let stackViewForLabels: UIStackView = {
-        let stackViewForLabels = UIStackView()
-        stackViewForLabels.axis = NSLayoutConstraint.Axis.horizontal
-        stackViewForLabels.distribution = .fill
-        stackViewForLabels.alignment = .fill
-        stackViewForLabels.spacing = 0
-        stackViewForLabels.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackViewForLabels
-    }()
-    
-    private let stackViewForAll: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = NSLayoutConstraint.Axis.vertical
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.spacing = 20
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackView
-    }()
+    private let stackViewForButtons = UIStackView()
+    private let stackViewForLabels = UIStackView()
+    private let stackViewForAll = UIStackView()
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .ypBlack
+        
         throwAllElementsOnScreen()
         createConstraints()
-        
         show(quiz: convert(model: quizQuestions[currentQuestionIndex]))
     }
     
-    // set all views in one function
-    private func throwAllElementsOnScreen() {
-        
-        stackViewForLabels.addArrangedSubViews(questionTitleLabel,
-                                          indexLabel)
-        stackViewForButtons.addArrangedSubViews(noButton,
-                                           yesButton)
-        viewForQuestionLabel.addSubview(questionLabel)
-    
-        stackViewForAll.addArrangedSubViews(stackViewForLabels,
-                                       previewImage,
-                                       viewForQuestionLabel,
-                                       stackViewForButtons)
-        
-        view.addSubview(stackViewForAll)
-    }
-    
-    
     // MARK: - Creating all Constraints
+    private func makeAppearanceOfAllElements() {
+        
+        makeAppearance(of: noButton, title: "Нет", action: #selector(noButtonPressed(sender: )))
+        makeAppearance(of: yesButton, title: "Да", action: #selector(yesButtonPressed(sender: )))
+        
+        makeAppearance(of: questionTitleLabel, text: "Вопрос:", font: .ysMedium ?? UIFont())
+        
+        makeAppearance(of: indexLabel, text: "1/10", font: .ysMedium ?? UIFont(), textAlignment: .right)
+        indexLabel.setContentHuggingPriority(UILayoutPriority(252), for: .horizontal)
+        
+        makeAppearance(of: questionLabel, text: "Рэйтинг этого фильма меньше чем 5?", font: .ysBold ?? UIFont(),
+                       numberOfLines: 2, textAlignment: .center)
+        questionLabel.setContentCompressionResistancePriority(UILayoutPriority(751.0), for: .vertical)
+        
+        makeAppearance(of: stackViewForLabels, axis: .horizontal, distribution: .fill, spacing: 0)
+        makeAppearance(of: stackViewForButtons, axis: .horizontal, distribution: .fillEqually)
+        makeAppearance(of: stackViewForAll, axis: .vertical, distribution: .fill)
+        
+    }
     private func createConstraints() {
         
         NSLayoutConstraint.activate([
@@ -181,28 +91,29 @@ final class MovieQuizViewController: UIViewController {
         
         ])
     }
+    private func throwAllElementsOnScreen() {
+        
+        makeAppearanceOfAllElements()
+        
+        [noButton,yesButton,indexLabel,questionLabel,questionTitleLabel,previewImage,
+         stackViewForAll,stackViewForLabels,stackViewForButtons].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        
+        
+        stackViewForLabels.addArrangedSubViews(questionTitleLabel,
+                                          indexLabel)
+        stackViewForButtons.addArrangedSubViews(noButton,
+                                           yesButton)
+        viewForQuestionLabel.addSubview(questionLabel)
     
+        stackViewForAll.addArrangedSubViews(stackViewForLabels,
+                                       previewImage,
+                                       viewForQuestionLabel,
+                                       stackViewForButtons)
+        
+        view.addSubview(stackViewForAll)
+    }
     
-    // MARK: - All necessary structs for logic of the game
-    private struct QuizQuestion {
-        // struct for mock data we use
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
-    private struct QuizStepViewModel {
-        // struct to fill up necessary fields on main game screen
-        let question: String
-        let image: UIImage
-        let questionNumber: String
-    }
-    private struct QuizResultViewModel {
-        let label: String
-        let text: String
-        let buttonText: String
-    }
     // MARK: - Functions to handle "state machine"
-    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(question: model.text,
                                  image: UIImage(named: model.image) ?? UIImage(),
@@ -229,11 +140,10 @@ final class MovieQuizViewController: UIViewController {
         } else {
             (previewImage.layer.borderColor = UIColor.ypRed.cgColor)
         }
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
+        
+        [noButton,yesButton].forEach { $0.isEnabled.toggle() }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            noButton.isEnabled = true
-            yesButton.isEnabled = true
+            [noButton,yesButton].forEach { $0.isEnabled.toggle() }
             showNextQuestionOrResult()
         }
     }
@@ -246,7 +156,6 @@ final class MovieQuizViewController: UIViewController {
         
         let action = UIAlertAction(title: result.buttonText,
                                    style: .default) { [self] _ in
-            
             currentQuestionIndex = 0
             correctAnswersToQuestions = 0
             // show main screen again using show and convert functions and mock data when alert button touched
@@ -266,9 +175,9 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == (quizQuestions.count - 1) {
             
             numberOfRoundsPlayed += 1
-            // Append array to save data such as accuracy, best result and time
-            resultsOfEachPlayedRound.append((maxResult: correctAnswersToQuestions,
-                                             date: Date().dateTimeString))
+            
+            // Append Dict to save data such as best result and time
+            resultsOfEachPlayedRound.updateValue(Date().dateTimeString, forKey: correctAnswersToQuestions)
             
             show(quiz: QuizResultViewModel(label: "Этот раунд окончен!",
                                            text: """
@@ -285,43 +194,48 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    func showPersonalBestResult() -> String {
+    private func showPersonalBestResult() -> String {
          
-        let maxResult = resultsOfEachPlayedRound
-            .map { $0.maxResult } // transform array from tuple to array of numbers
-            .max() // get the max number
+        let maxResultAndTime = resultsOfEachPlayedRound
+            .max { $0.key < $1.key }
         
-        // get the array of String with our result in good appearance
-        let recordInfo: [String?] = resultsOfEachPlayedRound
-            .filter { $0.maxResult == maxResult }
-            .map { "\($0.maxResult)/\(quizQuestions.count) (\($0.date))"}
+        guard let maxResultAndTime = maxResultAndTime else {return "NIL"}
         
-        // get data from array
-        guard let infoExist = recordInfo[0] else {
-            return "this case impossible"
-        }
-        
-        return infoExist
+        return "\(maxResultAndTime.key)/\(quizQuestions.count) (\(maxResultAndTime.value))"
     }
-    
-    func calculateAccuracy() -> Float {
-        let accuracy = resultsOfEachPlayedRound
-            .map { $0.maxResult }
-            .reduce(0, +)
-        return Float(accuracy * 100) / Float(quizQuestions.count * numberOfRoundsPlayed)
+   
+    private func calculateAccuracy() -> Float {
+        
+        let sumOfMaxResultsOfAllRounds = resultsOfEachPlayedRound.keys.reduce(0, +)
+        return Float(sumOfMaxResultsOfAllRounds * 100) / Float(quizQuestions.count * numberOfRoundsPlayed)
     }
     
     // buttons action
     @objc func noButtonPressed(sender: UIButton) {
-       
         showAnswerResult(isCorrect: false)
     }
     @objc func yesButtonPressed(sender: UIButton) {
-       
         showAnswerResult(isCorrect: true)
     }
     
-    // array of QuizQuestion type for main game screen
+    // MARK: - All necessary structs for logic of the game
+    private struct QuizQuestion {
+        // struct for mock data we use
+        let image: String
+        let text: String
+        let correctAnswer: Bool
+    }
+    private struct QuizStepViewModel {
+        // struct to fill up necessary fields on main game screen
+        let question: String
+        let image: UIImage
+        let questionNumber: String
+    }
+    private struct QuizResultViewModel {
+        let label: String
+        let text: String
+        let buttonText: String
+    }
     private var quizQuestions = [
         QuizQuestion(image: "The Godfather",
                   text: "Рейтинг этого фильма больше чем 9?",
@@ -357,31 +271,18 @@ final class MovieQuizViewController: UIViewController {
 }
 
 extension UIView { // extension for safe area
-
   var safeTopAnchor: NSLayoutYAxisAnchor {
-   
       return safeAreaLayoutGuide.topAnchor
-   
   }
-
   var safeLeadingAnchor: NSLayoutXAxisAnchor {
-   
         return safeAreaLayoutGuide.leadingAnchor
-   
 }
-
   var safeTrailingAnchor: NSLayoutXAxisAnchor {
-   
     return safeAreaLayoutGuide.trailingAnchor
-   
 }
-
   var safeBottomAnchor: NSLayoutYAxisAnchor {
-    
       return safeAreaLayoutGuide.bottomAnchor
-   
   }
- 
 }
 
 extension UIStackView {
@@ -396,4 +297,38 @@ extension UIStackView {
 extension UIFont {
    static let ysMedium = UIFont(name: "YSDisplay-Medium", size: 20)
    static let ysBold = UIFont(name: "YSDisplay-Bold", size: 23)
+}
+
+// Functions to create Labels, Buttons, StackViews
+extension MovieQuizViewController {
+    
+    private func makeAppearance(of button: UIButton, title: String, font: UIFont = .ysMedium ?? UIFont(),
+                                alignment: NSTextAlignment = .center, backgroundColor: UIColor = .ypGray,
+                                titleColor: UIColor = .ypBlack, cornerRadius: CGFloat = 15,
+                                action: Selector) {
+        button.backgroundColor = backgroundColor
+        button.layer.cornerRadius = cornerRadius
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font =  font
+        button.setTitleColor(titleColor, for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(noButtonPressed(sender: )), for: .touchUpInside)
+    }
+    private func makeAppearance(of label: UILabel, text: String, textColor: UIColor = .ypWhite, font: UIFont,
+                                numberOfLines: Int = 0, textAlignment: NSTextAlignment? = .none) {
+        label.text = text
+        label.textColor = textColor
+        label.font = font
+        label.numberOfLines = numberOfLines
+        label.textAlignment = textAlignment ?? .natural
+    }
+    private func makeAppearance(of stackView: UIStackView, axis: NSLayoutConstraint.Axis,
+                                distribution: UIStackView.Distribution,
+                                alignment: UIStackView.Alignment = .fill, spacing: CGFloat = 20) {
+        stackView.axis = axis
+        stackView.distribution = distribution
+        stackView.alignment = alignment
+        stackView.spacing = spacing
+    }
+    
 }
