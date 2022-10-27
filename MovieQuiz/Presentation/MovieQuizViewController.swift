@@ -2,20 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
-    
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let answer = false
-        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let answer = true
-        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
-    }
-    
+        
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -66,8 +53,22 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let answer = false
+        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let answer = true
+        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
         let firstQuestion = self.questions[self.currentQuestionIndex]
         let viewModel = self.convert(model: firstQuestion)
         show(quiz: viewModel)
@@ -109,13 +110,14 @@ final class MovieQuizViewController: UIViewController {
 }
     
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        if isCorrect == true { imageView.layer.borderColor = UIColor.green.cgColor; correctAnswers += 1 }
-        else { imageView.layer.borderColor = UIColor.red.cgColor }
+        if isCorrect {
+            imageView.layer.borderColor = UIColor.ypGreen?.cgColor
+            correctAnswers += 1 }
+        else { imageView.layer.borderColor = UIColor.ypRed?.cgColor }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // запускаем задачу через 1 секунду
             self.showNextQuestionOrResults()
-            self.imageView.layer.borderColor = .none // TODO: почему-то на первом круге после исчезновения рамки остаётся слабая зеленая граница справа. На втором круге она пропадает сама.
+            self.imageView.layer.borderWidth = 0 //
         }
     }
     
