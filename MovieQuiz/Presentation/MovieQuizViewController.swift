@@ -18,40 +18,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers: Int = 0
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
-//    enum FileManagerError: Error {
-//        case fileDoesntExist
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print(NSHomeDirectory())
-//        UserDefaults.standard.set(true, forKey: "viewDidLoad")
-//
-//        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//        print(documentsURL)
-//        let fileName = "inception.json"
-//        documentsURL.appendPathComponent(fileName)
-//        print(documentsURL)
-//        let jsonString = try? String(contentsOf: documentsURL)
-//        let data = jsonString?.data(using: .utf8)
-//        guard let data = data else {
-//            return
-//        }
-//
-//        do {
-//            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//            let title = json?["title"]
-//            let year = json?["year"]
-//            let actorList = json?["actorList"] as! [Any]
-//            for actor in actorList {
-//                if let actor = actor as? [String: Any] {
-//                    print(actor["asCharacter"])
-//                }
-//            }
-//        } catch {
-//            print("Failed to parse: \(jsonString)")
-//        }
-        
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         
@@ -85,6 +54,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled = true
         yesButton.isEnabled = true
         imageView.image = step.image
+        imageView.layer.borderWidth = 0
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
@@ -143,27 +113,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
             Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
             """
-//            \(String(format: "%.2f", statisticService.totalAccuracy))%"
-//            let text = correctAnswers == questionsAmount ?
-//            "Поздравляем, Вы ответили на 10 из 10!" :
-//            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+
             let alertModel = AlertModel(
                 title: "Этот раунд окончен!",
                 message: text,
                 buttonText: "Сыграть ещё раз",
                 completion: { [weak self] in
                     guard let self = self else { return }
-                    //обнуляем счетчики
-                    self.correctAnswers = 0
-                    self.currentQuestionIndex = 0
-                    // и заново показываем первый вопрос
-                    self.questionFactory?.requestNextQuestion()
+                    self.resetGame()
                 })
+            
             
             alertPresenter?.presentAlert(model: alertModel)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
+    }
+    
+    private func resetGame() {
+        self.correctAnswers = 0
+        self.currentQuestionIndex = 0
+        // и заново показываем первый вопрос
+        imageView.layer.borderWidth = 0
+        self.questionFactory?.requestNextQuestion()
+        
     }
 }
