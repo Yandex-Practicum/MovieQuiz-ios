@@ -18,10 +18,10 @@ class AlertPresenter: AlertPresenterProtocol {
             preferredStyle: .alert)
         let action = UIAlertAction(
             title: model.buttonText,
-            style: .default) { [self] _  in
-                delegate?.didShowAlert()
+            style: .default) { _ in
+                model.completion()
             }
         alert.addAction(action)
-        alertVC?.present(alert, animated: true, completion: model.completion)
+        alertVC?.present(alert, animated: true)
     }
 }

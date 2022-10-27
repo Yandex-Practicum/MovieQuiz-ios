@@ -120,7 +120,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 title: "Этот раунд окончен!",
                 message: text ?? "nil",
                 buttonText: "Сыграть еще раз?",
-                completion: nil)
+                completion: didShowAlert)
             alertPresenter?.showAlert(model: viewModel)
         } else {
             currentQuestionIndex += 1
@@ -145,7 +145,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             title: "Ошибка",
             message: message,
             buttonText: "Попробовать ещё раз",
-            completion: nil)
+            completion: { [weak self] in
+                guard let self = self else { return }
+                self.questionFactory?.loadData()
+            })
         
             alertPresenter?.showAlert(model: viewModel)
             }
