@@ -72,16 +72,14 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? getAppColor("ypGreen") : getAppColor("ypRed")
         
         if isCorrect {
             correctAnswers += 1
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // запускаем задачу через 1 секунду
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
     }
@@ -91,13 +89,14 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
+        imageView.layer.borderWidth = 0
     }
     
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [self] _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.show(quiz: self.getCurrentQuizStepViewModel())
