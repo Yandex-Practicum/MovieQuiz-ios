@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oAj-f4-zep">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <device id="retina5_9" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
@@ -14,31 +14,30 @@
             <objects>
                 <viewController id="oAj-f4-zep" customClass="MovieQuizViewController" customModule="MovieQuiz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dlh-i9-iW6">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-gD-TuN">
-                                <rect key="frame" x="20" y="66" width="374" height="796"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-gD-TuN">
+                                <rect key="frame" x="20" y="65" width="335" height="713"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jdj-lr-suw" userLabel="Stack View Index Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jdj-lr-suw" userLabel="Stack View Index Label">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="23.333333333333332"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pwt-0T-edg" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="183" height="23.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pwt-0T-edg" userLabel="Question Title Label">
+                                                <rect key="frame" x="0.0" y="0.0" width="163.66666666666666" height="23.333333333333332"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Вопрос:">
                                                         <attributes>
-                                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <font key="NSFont" size="20" name="YSDisplay-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-n5-CQK" userLabel="Index Label">
-                                                <rect key="frame" x="191" y="0.0" width="183" height="23.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-n5-CQK" userLabel="Index Label">
+                                                <rect key="frame" x="171.66666666666663" y="0.0" width="163.33333333333337" height="23.333333333333332"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <attributedString key="attributedText">
@@ -54,18 +53,18 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TestImage" translatesAutoresizingMaskIntoConstraints="NO" id="u5R-ll-RWK" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" image="TestImage" translatesAutoresizingMaskIntoConstraints="NO" id="u5R-ll-RWK" userLabel="Preview Image">
+                                        <rect key="frame" x="0.0" y="39.000000000000028" width="335" height="502.66666666666674"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="u5R-ll-RWK" secondAttribute="height" multiplier="2:3" id="8XF-kl-xNU"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="227" verticalHuggingPriority="228" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="703" translatesAutoresizingMaskIntoConstraints="NO" id="pPW-vu-KAB" userLabel="View 1">
-                                        <rect key="frame" x="19.5" y="624.5" width="335" height="91.5"/>
+                                        <rect key="frame" x="0.0" y="561.66666666666663" width="335" height="97.333333333333371"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8MH-hT-qWX" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="251" height="65.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8MH-hT-qWX" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="13" width="251" height="71.333333333333329"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <attributedString key="attributedText">
                                                     <fragment>
@@ -74,7 +73,7 @@
                                                         <attributes>
                                                             <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <font key="NSFont" size="23" name="YSDisplay-Bold"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
@@ -84,17 +83,18 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="8MH-hT-qWX" secondAttribute="trailing" constant="42" id="FnN-f7-6IO"/>
+                                            <constraint firstItem="8MH-hT-qWX" firstAttribute="centerY" secondItem="pPW-vu-KAB" secondAttribute="centerY" id="OCe-TY-8zX"/>
+                                            <constraint firstItem="8MH-hT-qWX" firstAttribute="centerX" secondItem="pPW-vu-KAB" secondAttribute="centerX" id="WhD-0y-GzS"/>
                                             <constraint firstItem="8MH-hT-qWX" firstAttribute="top" secondItem="pPW-vu-KAB" secondAttribute="top" constant="13" id="hew-g1-pLi"/>
                                             <constraint firstItem="8MH-hT-qWX" firstAttribute="leading" secondItem="pPW-vu-KAB" secondAttribute="leading" constant="42" id="mKW-Dx-VNg"/>
                                             <constraint firstAttribute="bottom" secondItem="8MH-hT-qWX" secondAttribute="bottom" constant="13" id="xBc-ht-hgF"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="eaL-3p-p2V" userLabel="Stack View Button">
-                                        <rect key="frame" x="0.0" y="736" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="653" width="335" height="60"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z0O-ax-nt1" userLabel="No button">
-                                                <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z0O-ax-nt1" userLabel="No button">
+                                                <rect key="frame" x="0.0" y="0.0" width="157.66666666666666" height="60"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -103,15 +103,29 @@
                                                         <fragment content="Нет">
                                                             <attributes>
                                                                 <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 <font key="NSFont" size="20" name="YSDisplay-Medium"/>
                                                                 <real key="NSKern" value="0.0"/>
-                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 <color key="NSStrokeColor" red="0.10196" green="0.10588" blue="0.13333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </attributes>
                                                         </fragment>
                                                     </attributedString>
                                                 </state>
+                                                <buttonConfiguration key="configuration" style="plain">
+                                                    <attributedString key="attributedTitle">
+                                                        <fragment content="Нет">
+                                                            <attributes>
+                                                                <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                <real key="NSKern" value="0.0"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                <color key="NSStrokeColor" red="0.10196" green="0.10588" blue="0.13333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
+                                                </buttonConfiguration>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                         <integer key="value" value="15"/>
@@ -121,10 +135,9 @@
                                                     <action selector="noButtonClicked:" destination="oAj-f4-zep" eventType="touchUpInside" id="fee-Oe-VXc"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WMX-kr-JbZ" userLabel="Yas button">
-                                                <rect key="frame" x="197" y="0.0" width="177" height="60"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WMX-kr-JbZ" userLabel="Yas button">
+                                                <rect key="frame" x="177.66666666666663" y="0.0" width="157.33333333333337" height="60"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Button">
                                                     <attributedString key="attributedTitle">
@@ -158,9 +171,11 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="u5R-ll-RWK" firstAttribute="leading" secondItem="jmL-gD-TuN" secondAttribute="leading" id="591-N2-Sbr"/>
+                                    <constraint firstItem="pPW-vu-KAB" firstAttribute="leading" secondItem="jmL-gD-TuN" secondAttribute="leading" id="5ah-dr-jc7"/>
                                     <constraint firstItem="jdj-lr-suw" firstAttribute="leading" secondItem="jmL-gD-TuN" secondAttribute="leading" id="GpT-cg-5qB"/>
-                                    <constraint firstAttribute="trailing" secondItem="u5R-ll-RWK" secondAttribute="trailing" id="X9f-dt-RwR"/>
-                                    <constraint firstItem="u5R-ll-RWK" firstAttribute="leading" secondItem="jmL-gD-TuN" secondAttribute="leading" id="egB-We-SAs"/>
+                                    <constraint firstAttribute="trailing" secondItem="u5R-ll-RWK" secondAttribute="trailing" id="HEG-r4-Qlx"/>
+                                    <constraint firstAttribute="trailing" secondItem="pPW-vu-KAB" secondAttribute="trailing" id="l1w-Hp-aGH"/>
                                     <constraint firstItem="eaL-3p-p2V" firstAttribute="leading" secondItem="jmL-gD-TuN" secondAttribute="leading" id="nux-My-VuS"/>
                                     <constraint firstAttribute="trailing" secondItem="eaL-3p-p2V" secondAttribute="trailing" id="scL-JT-afC"/>
                                     <constraint firstItem="jdj-lr-suw" firstAttribute="top" secondItem="jmL-gD-TuN" secondAttribute="top" id="wXo-2V-Y6t"/>
@@ -180,7 +195,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="dmq-n5-CQK" id="X8b-rD-SDR"/>
                         <outlet property="imageView" destination="u5R-ll-RWK" id="PEA-uF-cUT"/>
+                        <outlet property="noButton" destination="Z0O-ax-nt1" id="cSy-9l-0Sd"/>
                         <outlet property="textLabel" destination="8MH-hT-qWX" id="GT9-RF-rRf"/>
+                        <outlet property="yesButton" destination="WMX-kr-JbZ" id="HPG-qB-59n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b2g-Wf-7eJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

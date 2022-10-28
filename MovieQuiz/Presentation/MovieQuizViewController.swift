@@ -28,6 +28,8 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Outlets
     
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -78,11 +80,11 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        showLoadingIndicator()
+        startScreenView()
     }
     
     
-    private func showLoadingIndicator() {
+    private func startScreenView() {
         textLabel.text = "Рейтинг этого фильма больше чем 6?"
         imageView.image = UIImage(named: "The Godfather")
         }
@@ -155,6 +157,16 @@ final class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
+    private func activeButten() {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+        }
+        
+    }
     
     // MARK: - Action button
     
@@ -162,7 +174,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    
+        activeButten()
     }
     
     
@@ -170,7 +182,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-       
+        activeButten()
     }
     
     
