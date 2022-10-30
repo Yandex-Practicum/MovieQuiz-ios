@@ -12,9 +12,7 @@ class AlertPresenter: AlertPresenterDelegate {
         let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
             self.startOverDelegate?.startOver()
         }
-        
         alert.addAction(action)
-        
         return alert
     }
 }

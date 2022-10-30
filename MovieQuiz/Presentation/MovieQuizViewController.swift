@@ -1,7 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresentProtocol {
-
     @IBOutlet weak private var yesButton: UIButton!
     @IBOutlet weak private var noButton: UIButton!
     @IBOutlet weak private var imageView: UIImageView!
@@ -13,6 +12,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenterDelegate: AlertPresenterDelegate?
+    private var statisticServiceImplementation: StatisticServiceImplementation?
     
     // MARK: - Lifecycle
     override  func viewDidLoad() {
@@ -20,6 +20,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         alertPresenterDelegate = AlertPresenter(startOverDelegate: self)
+        imageView.layer.cornerRadius = 20
+        statisticServiceImplementation = StatisticServiceImplementation()
     }
     // MARK: - QuestionFactoryDelegate
     func didRecieveNextQuestion(question: QuizQuestion?) {
@@ -38,7 +40,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         self.currentQuestionIndex = 0
         self.correctAnswers = 0
         self.questionFactory?.requestNextQuestion()
-        print("startOver()")
     }
     
     
@@ -49,11 +50,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alertModel = AlertModel(title: result.title,
-                                    masseg: result.text,
+        guard let statisticServiceImplementation = statisticServiceImplementation else { return }
+        self.statisticServiceImplementation?.store(correct: correctAnswers, total: questionsAmount)
+        self.statisticServiceImplementation?.gamesQuizCount += 1
+        self.statisticServiceImplementation?.correctAnswersAllTheTime += correctAnswers
+        self.statisticServiceImplementation?.questionsAllTheTime += questionsAmount
+        self.statisticServiceImplementation?.totalAccuracy = Double(statisticServiceImplementation.correctAnswersAllTheTime) / Double(statisticServiceImplementation.questionsAllTheTime) * 100
+    // MARK: - AlertModel
+    let alertModel = AlertModel(title: result.title,
+                                    masseg: """
+                                    Ваш результат: \(correctAnswers)/\(questionsAmount)
+                                    Количеств сыгранных квизов: \(statisticServiceImplementation.gamesQuizCount)
+                                    Рекорд: \(statisticServiceImplementation.bestGame.correct)/\(questionsAmount) (\(statisticServiceImplementation.bestGame.date.dateTimeString))
+                                    Средняя точность: \(String(format:"%.2f",statisticServiceImplementation.totalAccuracy))%
+                                    """,
                                     buttonText: result.buttonText)
-        guard let alertPresenterDelegate = alertPresenterDelegate else {return}
         
+        
+        
+       guard let alertPresenterDelegate = alertPresenterDelegate else {return}
         present(alertPresenterDelegate.showAlert(alertModel: alertModel), animated: true)
  
     }
@@ -102,7 +117,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
-    
+    // MARK: Buttons YES and NO
     @IBAction private func yesButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {
             return
@@ -121,27 +136,3 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
 }
 
-
-
-
-
-//        questionFactory?.requestNextQuestion()
-//
-        //                // скидываем счётчик правильных ответов
-        //                self.correctAnswers = 0
-        //                // заново показываем первый вопрос
-//        let alert = UIAlertController(
-//                title: result.title,
-//                message: result.text,
-//                preferredStyle: .alert)
-//
-//        let action = UIAlertAction(title: result.buttonText, style: .default) {[weak self] _ in
-//            guard let self = self else {return}
-//                self.currentQuestionIndex = 0
-//                // скидываем счётчик правильных ответов
-//                self.correctAnswers = 0
-//                // заново показываем первый вопрос
-//
-//            }
-//            questionFactory?.requestNextQuestion()
-//            alert.addAction(action)
