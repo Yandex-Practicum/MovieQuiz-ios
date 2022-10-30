@@ -11,14 +11,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     let questionsAmount: Int = 10
     var questionFactory: QuestionFactoryProtocol?
     var currentQuestion: QuizQuestion?
-    var alertPresenter: AlertPresenter?
-    var             statisticService = StatisticServiceImplementation()
+    var alertPresenter: ResultAlertPresenter?
+    var statisticService = StatisticServiceImplementation()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
-        alertPresenter = AlertPresenter(delegate: self)
+        alertPresenter = ResultAlertPresenter(delegate: self)
         questionFactory?.requestNewQuestions()
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
@@ -68,8 +68,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             statisticService.gamesCount += 1
             statisticService.correct += correctAnswers
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-            var averageAccuracy = String(format: "%.2f", statisticService.totalAccuracy)
-            let text = "Ваш результат: \(correctAnswers)/10 \n Кол-во сыгранных игр: \(            statisticService.gamesCount) \n Рекорд: \(            statisticService.bestGame.correct)/\(            statisticService.bestGame.total) (\(            statisticService.bestGame.date)) \n Средняя точность: \(averageAccuracy)%"
+            let averageAccuracy = String(format: "%.2f", statisticService.totalAccuracy)
+            
+            let text = "Ваш результат: \(correctAnswers)/10 \n Кол-во сыгранных игр: \(            statisticService.gamesCount) \n Рекорд: \(statisticService.bestGame.correct)/\(            statisticService.bestGame.total) (\(statisticService.bestGame.date)) \n Средняя точность: \(averageAccuracy)%"
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,

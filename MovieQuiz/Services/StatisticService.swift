@@ -46,7 +46,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат")
+                print("Невозможно сохранить общее кол-во правильных ответов")
                 return
             }
             userDefaults.set(data, forKey: Keys.correct.rawValue)
@@ -63,7 +63,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат")
+                print("Невозможно сохранить среднюю результативность")
                 return
             }
             userDefaults.set(data, forKey: Keys.total.rawValue)
@@ -80,7 +80,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат")
+                print("Невозможно сохранить кол-во игр")
                 return
             }
             userDefaults.set(data, forKey: Keys.gamesCount.rawValue)
@@ -97,7 +97,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат")
+                print("Невозможно сохранить результат лучшей игры")
                 return
             }
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
@@ -109,8 +109,6 @@ final class StatisticServiceImplementation: StatisticService {
         if newResult.compare(oldResult: bestGame) {
             bestGame = newResult
         }
-        print(correct)
-        print(gamesCount)
         totalAccuracy = 100 * (Double (correct) / Double (10 * gamesCount))
     }
     

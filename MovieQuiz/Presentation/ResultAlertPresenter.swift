@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct AlertPresenter {
+struct ResultAlertPresenter {
     var delegate: MovieQuizViewController?
     
     init (delegate: MovieQuizViewController) {
