@@ -8,41 +8,25 @@
 import Foundation
 import UIKit
 
-/*
- 
- class AlertPresenter {
+struct AlertPresenter {
     
-    private func show(quiz result: QuizResultsViewModel) {
-        // здесь мы показываем результат прохождения квиза
-        // создаём объекты всплывающего окна
+    var viewController: UIViewController?    
+    func showAlert(quiz result: AlertModel) {
+        
         let alert = UIAlertController(
             title: result.title, // заголовок всплывающего окна
-            message: result.text, // текст во всплывающем окне
+            message: result.message, // текст во всплывающем окне
             preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
         
-        // создаём для него кнопки с действиями
         let action = UIAlertAction(
             title: result.buttonText,
             style: .default,
-            handler: { [weak self] _ in
-            guard let self = self else { return }
-            print("Repeat button is clicked!")
-            
-            // скидываем счётчик правильных ответов
-            self.numberOfCorrectAnswers = 0
-            self.currentQuestionIndex = 0
-            
-            // заново показываем первый вопрос
-            self.questionFactory?.requestNextQuestion()
-        })
-        
-        // добавляем в алерт кнопки
+            handler: result.completion
+        )
+
         alert.addAction(action)
-        
-        // показываем всплывающее окно
-        self.present(alert, animated: true, completion: nil)
+        viewController?.present(alert, animated: true, completion: nil)
     }
 
 }
- 
- */
+

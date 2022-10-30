@@ -23,6 +23,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20  // закругляю картинку
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        alertPresenter = AlertPresenter(viewController: self)
     }
     
     private var currentQuestionIndex: Int = 0
@@ -30,6 +31,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
+    private var alertPresenter: AlertPresenter?
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
@@ -58,34 +60,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
-    
+   
     private func show(quiz result: QuizResultsViewModel) {
-        // здесь мы показываем результат прохождения квиза
-        // создаём объекты всплывающего окна
-        let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
-                                      message: result.text, // текст во всплывающем окне
-                                      preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
-        
-        // создаём для него кнопки с действиями
-        let action = UIAlertAction(title: result.buttonText, style: .default, handler: { [weak self] _ in
-            guard let self = self else { return }
-            print("Repeat button is clicked!")
-            
-            // скидываем счётчик правильных ответов
-            self.numberOfCorrectAnswers = 0
-            self.currentQuestionIndex = 0
-            
-            // заново показываем первый вопрос
-            self.questionFactory?.requestNextQuestion()
-        })
-        
-        // добавляем в алерт кнопки
-        alert.addAction(action)
-        
-        // показываем всплывающее окно
-        self.present(alert, animated: true, completion: nil)
+        let alertModel = AlertModel(
+            title: result.title,
+            message: result.text,
+            buttonText: result.buttonText)
+            { [weak self] _ in
+                guard let self = self else { return }
+                self.currentQuestionIndex = 0
+                self.numberOfCorrectAnswers = 0
+                self.questionFactory?.requestNextQuestion()
+        }
+        alertPresenter?.showAlert(quiz: alertModel)
     }
-    
+
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
@@ -105,7 +94,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func showNextQuestionOrResults() {
+   private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {// - 1 потому что индекс начинается с 0, а длинна массива — с 1
             let text = numberOfCorrectAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
