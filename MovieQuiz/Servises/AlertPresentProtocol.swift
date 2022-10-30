@@ -1,5 +1,5 @@
 import Foundation
 
-protocol AlertPresentProtocol {
+protocol AlertPresentProtocol: AnyObject {
     func startOver()
 }
