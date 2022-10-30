@@ -6,12 +6,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var mainQuestionLabel: UILabel!
     
-     var currentQuestionIndex: Int = 0
-     var correctAnswers: Int = 0
-     let questionsAmount: Int = 10
-     var questionFactory: QuestionFactoryProtocol?
-     var currentQuestion: QuizQuestion?
+    var currentQuestionIndex: Int = 0
+    var correctAnswers: Int = 0
+    let questionsAmount: Int = 10
+    var questionFactory: QuestionFactoryProtocol?
+    var currentQuestion: QuizQuestion?
     var alertPresenter: AlertPresenter?
+    var             statisticService = StatisticServiceImplementation()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -22,6 +23,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
+        print(NSHomeDirectory())
     }
     
     @IBAction private func yesButtonPressed(_ sender: UIButton) {
@@ -52,20 +54,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func show(quiz result: QuizResultsViewModel) {
         alertPresenter?.show(quiz: result)
-        
-//        let alert = UIAlertController(
-//            title: result.title,
-//            message: result.text,
-//            preferredStyle: .alert)
-//
-//        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-//            guard let self = self else {return}
-//            self.currentQuestionIndex = 0
-//            self.correctAnswers = 0
-//            self.questionFactory?.requestNewQuestions()
-//        }
-//        alert.addAction(action)
-//        self.present(alert, animated: true, completion: nil)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -77,7 +65,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = "Ваш результат: \(correctAnswers) из 10"
+            statisticService.gamesCount += 1
+            statisticService.correct += correctAnswers
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            var averageAccuracy = String(format: "%.2f", statisticService.totalAccuracy)
+            let text = "Ваш результат: \(correctAnswers)/10 \n Кол-во сыгранных игр: \(            statisticService.gamesCount) \n Рекорд: \(            statisticService.bestGame.correct)/\(            statisticService.bestGame.total) (\(            statisticService.bestGame.date)) \n Средняя точность: \(averageAccuracy)%"
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
