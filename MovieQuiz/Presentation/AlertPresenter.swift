@@ -9,8 +9,8 @@ class AlertPresenter: AlertPresenterDelegate {
         let alert = UIAlertController(title: alertModel.title,
                                       message: alertModel.masseg,
                                       preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
-            self.startOverDelegate?.startOver()
+        let action = UIAlertAction(title: "Ok", style: .cancel) { [weak self]_ in
+            self?.startOverDelegate?.startOver()
         }
         alert.addAction(action)
         return alert

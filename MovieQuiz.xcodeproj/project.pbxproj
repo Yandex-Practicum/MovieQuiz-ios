@@ -16,6 +16,8 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
+		DB924126290EDE7900084086 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BE63428D35E6700567775 /* YS Display-Bold.ttf */; };
+		DB924127290EDE7C00084086 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BE63328D35E6600567775 /* YS Display-Medium.ttf */; };
 		DBF11C8B28EF4C4E00BB3ACD /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF11C8A28EF4C4E00BB3ACD /* QuestionFactory.swift */; };
 		DBF11C8E28EF4EF300BB3ACD /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF11C8D28EF4EF300BB3ACD /* QuizStepViewModel.swift */; };
 		DBF11C9028EF4F1700BB3ACD /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF11C8F28EF4F1700BB3ACD /* QuizResultsViewModel.swift */; };
@@ -233,6 +235,8 @@
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
+				DB924126290EDE7900084086 /* YS Display-Bold.ttf in Resources */,
+				DB924127290EDE7C00084086 /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
