@@ -148,7 +148,7 @@
                             <constraint firstItem="sIv-G2-13u" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="43S-id-wJg"/>
                             <constraint firstItem="sIv-G2-13u" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="RSi-H6-Emk"/>
                             <constraint firstItem="sIv-G2-13u" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="YK0-Xu-tqV"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="sIv-G2-13u" secondAttribute="bottom" constant="10" id="h4e-EJ-JES"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="sIv-G2-13u" secondAttribute="bottom"  id="h4e-EJ-JES"/>
                         </constraints>
                     </view>
                     <connections>
