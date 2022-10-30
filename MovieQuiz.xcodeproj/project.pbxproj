@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		750C8160290E62BF009F11B7 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7592D6FF28F83F52000979C9 /* YS Display-Medium.ttf */; };
+		750C8161290E62C3009F11B7 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7592D70028F83F62000979C9 /* YS Display-Bold.ttf */; };
 		75D00AF928F8366D00CE5C12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75D00AF228F8366D00CE5C12 /* Assets.xcassets */; };
 		75D00AFA28F8366D00CE5C12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75D00AF328F8366D00CE5C12 /* LaunchScreen.storyboard */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
@@ -181,6 +183,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				75D00AFA28F8366D00CE5C12 /* LaunchScreen.storyboard in Resources */,
+				750C8160290E62BF009F11B7 /* YS Display-Medium.ttf in Resources */,
+				750C8161290E62C3009F11B7 /* YS Display-Bold.ttf in Resources */,
 				75D00AF928F8366D00CE5C12 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
 			);

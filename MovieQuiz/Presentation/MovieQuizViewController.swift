@@ -4,14 +4,15 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.masksToBounds = true
         showFirstQuestion ()
     }
     
@@ -83,17 +84,18 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+       
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.imageView.layer.masksToBounds = true
-            self.imageView.layer.borderWidth = 8
-            self.imageView.layer.borderColor =  UIColor.clear.cgColor
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.hideAnswerBorder()
             self.showNextQuestionOrResults()
         }
+    }
+    
+    private func hideAnswerBorder() {
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor =  UIColor.clear.cgColor
     }
     
     private func showNextQuestionOrResults() {
