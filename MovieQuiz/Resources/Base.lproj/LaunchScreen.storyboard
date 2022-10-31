@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <device id="retina6_72" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
@@ -13,11 +13,11 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="hto-t0-gyr">
-                                <rect key="frame" x="-86" y="0.0" width="586" height="896"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="hto-t0-gyr">
+                                <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -25,8 +25,8 @@
                         <constraints>
                             <constraint firstItem="hto-t0-gyr" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="O9W-sb-zzu"/>
                             <constraint firstAttribute="bottom" secondItem="hto-t0-gyr" secondAttribute="bottom" id="XXl-7L-rE2"/>
-                            <constraint firstItem="hto-t0-gyr" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="-86" id="ame-BL-eoO"/>
-                            <constraint firstAttribute="trailing" secondItem="hto-t0-gyr" secondAttribute="trailing" constant="-86" id="qeL-wQ-crw"/>
+                            <constraint firstItem="hto-t0-gyr" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="ame-BL-eoO"/>
+                            <constraint firstAttribute="trailing" secondItem="hto-t0-gyr" secondAttribute="trailing" id="qeL-wQ-crw"/>
                         </constraints>
                     </view>
                 </viewController>
