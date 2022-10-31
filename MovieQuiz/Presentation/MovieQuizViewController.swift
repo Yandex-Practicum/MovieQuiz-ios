@@ -1,10 +1,16 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    
+    
     // MARK: - Creating global variables
     private var currentQuestionIndex = 0
     private var correctAnswersToQuestions = 0
     private var numberOfRoundsPlayed = 0
+    private let questionsAmount = 10
+    private var questionsFactory: QuestionFactoryProtocol?
+    private var currentQuestion: QuizQuestion?
+    
     private var resultsOfEachPlayedRound = [Int:String]()
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
@@ -31,15 +37,27 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .ypBlack
         
+        questionsFactory = QuestionFactory(delegate: self)
         throwAllElementsOnScreen()
         createConstraints()
-        show(quiz: convert(model: quizQuestions[currentQuestionIndex]))
+        questionsFactory?.requestNextQuestion()
+    }
+    // MARK: - QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+            currentQuestion = question
+            let viewModel = convert(model: question)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
     }
     
-    // MARK: - Creating all Constraints
+    // MARK: - makeAppearanceOfAllElements and Create all Constraints
     private func makeAppearanceOfAllElements() {
+        view.backgroundColor = .ypBlack
         
         makeAppearance(of: noButton, title: "Нет", action: #selector(noButtonPressed(sender: )))
         makeAppearance(of: yesButton, title: "Да", action: #selector(yesButtonPressed(sender: )))
@@ -114,14 +132,16 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // MARK: - Functions to handle "state machine"
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        
         return QuizStepViewModel(question: model.text,
                                  image: UIImage(named: model.image) ?? UIImage(),
-                                 questionNumber: "\(currentQuestionIndex+1)/\(quizQuestions.count)")
+                                 questionNumber:
+                                    "\(currentQuestionIndex+1)/\(questionsAmount)")
     }
     
     private func show(quiz step: QuizStepViewModel) {
-        
         indexLabel.text = step.questionNumber
         previewImage.image = step.image
         questionLabel.text = step.question
@@ -129,11 +149,11 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
-        
         previewImage.layer.cornerRadius = 20
         previewImage.layer.borderWidth = 8
         
-        let correctAnswer = quizQuestions[currentQuestionIndex].correctAnswer
+        let correctAnswer = currentQuestion?.correctAnswer
+        
         if isCorrect == correctAnswer {
             (previewImage.layer.borderColor = UIColor.ypGreen.cgColor)
             correctAnswersToQuestions += 1
@@ -142,12 +162,16 @@ final class MovieQuizViewController: UIViewController {
         }
         
         [noButton,yesButton].forEach { $0.isEnabled.toggle() }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            [noButton,yesButton].forEach { $0.isEnabled.toggle() }
-            showNextQuestionOrResult()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self = self else { return }
+            
+            [self.noButton,self.yesButton].forEach { $0.isEnabled.toggle() }
+            self.showNextQuestionOrResult()
         }
     }
     
+    //gets called after each press of button through factory
     private func show(quiz result: QuizResultViewModel) {
        
         let alert = UIAlertController(title: result.label,
@@ -155,16 +179,18 @@ final class MovieQuizViewController: UIViewController {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: result.buttonText,
-                                   style: .default) { [self] _ in
-            currentQuestionIndex = 0
-            correctAnswersToQuestions = 0
-            // show main screen again using show and convert functions and mock data when alert button touched
-            show(quiz: convert(model: quizQuestions[currentQuestionIndex]))
+                                   style: .default) { [weak self] _ in
+            
+            guard let self = self else { return }
+
+            self.currentQuestionIndex = 0
+            self.correctAnswersToQuestions = 0
+            self.questionsFactory?.requestNextQuestion()
         }
         
         alert.addAction(action)
         self.present(alert, animated: true)
-        quizQuestions.shuffle()
+        
     }
     
     private func showNextQuestionOrResult() {
@@ -172,42 +198,45 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.borderWidth = 0
         previewImage.layer.borderColor = nil
         
-        if currentQuestionIndex == (quizQuestions.count - 1) {
+        if currentQuestionIndex == (questionsAmount - 1) {
+            
+            let text = questionsAmount == correctAnswersToQuestions ?
+            "Поздравляем, Вы ответили на 10 из 10!" :
+            "Вы ответили на \(correctAnswersToQuestions) из 10, попробуйте ещё раз!"
             
             numberOfRoundsPlayed += 1
+            
             
             // Append Dict to save data such as best result and time
             resultsOfEachPlayedRound.updateValue(Date().dateTimeString, forKey: correctAnswersToQuestions)
             
             show(quiz: QuizResultViewModel(label: "Этот раунд окончен!",
                                            text: """
-                                            Ваш результат: \(correctAnswersToQuestions)/\(quizQuestions.count)
+                                            Ваш результат: \(text)
                                             Количество сыгранных квизов: \(numberOfRoundsPlayed)
                                             Рекорд: \(showPersonalBestResult())
-                                            Средняя точность: \(String(format: "%.2f", calculateAccuracy()))%
+                                            Средняя точность: \(calculateAccuracy())%
                                             """,
                                            buttonText: "Сыграть еще раз"))
            
         } else {
             currentQuestionIndex += 1
-            show(quiz: convert(model: quizQuestions[currentQuestionIndex]))
+            questionsFactory?.requestNextQuestion()
         }
     }
     
     private func showPersonalBestResult() -> String {
-         
         let maxResultAndTime = resultsOfEachPlayedRound
             .max { $0.key < $1.key }
-        
         guard let maxResultAndTime = maxResultAndTime else {return "NIL"}
-        
-        return "\(maxResultAndTime.key)/\(quizQuestions.count) (\(maxResultAndTime.value))"
+        return "\(maxResultAndTime.key)/\(questionsAmount) (\(maxResultAndTime.value))"
     }
    
-    private func calculateAccuracy() -> Float {
+    private func calculateAccuracy() -> String {
         
         let sumOfMaxResultsOfAllRounds = resultsOfEachPlayedRound.keys.reduce(0, +)
-        return Float(sumOfMaxResultsOfAllRounds * 100) / Float(quizQuestions.count * numberOfRoundsPlayed)
+        let accuracy = Float(sumOfMaxResultsOfAllRounds * 100) / Float(questionsAmount * numberOfRoundsPlayed)
+        return String(format: "%.2f", accuracy)
     }
     
     // buttons action
@@ -217,86 +246,6 @@ final class MovieQuizViewController: UIViewController {
     @objc func yesButtonPressed(sender: UIButton) {
         showAnswerResult(isCorrect: true)
     }
-    
-    // MARK: - All necessary structs for logic of the game
-    private struct QuizQuestion {
-        // struct for mock data we use
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
-    private struct QuizStepViewModel {
-        // struct to fill up necessary fields on main game screen
-        let question: String
-        let image: UIImage
-        let questionNumber: String
-    }
-    private struct QuizResultViewModel {
-        let label: String
-        let text: String
-        let buttonText: String
-    }
-    private var quizQuestions = [
-        QuizQuestion(image: "The Godfather",
-                  text: "Рейтинг этого фильма больше чем 9?",
-                  correctAnswer: true),
-        QuizQuestion(image: "The Dark Knight",
-                  text: "Рейтинг этого фильма больше чем 9?",
-                  correctAnswer: false),
-        QuizQuestion(image: "Kill Bill",
-                  text: "Рейтинг этого фильма больше чем 8?",
-                  correctAnswer: true),
-        QuizQuestion(image: "The Avengers",
-                  text: "Рейтинг этого фильма больше чем 9?",
-                  correctAnswer: false),
-        QuizQuestion(image: "Deadpool",
-                  text: "Рейтинг этого фильма больше чем 7?",
-                  correctAnswer: true),
-        QuizQuestion(image: "The Green Knight",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: true),
-        QuizQuestion(image: "Old",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-        QuizQuestion(image: "Tesla",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-        QuizQuestion(image: "The Ice Age Adventures of Buck Wild",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-        QuizQuestion(image: "Vivarium",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-    ]
-}
-
-extension UIView { // extension for safe area
-  var safeTopAnchor: NSLayoutYAxisAnchor {
-      return safeAreaLayoutGuide.topAnchor
-  }
-  var safeLeadingAnchor: NSLayoutXAxisAnchor {
-        return safeAreaLayoutGuide.leadingAnchor
-}
-  var safeTrailingAnchor: NSLayoutXAxisAnchor {
-    return safeAreaLayoutGuide.trailingAnchor
-}
-  var safeBottomAnchor: NSLayoutYAxisAnchor {
-      return safeAreaLayoutGuide.bottomAnchor
-  }
-}
-
-extension UIStackView {
-    // extension to add multiple arranged subviews (as Variadic parameters)
-    func addArrangedSubViews( _ arrangedViews: UIView...) {
-        for arrangedView in arrangedViews {
-            addArrangedSubview(arrangedView)
-        }
-    }
-}
-
-extension UIFont {
-   static let ysMedium = UIFont(name: "YSDisplay-Medium", size: 20)
-   static let ysBold = UIFont(name: "YSDisplay-Bold", size: 23)
 }
 
 // Functions to create Labels, Buttons, StackViews
@@ -330,5 +279,4 @@ extension MovieQuizViewController {
         stackView.alignment = alignment
         stackView.spacing = spacing
     }
-    
 }
