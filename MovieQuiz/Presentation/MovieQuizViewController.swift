@@ -8,13 +8,13 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.imageView.layer.cornerRadius = 20
         show(quiz: convert(model: questions[currentIndex]))
     }
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
-    
     
     
     @IBAction private func noButtonClicked(_ sender: Any) {
@@ -46,6 +46,7 @@ final class MovieQuizViewController: UIViewController {
         } else {
             currentIndex += 1
             let viewModel = convert(model: questions[currentIndex])
+            self.imageView.layer.borderColor = nil
             self.show(quiz: viewModel)
             }
         }
