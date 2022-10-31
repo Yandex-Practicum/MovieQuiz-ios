@@ -10,7 +10,7 @@ import UIKit
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        print("Hello world for branch to merge") 
+        print("Hello world for branch to merge new one") 
         // Override point for customization after application launch.
         return true
     }
