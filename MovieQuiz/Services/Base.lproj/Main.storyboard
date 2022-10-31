@@ -53,20 +53,22 @@
                                             <constraint firstAttribute="width" secondItem="T0B-qO-Ip3" secondAttribute="height" multiplier="2:3" id="X9Y-wZ-eID"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAB-Te-HjF" userLabel="Question Label">
-                                        <rect key="frame" x="0.0" y="649" width="390" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="6lM-HP-qKb"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
-                                        <color key="textColor" name="White"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="riV-4d-5Bx">
+                                        <rect key="frame" x="0.0" y="649" width="390" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAB-Te-HjF" userLabel="Question Label">
+                                                <rect key="frame" x="0.0" y="0.0" width="390" height="100"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
+                                                <color key="textColor" name="White"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MCE-L5-E2m">
-                                        <rect key="frame" x="0.0" y="729" width="390" height="100"/>
+                                        <rect key="frame" x="0.0" y="769" width="390" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yie-TU-mH3" userLabel="No Button">
-                                                <rect key="frame" x="0.0" y="0.0" width="185" height="100"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" name="White"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="Black"/>
@@ -84,7 +86,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73p-B5-QDj" userLabel="Yes Button">
-                                                <rect key="frame" x="205" y="0.0" width="185" height="100"/>
+                                                <rect key="frame" x="205" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" name="White"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="Black"/>
@@ -103,13 +105,10 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="100" id="zX0-n4-Qr8"/>
+                                            <constraint firstAttribute="height" constant="60" id="zX0-n4-Qr8"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="MCE-L5-E2m" secondAttribute="bottom" id="wE8-41-pUC"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
