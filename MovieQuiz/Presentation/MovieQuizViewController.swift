@@ -139,6 +139,7 @@ final class MovieQuizViewController: UIViewController {
           let viewModel = QuizResultsViewModel(title: "Этот раунд окончен",
                                                text: text,
                                                buttonText: "Сыграть еще раз")
+          self.correctAnswers = 0
           self.show(quiz: viewModel)
       } else {
         currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
