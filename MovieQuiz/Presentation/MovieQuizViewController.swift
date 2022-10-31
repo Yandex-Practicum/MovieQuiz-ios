@@ -19,6 +19,29 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    func restartGame() {
+        
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        let alertModel = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать ещё раз", { [weak self] in
+                guard let self = self else { return }
+                restartGame()
+            })
+        
+        alertPresenter?.presentAlert(model: alertModel)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
@@ -81,6 +104,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var textLabel: UILabel!
     @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak private var noButton: UIButton!
     @IBOutlet weak private var yesButton: UIButton!
     
