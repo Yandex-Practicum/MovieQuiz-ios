@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="qtM-g5-HmF">
-                                <rect key="frame" x="20" y="69" width="353" height="746.33333333333337"/>
+                                <rect key="frame" x="20" y="69" width="353" height="749"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IER-HS-f92">
                                         <rect key="frame" x="0.0" y="0.0" width="353" height="23.666666666666668"/>
@@ -32,7 +32,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="317" height="23.666666666666668"/>
                                                 <color key="tintColor" name="white"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" name="ypWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOb-8g-Tln" userLabel="Index Label">
@@ -43,7 +43,7 @@
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <color key="textColor" name="white"/>
+                                                <color key="textColor" name="ypWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -56,7 +56,7 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1Q-dt-CxB">
-                                        <rect key="frame" x="0.0" y="593.33333333333337" width="353" height="73"/>
+                                        <rect key="frame" x="0.0" y="593.33333333333337" width="353" height="75.666666666666629"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xir-ZE-Y3U" userLabel="Question Label">
                                                 <rect key="frame" x="20" y="20" width="125" height="41"/>
@@ -73,19 +73,19 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ve7-yr-S12">
-                                        <rect key="frame" x="0.0" y="686.33333333333337" width="353" height="60"/>
+                                        <rect key="frame" x="0.0" y="689" width="353" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4L5-Fl-x21" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="60"/>
-                                                <color key="backgroundColor" name="white"/>
+                                                <color key="backgroundColor" name="ypWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="hFI-AC-Yzg"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <color key="tintColor" name="black"/>
+                                                <color key="tintColor" name="ypBlack"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет">
-                                                    <color key="titleColor" name="black"/>
+                                                    <color key="titleColor" name="ypBlack"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -98,12 +98,12 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wbz-i7-H8g" userLabel="Yes button">
                                                 <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="60"/>
-                                                <color key="backgroundColor" name="white"/>
+                                                <color key="backgroundColor" name="ypWhite"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <color key="tintColor" name="black"/>
+                                                <color key="tintColor" name="ypBlack"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да">
-                                                    <color key="titleColor" name="black"/>
+                                                    <color key="titleColor" name="ypBlack"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -123,8 +123,9 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qtM-g5-HmF" secondAttribute="trailing" constant="20" id="Q1c-uv-9eG"/>
-                            <constraint firstItem="qtM-g5-HmF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10.000000000000114" id="RAB-VG-H2c"/>
+                            <constraint firstItem="qtM-g5-HmF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="RAB-VG-H2c"/>
                             <constraint firstItem="qtM-g5-HmF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="YPE-WQ-me7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="qtM-g5-HmF" secondAttribute="bottom" id="ipe-Ll-vwN"/>
                         </constraints>
                     </view>
                     <connections>
@@ -139,10 +140,13 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="black">
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ypBlack">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="white">
+        <namedColor name="ypWhite">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
