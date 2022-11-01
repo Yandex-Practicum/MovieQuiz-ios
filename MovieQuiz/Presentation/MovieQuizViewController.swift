@@ -2,6 +2,9 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
+   
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet private weak var imageView: UIImageView!
     
     @IBOutlet private weak var textLabel: UILabel!
@@ -29,21 +32,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         alertPresenter = AlertPresenter(viewController: self)
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-    }
-    
-    // MARK: - QuestionFactoryDelegate
-    
-    func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+        questionFactory?.loadData()
+        showLoadingIndicator()
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
@@ -65,9 +56,55 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
     }
     
+    private func showLoadingIndicator(){
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator(){
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    private func showNetworkError( message:String){
+        hideLoadingIndicator()
+        
+        let errorAlertModel = AlertModel(alertTitle: "Ошибка", alertMessage: message, alertButtonText: "Попробовать еще раз"){[weak self] _ in guard let self = self else {return}
+            self.showNextQuestionOrResults()
+        }
+        
+        alertPresenter?.showAlert(alertModel: errorAlertModel)
+        
+    }
+    
+    
+    // MARK: - QuestionFactoryDelegate
+    
+    func didRecieveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
+    
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+
+    // MARK: - QuizMainMethods
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -75,7 +112,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(quiz step: QuizStepViewModel) {
         
         guard let currentQuestion = currentQuestion else {return}
-        imageView.image = UIImage(named: currentQuestion.image)
+        imageView.image = UIImage(data: currentQuestion.image)
         textLabel.text = currentQuestion.text
         counterLabel.text = "\(currentQuestionIndex + 1)/\(questionsAmount)"
         

@@ -118,6 +118,10 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="F2i-ly-XlM" userLabel="Activity Indicator">
+                                <rect key="frame" x="20" y="438" width="374" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="Black"/>
@@ -129,6 +133,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="F2i-ly-XlM" id="FaU-sm-hiX"/>
                         <outlet property="counterLabel" destination="yhu-5x-ucd" id="pub-PC-H2J"/>
                         <outlet property="imageView" destination="zF5-kX-F0J" id="Zd7-gC-F0N"/>
                         <outlet property="noButton" destination="llv-we-RsT" id="WSe-lS-s1u"/>
@@ -138,7 +143,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-59.420289855072468" y="52.173913043478265"/>
+            <point key="canvasLocation" x="-59.420289855072468" y="51.5625"/>
         </scene>
     </scenes>
     <resources>
