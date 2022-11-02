@@ -106,9 +106,6 @@ final class StatisticServiceImplementation: StatisticService {
             print("\(newResult.correct) > \(bestGame.correct)")
             bestGame = newResult
         }
-        
         totalAccuracy = 100 * (Double (correct) / Double (10 * gamesCount))
     }
-    
-    
 }
