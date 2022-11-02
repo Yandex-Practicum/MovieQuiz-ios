@@ -24,6 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
         statisticService = StatisticServiceImplementation()
+        print(NSHomeDirectory())
     }
     
     
