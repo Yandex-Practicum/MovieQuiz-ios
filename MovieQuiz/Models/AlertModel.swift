@@ -5,5 +5,5 @@ struct AlertModel{
     let alertTitle:String
     let alertMessage:String
     let alertButtonText:String
-    var completion: ((UIAlertAction) -> Void)?
+    let completion: ((UIAlertAction) -> Void)?
 }
