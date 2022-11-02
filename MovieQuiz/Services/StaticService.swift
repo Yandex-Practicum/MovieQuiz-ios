@@ -22,11 +22,9 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    
-    
-    
     var totalAccuracy: Double {
-        (Double(correct) / Double(total)) * 100
+
+        (Double(correct) / Double(total)) * 100       
     }
     
     var gamesCount: Int{
@@ -38,7 +36,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    private(set)var bestGame: GameRecord {
+    private(set) var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
                   let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
