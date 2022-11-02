@@ -7,24 +7,19 @@
 
 import Foundation
 
-struct GameRecord: Codable { //Codable позволяет сохранять в UserDefaults
+struct GameRecord: Codable, Comparable {
+    static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
+        return rhs.correct > lhs.correct
+    }
     let correct: Int //количество правильных ответов
     let total: Int //количество вопросов квиза
     let date: String //дата завершения раунда
-    
-    func compare(oldResult: GameRecord) -> Bool {
-        if oldResult.correct != 0 {
-            return (correct) > (oldResult.correct)
-        } else {
-            return true
-        }
-    }
 }
 
 protocol StatisticService {
-    var correct: Int { get }
+    var correct: Int { get set }
     var totalAccuracy: Double { get } //точность правильных ответов
-    var gamesCount: Int { get } //кол-во игр
+    var gamesCount: Int { get set } //кол-во игр
     var bestGame: GameRecord { get } //лучшая игра
     func store(correct count: Int, total amount: Int)
 }
@@ -106,9 +101,12 @@ final class StatisticServiceImplementation: StatisticService {
     
     func store(correct count: Int, total amount: Int) { //сохранение лучшего результата
         let newResult = GameRecord(correct: count, total: amount, date: Date().dateTimeString)
-        if newResult.compare(oldResult: bestGame) {
+        
+        if newResult > bestGame {
+            print("\(newResult.correct) > \(bestGame.correct)")
             bestGame = newResult
         }
+        
         totalAccuracy = 100 * (Double (correct) / Double (10 * gamesCount))
     }
     

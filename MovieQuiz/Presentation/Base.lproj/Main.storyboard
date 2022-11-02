@@ -135,7 +135,9 @@
                         <outlet property="counterLabel" destination="mW0-Ja-Osr" id="fdR-ja-huJ"/>
                         <outlet property="imageView" destination="HZF-gD-kL5" id="Qld-KN-SVN"/>
                         <outlet property="mainQuestionLabel" destination="gnO-w1-LXj" id="8Hz-d1-cDr"/>
+                        <outlet property="noButtonView" destination="3IN-YC-SE7" id="5YA-jU-eyp"/>
                         <outlet property="questionLabel" destination="kZ6-nT-4hI" id="rVw-37-UST"/>
+                        <outlet property="yesButtonView" destination="UcC-cI-GPE" id="em9-4M-vaj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

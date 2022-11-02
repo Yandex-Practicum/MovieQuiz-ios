@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 struct ResultAlertPresenter {
-    var delegate: MovieQuizViewController?
+    weak var delegate: MovieQuizViewController?
     
     init (delegate: MovieQuizViewController) {
         self.delegate = delegate
