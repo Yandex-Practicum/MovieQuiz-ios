@@ -24,7 +24,51 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(viewController: self)
+        statisticService = StatisticServiceImplementation()
+        
+        enum FileManagerError: Error {
+            case fileDoesntExist
+        }
+        
+        struct Items: Codable {
+            let items: [Movie]
+        }
+        
+        struct Movie: Codable {
+            let id: String
+            let rank: String
+            let title: String
+            let fullTitle: String
+            let year: String
+            let image: String
+            let crew: String
+            let imDbRating: String
+            let imDbRatingCount: String
+        }
+        
+        func string(from documentsURL: URL) throws -> String {
+            if !FileManager.default.fileExists(atPath: documentsURL.path) {
+                throw FileManagerError.fileDoesntExist
+            }
+            return try String(contentsOf: documentsURL)
+        }
+        
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let jsonURL = URL(string: "top250MoviesIMDB.json", relativeTo: documentsURL)
+        let decoder = JSONDecoder()
+        guard
+            let jsonString = try? string(from: jsonURL!),
+            let data = jsonString.data(using: .utf8),
+            //let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+            let item = try? decoder.decode(Items.self, from: data)
+        else {
+            print("Failed to parse")
+            return
+        }
+//        let firstMovie: Movie = item.items[0]
+//        print(firstMovie.id)
     }
+        
     
     private var currentQuestionIndex: Int = 0
     private var numberOfCorrectAnswers: Int = 0
@@ -32,6 +76,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
@@ -95,84 +140,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
    private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {// - 1 потому что индекс начинается с 0, а длинна массива — с 1
-            let text = numberOfCorrectAnswers == questionsAmount ?
-            "Поздравляем, Вы ответили на 10 из 10!" :
-            "Ваш результат: \(numberOfCorrectAnswers) из \(questionsAmount)"
+        if currentQuestionIndex == questionsAmount - 1 {
+            statisticService?.store(correct: numberOfCorrectAnswers, total: questionsAmount) // записываем новые результаты в UserDefaults
+            let text = """
+                    Ваш результат: \(numberOfCorrectAnswers) из \(questionsAmount)
+                    Количество сыгранных квизов: \(statisticService.gamesCount)
+                    Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date))
+                    Средняя точность: \(Int(statisticService.totalAccuracy))%
+                    """
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)// показать результат квиза
+
         } else {
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
             questionFactory?.requestNextQuestion()
         }
     }
 }
-
-
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */

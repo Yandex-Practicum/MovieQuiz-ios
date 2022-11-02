@@ -18,6 +18,7 @@
 		8940F2A12909C46E002B8D20 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8940F2A02909C46E002B8D20 /* AlertModel.swift */; };
 		8940F2A32909C543002B8D20 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8940F2A22909C543002B8D20 /* AlertPresenter.swift */; };
 		8940F2A5290EC27E002B8D20 /* AlertProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8940F2A4290EC27E002B8D20 /* AlertProtocol.swift */; };
+		8940F2A7291311F3002B8D20 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8940F2A6291311F2002B8D20 /* StatisticService.swift */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -41,6 +42,7 @@
 		8940F2A02909C46E002B8D20 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		8940F2A22909C543002B8D20 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		8940F2A4290EC27E002B8D20 /* AlertProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertProtocol.swift; sourceTree = "<group>"; };
+		8940F2A6291311F2002B8D20 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				8940F29C29086318002B8D20 /* QuestionFactoryProtocol.swift */,
 				8940F29E2909A971002B8D20 /* QuestionFactoryDelegate.swift */,
 				8940F2A4290EC27E002B8D20 /* AlertProtocol.swift */,
+				8940F2A6291311F2002B8D20 /* StatisticService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				8940F299290858DB002B8D20 /* QuizStepViewModel.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				8940F2942908559E002B8D20 /* QuestionFactory.swift in Sources */,
+				8940F2A7291311F3002B8D20 /* StatisticService.swift in Sources */,
 				8940F2A5290EC27E002B8D20 /* AlertProtocol.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,

@@ -15,11 +15,3 @@ struct AlertModel {
     let completion: ((UIAlertAction) -> Void)?
 }
 
-
-/*
- Структура AlertModel должна содержать:
- текст заголовка алерта title
- текст сообщения алерта message
- текст для кнопки алерта buttonText
- замыкание без параметров для действия по кнопке completion
- */

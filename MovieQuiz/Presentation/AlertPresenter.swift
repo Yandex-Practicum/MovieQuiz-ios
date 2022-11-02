@@ -21,8 +21,7 @@ struct AlertPresenter {
         let action = UIAlertAction(
             title: result.buttonText,
             style: .default,
-            handler: result.completion
-        )
+            handler: result.completion)
 
         alert.addAction(action)
         viewController?.present(alert, animated: true, completion: nil)
