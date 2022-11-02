@@ -66,6 +66,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
     private var currentQuestionIndex = 0
     private var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
@@ -111,11 +113,15 @@ final class MovieQuizViewController: UIViewController {
         }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 15
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen?.cgColor : UIColor.ypRed?.cgColor
+        self.noButton.isEnabled = false
+        self.yesButton.isEnabled = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showQuestionOrResult()
             self.imageView.layer.borderWidth = 0
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
         }
     }
     
@@ -125,7 +131,7 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswer)/\(questions.count)", buttonText: "Cыграть еще раз")
             show(quiz: viewModel)
         } else {
-            currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
+            currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий вопрос
             // показать следующий вопрос
             let quizQuestion = convert(model: currentQuestion)
             show(quiz: quizQuestion)
@@ -137,6 +143,7 @@ final class MovieQuizViewController: UIViewController {
         // проверка ответа
         let userAnswer = false
         showAnswerResult(isCorrect: userAnswer == currentQuestion.correctAnswer)
+        
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         // проверка ответа

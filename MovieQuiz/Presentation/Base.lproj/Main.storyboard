@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_5" orientation="portrait" appearance="dark"/>
+    <device id="retina5_9" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
@@ -22,23 +22,23 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MovieQuizViewController" customModule="MovieQuiz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cw2-mG-uH4">
-                                <rect key="frame" x="20" y="54" width="374" height="808"/>
+                                <rect key="frame" x="20" y="47" width="335" height="731"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cqf-5q-lrm">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="23.666666666666668"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="23.666666666666668"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vWk-ax-js6" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="341.66666666666669" height="23.666666666666668"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="302.66666666666669" height="23.666666666666668"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YPWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9r5-f2-Rbt" userLabel="Index Label">
-                                                <rect key="frame" x="341.66666666666669" y="0.0" width="32.333333333333314" height="23.666666666666668"/>
+                                                <rect key="frame" x="302.66666666666669" y="0.0" width="32.333333333333314" height="23.666666666666668"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="18"/>
                                                 <color key="textColor" name="YPWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -46,17 +46,17 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="31w-kj-Eho" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.666666666666686" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="43.666666666666657" width="335" height="502.66666666666674"/>
                                         <color key="backgroundColor" name="YPWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="31w-kj-Eho" secondAttribute="height" multiplier="2:3" id="UKg-5y-Cqi"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dea-lJ-5HZ">
-                                        <rect key="frame" x="0.0" y="624.66666666666663" width="374" height="103.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="566.33333333333337" width="335" height="84.666666666666629"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJx-Dc-cjY" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="77.333333333333329"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJx-Dc-cjY" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="12.999999999999996" width="251" height="58.666666666666657"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YPWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -70,10 +70,10 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Kj8-ws-Tsf">
-                                        <rect key="frame" x="0.0" y="748" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="671" width="335" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CoU-K8-5zr" userLabel="No button">
-                                                <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="157.66666666666666" height="60"/>
                                                 <color key="backgroundColor" name="YPWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="tintColor" name="YPBlack"/>
@@ -91,7 +91,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qy-Eg-2Wo" userLabel="Yes button">
-                                                <rect key="frame" x="197" y="0.0" width="177" height="60"/>
+                                                <rect key="frame" x="177.66666666666663" y="0.0" width="157.33333333333337" height="60"/>
                                                 <color key="backgroundColor" name="YPWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="tintColor" name="YPBlack"/>
@@ -122,13 +122,15 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cw2-mG-uH4" secondAttribute="trailing" constant="20" id="7eF-lB-lVc"/>
                             <constraint firstAttribute="bottom" secondItem="cw2-mG-uH4" secondAttribute="bottom" constant="34" id="HxJ-Gc-dgs"/>
                             <constraint firstItem="cw2-mG-uH4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="VH1-Dv-3zg"/>
-                            <constraint firstItem="cw2-mG-uH4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="a2T-OB-8YL"/>
+                            <constraint firstItem="cw2-mG-uH4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="a2T-OB-8YL"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="counterLabel" destination="9r5-f2-Rbt" id="rLe-Jj-kZh"/>
                         <outlet property="imageView" destination="31w-kj-Eho" id="5kn-3C-UJI"/>
+                        <outlet property="noButton" destination="CoU-K8-5zr" id="gkz-rz-Dgj"/>
                         <outlet property="textLabel" destination="NJx-Dc-cjY" id="1FO-cU-WCL"/>
+                        <outlet property="yesButton" destination="1qy-Eg-2Wo" id="OJR-MY-za3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
