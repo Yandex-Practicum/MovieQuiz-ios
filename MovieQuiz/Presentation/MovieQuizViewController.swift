@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController {
     
     
     // MARK: - Creating global variables
@@ -10,6 +10,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount = 10
     private var questionsFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenterProtocol?
     
     private var resultsOfEachPlayedRound = [Int:String]()
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
@@ -37,22 +38,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        alertPresenter = AlertPresenter(movieQuizViewController: self)
         questionsFactory = QuestionFactory(delegate: self)
+        
         throwAllElementsOnScreen()
         createConstraints()
         questionsFactory?.requestNextQuestion()
-    }
-    // MARK: - QuestionFactoryDelegate
-    
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else { return }
-            currentQuestion = question
-            let viewModel = convert(model: question)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
     }
     
     // MARK: - makeAppearanceOfAllElements and Create all Constraints
@@ -145,7 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         indexLabel.text = step.questionNumber
         previewImage.image = step.image
         questionLabel.text = step.question
-        
+        //gets called after each press of button through factory
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -171,28 +162,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    //gets called after each press of button through factory
-    private func show(quiz result: QuizResultViewModel) {
-       
-        let alert = UIAlertController(title: result.label,
-                                      message: result.text,
-                                      preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText,
-                                   style: .default) { [weak self] _ in
-            
-            guard let self = self else { return }
-
-            self.currentQuestionIndex = 0
-            self.correctAnswersToQuestions = 0
-            self.questionsFactory?.requestNextQuestion()
-        }
-        
-        alert.addAction(action)
-        self.present(alert, animated: true)
-        
-    }
-    
     private func showNextQuestionOrResult() {
         
         previewImage.layer.borderWidth = 0
@@ -200,25 +169,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         if currentQuestionIndex == (questionsAmount - 1) {
             
-            let text = questionsAmount == correctAnswersToQuestions ?
-            "Поздравляем, Вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswersToQuestions) из 10, попробуйте ещё раз!"
-            
             numberOfRoundsPlayed += 1
-            
-            
             // Append Dict to save data such as best result and time
             resultsOfEachPlayedRound.updateValue(Date().dateTimeString, forKey: correctAnswersToQuestions)
             
-            show(quiz: QuizResultViewModel(label: "Этот раунд окончен!",
-                                           text: """
-                                            Ваш результат: \(text)
-                                            Количество сыгранных квизов: \(numberOfRoundsPlayed)
-                                            Рекорд: \(showPersonalBestResult())
-                                            Средняя точность: \(calculateAccuracy())%
-                                            """,
-                                           buttonText: "Сыграть еще раз"))
-           
+            let endOfRoundAlert = AlertModel(title: "Этот раунд окончен!",
+                                             message: """
+                                              Ваш результат: \(correctAnswersToQuestions) из \(questionsAmount)
+                                              Количество сыгранных квизов: \(numberOfRoundsPlayed)
+                                              Рекорд: \(showPersonalBestResult())
+                                              Средняя точность: \(calculateAccuracy())%
+                                              """,
+                                             buttonText: "Сыграть еще раз") {
+                [weak self] in
+                guard let self = self else {return}
+                self.currentQuestionIndex = 0
+                self.correctAnswersToQuestions = 0
+                self.questionsFactory?.requestNextQuestion()
+            }
+          
+            alertPresenter?.displayAlert(endOfRoundAlert)
+            
         } else {
             currentQuestionIndex += 1
             questionsFactory?.requestNextQuestion()
@@ -278,5 +249,17 @@ extension MovieQuizViewController {
         stackView.distribution = distribution
         stackView.alignment = alignment
         stackView.spacing = spacing
+    }
+}
+
+extension MovieQuizViewController: QuestionFactoryDelegate {
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
     }
 }

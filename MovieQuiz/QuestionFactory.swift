@@ -9,7 +9,6 @@ class QuestionFactory: QuestionFactoryProtocol {
        
     }
     
-    
     private var quizQuestions = [
         QuizQuestion(image: "The Godfather",
                   text: "Рейтинг этого фильма больше чем 9?",
