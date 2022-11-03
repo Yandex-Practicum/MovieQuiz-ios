@@ -1,20 +1,33 @@
 import Foundation
 import UIKit
 
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    func show(quiz step: QuizStepViewModel)
+    func show(quiz result: QuizResultsViewModel)
+    
+    func createBorder (isCorrectAnswer: Bool)
+    func hideBorder()
+    
+    func showLoadingIndicator()
+    func hideLoadindIndicator()
+    
+    func showNetworkError(message: String)
+}
+
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     let questionAmount = 10
     var correctAnswers: Int = 0
     
     var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
+    weak var viewController: MovieQuizViewControllerProtocol?
     var currentGame = GameRecord(correct: 0, total: 10, date: Date())
     var statisticService: StatisticService
     var questionFactory: QuestionFactoryProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
-        
+
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         questionFactory?.loadData()
@@ -72,14 +85,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func showAnswerResult(isCorrect: Bool) {
-        viewController?.yesButton.isEnabled = false
-        viewController?.noButton.isEnabled = false
         viewController?.createBorder(isCorrectAnswer: isCorrect)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.showNextQuestionOrResults()
             self?.viewController?.hideBorder()
-            self?.viewController?.yesButton.isEnabled = true
-            self?.viewController?.noButton.isEnabled = true
         }
         if isCorrect { self.didAnswer(isCorrectAnswer: isCorrect) }
         

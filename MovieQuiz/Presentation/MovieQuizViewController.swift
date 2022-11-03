@@ -1,6 +1,7 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, AlertPresenterProtocol {
+final class MovieQuizViewController: UIViewController, AlertPresenterProtocol, MovieQuizViewControllerProtocol {
+    
     
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var questionLabel: UILabel!
@@ -17,6 +18,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterProtocol {
         
         imageView.layer.cornerRadius = 20
         presenter = MovieQuizPresenter(viewController: self)
+        presenter.resetGame()
         
     }
     
@@ -56,6 +58,8 @@ final class MovieQuizViewController: UIViewController, AlertPresenterProtocol {
     
     
     func createBorder(isCorrectAnswer: Bool) {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
@@ -64,6 +68,8 @@ final class MovieQuizViewController: UIViewController, AlertPresenterProtocol {
     
     func hideBorder() {
         imageView.layer.borderColor = UIColor.clear.cgColor
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     
