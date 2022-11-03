@@ -10,6 +10,7 @@ extension AlertPresenterProtocol where Self: UIViewController {
         let alert = UIAlertController(title: alertModel.title, // заголовок всплывающего окна
                                       message: alertModel.message, // текст во всплывающем окне
                                       preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = "Game results"
 
         // создаём для него кнопки с действиями
         let repeatAction = UIAlertAction(title: alertModel.buttonText, style: .default, handler: { _ in

@@ -8,11 +8,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    private var currentQuestionIndex: Int = 0
+    private var presenter = MovieQuizPresenter()
     private var currentGame = GameRecord(correct: 0, total: 10, date: Date())
     private var statisticService: StatisticService = StatisticServiceImplementation()
     private var totalCorrect: Int = 0
-    private var totalQuestions: Int = 0
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     
@@ -37,7 +36,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             return
         }
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -89,14 +88,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == currentGame.total - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
+        if self.presenter.isLastQuestion() { 
             statisticService.store(correct: currentGame.correct, total: currentGame.total) // сравниваем рекорд с текущей игрой
             show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!",
                                             text: "Ваш результат: \(currentGame.correct) из \(currentGame.total)\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) \(statisticService.bestGame.date.dateTimeString)\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%",
                                             buttonText: "Сыграть еще раз"))
             questionFactory?.resetIndex()
         } else {
-            currentQuestionIndex += 1 // увеличиваем индекс текущего вопроса на 1; таким образом мы сможем получить следующий вопрос
+            self.presenter.switchToNextQuestion() // увеличиваем индекс текущего вопроса на 1; таким образом мы сможем получить следующий вопрос
             // показать следующий вопрос
             questionFactory?.requestNextQuestion()
         }
@@ -131,27 +130,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText) { [weak self] in
             guard let self = self else { return }
             self.currentGame.correct = 0
-            self.currentQuestionIndex = 0
+            self.presenter.resetQuestionIndex()
             guard let currentQuestion = self.currentQuestion else {
                 return
             }
-            self.show(quiz: self.convert(model: currentQuestion))
+            self.show(quiz: self.presenter.convert(model: currentQuestion))
             self.questionFactory?.requestNextQuestion()
         }
         
         showAlert(alertModel: alertModel)
         
     }
-    
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        
-        QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(currentGame.total)")
-        
-    }
-    
-    
     
 }

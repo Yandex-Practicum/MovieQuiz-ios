@@ -25,6 +25,10 @@ class QuestionFactory: QuestionFactoryProtocol {
         
     }
     
+    enum QuestionError: Error {
+        case imageError
+    }
+    
     func loadData() {
         moviesLoader.loadMovies { result in
             DispatchQueue.main.async { [weak self] in
@@ -53,7 +57,10 @@ class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
-                print("Failed to load image")
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.didFailToLoadData(with: QuestionError.imageError)
+                    return
+                }
             }
             
             let rating = Float(movie.rating) ?? 0
