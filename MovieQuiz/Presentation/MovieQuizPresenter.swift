@@ -5,6 +5,9 @@ final class MovieQuizPresenter {
     private var currentQuestionIndex = 0
     let questionAmount = 10
     
+    var currentQuestion: QuizQuestion?
+    weak var viewController: MovieQuizViewController?
+    
     func convert(model: QuizQuestion) -> QuizStepViewModel {
         
         QuizStepViewModel(
@@ -24,5 +27,17 @@ final class MovieQuizPresenter {
     
     func switchToNextQuestion() {
         currentQuestionIndex += 1
+    }
+    
+    private func answerIs(answer: Bool) {
+        viewController?.showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
+    }
+    
+    func yesButtonClicked() {
+        answerIs(answer: true)
+    }
+    
+    func noButtonClicked() {
+        answerIs(answer: false)
     }
 }
