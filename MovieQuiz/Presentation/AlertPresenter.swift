@@ -10,7 +10,7 @@ import UIKit
 
 struct AlertPresenter {
     
-    var viewController: UIViewController?    
+    weak var viewController: UIViewController?    
     func showAlert(quiz result: AlertModel) {
         
         let alert = UIAlertController(

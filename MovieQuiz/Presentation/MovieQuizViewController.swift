@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     // MARK: - QuestionFactoryDelegate
     
-    func didRecieveNextQuestion(question: QuizQuestion?) {
+    func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
@@ -25,7 +25,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
-        
+ 
+        /* Парсер данных из JSON
         enum FileManagerError: Error {
             case fileDoesntExist
         }
@@ -57,9 +58,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let jsonURL = URL(string: "top250MoviesIMDB.json", relativeTo: documentsURL)
         let decoder = JSONDecoder()
         guard
-            let jsonString = try? string(from: jsonURL!),
-            let data = jsonString.data(using: .utf8),
-            //let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+            let data = try? string(from: jsonURL!).data(using: .utf8),
             let item = try? decoder.decode(Items.self, from: data)
         else {
             print("Failed to parse")
@@ -67,6 +66,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
 //        let firstMovie: Movie = item.items[0]
 //        print(firstMovie.id)
+         */
     }
         
     
