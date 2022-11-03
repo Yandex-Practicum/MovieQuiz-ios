@@ -63,7 +63,8 @@
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="NJx-Dc-cjY" firstAttribute="top" secondItem="dea-lJ-5HZ" secondAttribute="top" constant="13" id="WeF-J8-DR5"/>
+                                            <constraint firstItem="NJx-Dc-cjY" firstAttribute="top" secondItem="dea-lJ-5HZ" secondAttribute="top" constant="13" id="1P0-2t-C1S"/>
+                                            <constraint firstItem="NJx-Dc-cjY" firstAttribute="centerX" secondItem="dea-lJ-5HZ" secondAttribute="centerX" id="9qc-Bb-A6U"/>
                                             <constraint firstAttribute="bottom" secondItem="NJx-Dc-cjY" secondAttribute="bottom" constant="13" id="emf-4M-dXf"/>
                                             <constraint firstItem="NJx-Dc-cjY" firstAttribute="leading" secondItem="dea-lJ-5HZ" secondAttribute="leading" constant="42" id="jGI-98-aNY"/>
                                             <constraint firstAttribute="trailing" secondItem="NJx-Dc-cjY" secondAttribute="trailing" constant="42" id="qW5-Qr-YCr"/>
