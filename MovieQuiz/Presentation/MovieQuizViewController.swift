@@ -26,11 +26,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticService = StatisticServiceImplementation()
     }
     
-    
     @IBOutlet weak var yesButtonView: UIButton!
     
     @IBOutlet weak var noButtonView: UIButton!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction private func yesButtonPressed(_ sender: UIButton) {
         yesButtonView.isEnabled = false
@@ -40,6 +40,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBAction private func noButtonPressed(_ sender: UIButton) {
         noButtonView.isEnabled = false
         isAnswerCorrect(false)
+    }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    //Показ ошибки
+    private func showNetworkError(message: String) {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: message,
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "Повторить попытку", style: .default)
+        alert.addAction(action)
+        self.present(alert, animated: true)
     }
     
     // MARK: - QuestionFactoryDelegate
