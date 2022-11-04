@@ -19,13 +19,6 @@ class MovieQuizUITests: XCTestCase {
         app = nil
     }
     
-    func testExample() throws {
-
-        let app = XCUIApplication()
-        app.launch()
-        
-
-    }
     
     func testYesButton() {
         let firstPoster = app.images["Poster"]

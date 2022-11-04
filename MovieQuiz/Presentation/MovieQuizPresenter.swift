@@ -16,13 +16,12 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
-    let questionAmount = 10
-    var correctAnswers: Int = 0
+    private let questionAmount = 10
     
     var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewControllerProtocol?
-    var currentGame = GameRecord(correct: 0, total: 10, date: Date())
-    var statisticService: StatisticService
+    private weak var viewController: MovieQuizViewControllerProtocol?
+    private var currentGame = GameRecord(correct: 0, total: 10, date: Date())
+    private var statisticService: StatisticService
     var questionFactory: QuestionFactoryProtocol?
     
     init(viewController: MovieQuizViewControllerProtocol) {
@@ -43,7 +42,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
     }
     
-    func isLastQuestion() -> Bool {
+    private func isLastQuestion() -> Bool {
         currentQuestionIndex == questionAmount - 1
     }
     
@@ -53,11 +52,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
     
-    func switchToNextQuestion() {
+    private func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     
-    func answerIs(answer: Bool) {
+    private func answerIs(answer: Bool) {
         self.showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
     }
     
@@ -70,7 +69,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     
-    func showNextQuestionOrResults() {
+    private func showNextQuestionOrResults() {
         if self.isLastQuestion() {
             statisticService.store(correct: currentGame.correct, total: currentGame.total) // сравниваем рекорд с текущей игрой
             viewController?.show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!",
@@ -84,7 +83,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func showAnswerResult(isCorrect: Bool) {
+    private func showAnswerResult(isCorrect: Bool) {
         viewController?.createBorder(isCorrectAnswer: isCorrect)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.showNextQuestionOrResults()
@@ -94,7 +93,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
     }
     
-    func didAnswer(isCorrectAnswer: Bool) {
+    private func didAnswer(isCorrectAnswer: Bool) {
         if isCorrectAnswer {
             currentGame.correct += 1
         }
