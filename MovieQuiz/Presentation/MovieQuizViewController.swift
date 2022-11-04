@@ -1,6 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var questionLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -13,16 +14,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     var currentQuestion: QuizQuestion?
     var alertPresenter: ResultAlertPresenter?
     var statisticService: StatisticService?
+    var moviesLoader: MoviesLoading = MoviesLoader()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        alertPresenter = ResultAlertPresenter(delegate: self)
-        questionFactory?.requestNewQuestions()
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
+        
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: moviesLoader)
+        alertPresenter = ResultAlertPresenter(delegate: self)
+        questionFactory?.loadData()
+        showLoadingIndicator()
         statisticService = StatisticServiceImplementation()
     }
     
@@ -47,15 +51,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.startAnimating()
     }
     
+    func didLoadDataFromServer() {
+        DispatchQueue.main.async {
+            self.activityIndicator.isHidden = true
+        }
+        questionFactory?.requestNewQuestions()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+    }
+    
     //Показ ошибки
     private func showNetworkError(message: String) {
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: message,
-            preferredStyle: .alert)
-        let action = UIAlertAction(title: "Повторить попытку", style: .default)
-        alert.addAction(action)
-        self.present(alert, animated: true)
+        let downloadError = QuizResultsViewModel(
+            title: "Что-то пошло не так",
+            text: "Невозможно загрузить данные",
+            buttonText: "Попробовать ещё раз")
+        DispatchQueue.main.async {
+            self.show(quiz: downloadError)
+        }
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -82,7 +97,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text, // берём текст вопроса
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)") // высчитываем номер вопроса
     }

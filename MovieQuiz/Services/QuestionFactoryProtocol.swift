@@ -9,4 +9,5 @@ import Foundation
 
 protocol QuestionFactoryProtocol {
     func requestNewQuestions()
+    func loadData()
 }
