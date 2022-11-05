@@ -7,14 +7,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var mainQuestionLabel: UILabel!
     
-    var currentQuestionIndex: Int = 0
-    var correctAnswers: Int = 0
-    let questionsAmount: Int = 10
-    var questionFactory: QuestionFactoryProtocol?
-    var currentQuestion: QuizQuestion?
-    var alertPresenter: ResultAlertPresenter?
-    var statisticService: StatisticService?
-    var moviesLoader: MoviesLoading = MoviesLoader()
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
+    private let questionsAmount: Int = 10
+    private var questionFactory: QuestionFactoryProtocol?
+    private var currentQuestion: QuizQuestion?
+    private var alertPresenter: ResultAlertPresenter?
+    private var statisticService: StatisticService?
+    private var moviesLoader: MoviesLoading = MoviesLoader()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
