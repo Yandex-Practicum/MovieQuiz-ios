@@ -25,10 +25,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     // Экземпляр AlertPresenter для отображения Алерта
     private let alertPresenter = AlertPresenter()
-    
+    //
     private var statisticService: StatisticServiceImplementation = .init()
-    
-    
+    //
     enum CodingKeys: String, CodingKey {
        case id, title, year, image, runtimeMins, directors, actorList
        case releaseDate = "release_date"
@@ -38,7 +37,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         questionsFactory = QuestionFactory(delegate: self)
         questionsFactory?.requestNextQuestion()
-        let top250MoviesContent = IdsConverter().getFile(fileName: "mockedData", Kind: "json")
     }
     //MARK: - QuestionFactoryDelegate
     func didReciveNextQuestion (question: QuizQuestion?) {

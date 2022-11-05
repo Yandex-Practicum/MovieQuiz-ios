@@ -54,9 +54,10 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     func store(correct count: Int, total amount: Int) {
+        // Пременная для хранения соотношения правильных ответов к общему числу ответов
         let result: Double
+        // Если колличество правильных ответов больше 0 и колличество ответов в квизе больше 0, то
         count > 0 && amount > 0 ? (result = (Double(count) / Double(amount))) : (result = self.totalAccuracy)
-        print(result)
         let totalAccuracy = ((self.totalAccuracy * (Double(self.gamesCount - 1)) + result * 100) / (Double(self.gamesCount)))
         self.totalAccuracy = totalAccuracy
         if  count > self.bestGame.correct && amount >= self.bestGame.total {
