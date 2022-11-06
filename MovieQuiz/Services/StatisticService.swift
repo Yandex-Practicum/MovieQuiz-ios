@@ -22,11 +22,6 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
             return userDefaults.integer(forKey: Keys.correct.rawValue)
         }
         set {
-            guard totalCorrect != nil else {
-                print("Невозможно сохранить результат в totalCorrect")
-                return
-            }
-
             userDefaults.set(newValue, forKey: Keys.correct.rawValue)
         }
     }
@@ -36,11 +31,6 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
             return userDefaults.integer(forKey: Keys.total.rawValue)
         }
         set {
-            guard totalAnswers != nil else {
-                print("Невозможно сохранить результат в totalAnswers")
-                return
-            }
-
             userDefaults.set(newValue, forKey: Keys.total.rawValue)
         }
     }
@@ -56,11 +46,6 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
             return userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
         set {
-            guard gamesCount != nil else {
-                print("Невозможно сохранить результат в gamesCount")
-                return
-            }
-            
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
@@ -76,7 +61,6 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
                 print("Невозможно сохранить результат")
                 return
             }
-
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
