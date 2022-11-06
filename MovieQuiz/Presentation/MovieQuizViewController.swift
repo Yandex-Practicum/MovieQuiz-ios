@@ -18,6 +18,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private var alertPresenter: AlertPresenter?
     
+    private var statisticService: StatisticServiceProtocol?
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -27,7 +29,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(quiz result: QuizResultsViewModel) {
         let alertModel = AlertModel(
             title: result.title,
-            message: result.text,
+            message: result.text + "\n" + "Количество сыгрнанных квизов: \(statisticService?.gamesCount ?? 0) \n" + "Рекорд: \(statisticService?.bestGame.correct ?? 0)/\(statisticService?.bestGame.total ?? 0) " + "(\(statisticService?.bestGame.date.dateTimeString ?? "")) \n" + "Средняя точность: \(String(format: "%.2f", statisticService?.totalAccuracy ?? 0.0))% \n",
             buttonText: result.buttonText) { [weak self] _ in
                 guard let self = self else { return }
                 
@@ -71,13 +73,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            "Ваш результат: \(correctAnswers)/10"
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
                                                  text: text,
                                                  buttonText: "Сыграть еще раз")
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
             show(quiz: viewModel)
         } else {
-            currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
+            currentQuestionIndex += 1 
             questionFactory?.requestNextQuestion()
         }
     }
@@ -85,12 +88,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+         
+        statisticService = StatisticServiceImplementation()
         
         questionFactory = QuestionFactory(delegate: self)
         
         alertPresenter = AlertPresenter(delegate: self)
         
         questionFactory?.requestNextQuestion()
+        
     }
     
     //MARK: - QuestionFactoryDelegate
