@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
-    
+
     // MARK: - Lifecycle
         
     @IBOutlet private var imageView: UIImageView!
