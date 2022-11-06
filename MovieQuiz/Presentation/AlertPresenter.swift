@@ -10,7 +10,7 @@ import UIKit
 
 struct AlertPresenter: AlertPresenterProtocol {
 
-    let alertDelegate: AlertPresenterDelegate
+    weak var alertDelegate: AlertPresenterDelegate?
     
     init(alertDelegate: AlertPresenterDelegate) {
         self.alertDelegate = alertDelegate
@@ -29,6 +29,6 @@ struct AlertPresenter: AlertPresenterProtocol {
         
         alert.addAction(action)
         
-        alertDelegate.alertPresent(alert: alert)
+        alertDelegate?.alertPresent(alert: alert)
     }
 }

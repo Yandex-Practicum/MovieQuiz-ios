@@ -17,13 +17,12 @@ protocol StatisticServiceProtocol {
 
 final class StatisticServiceImplementation: StatisticServiceProtocol {
     
-    private var gameRecord: GameRecord?
-    
     private(set) var totalCorrect: Int {
         get {
             return userDefaults.integer(forKey: Keys.correct.rawValue)
-        } set {
-            guard (try? JSONEncoder().encode(newValue)) != nil else {
+        }
+        set {
+            guard totalCorrect != nil else {
                 print("Невозможно сохранить результат в totalCorrect")
                 return
             }
@@ -35,8 +34,9 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
     private(set) var totalAnswers: Int {
         get {
             return userDefaults.integer(forKey: Keys.total.rawValue)
-        } set {
-            guard (try? JSONEncoder().encode(newValue)) != nil else {
+        }
+        set {
+            guard totalAnswers != nil else {
                 print("Невозможно сохранить результат в totalAnswers")
                 return
             }
@@ -54,8 +54,9 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
     private(set) var gamesCount: Int {
         get {
             return userDefaults.integer(forKey: Keys.gamesCount.rawValue)
-        } set {
-            guard (try? JSONEncoder().encode(newValue)) != nil else {
+        }
+        set {
+            guard gamesCount != nil else {
                 print("Невозможно сохранить результат в gamesCount")
                 return
             }

@@ -24,7 +24,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(NSHomeDirectory())
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
         statisticsService = StatisticServiceImplementation()
@@ -62,11 +61,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         let text = "Ваш результат: \(correctAnswers)/\(questionsAmount)\nКоличество сыгранных квизов: \(String(describing: statisticsService!.gamesCount))\nРекорд: \(String(describing: statisticsService!.bestGame.correct))/\(String(describing: statisticsService!.bestGame.total)) (\(String(describing: statisticsService!.bestGame.date.dateTimeString)))\nСредняя точность: \(String(format: "%.2f", statisticsService!.totalAccuracy))%"
         
-        
-//        = correctAnswers == questionsAmount ?
-//        "Поздравляем, Вы ответили на \(questionsAmount) из \(questionsAmount)!" :
-//        "Вы ответили на \(correctAnswers) из \(questionsAmount), попробуйте еще раз!"
-        
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
             message: text,
@@ -77,8 +71,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             }
         alertPresenter = AlertPresenter(alertDelegate: self)
         alertPresenter?.makeAlertController(alertModel: alertModel)
-        
-        
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -113,10 +105,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.borderWidth = 8
         if isCorrect {
-            imageView.layer.borderColor = UIColor.green.cgColor;
+            imageView.layer.borderColor = UIColor.ypGreen?.cgColor;
             correctAnswers += 1 }
         else {
-            imageView.layer.borderColor = UIColor.red.cgColor }
+            imageView.layer.borderColor = UIColor.ypRed?.cgColor }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
