@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oAj-f4-zep">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oAj-f4-zep">
     <device id="retina5_9" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="YS Display-Bold.ttf">
+            <string>YSDisplay-Bold</string>
+        </array>
+        <array key="YS Display-Medium.ttf">
+            <string>YSDisplay-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Movie Quiz View Controller-->
         <scene sceneID="TbC-b9-gq8">
@@ -21,17 +29,17 @@
                                 <rect key="frame" x="20" y="57" width="335" height="721"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jdj-lr-suw" userLabel="Stack View Index Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="23.333333333333332"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="23.666666666666668"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pwt-0T-edg" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="163.66666666666666" height="23.333333333333332"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="163.66666666666666" height="23.666666666666668"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="1/10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-n5-CQK" userLabel="Index Label">
-                                                <rect key="frame" x="171.66666666666663" y="0.0" width="163.33333333333337" height="23.333333333333332"/>
+                                                <rect key="frame" x="171.66666666666663" y="0.0" width="163.33333333333337" height="23.666666666666668"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
@@ -40,18 +48,18 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" image="TestImage" translatesAutoresizingMaskIntoConstraints="NO" id="u5R-ll-RWK" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.333333333333343" width="335" height="502.66666666666663"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" image="The Godfather" translatesAutoresizingMaskIntoConstraints="NO" id="u5R-ll-RWK" userLabel="Preview Image">
+                                        <rect key="frame" x="0.0" y="43.666666666666657" width="335" height="502.66666666666674"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="u5R-ll-RWK" secondAttribute="height" multiplier="2:3" id="8XF-kl-xNU"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="pPW-vu-KAB" userLabel="View 1">
-                                        <rect key="frame" x="0.0" y="566" width="335" height="75"/>
+                                        <rect key="frame" x="0.0" y="566.33333333333337" width="335" height="74.666666666666629"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="8MH-hT-qWX" userLabel="Question Label">
-                                                <rect key="frame" x="41.999999999999986" y="13" width="243.66666666666663" height="49"/>
+                                                <rect key="frame" x="41.999999999999986" y="12.999999999999996" width="240.66666666666663" height="48.666666666666657"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <string key="text">Рейтинг этого фильма
 меньше чем 5?</string>
@@ -91,19 +99,8 @@
                                                         </fragment>
                                                     </attributedString>
                                                 </state>
-                                                <buttonConfiguration key="configuration" style="plain">
-                                                    <attributedString key="attributedTitle">
-                                                        <fragment content="Нет">
-                                                            <attributes>
-                                                                <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <font key="NSFont" size="20" name="YSDisplay-Medium"/>
-                                                                <real key="NSKern" value="0.0"/>
-                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                <color key="NSStrokeColor" red="0.10196" green="0.10588" blue="0.13333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            </attributes>
-                                                        </fragment>
-                                                    </attributedString>
+                                                <buttonConfiguration key="configuration" style="plain" title="Нет">
+                                                    <fontDescription key="titleFontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 </buttonConfiguration>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -114,23 +111,13 @@
                                                     <action selector="noButtonClicked:" destination="oAj-f4-zep" eventType="touchUpInside" id="fee-Oe-VXc"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WMX-kr-JbZ" userLabel="Yas button">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMX-kr-JbZ" userLabel="Yas button">
                                                 <rect key="frame" x="177.66666666666663" y="0.0" width="157.33333333333337" height="60"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Button">
-                                                    <attributedString key="attributedTitle">
-                                                        <fragment content="Да">
-                                                            <attributes>
-                                                                <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <font key="NSFont" size="20" name="YSDisplay-Medium"/>
-                                                                <real key="NSKern" value="0.0"/>
-                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                <color key="NSStrokeColor" red="0.10196" green="0.10588" blue="0.13333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            </attributes>
-                                                        </fragment>
-                                                    </attributedString>
+                                                <state key="normal" title="Да">
+                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -178,6 +165,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="TestImage" width="335" height="502"/>
+        <image name="The Godfather" width="1192" height="1716"/>
     </resources>
 </document>

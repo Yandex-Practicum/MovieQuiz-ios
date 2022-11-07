@@ -166,7 +166,7 @@ final class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
-    private func blockButtens() {
+    private func blockButtons() {
         yesButton.isEnabled = false
         noButton.isEnabled = false
         
@@ -182,14 +182,14 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        blockButtens()
+        blockButtons()
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        blockButtens()
+        blockButtons()
     }
 }
 
