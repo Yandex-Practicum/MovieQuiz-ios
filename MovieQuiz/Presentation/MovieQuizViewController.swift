@@ -16,60 +16,32 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+    }
+    
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20  // закругляю картинку
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        alertPresenter = AlertPresenter(viewController: self)
+        
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         statisticService = StatisticServiceImplementation()
- 
-        /* Парсер данных из JSON
-        enum FileManagerError: Error {
-            case fileDoesntExist
-        }
+        alertPresenter = AlertPresenter(viewController: self)
+        questionFactory?.loadData()
+        showLoadingIndicator()
         
-        struct Items: Codable {
-            let items: [Movie]
-        }
-        
-        struct Movie: Codable {
-            let id: String
-            let rank: String
-            let title: String
-            let fullTitle: String
-            let year: String
-            let image: String
-            let crew: String
-            let imDbRating: String
-            let imDbRatingCount: String
-        }
-        
-        func string(from documentsURL: URL) throws -> String {
-            if !FileManager.default.fileExists(atPath: documentsURL.path) {
-                throw FileManagerError.fileDoesntExist
-            }
-            return try String(contentsOf: documentsURL)
-        }
-        
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let jsonURL = URL(string: "top250MoviesIMDB.json", relativeTo: documentsURL)
-        let decoder = JSONDecoder()
-        guard
-            let data = try? string(from: jsonURL!).data(using: .utf8),
-            let item = try? decoder.decode(Items.self, from: data)
-        else {
-            print("Failed to parse")
-            return
-        }
-//        let firstMovie: Movie = item.items[0]
-//        print(firstMovie.id)
-         */
+        //questionFactory = QuestionFactory(delegate: self)
+        //questionFactory?.requestNextQuestion()
+
     }
-        
-    
+            
     private var currentQuestionIndex: Int = 0
     private var numberOfCorrectAnswers: Int = 0
     private let questionsAmount: Int = 10
@@ -98,6 +70,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
@@ -113,16 +86,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             buttonText: result.buttonText)
             { [weak self] _ in
                 guard let self = self else { return }
-                self.currentQuestionIndex = 0
-                self.numberOfCorrectAnswers = 0
-                self.questionFactory?.requestNextQuestion()
-        }
+                self.restartGame()
+            }
         alertPresenter?.showAlert(quiz: alertModel)
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
+            image: UIImage(data: model.image) ?? UIImage(), // распаковываем картинку
             question: model.text, // берём текст вопроса
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")// высчитываем номер вопроса
     }
@@ -158,5 +129,33 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
             questionFactory?.requestNextQuestion()
         }
+    }
+    
+    private func restartGame() {
+        self.currentQuestionIndex = 0
+        self.numberOfCorrectAnswers = 0
+        self.questionFactory?.requestNextQuestion()
+    }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true // говорим, что индикатор загрузки не скрыт
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        let networkError = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать ещё раз")
+            {   [weak self] _ in
+                guard let self = self else { return }
+                self.restartGame()
+            }
+        alertPresenter?.showAlert(quiz: networkError)
     }
 }
