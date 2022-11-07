@@ -28,18 +28,24 @@ struct QuizResultsViewModel {
 
 final class MovieQuizViewController: UIViewController {
     
-    // Обнуление счетчика текущуего вопроса
+    
     
     private var currentQuestionIndex: Int = 0
     
-    // Обнуление счетчика правильных ответов
+   
     
     private var correctanswerQuestion = 0
+    
     
     private var currentQuestion: QuizQuestion { questions[currentQuestionIndex]
     }
     
-    // Функция кнопки НЕТ
+       
+    @IBOutlet var nobutton: UIButton!
+    
+   
+    @IBOutlet var yesbutton: UIButton!
+    
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         
@@ -48,7 +54,6 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenanswer == currentQuestion.correctAnswer)
     }
     
-    // Функция кнопки ДА
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         
@@ -56,6 +61,8 @@ final class MovieQuizViewController: UIViewController {
         let givenanswer = true
         showAnswerResult(isCorrect: givenanswer == currentQuestion.correctAnswer)
     }
+    
+        
     
     // Картинка
     
@@ -69,16 +76,17 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var counterLabel: UILabel!
     
-        // Функция конвертирования из исходных данных в состояние "Показ вопроса"
+    
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
-            question: model.text, // берём текст вопроса
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // высчитываем номер вопроса
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
-        // Функция счетчика правильных ответов, цветовой рамки взависимости от правильного ответа, показа следующиего вороса
+        
+    
     
     private func showAnswerResult(isCorrect: Bool) {
         
@@ -86,27 +94,36 @@ final class MovieQuizViewController: UIViewController {
             correctanswerQuestion+=1
         }
         
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 8 // толщина рамки
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
-        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
+        imageView.layer.cornerRadius = 20
         
+      
         
-        // Задержка на 1 сек. показа след. вопроса квиза
+        self.yesbutton.isEnabled = false
+        
+        self.nobutton.isEnabled = false
             
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             
-            // Очистка цвета рамки
+                     
+            self.yesbutton.isEnabled = true
+            
+            self.nobutton.isEnabled = true
             
             self.imageView.layer.borderColor = UIColor.clear.cgColor
             
-                self.showNextQuestionOrResults()
+            self.showNextQuestionOrResults()
+            
+               
+            
             }
 
     }
     
     
-    // Функция показа текущей картинки, текста вопроса, счетчика вопроса
+
     
     private func show(quiz step: QuizStepViewModel) {
             imageView.image = step.image
@@ -114,8 +131,9 @@ final class MovieQuizViewController: UIViewController {
             textLabel.text = step.question
         }
     
-    // Функция показа резульата квиза или следующего вопроса
+
     
+   
     private func showNextQuestionOrResults(){
            if currentQuestionIndex == questions.count - 1{
                let text = "Ваш результат: \(correctanswerQuestion) из 10"
@@ -123,34 +141,34 @@ final class MovieQuizViewController: UIViewController {
                                                     text: text,
                                                     buttonText: "Сыграть еще раз")
              
-               // Здесь функция show -- c данными из QuizResultsViewModel
-               
+                           
                show(quiz: viewModel)
                
-           } else {
+           }
+        
+        
+        else {
                currentQuestionIndex += 1
                let nextQuestion = questions[currentQuestionIndex]
                let viewModel = convert(model: nextQuestion)
-               
-                // Здесь функция show -- c данными из QuizStepViewModel
-               
-              
                
                show(quiz: viewModel)
            }
        }
         
-    // Функция алерта результата квиза
+    
     
     private func show(quiz result: QuizResultsViewModel) {
                let alert = UIAlertController(title: result.title,
                                          message: result.text,
                                          preferredStyle: .alert)
            let action = UIAlertAction(title: result.buttonText, style: .default) {_ in
+               
                self.currentQuestionIndex = 0
+               
                self.correctanswerQuestion = 0
                
-               // Переход на первый вопрос
+               
                
                let firstQuestion = self.questions[self.currentQuestionIndex]
                let viewModel = self.convert(model: firstQuestion)
@@ -160,14 +178,23 @@ final class MovieQuizViewController: UIViewController {
            self.present(alert, animated: true, completion: nil)
    }
     
+    
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        imageView.layer.cornerRadius = 20
         
         let viemodel = convert(model: questions[currentQuestionIndex])
         
         show(quiz: viemodel)
     }
+    
+    
+    
+    
     
     private let questions: [QuizQuestion] = [
             QuizQuestion(
@@ -213,66 +240,4 @@ final class MovieQuizViewController: UIViewController {
         ]
 }
 
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
 
-
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
