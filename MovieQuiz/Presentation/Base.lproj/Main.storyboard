@@ -91,7 +91,7 @@
                                                             <attributes>
                                                                 <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                <font key="NSFont" metaFont="system" size="20"/>
                                                                 <real key="NSKern" value="0.0"/>
                                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 <color key="NSStrokeColor" red="0.10196" green="0.10588" blue="0.13333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
