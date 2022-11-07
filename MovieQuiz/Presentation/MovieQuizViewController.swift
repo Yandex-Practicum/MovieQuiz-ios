@@ -11,6 +11,15 @@ extension UIColor {
 
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+    }
+    
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
@@ -24,8 +33,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.startAnimating() // включаем анимацию
     }
     
-    func restartGame() {
-        
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
     }
     
     private func showNetworkError(message: String) {
@@ -33,10 +42,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let alertModel = AlertModel(
             title: "Ошибка",
             message: message,
-            buttonText: "Попробовать ещё раз", { [weak self] in
+            buttonText: "Попробовать ещё раз") {[weak self] in
                 guard let self = self else { return }
-                restartGame()
-            })
+                self.resetGame()
+            }
         
         alertPresenter?.presentAlert(model: alertModel)
     }
@@ -44,11 +53,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        //       questionFactory?.requestNextQuestion()
         
         alertPresenter = AlertPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
+        
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -67,7 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -137,7 +149,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
             Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
             """
-
             let alertModel = AlertModel(
                 title: "Этот раунд окончен!",
                 message: text,
@@ -161,6 +172,5 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         // и заново показываем первый вопрос
         imageView.layer.borderWidth = 0
         self.questionFactory?.requestNextQuestion()
-        
     }
 }

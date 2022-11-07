@@ -8,12 +8,14 @@
 import Foundation
 
 /// Отвечает за загрузку данных по URL
-struct NetworkClient {
+ struct NetworkClient {
 
     private enum NetworkError: Error {
         case codeError
     }
-    
+
+// Делает запрос в интернет и возвращает результат
+// Хэндлер принимает на вход объект "результат", который принимает значение либо "данные", либо "ошибка"
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)
         
