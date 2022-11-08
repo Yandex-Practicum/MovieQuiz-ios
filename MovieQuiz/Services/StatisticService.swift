@@ -28,8 +28,6 @@ final class StatisticServiceImplementation: StatisticService {
             bestGame = possibleBestGame
         }
         allResults.append(count)
-        userDefaults.set(allResults, forKey: Keys.allResults.rawValue)
-        print(allResults)
     }
     var totalAccuracy: Float {
         let questionsAmount = 10
@@ -50,8 +48,6 @@ final class StatisticServiceImplementation: StatisticService {
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Can not encode newValue")
-                
                 return
             }
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
@@ -59,7 +55,7 @@ final class StatisticServiceImplementation: StatisticService {
     }
     private(set) var allResults: [Int] {
         get {
-            userDefaults.object(forKey: Keys.allResults.rawValue) as? [Int] ?? []
+            return userDefaults.object(forKey: Keys.allResults.rawValue) as? [Int] ?? []
         }
         set {
             userDefaults.set(newValue, forKey: Keys.allResults.rawValue)
