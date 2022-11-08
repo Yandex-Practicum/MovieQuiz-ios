@@ -34,10 +34,11 @@ struct MoviesLoader: MoviesLoading {
                 let mostPopularMovies = try? JSONDecoder().decode(MostPopularMovies.self, from: data)
                 
                 if let mostPopularMovies = mostPopularMovies {
-                    if mostPopularMovies.items != [] {
-                    handler(.success(mostPopularMovies))
-                    } else {
+                    if mostPopularMovies.items.isEmpty {
                         handler(.failure(DecodeError.invalidCharacter))
+                    } else {
+                        handler(.success(mostPopularMovies)
+                        )
                     }
                 } else {
                     handler(.failure(DecodeError.decodeError))
