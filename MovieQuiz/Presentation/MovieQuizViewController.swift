@@ -1,19 +1,19 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    
-    
-    // MARK: - Creating global variables
-    private var currentQuestionIndex = 0
-    private var correctAnswersToQuestions = 0
-    private var numberOfRoundsPlayed = 0
+    // MARK: - Global variables
+    private var currentQuestionIndex: Int8 = 0
+    private var correctAnswers = 0
     private let questionsAmount = 10
+    
+    // MARK: - Another classes or structs Instances
     private var questionsFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
-    
-    private var resultsOfEachPlayedRound = [Int:String]()
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    private var statisticService: StatisticService?
+    internal override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent
+        }
     
     // MARK: - UIElements
     private let questionTitleLabel = UILabel()
@@ -38,17 +38,21 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         alertPresenter = AlertPresenter(movieQuizViewController: self)
         questionsFactory = QuestionFactory(delegate: self)
+        statisticService = StatisticServiceImplementation()
         
         throwAllElementsOnScreen()
         createConstraints()
         questionsFactory?.requestNextQuestion()
+        
     }
     
     // MARK: - makeAppearanceOfAllElements and Create all Constraints
     private func makeAppearanceOfAllElements() {
         view.backgroundColor = .ypBlack
+        
         
         makeAppearance(of: noButton, title: "Нет", action: #selector(noButtonPressed(sender: )))
         makeAppearance(of: yesButton, title: "Да", action: #selector(yesButtonPressed(sender: )))
@@ -65,7 +69,6 @@ final class MovieQuizViewController: UIViewController {
         makeAppearance(of: stackViewForLabels, axis: .horizontal, distribution: .fill, spacing: 0)
         makeAppearance(of: stackViewForButtons, axis: .horizontal, distribution: .fillEqually)
         makeAppearance(of: stackViewForAll, axis: .vertical, distribution: .fill)
-        
     }
     private func createConstraints() {
         
@@ -125,31 +128,29 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Functions to handle "state machine"
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        
         return QuizStepViewModel(question: model.text,
                                  image: UIImage(named: model.image) ?? UIImage(),
                                  questionNumber:
                                     "\(currentQuestionIndex+1)/\(questionsAmount)")
     }
-    
+    //gets called after each press of button through factory
     private func show(quiz step: QuizStepViewModel) {
         indexLabel.text = step.questionNumber
         previewImage.image = step.image
         questionLabel.text = step.question
-        //gets called after each press of button through factory
+        
     }
     
     private func showAnswerResult(isCorrect: Bool) {
         previewImage.layer.cornerRadius = 20
         previewImage.layer.borderWidth = 8
-        
         let correctAnswer = currentQuestion?.correctAnswer
         
         if isCorrect == correctAnswer {
-            (previewImage.layer.borderColor = UIColor.ypGreen.cgColor)
-            correctAnswersToQuestions += 1
+            previewImage.layer.borderColor = UIColor.ypGreen.cgColor
+            correctAnswers += 1
         } else {
-            (previewImage.layer.borderColor = UIColor.ypRed.cgColor)
+            previewImage.layer.borderColor = UIColor.ypRed.cgColor
         }
         
         [noButton,yesButton].forEach { $0.isEnabled.toggle() }
@@ -163,32 +164,11 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResult() {
-        
         previewImage.layer.borderWidth = 0
         previewImage.layer.borderColor = nil
         
         if currentQuestionIndex == (questionsAmount - 1) {
-            
-            numberOfRoundsPlayed += 1
-            // Append Dict to save data such as best result and time
-            resultsOfEachPlayedRound.updateValue(Date().dateTimeString, forKey: correctAnswersToQuestions)
-            
-            let endOfRoundAlert = AlertModel(title: "Этот раунд окончен!",
-                                             message: """
-                                              Ваш результат: \(correctAnswersToQuestions) из \(questionsAmount)
-                                              Количество сыгранных квизов: \(numberOfRoundsPlayed)
-                                              Рекорд: \(showPersonalBestResult())
-                                              Средняя точность: \(calculateAccuracy())%
-                                              """,
-                                             buttonText: "Сыграть еще раз") {
-                [weak self] in
-                guard let self = self else {return}
-                self.currentQuestionIndex = 0
-                self.correctAnswersToQuestions = 0
-                self.questionsFactory?.requestNextQuestion()
-            }
-          
-            alertPresenter?.displayAlert(endOfRoundAlert)
+            createDataForAlertPresenter()
             
         } else {
             currentQuestionIndex += 1
@@ -196,20 +176,28 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    private func showPersonalBestResult() -> String {
-        let maxResultAndTime = resultsOfEachPlayedRound
-            .max { $0.key < $1.key }
-        guard let maxResultAndTime = maxResultAndTime else {return "NIL"}
-        return "\(maxResultAndTime.key)/\(questionsAmount) (\(maxResultAndTime.value))"
-    }
-   
-    private func calculateAccuracy() -> String {
+    private func createDataForAlertPresenter() {
+        guard let statisticService = statisticService else {return}
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        let dateAndTime = statisticService.bestGame.date.dateTimeString
         
-        let sumOfMaxResultsOfAllRounds = resultsOfEachPlayedRound.keys.reduce(0, +)
-        let accuracy = Float(sumOfMaxResultsOfAllRounds * 100) / Float(questionsAmount * numberOfRoundsPlayed)
-        return String(format: "%.2f", accuracy)
+        let endOfRoundAlert =
+        AlertModel(title: "Этот раунд окончен!",
+                 message: """
+                  Ваш результат: \(correctAnswers)/\(questionsAmount)
+                  Количество сыгранных квизов: \(statisticService.gamesCount)
+                  Рекорд: \(statisticService.bestGame.correct)/\(questionsAmount) (\(dateAndTime))
+                  Средняя точность: \(statisticService.totalAccuracy.myOwnRounded)%
+                  """,
+                 buttonText: "Сыграть еще раз") { [weak self] in
+            
+            guard let self = self else {return}
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.questionsFactory?.requestNextQuestion()
+        }
+        alertPresenter?.displayAlert(endOfRoundAlert)
     }
-    
     // buttons action
     @objc func noButtonPressed(sender: UIButton) {
         showAnswerResult(isCorrect: false)
@@ -232,7 +220,7 @@ extension MovieQuizViewController {
         button.titleLabel?.font =  font
         button.setTitleColor(titleColor, for: .normal)
         button.titleLabel?.textAlignment = .center
-        button.addTarget(self, action: #selector(noButtonPressed(sender: )), for: .touchUpInside)
+        button.addTarget(self, action: action, for: .touchUpInside)
     }
     private func makeAppearance(of label: UILabel, text: String, textColor: UIColor = .ypWhite, font: UIFont,
                                 numberOfLines: Int = 0, textAlignment: NSTextAlignment? = .none) {
@@ -263,3 +251,4 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
         }
     }
 }
+
