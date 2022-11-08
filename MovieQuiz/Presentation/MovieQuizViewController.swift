@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-
+    
     // MARK: - QuestionFactoryDelegate
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -20,7 +20,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         hideLoadingIndicator() // скрываем индикатор загрузки
         questionFactory?.requestNextQuestion()
     }
-
+    
     func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
     }
@@ -36,12 +36,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter = AlertPresenter(viewController: self)
         questionFactory?.loadData()
         showLoadingIndicator()
-        
-        //questionFactory = QuestionFactory(delegate: self)
-        //questionFactory?.requestNextQuestion()
-
     }
-            
+    
     private var currentQuestionIndex: Int = 0
     private var numberOfCorrectAnswers: Int = 0
     private let questionsAmount: Int = 10
@@ -78,19 +74,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
-   
+    
     private func show(quiz result: QuizResultsViewModel) {
         let alertModel = AlertModel(
             title: result.title,
             message: result.text,
             buttonText: result.buttonText)
-            { [weak self] _ in
-                guard let self = self else { return }
-                self.restartGame()
-            }
+        { [weak self] _ in
+            guard let self = self else { return }
+            self.restartGame()
+        }
         alertPresenter?.showAlert(quiz: alertModel)
     }
-
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(), // распаковываем картинку
@@ -110,7 +106,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-   private func showNextQuestionOrResults() {
+    private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             statisticService?.store(correct: numberOfCorrectAnswers, total: questionsAmount) // записываем новые результаты в UserDefaults
             let text = """
@@ -124,7 +120,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)// показать результат квиза
-
+            
         } else {
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
             questionFactory?.requestNextQuestion()
@@ -152,10 +148,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             title: "Ошибка",
             message: message,
             buttonText: "Попробовать ещё раз")
-            {   [weak self] _ in
-                guard let self = self else { return }
-                self.restartGame()
-            }
+        {   [weak self] _ in
+            guard let self = self else { return }
+            self.restartGame()
+            self.questionFactory?.loadData()
+            self.showLoadingIndicator()
+        }
         alertPresenter?.showAlert(quiz: networkError)
     }
 }

@@ -41,7 +41,7 @@ class StatisticServiceImplementation: StatisticService {
     var gamesCount: Int {
         get {
             userDefaults.integer(forKey: Keys.gamesCount.rawValue)
-            }
+        }
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
@@ -81,6 +81,3 @@ extension GameRecord: Comparable {
         return lhs.correct < rhs.correct // сравниваю объекты по кол-ву правильных ответов
     }
 }
-
-
-

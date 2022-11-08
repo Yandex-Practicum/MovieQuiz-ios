@@ -8,7 +8,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     weak var delegate: QuestionFactoryDelegate?
     
     func loadData() {
-        moviesLoader.loadMovies { result in
+        moviesLoader.loadMovies { [weak self]  result in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 switch result {
@@ -30,9 +30,9 @@ class QuestionFactory: QuestionFactoryProtocol {
             guard let movie = self.movies[safe: index] else { return }
             
             var imageData = Data()
-           
-           do {
-               imageData = try Data(contentsOf: movie.resizedImageURL)
+            
+            do {
+                imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
                 print("Failed to load image")
             }
@@ -45,8 +45,8 @@ class QuestionFactory: QuestionFactoryProtocol {
             let correctAnswer = rating > ratingInQuestionFloat
             
             let question = QuizQuestion(image: imageData,
-                                         text: text,
-                                         correctAnswer: correctAnswer)
+                                        text: text,
+                                        correctAnswer: correctAnswer)
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
@@ -54,12 +54,6 @@ class QuestionFactory: QuestionFactoryProtocol {
             }
         }
     }
-    
-//    func requestNextQuestion() {
-//        guard let index = (0..<questions.count).randomElement() else { return }
-//        let question = questions[safe: index]
-//        delegate?.didReceiveNextQuestion(question: question)
-//    }
     
     /*
      private let questions: [QuizQuestion] = [

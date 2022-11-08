@@ -7,7 +7,7 @@ struct MostPopularMovies: Codable {
     let items: [MostPopularMovie]
 }
 
-struct MostPopularMovie: Codable {
+struct MostPopularMovie: Codable, Equatable {
     let title: String
     let rating: String
     let imageURL: URL

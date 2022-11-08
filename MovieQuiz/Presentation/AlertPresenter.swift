@@ -4,7 +4,7 @@ import UIKit
 
 struct AlertPresenter {
     
-    weak var viewController: UIViewController?    
+    weak var viewController: UIViewController?
     func showAlert(quiz result: AlertModel) {
         
         let alert = UIAlertController(
@@ -16,10 +16,9 @@ struct AlertPresenter {
             title: result.buttonText,
             style: .default,
             handler: result.completion)
-
+        
         alert.addAction(action)
         viewController?.present(alert, animated: true, completion: nil)
     }
-
 }
 
