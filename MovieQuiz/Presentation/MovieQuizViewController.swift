@@ -84,16 +84,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
+        
+        let completion = {
+            print("Completition was called")
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.questionFactory?.requestNextQuestion()
         }
         
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        let alertModel = AlertModel(
+            title: result.title,
+            message: result.text,
+            buttonText: result.buttonText,
+            completion: completion)
+        
+        let alertPsenenter = AlertPresenter(alertModel: alertModel, viewController: self)
+        alertPsenenter.showResultsAlert()
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
