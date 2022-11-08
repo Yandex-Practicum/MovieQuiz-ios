@@ -9,15 +9,22 @@ import Foundation
 
 fileprivate let questionString: String = "Рейтинг этого фильма больше чем 6?"
 
-class QuestionFactory {
-
-    func requestNextQuestion() -> QuizQuestion? {
-        guard let index = (0..<questions.count).randomElement() else {
-            return nil
-        }
-        return questions[safe: index]
+class QuestionFactory : QuestionFactoryProtocol {
+    weak var delegate: QuestionFactoryDelegate?
+    
+    init(delegate: QuestionFactoryDelegate?) {
+        self.delegate = delegate
     }
-
+    
+    func requestNextQuestion() {
+        guard let index = (0..<questions.count).randomElement() else {
+            delegate?.didRecieveNextQuestion(question: nil)
+            return
+        }
+        let question = questions[safe: index]
+        delegate?.didRecieveNextQuestion(question: question)
+    }
+    
     private let questions: [QuizQuestion] = [
         QuizQuestion(image: "The Godfather", text: questionString, correctAnswer: true),
         QuizQuestion(image: "The Dark Knight", text: questionString, correctAnswer: true),
