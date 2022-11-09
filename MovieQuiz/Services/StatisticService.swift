@@ -21,18 +21,19 @@ struct GameRecord: Codable, Comparable {
 }
 
 final class StatisticServiceImplementation: StatisticService {
-    
+    private var questionsAmount: Int?
     func store(correct count: Int, total amount: Int) {
         let possibleBestGame = GameRecord(correct: count, total: amount, date: Date())
         if bestGame < possibleBestGame {
             bestGame = possibleBestGame
         }
         allResults.append(count)
+        questionsAmount = amount
+        
     }
     var totalAccuracy: Float {
-        let questionsAmount = 10
         let sumOfAllResults = allResults.reduce(0, +)
-        let accuracy = Float(sumOfAllResults * 100) / Float(questionsAmount * allResults.count)
+        let accuracy = Float(sumOfAllResults * 100) / Float((bestGame.total) * allResults.count)
         return accuracy
     }
     var gamesCount: Int {

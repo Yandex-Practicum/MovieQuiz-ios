@@ -11,9 +11,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
-    internal override var preferredStatusBarStyle: UIStatusBarStyle {
-            return .lightContent
-        }
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     // MARK: - UIElements
     private let questionTitleLabel = UILabel()
@@ -30,7 +28,7 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.cornerRadius = 20
         return previewImage
     }()
-
+    
     private let stackViewForButtons = UIStackView()
     private let stackViewForLabels = UIStackView()
     private let stackViewForAll = UIStackView()
@@ -88,8 +86,8 @@ final class MovieQuizViewController: UIViewController {
         previewImage.widthAnchor.constraint(equalTo: previewImage.heightAnchor,
                                             multiplier: (2/3)),
         
-        // set height for buttons
-        noButton.heightAnchor.constraint(equalToConstant: 60),
+        // set height for stackViewForButtons
+        stackViewForButtons.heightAnchor.constraint(equalToConstant: 60),
         
         // set  constraints from label to view, label sits inside
         questionLabel.leadingAnchor.constraint(equalTo: viewForQuestionLabel.leadingAnchor,
@@ -142,7 +140,6 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
-        previewImage.layer.cornerRadius = 20
         previewImage.layer.borderWidth = 8
         let correctAnswer = currentQuestion?.correctAnswer
         
@@ -199,10 +196,10 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter?.displayAlert(endOfRoundAlert)
     }
     // buttons action
-    @objc func noButtonPressed(sender: UIButton) {
+    @objc private func noButtonPressed(sender: UIButton) {
         showAnswerResult(isCorrect: false)
     }
-    @objc func yesButtonPressed(sender: UIButton) {
+    @objc private func yesButtonPressed(sender: UIButton) {
         showAnswerResult(isCorrect: true)
     }
 }
