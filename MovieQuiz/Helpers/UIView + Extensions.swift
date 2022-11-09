@@ -1,5 +1,4 @@
 import UIKit
-import Foundation
 
 extension UIView { // extension for safe area
   var safeTopAnchor: NSLayoutYAxisAnchor {
