@@ -1,10 +1,5 @@
 import UIKit
 
-extension UIColor {
-    static var ypGreen: UIColor { UIColor(named: "ypGreen")! }
-    static var ypRed: UIColor { UIColor(named: "ypRed")! }
-}
-    
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -12,6 +7,7 @@ final class MovieQuizViewController: UIViewController {
         let question = questions[currentQuestionIndex]
         let viewModel = convert(model: question)
         imageView.layer.cornerRadius  = 20
+        imageView.layer.masksToBounds = true
         show(quiz: viewModel)
 
     }
@@ -23,12 +19,15 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     
-    @IBAction func noButtonAction(_ sender: Any) {
+    @IBOutlet private weak var yesButtonOutlet: UIButton!
+    @IBOutlet private weak var noButtonOutlet: UIButton!
+    
+    @IBAction private func noButtonAction(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    @IBAction func yesButtonAction(_ sender: Any) {
+    @IBAction private func yesButtonAction(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
@@ -106,19 +105,23 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        if isCorrect == true{
+        yesButtonOutlet.isUserInteractionEnabled = false
+        noButtonOutlet.isUserInteractionEnabled = false
+        if isCorrect {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
             correctAnswers += 1
         }
         else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
+            
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
+            self.yesButtonOutlet.isUserInteractionEnabled = true
+            self.noButtonOutlet.isUserInteractionEnabled = true
         }
     }
     
