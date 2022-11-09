@@ -60,14 +60,15 @@ struct QuestionFactory: QuestionFactoryProtocol {
     
     mutating func requestNextQuestion() {
         
-        guard let _ = questions else {
+        guard let _ = questionShuffled else {
             delegate?.didReceiveNextQuestion(question: nil)
             return
         }
         
-        delegate?.didReceiveNextQuestion(question: questionShuffled![safe: 0])
+        delegate?.didReceiveNextQuestion(question: questionShuffled?[safe: 0])
         questionShuffled?.remove(at: 0)
     }
 }
+
 
 

@@ -81,7 +81,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         if currentQuestionIndex == questionsAmount {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-            let alertText = "Ваш результат: \(correctAnswers)/\(questionsAmount) \n Количество сыгранных квизов: \(statisticService.gamesCount) \n Рекорд: \(statisticService.bestGame.toString()) \n Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+            let alertText = "Ваш результат: \(correctAnswers)/\(questionsAmount) \n" +
+            "Количество сыгранных квизов: \(statisticService.gamesCount)" +
+            "\n Рекорд: \(statisticService.bestGame.toString())" +
+            "\n Средняя точность:  \(String(format: "%.2f", statisticService.totalAccuracy))%"
             show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!" , text: alertText, buttonText: "Сыграть еще раз"))
             questionFactory?.shuffleQuesions()
         } else {

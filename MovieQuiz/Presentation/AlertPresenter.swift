@@ -3,7 +3,7 @@ import UIKit
 
 struct AlertPresenter {
     
-    var viewController: UIViewController?
+    weak var viewController: UIViewController?
     
     func showAlert(alertModel: AlertModel) {
         
