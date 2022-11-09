@@ -22,7 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // Общее колличество вопросов
     private let questionsAmount: Int = 10
     // Экземпляр фабрики вопросов
-    private var questionsFactory: QuestionFactoryProtocol?
+    var questionFactory: QuestionFactoryProtocol?
     // Текущий вопрос, который видит пользователь
     private var currentQuestion: QuizQuestion?
     // Экземпляр AlertPresenter для отображения Алерта
@@ -37,11 +37,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        hideLoadingIndicator()
-        //questionsFactory = QuestionFactory(delegate: self)
-        questionsFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        statisticService = StatisticServiceImplementation()
+        questionFactory?.loadData()
+        showLoadingIndicator()
     }
     //MARK: - QuestionFactoryDelegate
+    // Функция для запроса следующего вопроса
     func didReciveNextQuestion (question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -53,18 +55,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     //MARK: - Actions
+    // Действие по нажатию кнопки "Нет"
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = true
+        let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = false
+        let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     //MARK: - Helpers
@@ -102,7 +105,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             // заново показываем первый вопрос
-            self.questionsFactory?.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
         }
         // MARK: -
         alertPresenter.show(in: self, model: alertModel)
@@ -150,13 +153,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            questionsFactory?.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
         }
     }
     //
     func didloadDataFromServer () {
         activityIndicator.isHidden = true
-        questionsFactory?.requestNextQuestion()
+        questionFactory?.requestNextQuestion()
     }
 
     //
@@ -191,10 +194,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else {return}
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            self.questionsFactory?.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
         }
         let alertPresenter = AlertPresenter()
         alertPresenter.show(in: self, model: unHappyResultModel)
     }
-    
 }

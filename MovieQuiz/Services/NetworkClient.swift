@@ -16,7 +16,7 @@ struct NetworkClient {
     func fetch (url: URL, handler: @escaping (Result <Data, Error>) -> Void) {
         let request = URLRequest(url: url)
         // Таск на GET запрос с API IDMb
-        let task  = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task  = URLSession.shared.dataTask(with: request) { ( data, response, error ) in
             // проверяем, пришла ли ошибка
             if let error = error {
                 handler(.failure(error))
@@ -30,6 +30,7 @@ struct NetworkClient {
             }
             // возвращаем данные
             guard let data = data else { return }
+            print(data)
             handler(.success(data))
         }
         task.resume()

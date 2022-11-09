@@ -8,9 +8,68 @@
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
-    private let moviesLoader: MoviesLoading
+    
+    let moviesLoader: MoviesLoading?
+    
     weak var delegate: QuestionFactoryDelegate?
-    private var movies: [MostPopularMovie] = []
+    
+    var movies: [MostPopularMovie] = []
+    // Функция формирования следующего вопроса
+    func requestNextQuestion () {
+        // В глобальной очереди, асинронно
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            // Создаём случайный индекс в диапозоне длины массива
+            let index = (0..<self.movies.count).randomElement() ?? 0
+            // Создаём экземпляр MostPopularMovie
+            guard let movie = self.movies[safe: index] else { return }
+            // Получаем постер фильма
+            var imageData = Data()
+            do {
+                imageData = try Data(contentsOf: movie.resizedImageURL)
+            } catch {
+                print("Failrd to download image")
+            }
+            // Получаем рейтинг фильма
+            let raiting = Float(movie.rating) ?? 0
+            // Придумываем случайное число для сравнения с рейтингом
+            let randomRating = Int.random(in: 7...9)
+            // Формируем вопрос для пользователя
+            let text = "Рейтинг этого фильма больше чем \(randomRating)?"
+            // Определяем верный ответ
+            let correctAnswer = raiting > Float(randomRating)
+            // Формируем вопрос
+            let question = QuizQuestion(image: imageData,
+                                        text: text,
+                                        correctAnswer: correctAnswer)
+            // В основном потоке
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                // Передаём вопрос делегату
+                self.delegate?.didReciveNextQuestion(question: question)
+            }
+        }
+    }
+    
+    func loadData() {
+        guard let moviesLoader = moviesLoader else { return }
+        moviesLoader.loadMovies() { result in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                switch result {
+                case .success(let mostPopularMovies):
+                    self.movies = mostPopularMovies.items
+                    self.delegate?.didloadDataFromServer()
+                case .failure(let error):
+                    self.delegate?.didFailToLoadData(with: error)
+                }
+            }
+        }
+    }
+    init(moviesLoader: MoviesLoading?, delegate: QuestionFactoryDelegate?) {
+        self.moviesLoader = moviesLoader
+        self.delegate = delegate
+    }
     /*private var questions: [QuizQuestion] {
         [ QuizQuestion(
             image: "The Godfather",
@@ -54,49 +113,4 @@ class QuestionFactory: QuestionFactoryProtocol {
             correctAnswer: false)]
     }
 */
-    func requestNextQuestion () {
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
-            guard let movie = self.movies[safe: index] else { return }
-            var imageData = Data()
-            do {
-                imageData = try Data(contentsOf: movie.imageURL)
-            } catch {
-                print("Failrd to download image")
-            }
-            let raiting = Float(movie.rating) ?? 0
-            
-            let randomRating = Int.random(in: 5...9)
-            
-            let text = "Рейтинг этого фильма больше чем \(randomRating)?"
-            
-            let correctAnswer = raiting > Float(randomRating)
-            
-            let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.didReciveNextQuestion(question: question)
-            }
-        }
-    }
-    
-    func loadData() {
-        moviesLoader.loadMovies { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let mostPopularMovies):
-                self.movies = mostPopularMovies.items // сохраняем фильм в нашу новую переменную
-                self.delegate?.didloadDataFromServer() // сообщаем, что данные загрузились
-            case .failure(let error):
-                self.delegate?.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
-            }
-            }
-        }
-    init(moviesLoader: MoviesLoading) {
-        self.moviesLoader = moviesLoader
-    }
 }
