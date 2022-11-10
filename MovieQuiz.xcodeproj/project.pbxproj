@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A316797A2916F99100237571 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31679792916F99100237571 /* StatisticService.swift */; };
+		A316797C2916FA0B00237571 /* StatisticServiceImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A316797B2916FA0B00237571 /* StatisticServiceImplementation.swift */; };
+		A316797E2916FDF800237571 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A316797D2916FDF800237571 /* GameRecord.swift */; };
 		A37827C028D3902D002722D4 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A37827BE28D3902D002722D4 /* YS Display-Bold.ttf */; };
 		A37827C128D3902D002722D4 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A37827BF28D3902D002722D4 /* YS Display-Medium.ttf */; };
 		A3CEC1E7290D3C4B007706FB /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CEC1E6290D3C4B007706FB /* QuestionFactory.swift */; };
@@ -29,6 +32,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A31679792916F99100237571 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
+		A316797B2916FA0B00237571 /* StatisticServiceImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceImplementation.swift; sourceTree = "<group>"; };
+		A316797D2916FDF800237571 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
 		A37827BE28D3902D002722D4 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		A37827BF28D3902D002722D4 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		A3CEC1E6290D3C4B007706FB /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
@@ -69,6 +75,7 @@
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				A3CEC1F529114ABB007706FB /* AlertPresenter.swift */,
+				A316797B2916FA0B00237571 /* StatisticServiceImplementation.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -99,6 +106,7 @@
 				A3CEC1E6290D3C4B007706FB /* QuestionFactory.swift */,
 				A3CEC1EF290DD14C007706FB /* QuestionFactoryProtocol.swift */,
 				A3CEC1F1290DD5D8007706FB /* QuestionFactoryDelegate.swift */,
+				A31679792916F99100237571 /* StatisticService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -110,6 +118,7 @@
 				A3CEC1EB290DB232007706FB /* QuizResultsViewModel.swift */,
 				A3CEC1ED290DB247007706FB /* QuizQuestion.swift */,
 				A3CEC1F3291149D2007706FB /* AlertModel.swift */,
+				A316797D2916FDF800237571 /* GameRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -257,12 +266,15 @@
 				A3CEC1F0290DD14C007706FB /* QuestionFactoryProtocol.swift in Sources */,
 				A3CEC1F2290DD5D8007706FB /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
+				A316797A2916F99100237571 /* StatisticService.swift in Sources */,
 				A3CEC1EA290DB21D007706FB /* QuizStepViewModel.swift in Sources */,
 				A3CEC1EE290DB247007706FB /* QuizQuestion.swift in Sources */,
 				A3CEC1E7290D3C4B007706FB /* QuestionFactory.swift in Sources */,
+				A316797E2916FDF800237571 /* GameRecord.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
+				A316797C2916FA0B00237571 /* StatisticServiceImplementation.swift in Sources */,
 				A3CEC1EC290DB232007706FB /* QuizResultsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
