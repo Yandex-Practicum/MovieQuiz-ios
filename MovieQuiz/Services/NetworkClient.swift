@@ -16,7 +16,10 @@ struct NetworkClient {
     func fetch (url: URL, handler: @escaping (Result <Data, Error>) -> Void) {
         let request = URLRequest(url: url)
         // Таск на GET запрос с API IDMb
-        let task  = URLSession.shared.dataTask(with: request) { ( data, response, error ) in
+        let urlSessinConfiguration = URLSessionConfiguration.default
+        urlSessinConfiguration.timeoutIntervalForRequest = 2.0
+        let urlSession = URLSession(configuration: urlSessinConfiguration)
+        let task  = urlSession.dataTask(with: request) { ( data, response, error ) in
             // проверяем, пришла ли ошибка
             if let error = error {
                 handler(.failure(error))

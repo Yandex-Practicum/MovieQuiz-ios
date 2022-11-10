@@ -37,17 +37,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         questionFactory?.loadData()
         showLoadingIndicator()
+        
     }
     //MARK: - QuestionFactoryDelegate
     // Функция для запроса следующего вопроса
     func didReciveNextQuestion (question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
+        guard let question = question else { return }
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
@@ -71,12 +71,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     //MARK: - Helpers
-    // Функция блокировки переключения активности кнопок. Используется в showAnswerResult
-    private func toggleIsEnablebButtons(){
-        noButton.isEnabled.toggle()
-        yesButton.isEnabled.toggle()
-    }
-    
     // Функция для создания первой вью модели
     private func startGame(question: [QuizQuestion]?){
         guard let questions = question else{
@@ -107,7 +101,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             // заново показываем первый вопрос
             self.questionFactory?.requestNextQuestion()
         }
-        // MARK: -
         alertPresenter.show(in: self, model: alertModel)
         // MARK: -
     }
@@ -132,10 +125,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [ weak self ] in
             guard let self = self else { return }
-            self.showNextQuestionOrResults()
-            self.imageView.layer.borderWidth = 0
-            self.toggleIsEnablebButtons()
-        }
+                self.showNextQuestionOrResults()
+                self.imageView.layer.borderWidth = 0
+                self.toggleIsEnablebButtons()
+            }
         toggleIsEnablebButtons()
     }
     
@@ -156,45 +149,47 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     }
-    //
+    // Функция для действий при удачном походе в сеть
     func didloadDataFromServer () {
-        activityIndicator.isHidden = true
+        hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
 
-    //
+    // Функция для действий при неудачном походе в сеть
     func didFailToLoadData(with error: Error) {
+        showLoadingIndicator()
         showNetworkError(message: error.localizedDescription)
+    }
+    
+    // Функция блокировки переключения активности кнопок. Используется в showAnswerResult
+    func toggleIsEnablebButtons(){
+        noButton.isEnabled.toggle()
+        yesButton.isEnabled.toggle()
     }
     
     // Функция для отбражения индикатора загрузки изображения из сети
     private func showLoadingIndicator() {
-        // отображаем индикатор
         activityIndicator.isHidden = false
-        // включаем анимацию
         activityIndicator.startAnimating()
     }
     
     // Функция скрытия индикатора загрузки изображения из сети
     private func hideLoadingIndicator(){
-        // выключение аимации
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
     }
     
     // Функция отображениия ошибки загрузки из сети
     private func showNetworkError (message: String) {
-        // скрываем индикатор загрузки
-        hideLoadingIndicator()
+        showLoadingIndicator()
         let unHappyResultModel = AlertModel(
             title: "Ошибка",
             message: message,
             buttonText: "Попробовать ещё раз"
         ) { [weak self] in
             guard let self = self else {return}
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
+            self.hideLoadingIndicator()
+            self.questionFactory?.loadData()
         }
         let alertPresenter = AlertPresenter()
         alertPresenter.show(in: self, model: unHappyResultModel)
