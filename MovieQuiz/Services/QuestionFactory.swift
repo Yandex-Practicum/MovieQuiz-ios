@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct QuestionFactory: QuestionFactoryProtocol {
+class QuestionFactory: QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
     
@@ -54,11 +54,11 @@ struct QuestionFactory: QuestionFactoryProtocol {
         self.delegate = delegate
     }
     
-    mutating func shuffleQuesions() {
+    func shuffleQuesions() {
         self.questionShuffled = questions?.shuffled()
     }
     
-    mutating func requestNextQuestion() {
+    func requestNextQuestion() {
         
         guard let _ = questionShuffled else {
             delegate?.didReceiveNextQuestion(question: nil)

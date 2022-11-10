@@ -1,7 +1,7 @@
 import Foundation
 
 protocol QuestionFactoryProtocol {
-   mutating func requestNextQuestion()
+    func requestNextQuestion()
     
-   mutating func shuffleQuesions()
+    func shuffleQuesions()
 }

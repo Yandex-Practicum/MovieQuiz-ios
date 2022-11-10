@@ -77,7 +77,6 @@
                                                 <color key="backgroundColor" red="0.95872127399999996" green="1" blue="0.96299807169999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="JoK-47-kYy" userLabel="height = 60"/>
-                                                    <constraint firstAttribute="width" constant="164" id="R0L-e8-eY9" userLabel="width = 164"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
