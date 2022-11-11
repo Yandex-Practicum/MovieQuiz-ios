@@ -148,6 +148,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else { return }
             self.noButton.isEnabled = true
             self.yesButton.isEnabled = true
+            self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
     }
