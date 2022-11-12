@@ -9,24 +9,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak private var textLabel: UILabel!
     @IBOutlet weak private var imageView: UIImageView!
     
+    @IBOutlet weak private var noButton: UIButton!
+    @IBOutlet weak private var yesButton: UIButton!
+    
     // MARK: - Private Properties
     
     private var currentQuestion: QuizQuestion?
     private var questionsFactory: QuestionFactoryProtocol?
-    private var alertPresenter: AlertCreationProtocol?
+    private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
     
     private let questionsAmount = 10
     private var currentQuestionsIndex = 0
     private var score = 0
-    
+
     // MARK: - Lifecyclequestions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         questionsFactory = QuestionFactory(delegate: self)
         questionsFactory?.requestQuestion()
-        alertPresenter = AlertPresenter(delegate: self)
+        alertPresenter = AlertPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
     }
     
@@ -47,12 +50,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let answer = false
         guard let currentQuestion = currentQuestion else { return  }
         showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
+        lockButtonClick(isEnable: false)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let answer = true
         guard let currentQuestion = currentQuestion else { return  }
-       showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
+        lockButtonClick(isEnable: false)
     }
 }
 
@@ -85,12 +90,18 @@ extension MovieQuizViewController {
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderColor = UIColor.clear.cgColor
+            self.lockButtonClick(isEnable: true)
         }
     }
     
+    private func lockButtonClick(isEnable: Bool) {
+        noButton.isEnabled = isEnable
+        yesButton.isEnabled = isEnable
+    }
+    
     private func showNextQuestionOrResults() {
+        
         if currentQuestionsIndex == questionsAmount - 1 {
-            statisticService?.store(correct: score, total: questionsAmount)
             guard  let gameCount = statisticService?.gamesCount,
                   let bestGame = statisticService?.bestGame,
                   let totalAccuracy = statisticService?.totalAccuracy  else { return  }
@@ -103,6 +114,7 @@ extension MovieQuizViewController {
 
             let alertModel = AlertModel(title: Constatns.AlertLable.title, messange: messangeAlert, buttonText: Constatns.AlertButton.buttonText) { [weak self] in
                 guard let self = self else { return }
+                self.statisticService?.store(correct: self.score, total: self.questionsAmount)
                 self.resetScore()
             }
             showAlert(quiz: alertModel)
@@ -125,6 +137,6 @@ extension MovieQuizViewController {
 extension MovieQuizViewController: ShowAlertDelegate {
     func showAlert(quiz result: AlertModel?) {
         guard let result = result else { return }
-        alertPresenter?.creationAlert(data: result, from: self)
+        alertPresenter?.creationAlert(data: result)
     }
 }

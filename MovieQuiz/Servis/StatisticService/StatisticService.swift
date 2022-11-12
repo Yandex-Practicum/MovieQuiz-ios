@@ -14,6 +14,7 @@ final class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
     
+    
     // MARK: - Private Set Computed Property
     
     private(set) var gamesCount: Int {

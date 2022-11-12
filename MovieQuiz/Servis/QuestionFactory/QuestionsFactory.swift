@@ -38,4 +38,3 @@ class QuestionFactory: QuestionFactoryProtocol {
         delegate?.didecieveNextQuestion(question: question)
     }
 }
-
