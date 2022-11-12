@@ -49,7 +49,7 @@
                                         </constraints>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Kill Bill" translatesAutoresizingMaskIntoConstraints="NO" id="Sb8-EZ-iKK" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="44" width="374" height="580"/>
+                                        <rect key="frame" x="0.0" y="44" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Sb8-EZ-iKK" secondAttribute="height" multiplier="2:3" priority="750" id="406-8G-bUv"/>
@@ -65,10 +65,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="IGd-ye-ay4">
-                                        <rect key="frame" x="0.0" y="644" width="374" height="80"/>
+                                        <rect key="frame" x="0.0" y="625" width="374" height="99"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPM-KI-ryZ" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="54"/>
+                                                <rect key="frame" x="42" y="13" width="290" height="73"/>
                                                 <string key="text">Рейтинг этого фильма
 меньше чем 5?</string>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>

@@ -1,14 +1,14 @@
-//
-//  Constants.swift
-//  MovieQuiz
-//
-//  Created by Андрей Сорокин on 18/10/2022.
-//
-
 import Foundation
 
 struct Constatns {
     struct AlertLable {
-        static let message = "Ваш результат:"
+        static let title = "Этот раунд окончен!"
+        static let scoreRound = "Ваш результат:"
+        static let numberOfQuizzesPlayed = "Количество сыграных квизов:"
+        static let bestScore = "Рекорд"
+        static let avgAccuracy = "Средняя точность:"
+    }
+    struct AlertButton {
+        static let buttonText = "Сыграть еще раз"
     }
 }
