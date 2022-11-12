@@ -28,9 +28,9 @@
 		AF976BE12919D9F2002E0180 /* ShowAlertDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF976BE02919D9F2002E0180 /* ShowAlertDelegate.swift */; };
 		AF976BE62919DAD5002E0180 /* AlertCreationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF976BE52919DAD5002E0180 /* AlertCreationProtocol.swift */; };
 		AF976BE8291A58C9002E0180 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF976BE7291A58C9002E0180 /* StatisticService.swift */; };
-		AF976BEA291A59DE002E0180 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF976BE9291A59DE002E0180 /* GameRecord.swift */; };
 		AF976BEC291FAAE3002E0180 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF976BEB291FAAE2002E0180 /* Double+Extension.swift */; };
 		AF976BEF291FAC67002E0180 /* StatisticServiceProtocol .swift in Sources */ = {isa = PBXBuildFile; fileRef = AF976BEE291FAC67002E0180 /* StatisticServiceProtocol .swift */; };
+		AF976BF3291FB4C5002E0180 /* GameRecor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF976BF2291FB4C5002E0180 /* GameRecor.swift */; };
 		AFC61A9828FC26D000F7B6B6 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFC61A9628FC26D000F7B6B6 /* YS Display-Bold.ttf */; };
 		AFC61A9928FC26D000F7B6B6 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFC61A9728FC26D000F7B6B6 /* YS Display-Medium.ttf */; };
 /* End PBXBuildFile section */
@@ -60,9 +60,9 @@
 		AF976BE02919D9F2002E0180 /* ShowAlertDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAlertDelegate.swift; sourceTree = "<group>"; };
 		AF976BE52919DAD5002E0180 /* AlertCreationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCreationProtocol.swift; sourceTree = "<group>"; };
 		AF976BE7291A58C9002E0180 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
-		AF976BE9291A59DE002E0180 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
 		AF976BEB291FAAE2002E0180 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		AF976BEE291FAC67002E0180 /* StatisticServiceProtocol .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatisticServiceProtocol .swift"; sourceTree = "<group>"; };
+		AF976BF2291FB4C5002E0180 /* GameRecor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecor.swift; sourceTree = "<group>"; };
 		AFC61A9628FC26D000F7B6B6 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		AFC61A9728FC26D000F7B6B6 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,7 +106,7 @@
 				AF8E5BA328FE38A300F02D7C /* QuizResultsViewModel.swift */,
 				AF8E5BA528FE38C100F02D7C /* QuizStepViewModel.swift */,
 				AF976BDA291481F1002E0180 /* AlertModel.swift */,
-				AF976BE9291A59DE002E0180 /* GameRecord.swift */,
+				AF976BF2291FB4C5002E0180 /* GameRecor.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -306,10 +306,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF976BE12919D9F2002E0180 /* ShowAlertDelegate.swift in Sources */,
-				AF976BEA291A59DE002E0180 /* GameRecord.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				AF8E5BA628FE38C100F02D7C /* QuizStepViewModel.swift in Sources */,
+				AF976BF3291FB4C5002E0180 /* GameRecor.swift in Sources */,
 				AF8E5BA228FE387B00F02D7C /* QuizQuestion.swift in Sources */,
 				AF976BEF291FAC67002E0180 /* StatisticServiceProtocol .swift in Sources */,
 				AF976BD529147FD5002E0180 /* AlertPresenter.swift in Sources */,
