@@ -14,6 +14,7 @@ class AlertPresenter {
             message: model.message,
             preferredStyle: .alert)
         
+        alertController.view.accessibilityIdentifier = "error_alert"
         let action = UIAlertAction(
             title: model.buttonText,
             style: .default
