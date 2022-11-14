@@ -4,8 +4,8 @@ import UIKit
 
 
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-
+final class MovieQuizViewController: UIViewController {
+    
     //MARK: - Properties
     // Аутлеты для текста, счётчика, изображения и кнопок
     @IBOutlet private weak var imageView: UIImageView!
@@ -15,41 +15,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
-    // Экземпляр фабрики вопросов
-    var questionFactory: QuestionFactoryProtocol?
     // Экземпляр AlertPresenter для отображения Алерта
     private let alertPresenter = AlertPresenter()
-    //
+    
+    // Сервис сбора статистики
     private var statisticService: StatisticServiceImplementation = .init()
-    //
     
-    private let presenter = MovieQuizPresenter()
-    
+    // Презентер
+    private var presenter: MovieQuizPresenter!
     
     enum CodingKeys: String, CodingKey {
-       case id, title, year, image, runtimeMins, directors, actorList
-       case releaseDate = "release_date"
+        case id, title, year, image, runtimeMins, directors, actorList
+        case releaseDate = "release_date"
     }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.viewController = self
-        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        presenter = MovieQuizPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
-        questionFactory?.loadData()
         showLoadingIndicator()
-        
     }
-    //MARK: - QuestionFactoryDelegate
-    // Функция для запроса следующего вопроса
-    func didReciveNextQuestion (question: QuizQuestion?) {
-        guard let question = question else { return }
-        presenter.currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
-    }
+    
     //MARK: - Actions
     // Действия по нажатию кнопки "Нет"
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -60,39 +47,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
     }
-    //MARK: - Helpers
-    // Функция для создания первой вью модели
-//    private func startGame(question: [QuizQuestion]?){
-//        guard let questions = question else{
-//            return
-//        }
-//        let viewModel = presenter.convert(model: questions[0])
-//        show(quiz: viewModel)
-//    }
     
+    //MARK: - Helpers
     // Функция для передачи в вью модель необходимых данных
-        func show(quiz step: QuizStepViewModel) {
+    func show(quiz step: QuizStepViewModel) {
         self.imageView.image = step.image
         self.textLabel.text = step.question
         self.counterLabel.text = step.questionNumber
     }
     
     // Функция для вызова алерта с результатами раунда
-        func show(quiz result: QuizResultsViewModel) {
+    func show(quiz result: QuizResultsViewModel) {
         let alertModel = AlertModel(
             title: result.title,
             message: result.text,
             buttonText: result.buttonText
         ) { [weak self] in
             guard let self = self else { return }
-           // restart
+            // restart
             self.presenter.restartGame()
             // заново показываем первый вопрос
-            self.questionFactory?.requestNextQuestion()
         }
         alertPresenter.show(in: self, model: alertModel)
     }
-
+    
     // Функция для отображения рамки с цветовой индикацией правильности ответа и блокировки кнопок на время показа рамки с последующей разблокировкой и скрытием рамки
     func showAnswerResult(isCorrect: Bool){
         imageView.layer.masksToBounds = true
@@ -101,24 +79,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [ weak self ] in
             guard let self = self else { return }
-            self.presenter.questionFactory = self.questionFactory
             self.toggleIsEnablebButtons()
             self.imageView.layer.borderWidth = 0
             self.presenter.showNextQuestionOrResults()
         }
         toggleIsEnablebButtons()
-    }
-    
-    // Функция для действий при удачном походе в сеть
-    func didloadDataFromServer () {
-        hideLoadingIndicator()
-        questionFactory?.requestNextQuestion()
-    }
-
-    // Функция для действий при неудачном походе в сеть
-    func didFailToLoadData(with error: Error) {
-        showLoadingIndicator()
-        showNetworkError(error: error)
     }
     
     // Функция блокировки переключения активности кнопок. Используется в showAnswerResult
@@ -128,32 +93,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // Функция для отбражения индикатора загрузки изображения из сети
-    private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
+    func showLoadingIndicator() {
         activityIndicator.startAnimating()
+        activityIndicator.isHidden = false
     }
     
     // Функция скрытия индикатора загрузки изображения из сети
-    private func hideLoadingIndicator(){
-        activityIndicator.stopAnimating()
+    func hideLoadingIndicator(){
         activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
     }
     
     // Функция отображениия ошибки загрузки из сети
-    private func showNetworkError (error: Error) {
+    func showNetworkError (message: String) {
         showLoadingIndicator()
         let unHappyResultModel = AlertModel(
             title: "Ошибка",
-            message: error.localizedDescription,
+            message: message,
             buttonText: "Попробовать ещё раз"
         ) { [weak self] in
             guard let self = self else {return}
             self.hideLoadingIndicator()
-            self.questionFactory?.loadData()
+            self.presenter.questionFactory?.loadData()
             self.presenter.restartGame()
         }
         let alertPresenter = AlertPresenter()
         alertPresenter.show(in: self, model: unHappyResultModel)
     }
-
 }
