@@ -16,6 +16,8 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
+		CE54A29C29214F5000F19075 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEA5EBCA291E3C4600C59F33 /* YS Display-Medium.ttf */; };
+		CE54A29D29214F5500F19075 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEA5EBC9291E3C4600C59F33 /* YS Display-Bold.ttf */; };
 		CEA5EBCC291E42D100C59F33 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA5EBCB291E42D100C59F33 /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
@@ -184,6 +186,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
+				CE54A29C29214F5000F19075 /* YS Display-Medium.ttf in Resources */,
+				CE54A29D29214F5500F19075 /* YS Display-Bold.ttf in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
 			);
