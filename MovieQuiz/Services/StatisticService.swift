@@ -21,14 +21,13 @@ struct GameRecord: Codable, Comparable {
 }
 
 final class StatisticServiceImplementation: StatisticService {
-    private var questionsAmount: Int?
+    
     func store(correct count: Int, total amount: Int) {
         let possibleBestGame = GameRecord(correct: count, total: amount, date: Date())
         if bestGame < possibleBestGame {
             bestGame = possibleBestGame
         }
         allResults.append(count)
-        questionsAmount = amount
         
     }
     var totalAccuracy: Float {
@@ -37,7 +36,7 @@ final class StatisticServiceImplementation: StatisticService {
         return accuracy
     }
     var gamesCount: Int {
-        return allResults.count
+            return allResults.count
     }
     private(set) var bestGame: GameRecord {
         get {
@@ -64,8 +63,13 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     private let userDefaults = UserDefaults.standard
+    
     private enum Keys: String {
         case bestGame, allResults
+    }
+    
+    init() {
+        print("StatisticServiceImplementation init")
     }
 }
 

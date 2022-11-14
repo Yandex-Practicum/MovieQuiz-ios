@@ -5,16 +5,17 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int8 = 0
     private var correctAnswers = 0
     private let questionsAmount = 10
-    
-    // MARK: - Another classes or structs Instances
-    private var questionsFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var alertPresenter: AlertPresenterProtocol?
-    private var statisticService: StatisticService?
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
+    // MARK: - Dependencies
+    private var questionsFactory: QuestionFactoryProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
+    
+    
     // MARK: - UIElements
-    private let questionTitleLabel = UILabel()
+    private var questionTitleLabel = UILabel()
     private let indexLabel = UILabel()
     private let questionLabel = UILabel()
     private let viewForQuestionLabel = UIView()
@@ -28,7 +29,12 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.cornerRadius = 20
         return previewImage
     }()
-    
+    private let activityIndicator: UIActivityIndicatorView = {
+       let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = .large
+        return activityIndicator
+    }()
+
     private let stackViewForButtons = UIStackView()
     private let stackViewForLabels = UIStackView()
     private let stackViewForAll = UIStackView()
@@ -36,21 +42,22 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        print("viewDidLoad")
         alertPresenter = AlertPresenter(movieQuizViewController: self)
-        questionsFactory = QuestionFactory(delegate: self)
+        questionsFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         statisticService = StatisticServiceImplementation()
-        
         throwAllElementsOnScreen()
-        createConstraints()
-        questionsFactory?.requestNextQuestion()
         
+        createConstraints()
+        questionsFactory?.loadData()
+        questionsFactory?.requestNextQuestion()
+        showLoadingIndicator()
+       
     }
     
     // MARK: - makeAppearanceOfAllElements and Create all Constraints
     private func makeAppearanceOfAllElements() {
         view.backgroundColor = .ypBlack
-        
         
         makeAppearance(of: noButton, title: "Нет", action: #selector(noButtonPressed(sender: )))
         makeAppearance(of: yesButton, title: "Да", action: #selector(yesButtonPressed(sender: )))
@@ -60,8 +67,8 @@ final class MovieQuizViewController: UIViewController {
         makeAppearance(of: indexLabel, text: "1/10", font: .ysMedium ?? UIFont(), textAlignment: .right)
         indexLabel.setContentHuggingPriority(UILayoutPriority(252), for: .horizontal)
         
-        makeAppearance(of: questionLabel, text: "Рэйтинг этого фильма меньше чем 5?", font: .ysBold ?? UIFont(),
-                       numberOfLines: 2, textAlignment: .center)
+        makeAppearance(of: questionLabel, text: "Рэйтинг этого фильма больше чем 5?", font: .ysBold ?? UIFont(), numberOfLines: 2, textAlignment: .center)
+        
         questionLabel.setContentCompressionResistancePriority(UILayoutPriority(751.0), for: .vertical)
         
         makeAppearance(of: stackViewForLabels, axis: .horizontal, distribution: .fill, spacing: 0)
@@ -97,7 +104,10 @@ final class MovieQuizViewController: UIViewController {
         questionLabel.topAnchor.constraint(equalTo: viewForQuestionLabel.topAnchor,
                                            constant: 13),
         questionLabel.bottomAnchor.constraint(equalTo: viewForQuestionLabel.bottomAnchor,
-                                              constant: -13)
+                                              constant: -13),
+        // activityIndicator
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         
         ])
     }
@@ -106,7 +116,7 @@ final class MovieQuizViewController: UIViewController {
         makeAppearanceOfAllElements()
         
         [noButton,yesButton,indexLabel,questionLabel,questionTitleLabel,previewImage,
-         stackViewForAll,stackViewForLabels,stackViewForButtons].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+         stackViewForAll,stackViewForLabels,stackViewForButtons,activityIndicator].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         
         stackViewForLabels.addArrangedSubViews(questionTitleLabel,
@@ -120,14 +130,16 @@ final class MovieQuizViewController: UIViewController {
                                        viewForQuestionLabel,
                                        stackViewForButtons)
         
+        
         view.addSubview(stackViewForAll)
+        view.addSubview(activityIndicator)
     }
     
     // MARK: - Functions to handle "state machine"
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(question: model.text,
-                                 image: UIImage(named: model.image) ?? UIImage(),
+                                 image: UIImage(data: model.image) ?? UIImage(),
                                  questionNumber:
                                     "\(currentQuestionIndex+1)/\(questionsAmount)")
     }
@@ -170,6 +182,7 @@ final class MovieQuizViewController: UIViewController {
         } else {
             currentQuestionIndex += 1
             questionsFactory?.requestNextQuestion()
+            
         }
     }
     
@@ -195,6 +208,12 @@ final class MovieQuizViewController: UIViewController {
         }
         alertPresenter?.displayAlert(endOfRoundAlert)
     }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
     // buttons action
     @objc private func noButtonPressed(sender: UIButton) {
         showAnswerResult(isCorrect: false)
@@ -238,7 +257,34 @@ extension MovieQuizViewController {
 }
 
 extension MovieQuizViewController: QuestionFactoryDelegate {
+    func didFailedToLoadImage() {
+        print("ppppp")
+        showLoadingIndicator()
+    }
+    
+    
+    func didLoadDataFromServer() {
+        
+        activityIndicator.isHidden = true
+        questionsFactory?.requestNextQuestion()
+        
+    }
+    
+    func didFailToLoadDataFromServer(with error: Error) {
+        
+        alertPresenter?.displayAlert(AlertModel(title: "Ошибка",
+                                                message: error.localizedDescription,
+                                                buttonText: "Попробовать еще раз",
+                                                completion: { [weak self] in
+            self?.showLoadingIndicator()
+            self?.questionsFactory?.requestNextQuestion()
+            self?.questionsFactory?.loadData()
+        }))
+    }
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
+        activityIndicator.isHidden = true
+        print("BBB")
         guard let question = question else { return }
         currentQuestion = question
         let viewModel = convert(model: question)
