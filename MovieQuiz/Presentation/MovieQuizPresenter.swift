@@ -44,7 +44,7 @@ final class MovieQuizPresenter {
     }
     
     // Функция сравнения ответа пользователя и правильного ответа
-    private func didAnswer (isYes: Bool) {
+        func didAnswer (isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -55,8 +55,6 @@ final class MovieQuizPresenter {
         
         viewController?.showAnswerResult(isCorrect: isCorrect)
     }
-    
-    
     
     // Функция преобразования вопроса в вью модель
     func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -73,7 +71,7 @@ final class MovieQuizPresenter {
     }
     
     // Функция для сброса индекса текущего вопроса
-    func resetQuestionIndex () {
+    func restartGame () {
         currentQuestionIndex = 0
     }
     

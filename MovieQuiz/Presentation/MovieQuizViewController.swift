@@ -15,12 +15,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
-    // Переменная для подсчёта колличества верных ответов
-    private var correctAnswers: Int = 0
     // Экземпляр фабрики вопросов
     var questionFactory: QuestionFactoryProtocol?
-    // Текущий вопрос, который видит пользователь
-    //var currentQuestion: QuizQuestion?
     // Экземпляр AlertPresenter для отображения Алерта
     private let alertPresenter = AlertPresenter()
     //
@@ -90,8 +86,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         ) { [weak self] in
             guard let self = self else { return }
            // restart
-            self.presenter.resetQuestionIndex()
-            self.correctAnswers = 0
+            self.presenter.restartGame()
             // заново показываем первый вопрос
             self.questionFactory?.requestNextQuestion()
         }
@@ -100,9 +95,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     // Функция для отображения рамки с цветовой индикацией правильности ответа и блокировки кнопок на время показа рамки с последующей разблокировкой и скрытием рамки
     func showAnswerResult(isCorrect: Bool){
-        if isCorrect {
-            correctAnswers += 1
-        }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -158,6 +150,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else {return}
             self.hideLoadingIndicator()
             self.questionFactory?.loadData()
+            self.presenter.restartGame()
         }
         let alertPresenter = AlertPresenter()
         alertPresenter.show(in: self, model: unHappyResultModel)
