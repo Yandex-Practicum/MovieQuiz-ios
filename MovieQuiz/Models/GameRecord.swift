@@ -18,11 +18,4 @@ struct GameRecord: Codable {
         self.total = total
         self.date = date
     }
-    
-//    func comparingRecords(currentGame: GameRecord) -> Bool {
-//        if currentGame.correct > correct { return true
-//        } else {
-//            return false
-//        }
-//    }
-    }
+}
