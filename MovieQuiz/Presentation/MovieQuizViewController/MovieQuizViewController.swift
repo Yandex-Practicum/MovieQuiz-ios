@@ -100,11 +100,12 @@ extension MovieQuizViewController {
     }
     
     private func showNextQuestionOrResults() {
-        
         if currentQuestionsIndex == questionsAmount - 1 {
+            statisticService?.store(correct: self.score, total: self.questionsAmount)
             guard  let gameCount = statisticService?.gamesCount,
                   let bestGame = statisticService?.bestGame,
                   let totalAccuracy = statisticService?.totalAccuracy  else { return  }
+            
             let messangeAlert = """
               \(Constatns.AlertLable.scoreRound) \(score)/\(questionsAmount) \n
               \(Constatns.AlertLable.numberOfQuizzesPlayed) \(gameCount) \n
@@ -114,7 +115,6 @@ extension MovieQuizViewController {
 
             let alertModel = AlertModel(title: Constatns.AlertLable.title, messange: messangeAlert, buttonText: Constatns.AlertButton.buttonText) { [weak self] in
                 guard let self = self else { return }
-                self.statisticService?.store(correct: self.score, total: self.questionsAmount)
                 self.resetScore()
             }
             showAlert(quiz: alertModel)
