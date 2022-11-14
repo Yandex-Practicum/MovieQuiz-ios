@@ -15,12 +15,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
-    // Переменная индекса текущего вопроса в MovieQuizViewController
-    //private var currentQuestionIndex: Int = 0
     // Переменная для подсчёта колличества верных ответов
     private var correctAnswers: Int = 0
-    // Общее колличество вопросов
-    //private let questionsAmount: Int = 10
     // Экземпляр фабрики вопросов
     var questionFactory: QuestionFactoryProtocol?
     // Текущий вопрос, который видит пользователь
@@ -39,7 +35,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        presenter.viewController = self
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         questionFactory?.loadData()
@@ -57,20 +53,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     //MARK: - Actions
-    // Действие по нажатию кнопки "Нет"
+    // Действия по нажатию кнопки "Нет"
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
+    
+    // Действия по нажатию кнопки "Да"
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     //MARK: - Helpers
     // Функция для создания первой вью модели
@@ -107,7 +99,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     // Функция для отображения рамки с цветовой индикацией правильности ответа и блокировки кнопок на времяпоказа рамки с последующей разблокировкой и убиранием рамки
-    private func showAnswerResult(isCorrect: Bool){
+        func showAnswerResult(isCorrect: Bool){
         if isCorrect {
             correctAnswers += 1
         }
