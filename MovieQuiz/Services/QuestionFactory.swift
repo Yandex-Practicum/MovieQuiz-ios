@@ -14,6 +14,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     weak var delegate: QuestionFactoryDelegate?
     
     var movies: [MostPopularMovie] = []
+    
     // Функция формирования следующего вопроса
     func requestNextQuestion () {
         DispatchQueue.global().async { [weak self] in
@@ -47,6 +48,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                                         correctAnswer: correctAnswer)
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
+                
                 // Передаём вопрос делегату
                     self.delegate?.didReciveNextQuestion(question: question)
             }
