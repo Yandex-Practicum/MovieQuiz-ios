@@ -11,6 +11,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var statisticService: StatisticService?
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -25,17 +26,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        statisticService = StatisticServiceImplementation()
+        
+        yesButtonOutlet.isEnabled = true
+        noButtonOutlet.isEnabled = true
     }
+    
+    //MARK: - Outlets
+    
+    @IBOutlet weak var noButtonOutlet: UIButton!
+    @IBOutlet weak var yesButtonOutlet: UIButton!
     
     //MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
+        yesButtonOutlet.isEnabled = false
         showAnswerResult(isCorrect: true == currentQuestion.correctAnswer)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
+        noButtonOutlet.isEnabled = false
         showAnswerResult(isCorrect: false == currentQuestion.correctAnswer)
     }
     
@@ -86,7 +98,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(quiz result: QuizResultsViewModel) {
         
         let completion = {
-            print("Completition was called")
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.questionFactory?.requestNextQuestion()
@@ -111,16 +122,32 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = "Ваш результат: \(correctAnswers) из 10"
-            let viewModel = QuizResultsViewModel(
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel)
+            // All questions are shown
+            if let statisticService = statisticService {
+                // store current play result
+                statisticService.store(correct: correctAnswers, total: questionsAmount)
+                
+                let bestGame = statisticService.bestGame
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd.MM.YYYY HH:mm"
+                
+                let text = "Ваш результат: \(correctAnswers) из 10\n" +
+                "Количество сыграных квизов: \(statisticService.gamesCount)\n" +
+                "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))\n" +
+                "Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)\n"
+                
+                let viewModel = QuizResultsViewModel(
+                    title: "Этот раунд окончен!",
+                    text: text,
+                    buttonText: "Сыграть ещё раз")
+                show(quiz: viewModel)
+            }
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
+        yesButtonOutlet.isEnabled = true
+        noButtonOutlet.isEnabled = true
     }
     
 }
