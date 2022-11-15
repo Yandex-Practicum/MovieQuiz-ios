@@ -1,5 +1,7 @@
 import UIKit
 
+
+
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Lifecycle
@@ -56,6 +58,126 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(viewController: self)
+        
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        
+        let inceptionPath = documentsURL.appendingPathComponent("inception.json")
+        let jsonString = try? String(contentsOf: inceptionPath)
+        let data = jsonString?.data(using: .utf8)
+        guard let data = data else { return }
+
+        struct Actor: Codable {
+            let id: String
+            let image: String
+            let name: String
+            let asCharacter: String
+        }
+        struct Movie: Codable {
+            let id: String
+            let title: String
+            let year: Int
+            let image: String
+            let releaseDate: String
+            let runtimeMins: Int
+            let directors: String
+            let actorList: [Actor]
+        }
+
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+
+            guard let json = json,
+                  let id = json["id"] as? String,
+                  let title = json["title"] as? String,
+                  let jsonYear = json["year"] as? String,
+                  let year = Int(jsonYear),
+                  let image = json["image"] as? String,
+                  let releaseDate = json["releaseData"] as? String,
+                  let jsonRuntimeMins = json["runtimeMins"] as? String,
+                  let runtimeMins = Int(jsonRuntimeMins),
+                  let directors = json["directors"] as? String,
+                  let actorList = json["actorList"] as? [Any] else {
+                return
+            }
+            var actors: [Actor] = []
+
+            for actor in actorList {
+                guard let actor = actor as? [String: Any],
+                      let id = actor["id"] as? String,
+                      let image = actor["image"] as? String,
+                      let name = actor["name"] as? String,
+                      let asCharacter = actor["asCharacter"] as? String else {
+                    return
+                }
+                let mainActor = Actor(id: id, image: image, name: name, asCharacter: asCharacter)
+                actors.append(mainActor)
+            }
+            
+            let movie = Movie(id: id,
+                              title: title,
+                              year: year,
+                              image: image,
+                              releaseDate: releaseDate,
+                              runtimeMins: runtimeMins,
+                              directors: directors,
+                              actorList: actors)
+            
+        } catch {
+            print("Failed to parsed: \(String(describing: jsonString))")
+        }
+        
+        let topPath = documentsURL.appendingPathComponent("top250MoviesIMDB.json")
+        let jsongTop = try? String(contentsOf: topPath)
+        let dataTop = jsongTop?.data(using: .utf8)
+        guard let dataTop = dataTop else { return }
+        
+        struct MovieTop: Codable {
+            let id: String
+            let rank: String
+            let title: String
+            let fullTitle: String
+            let year: String
+            let image: String
+            let crew: String
+            let imDbRating: String
+            let imDbRatingCount: String
+        }
+        
+        struct Top: Decodable {
+            let items: [MovieTop]
+        }
+        
+        do {
+            let top = try JSONDecoder().decode(Top.self, from: dataTop)
+            
+        } catch {
+            print("Failed to parse: \(error.localizedDescription)")
+        }
+        
+//        print(NSHomeDirectory())
+//        print(Bundle.main.bundlePath)
+//        print(documentsURL)
+//        print(documentsURL.scheme!)
+        print(documentsURL.path)
+//
+//        let fileName = "text.swift"
+//        documentsURL.appendPathComponent(fileName)
+//        print(documentsURL.path)
+//        if !FileManager.default.fileExists(atPath: documentsURL.path){
+//            let hello = "Hello world!"
+//            let data = hello.data(using: .utf8)
+//            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
+//
+//        enum FileManagerError: Error {
+//            case fileDoesntExist
+//        }
+//
+//        func string(from documentsURL: URL) throws -> String {
+//            if !FileManager.default.fileExists(atPath: documentsURL.path) {
+//                throw FileManagerError.fileDoesntExist
+//            }
+//            return try String(contentsOf: documentsURL)
+//        }
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -94,10 +216,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         if currentQuestionIndex == questionsAmount - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
             // показать результат квиза
+            let title = "Игра окончена"
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
             "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuizResultsViewModel(title: text, text: text, buttonText: "Cыграть еще раз")
+            let viewModel = QuizResultsViewModel(title: title, text: text, buttonText: "Cыграть еще раз")
             
             self.show(quiz: viewModel)
         } else {
@@ -106,7 +229,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     }
-    
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         // проверка ответа
@@ -121,70 +243,4 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else { return }
         showAnswerResult(isCorrect: userAnswer == currentQuestion.correctAnswer)
     }
-    
-    
 }
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
