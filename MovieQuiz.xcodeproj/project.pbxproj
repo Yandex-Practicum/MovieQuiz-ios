@@ -7,25 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BEE36F02922BC3100CD74A6 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BEE36EE2922BC3000CD74A6 /* YS Display-Bold.ttf */; };
+		1BEE36F12922BC3100CD74A6 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BEE36EF2922BC3100CD74A6 /* YS Display-Medium.ttf */; };
+		1BEE36F32922BCD100CD74A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD1ABABD2831907F00B3E448 /* LaunchScreen.storyboard */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
 		AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD1ABAB72831907B00B3E448 /* Main.storyboard */; };
 		AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD1ABABA2831907F00B3E448 /* Assets.xcassets */; };
-		AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */; };
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1BEE36EE2922BC3000CD74A6 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		1BEE36EF2922BC3100CD74A6 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizViewController.swift; sourceTree = "<group>"; };
 		AD1ABAB82831907B00B3E448 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AD1ABABA2831907F00B3E448 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AD1ABABD2831907F00B3E448 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AD1ABABD2831907F00B3E448 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD1ABABF2831907F00B3E448 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -43,6 +47,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1BEE36ED2922BC1400CD74A6 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1BEE36EE2922BC3000CD74A6 /* YS Display-Bold.ttf */,
+				1BEE36EF2922BC3100CD74A6 /* YS Display-Medium.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		8F4738322848DE2A005DF65E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -55,7 +68,8 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
+				1BEE36ED2922BC1400CD74A6 /* Fonts */,
+				AD1ABABD2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
 			);
@@ -176,9 +190,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
+				1BEE36F02922BC3100CD74A6 /* YS Display-Bold.ttf in Resources */,
+				1BEE36F32922BCD100CD74A6 /* LaunchScreen.storyboard in Resources */,
+				1BEE36F12922BC3100CD74A6 /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,14 +244,6 @@
 				AD1ABAB82831907B00B3E448 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AD1ABABD2831907F00B3E448 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
