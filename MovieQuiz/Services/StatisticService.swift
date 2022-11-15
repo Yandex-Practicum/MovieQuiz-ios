@@ -28,15 +28,6 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    /*var gamesCount: Int {
-        get {
-            return userDefaults.integer(forKey: Keys.gamesCount.rawValue)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
-        }
-    }*/
-    
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),

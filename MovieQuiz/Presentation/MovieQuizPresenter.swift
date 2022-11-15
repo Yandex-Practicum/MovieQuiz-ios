@@ -30,9 +30,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     
     // Слабая ссылка на ViewController
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -149,7 +149,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // Функция для отображения рамки с цветовой индикацией правильности ответа и блокировки кнопок на время показа рамки с последующей разблокировкой и скрытием рамки
     func showAnswerResult(isCorrect: Bool){
-        viewController?.highlightImageBorder(isCorrect: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [ weak self ] in
             guard let self = self else { return }

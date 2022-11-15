@@ -4,7 +4,7 @@ import UIKit
 
 
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     //MARK: - Properties
     // Аутлеты для текста, счётчика, изображения и кнопок
@@ -69,10 +69,10 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // Функция для отображения рамки с цветовой индикацией правильности ответа
-    func highlightImageBorder(isCorrect: Bool){
+    func highlightImageBorder(isCorrectAnswer: Bool){
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
     // Функция для скрытия рамки
     func hideImageBoarder () {
