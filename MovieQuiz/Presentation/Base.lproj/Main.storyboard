@@ -59,7 +59,7 @@
                                         <rect key="frame" x="0.0" y="566.33333333333337" width="335" height="74.666666666666629"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="8MH-hT-qWX" userLabel="Question Label">
-                                                <rect key="frame" x="41.999999999999986" y="12.999999999999996" width="240.66666666666663" height="48.666666666666657"/>
+                                                <rect key="frame" x="42" y="12.999999999999996" width="251" height="48.666666666666657"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <string key="text">Рейтинг этого фильма
 меньше чем 5?</string>
@@ -71,8 +71,8 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="8MH-hT-qWX" secondAttribute="trailing" constant="42" id="KeL-BI-Mbf"/>
                                             <constraint firstItem="8MH-hT-qWX" firstAttribute="top" secondItem="pPW-vu-KAB" secondAttribute="top" constant="13" id="hew-g1-pLi"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8MH-hT-qWX" secondAttribute="trailing" constant="20" symbolic="YES" id="lHb-nA-ZgA"/>
                                             <constraint firstItem="8MH-hT-qWX" firstAttribute="leading" secondItem="pPW-vu-KAB" secondAttribute="leading" constant="42" id="mKW-Dx-VNg"/>
                                             <constraint firstAttribute="bottom" secondItem="8MH-hT-qWX" secondAttribute="bottom" constant="13" id="xBc-ht-hgF"/>
                                         </constraints>

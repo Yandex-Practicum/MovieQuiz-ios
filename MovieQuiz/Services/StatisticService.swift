@@ -16,7 +16,7 @@ protocol StatisticService {
 
 //MARK: - Class Statistic
 
-class StatisticServiceImplementation: StatisticService {
+final class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
 
@@ -78,16 +78,4 @@ class StatisticServiceImplementation: StatisticService {
     }
 }
 
-//MARK: - Struct
 
-struct GameRecord: Codable {
-    let correct: Int
-    let total: Int
-    let date: Date
-}
-
-extension GameRecord: Comparable {
-    static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        return lhs.correct < rhs.correct
-    }
-}

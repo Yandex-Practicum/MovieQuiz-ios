@@ -16,6 +16,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
     private let questionsAmount: Int = 10
+    
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
@@ -26,10 +27,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad(){
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        alertPresenter = AlertPresenter(viewController: self)
-        statisticService = StatisticServiceImplementation()
+               questionFactory = QuestionFactory(delegate: self)
+               questionFactory?.requestNextQuestion()
+               alertPresenter = AlertPresenter(viewController: self)
+               statisticService = StatisticServiceImplementation()
+        
     }
     
     // MARK: - QuestionFactoryDelegate
