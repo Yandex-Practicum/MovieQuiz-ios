@@ -37,9 +37,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - QuestionFactoryDelegate
 
     func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-                return
-            }
+        guard let question = question else { return }
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
@@ -74,10 +72,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults(){
         if currentQuestionIndex == questionsAmount - 1 {
             statisticService?.store(correct: correctAnswers, total: questionsAmount)
+            guard let bestGame = statisticService?.bestGame else {return}
                         let text = """
                                         Ваш результат: \(correctAnswers) из \(questionsAmount)
                                         Количество сыгранных квизов: \(statisticService.gamesCount)
-                                        Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date))
+                                        Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(bestGame.date.dateTimeString))
                                         Средняя точность: \(Int(statisticService.totalAccuracy))%
                                    """
             let viewModel = QuizResultsViewModel(
