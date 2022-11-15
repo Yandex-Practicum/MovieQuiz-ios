@@ -11,7 +11,7 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
-    // Сервис сбора статистики
+    /// Сервис сбора статистики
     private let statisticService: StatisticServiceImplementation!
 
     // Переменная для подсчёта колличества верных ответов
@@ -74,7 +74,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     // Фунуция для определения последнего вопроса
-    func isLastQuestion () -> Bool {
+    private func isLastQuestion () -> Bool {
         return currentQuestionIndex == questionsAmount - 1
     }
     
@@ -136,8 +136,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     // Функция для действий при неудачном походе в сеть
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
-        print(error)
-        print(error.localizedDescription)
         viewController?.showNetworkError(message: message)
     }
     

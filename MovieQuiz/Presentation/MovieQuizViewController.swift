@@ -44,7 +44,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter.yesButtonClicked()
     }
     
-    //MARK: - Private functions
+    //MARK: - Functions
     // Функция для передачи в вью модель необходимых данных
     func show(quiz step: QuizStepViewModel) {
         self.imageView.image = step.image

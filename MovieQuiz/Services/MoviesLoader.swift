@@ -63,7 +63,6 @@ struct MoviesLoader: MoviesLoading {
                         let error = NetworkError.jsonErrorMessage(errorMessage)
                         handler(.failure(error))
                         print("jsonData: \(jsonData.errorMessage) ❌")
-                        print(error.localizedDescription)
                         } else {
                     // в случае, если данные успешно декодированы и нет сообщения об ошибке, передаём данные в handler
                         print("jsonData: ✅")
