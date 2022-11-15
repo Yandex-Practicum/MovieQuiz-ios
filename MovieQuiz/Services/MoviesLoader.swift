@@ -14,8 +14,7 @@ protocol MoviesLoading {
 struct MoviesLoader: MoviesLoading {
 //MARK: - Enum for errors
     
-    private enum NetworkError: Error {
-        case codeError
+    enum NetworkError: Error {
         case jsonErrorMessage(String)
         
         // добавляем Error Handler
@@ -24,8 +23,6 @@ struct MoviesLoader: MoviesLoading {
                 // в который передадим error message из JSON
             case .jsonErrorMessage(let message):
                 return message
-            default:
-                return "Uncknown error"
             }
         }
     }
@@ -62,17 +59,22 @@ struct MoviesLoader: MoviesLoading {
                     
                     // на случай, если в JSON будет присутствовать сообщение об ошибке (например исчерпан дневной лимит запросов)
                     if !jsonData.errorMessage.isEmpty {
-                        handler(.failure(NetworkError.jsonErrorMessage(jsonData.errorMessage)))
+                        let errorMessage = jsonData.errorMessage
+                        let error = NetworkError.jsonErrorMessage(errorMessage)
+                        handler(.failure(error))
                         print("jsonData: \(jsonData.errorMessage) ❌")
+                        print(error.localizedDescription)
                         } else {
                     // в случае, если данные успешно декодированы и нет сообщения об ошибке, передаём данные в handler
                         print("jsonData: ✅")
                         handler(.success(jsonData))
                     }
                     
-                } catch let mappingError {
+                } catch {
                     // в случае возникновения ошибки, передаём её в handler
-                    handler(.failure(mappingError))
+                    let errorMessage =  "Mapping Error"
+                    let error = NetworkError.jsonErrorMessage(errorMessage)
+                    handler(.failure(error))
                     print("jsonData: ❌")
                 }
             }

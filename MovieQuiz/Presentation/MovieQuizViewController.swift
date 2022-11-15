@@ -15,12 +15,6 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
-    // Экземпляр AlertPresenter для отображения Алерта
-    private let alertPresenter = AlertPresenter()
-    
-    // Сервис сбора статистики
-    private var statisticService: StatisticServiceImplementation = .init()
-    
     // Презентер
     private var presenter: MovieQuizPresenter!
     
@@ -29,12 +23,14 @@ final class MovieQuizViewController: UIViewController {
         case releaseDate = "release_date"
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         presenter = MovieQuizPresenter(viewController: self)
-        statisticService = StatisticServiceImplementation()
-        showLoadingIndicator()
+        
+        imageView.layer.cornerRadius = 20
+        
     }
     
     //MARK: - Actions
@@ -48,7 +44,7 @@ final class MovieQuizViewController: UIViewController {
         presenter.yesButtonClicked()
     }
     
-    //MARK: - Helpers
+    //MARK: - Private functions
     // Функция для передачи в вью модель необходимых данных
     func show(quiz step: QuizStepViewModel) {
         self.imageView.image = step.image
@@ -68,24 +64,20 @@ final class MovieQuizViewController: UIViewController {
             self.presenter.restartGame()
             // заново показываем первый вопрос
         }
+        let  alertPresenter = AlertPresenter()
         alertPresenter.show(in: self, model: alertModel)
     }
     
-    // Функция для отображения рамки с цветовой индикацией правильности ответа и блокировки кнопок на время показа рамки с последующей разблокировкой и скрытием рамки
-    func showAnswerResult(isCorrect: Bool){
+    // Функция для отображения рамки с цветовой индикацией правильности ответа
+    func highlightImageBorder(isCorrect: Bool){
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [ weak self ] in
-            guard let self = self else { return }
-            self.toggleIsEnablebButtons()
-            self.imageView.layer.borderWidth = 0
-            self.presenter.showNextQuestionOrResults()
-        }
-        toggleIsEnablebButtons()
     }
-    
+    // Функция для скрытия рамки
+    func hideImageBoarder () {
+        imageView.layer.borderWidth = 0
+    }
     // Функция блокировки переключения активности кнопок. Используется в showAnswerResult
     func toggleIsEnablebButtons(){
         noButton.isEnabled.toggle()
@@ -113,8 +105,6 @@ final class MovieQuizViewController: UIViewController {
             buttonText: "Попробовать ещё раз"
         ) { [weak self] in
             guard let self = self else {return}
-            self.hideLoadingIndicator()
-            self.presenter.questionFactory?.loadData()
             self.presenter.restartGame()
         }
         let alertPresenter = AlertPresenter()

@@ -12,13 +12,13 @@ import UIKit
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // Сервис сбора статистики
-    private var statisticService: StatisticServiceImplementation = .init()
+    private let statisticService: StatisticServiceImplementation!
 
     // Переменная для подсчёта колличества верных ответов
     private var correctAnswers: Int = 0
     
     // Экземпляр фабрики вопросов
-    var questionFactory: QuestionFactoryProtocol?
+    private var questionFactory: QuestionFactoryProtocol?
     
     // Переменная индекса текущего вопроса
     private var currentQuestionIndex: Int = 0
@@ -34,7 +34,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
-        
+        statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
@@ -61,7 +61,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             correctAnswers += 1
         }
         
-        viewController?.showAnswerResult(isCorrect: isCorrect)
+        self.showAnswerResult(isCorrect: isCorrect)
     }
     
     // Функция преобразования вопроса в вью модель
@@ -82,7 +82,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func restartGame () {
         currentQuestionIndex = 0
         correctAnswers = 0
-        questionFactory?.requestNextQuestion()
+        questionFactory?.loadData()
     }
     
     // Функция для инкрементирования индекса текущего вопроса
@@ -108,7 +108,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             
             statisticService.gamesCounterUp()
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-            let text = self.gameOverAlertText()
+            let text = self.makeResultsMessage()
             
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
@@ -122,17 +122,22 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     // Функция формирования сообщения Алерта с результатами раунда и статистикой
-    private func gameOverAlertText () -> String {
+    private func makeResultsMessage () -> String {
+        let bestGame = statisticService.bestGame
+        
         let currentGameResultText = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
         let totalGamesCounterText = "Колличество сыгранных квизов: \(statisticService.gamesCounterRead())"
-        let bestGameResultText = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
+        let bestGameResultText = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
         let avarageAccuracyText = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        
         return "\(currentGameResultText)\n\(totalGamesCounterText)\n\(bestGameResultText)\n\(avarageAccuracyText)"
     }
     
     // Функция для действий при неудачном походе в сеть
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
+        print(error)
+        print(error.localizedDescription)
         viewController?.showNetworkError(message: message)
     }
     
@@ -140,5 +145,18 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func didloadDataFromServer() {
         viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
+    }
+    
+    // Функция для отображения рамки с цветовой индикацией правильности ответа и блокировки кнопок на время показа рамки с последующей разблокировкой и скрытием рамки
+    func showAnswerResult(isCorrect: Bool){
+        viewController?.highlightImageBorder(isCorrect: isCorrect)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [ weak self ] in
+            guard let self = self else { return }
+            self.viewController?.hideImageBoarder()
+            self.viewController?.toggleIsEnablebButtons()
+            self.showNextQuestionOrResults()
+        }
+        viewController?.toggleIsEnablebButtons()
     }
 }
