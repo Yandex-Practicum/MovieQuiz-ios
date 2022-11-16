@@ -2,30 +2,33 @@ import Foundation
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
+    private let statisticService: StatisticService!
     weak var viewController: MovieQuizViewController?
-    var questionFactory: QuestionFactoryProtocol?
-    let questionsAmount: Int = 10
-    var currentQuestionIndex: Int = 0
-    var currentQuestion: QuizQuestion?
-    var correctAnswers: Int = 0
+    private var questionFactory: QuestionFactoryProtocol?
+    private let questionsAmount: Int = 10
+    private var currentQuestionIndex: Int = 0
+    private var currentQuestion: QuizQuestion?
+    private var correctAnswers: Int = 0
     
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
-        
+        statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
     }
     
-    func isLastQuestion() -> Bool {
+    private func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
+    
     func restartGame() {
         correctAnswers = 0
         currentQuestionIndex = 0
         questionFactory?.requestNextQuestion()
     }
-    func switchToNextQuestion() {
+    
+    private func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     
@@ -39,19 +42,43 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        
         let givenAnswer = true
-        
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
+    
     func noButtonClicked() {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        
         let givenAnswer = false
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func makeResultsMessage() -> String {
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
         
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        let bestGame = statisticService.bestGame
+        
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
+        + " (\(bestGame.date.dateTimeString))"
+        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        
+        let resultMessage = [
+            currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine
+        ].joined(separator: "\n")
+        
+        return resultMessage
+    }
+    
+    func proceedWithAnswer(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.proceedToNextQuestionOrResults()
+        }
     }
     
     func didLoadDataFromServer() {
@@ -76,7 +103,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func showNextQuestionOrResults() {
+    func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
             let text = "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
             
@@ -91,7 +118,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func convert(model: QuizQuestion) -> QuizStepViewModel {
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
