@@ -1,10 +1,3 @@
-//
-//  MovieQuizTests.swift
-//  MovieQuizTests
-//
-//  Created by Илья Тимченко on 16.11.2022.
-//
-
 import XCTest
 @testable import MovieQuiz
 
@@ -32,8 +25,6 @@ final class MovieQuizViewControllerProtocolMock: MovieQuizViewControllerProtocol
     func showNetworkError(message: String) {
         
     }
-    
-    
 }
 
 final class MovieQuizTests: XCTestCase {
