@@ -69,6 +69,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let quizStepViewModel = convert(model: currentQuestion)
         imageView.image = quizStepViewModel.image
+        imageView.layer.cornerRadius = 20
         textLabel.text = quizStepViewModel.question
         counterLabel.text = quizStepViewModel.questionNumber
         
@@ -100,7 +101,7 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool){
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6 // толщина рамки
+        imageView.layer.cornerRadius = 20
         if isCorrect {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
             correctAnswers += 1
