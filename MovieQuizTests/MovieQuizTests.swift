@@ -2,44 +2,49 @@
 //  MovieQuizTests.swift
 //  MovieQuizTests
 //
-//  Created by Илья Тимченко on 06.11.2022.
+//  Created by Илья Тимченко on 16.11.2022.
 //
 
-import XCTest // Фреймфорк для тестирования. Содержит все инструменты, необходимые для создания и запуска unit-тестов
+import XCTest
+@testable import MovieQuiz
 
-struct ArithmeticOperations {
-    func addition(num1: Int, num2: Int, handler: @escaping (Int) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            handler(num1 + num2)
-        }
+final class MovieQuizViewControllerProtocolMock: MovieQuizViewControllerProtocol {
+    func show(quiz step: MovieQuiz.QuizStepViewModel) {
+        
     }
     
-    func subtraction(num1: Int, num2: Int, handler: @escaping (Int) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            handler(num1 - num2)
-        }
+    func show(quiz result: MovieQuiz.QuizResultsViewModel) {
+        
     }
     
-    func multiplication(num1: Int, num2: Int, handler: @escaping (Int) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            handler(num1 * num2)
-        }
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        
     }
+    
+    func showLoadingIndicator() {
+        
+    }
+    
+    func hideLoadingIndicator() {
+        
+    }
+    
+    func showNetworkError(message: String) {
+        
+    }
+    
+    
 }
 
-//MARK: "XCTestCase" - Базовый класс для всех тестов.
 final class MovieQuizTests: XCTestCase {
-    func testAddiction() throws {
-        let arithmeticOperations = ArithmeticOperations()
-        let num1 = 1
-        let num2 = 2
-        
-        let expectation = expectation(description: "Функция выполнена")
-        
-        arithmeticOperations.addition(num1: num1, num2: num2) { result in
-            XCTAssertEqual(result, 3)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2)
+    func testConvert() throws {
+        let mockController = MovieQuizViewControllerProtocolMock()
+        let presenter = MovieQuizPresenter(viewController: mockController)
+        let data = Data()
+        let question = QuizQuestion(image: data, text: "Текст вопроса", correctAnswer: true)
+        let viewModel = presenter.convert(model: question)
+        XCTAssertTrue(viewModel.question == "Текст вопроса")
+        XCTAssertNotNil(viewModel.image)
+        XCTAssertTrue(viewModel.questionNumber == "1/10")
     }
 }
