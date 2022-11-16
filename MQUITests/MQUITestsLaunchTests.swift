@@ -1,13 +1,13 @@
 //
-//  MovieQuizUITestsLaunchTests.swift
-//  MovieQuizUITests
+//  MQUITestsLaunchTests.swift
+//  MQUITests
 //
 //  Created by Илья Тимченко on 16.11.2022.
 //
 
 import XCTest
 
-final class MovieQuizUITestsLaunchTests: XCTestCase {
+final class MQUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

@@ -1,6 +1,8 @@
 import XCTest
 
-final class MovieQuizUITests: XCTestCase {
+@testable import MovieQuiz
+
+final class UITests: XCTestCase {
     var app: XCUIApplication! //Эта переменная символизирует приложение, которое мы тестируем
 
     override func setUpWithError() throws {
@@ -13,7 +15,7 @@ final class MovieQuizUITests: XCTestCase {
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        app.terminate()
+        
         app = nil
     }
 
