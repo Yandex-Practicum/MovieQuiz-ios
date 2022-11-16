@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="sCO-Ja-d3P">
-                                <rect key="frame" x="20" y="54" width="374" height="832.5"/>
+                                <rect key="frame" x="20" y="54" width="374" height="808"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KtB-9E-dJc">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -53,10 +53,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Nc-40-MIj">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="128"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="103.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SSV-L6-eeU" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="102"/>
+                                                <rect key="frame" x="42" y="13" width="290" height="77.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="yp-white"/>
                                                 <nil key="highlightedColor"/>
@@ -71,7 +71,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1Qb-Be-K2t">
-                                        <rect key="frame" x="0.0" y="772.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="748" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RM5-dk-yEn" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -111,7 +111,7 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="2m2-FD-uNN"/>
+                                            <constraint firstAttribute="height" constant="60" id="7B0-rj-TLh"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -123,6 +123,7 @@
                             <constraint firstItem="sCO-Ja-d3P" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="6BJ-oe-exH"/>
                             <constraint firstItem="sCO-Ja-d3P" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="fCW-f4-PIa"/>
                             <constraint firstAttribute="trailing" secondItem="sCO-Ja-d3P" secondAttribute="trailing" constant="20" id="lqQ-Yo-zoo"/>
+                            <constraint firstItem="sCO-Ja-d3P" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="u0H-5u-Oft"/>
                         </constraints>
                     </view>
                     <connections>
