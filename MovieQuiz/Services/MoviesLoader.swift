@@ -1,10 +1,3 @@
-//
-//  MoviesLoader.swift
-//  MovieQuiz
-//
-//  Created by Илья Тимченко on 04.11.2022.
-//
-
 import Foundation
 
 protocol MoviesLoading {
@@ -13,33 +6,28 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
     // MARK: - NetworkClient
-    private let networkClient: NetworkRouting
-    
-    init(networkClient: NetworkRouting = NetworkClient()) {
-        self.networkClient = networkClient
-    }
+    private let networkClient = NetworkClient()
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
-        // Если мы не смогли преобразовать строку в URL, то приложение упадёт с ошибкой
         guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_aay6q7vt") else {
-            preconditionFailure("Unable to construct mostPopularMoviesUrl")
+            preconditionFailure("Unable to construct mostPopularMoviesUrl") // Если мы не смогли преобразовать строку в URL, то наше приложение упадёт с ошибкой
         }
         return url
     }
     
-    //MARK: - функция загрузки фильмов
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
             switch result {
             case .success(let data):
                 do {
-                    let movies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
-                    handler(.success(movies))
+                    let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
+                    handler(.success(mostPopularMovies))
                 } catch {
                     handler(.failure(error))
                 }
-            case .failure(let error): handler(.failure(error))
+            case .failure(let error):
+                handler(.failure(error))
             }
         }
     }
