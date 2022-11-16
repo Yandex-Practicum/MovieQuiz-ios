@@ -7,10 +7,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var mainQuestionLabel: UILabel!
     
-    private var currentQuestionIndex: Int = 0
-    private var correctAnswers: Int = 0
+    var currentQuestionIndex: Int = 0
+    var correctAnswers: Int = 0
+    var questionFactory: QuestionFactoryProtocol?
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: ResultAlertPresenter?
     private var statisticService: StatisticService?

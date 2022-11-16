@@ -26,6 +26,7 @@ struct ResultAlertPresenter {
             delegate?.correctAnswers = 0
             delegate?.questionFactory?.requestNewQuestions()
         }
+        alert.view.accessibilityIdentifier = "Alert"
         alert.addAction(action)
         delegate?.present(alert, animated: true, completion: nil)
     }
