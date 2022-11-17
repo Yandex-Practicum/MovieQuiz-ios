@@ -57,9 +57,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak private var textLabel: UILabel!
     @IBOutlet weak private var counterLabel: UILabel!
    
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak private var yesButton: UIButton!
 
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak private var noButton: UIButton!
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     override func viewDidLoad() {
@@ -122,11 +122,7 @@ final class MovieQuizViewController: UIViewController {
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
             
-
         }
-
-        
- 
 
     }
     

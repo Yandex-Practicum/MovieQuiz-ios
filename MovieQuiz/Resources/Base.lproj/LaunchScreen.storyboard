@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="tFG-5b-CKg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="tFG-5b-CKg">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </imageView>
