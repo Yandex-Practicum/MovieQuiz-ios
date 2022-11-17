@@ -15,6 +15,7 @@ class AlertPresenter: AlertPresenterProtocol {
     }
     
     func presentAlert(model: AlertModel) {
+        print("present alert")
         let alertController = UIAlertController(
             title: model.title,
             message: model.message,

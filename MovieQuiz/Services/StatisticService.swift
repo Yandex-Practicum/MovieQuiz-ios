@@ -7,27 +7,6 @@
 
 import Foundation
 
-struct GameRecord: Codable {
-    let correct: Int
-    let total: Int
-    let date: Date
-}
-
-extension GameRecord: Comparable {
-    static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        return lhs.correct < rhs.correct
-    }
-    static func <= (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        return lhs.correct <= rhs.correct
-    }
-    static func > (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        return lhs.correct > rhs.correct
-    }
-    static func >= (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        return lhs.correct >= rhs.correct
-    }
-}
-
 protocol StatisticService {
     var totalAccuracy: Double { get }
     var gamesCount: Int { get set}
@@ -36,11 +15,9 @@ protocol StatisticService {
 }
 
 final class StatisticServiceImplementation: StatisticService {
-   
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
-    
     private let userDefaults = UserDefaults.standard
     
     var totalAccuracy: Double {

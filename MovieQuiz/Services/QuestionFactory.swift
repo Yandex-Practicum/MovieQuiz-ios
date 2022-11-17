@@ -56,10 +56,6 @@ class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
     
-    //init(delegate: QuestionFactoryDelegate?) {
-    //   self.delegate = delegate
-    //}
-    
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
@@ -74,9 +70,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                 case .success(let mostPopularMovies):
                     self.movies = mostPopularMovies.items // сохраняем фильм в нашу новую переменную
                     self.delegate?.didLoadDataFromServer() // сообщаем, что данные загрузились
-                    print(4)
                 case .failure(let error):
-                    print(5)
                     self.delegate?.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
                 }
             }
@@ -110,15 +104,8 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.delegate?.didReceiveNextQuestion(question: question)
+                self.delegate?.didRecieveNextQuestion(question: question)
             }
         }
     }
-    
-    //    func requestNextQuestion() {
-    //        let index = (0..<questions.count).randomElement() ?? 0
-    //        let question = questions[safe: index]
-    //        delegate?.didReceiveNextQuestion(question: question)
-    //    }
 }
-
