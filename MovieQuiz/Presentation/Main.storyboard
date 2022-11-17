@@ -54,9 +54,6 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="rtk-jC-R3N" firstAttribute="top" secondItem="jPg-Bv-Sh0" secondAttribute="bottom" constant="20" id="m9e-A1-hSb"/>
-                                </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Y3b-5m-eQ6">
                                 <rect key="frame" x="20" y="782.5" width="374" height="60"/>
@@ -76,7 +73,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xV0-Oq-EeJ"/>
+                                            <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xix-57-e5c"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BBp-rI-3UW" userLabel="Yes button">
@@ -94,7 +91,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q2g-gX-SaX"/>
+                                            <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="osN-Ds-g6l"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -126,7 +123,6 @@
                         <constraints>
                             <constraint firstItem="R2P-nf-X3s" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="0Os-ZL-kju"/>
                             <constraint firstItem="mIY-wx-bTg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="0xX-nD-6D3"/>
-                            <constraint firstItem="Y3b-5m-eQ6" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" constant="20" id="1cn-cp-nxa"/>
                             <constraint firstItem="Y3b-5m-eQ6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="GeX-rK-n0I"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mIY-wx-bTg" secondAttribute="trailing" constant="20" id="ITF-EU-2F0"/>
                             <constraint firstItem="R2P-nf-X3s" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Ug8-vp-kwP"/>
@@ -137,14 +133,14 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLabel" destination="2oD-s1-7YI" id="2O4-K6-d6C"/>
-                        <outlet property="imageView" destination="rtk-jC-R3N" id="m28-D7-jCE"/>
-                        <outlet property="textLabel" destination="3mV-n6-5eI" id="9vh-sE-93R"/>
+                        <outlet property="counterLabel" destination="2oD-s1-7YI" id="Ew2-5S-MaY"/>
+                        <outlet property="imageView" destination="rtk-jC-R3N" id="jmp-WC-OH6"/>
+                        <outlet property="textLabel" destination="3mV-n6-5eI" id="TXm-nM-taO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-55.072463768115945" y="55.580357142857139"/>
+            <point key="canvasLocation" x="313" y="25"/>
         </scene>
     </scenes>
     <resources>
