@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		91089013291E3596005075DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD1ABABA2831907F00B3E448 /* Assets.xcassets */; };
+		91A754632927EE1400DBBCCA /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91089010291E2BEF005075DD /* YS Display-Bold.ttf */; };
+		91A754642927EE1400DBBCCA /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9108900F291E2BEF005075DD /* YS Display-Medium.ttf */; };
 		91C106E22924D2DD00D90BAE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C106E12924D2DD00D90BAE /* Main.storyboard */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
@@ -175,6 +177,8 @@
 				91C106E22924D2DD00D90BAE /* Main.storyboard in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				91089013291E3596005075DD /* Assets.xcassets in Resources */,
+				91A754632927EE1400DBBCCA /* YS Display-Bold.ttf in Resources */,
+				91A754642927EE1400DBBCCA /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

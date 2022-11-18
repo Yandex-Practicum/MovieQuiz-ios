@@ -5,8 +5,11 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
     private var currentQuestionIndex: Int = 0
     private var correctAnswer: Int = 0
+    var appMode = 0
     
     
     // MARK: - Lifecycle
@@ -125,6 +128,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
@@ -132,12 +136,14 @@ final class MovieQuizViewController: UIViewController {
     }
     // MARK: - Action
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        yesButton.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
         
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        noButton.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
@@ -150,9 +156,19 @@ final class MovieQuizViewController: UIViewController {
             title: "Этот раунд окончен!",
             text: text,
             buttonText: "Сыграть ещё раз")
+          yesButton.isEnabled = true
+          noButton.isEnabled = true
+          // at the end of the quiz, remove the frame and color
+          imageView.layer.borderColor = nil
+          imageView.layer.borderWidth = 0
         show(quiz: viewModel)
       } else {
         currentQuestionIndex += 1
+          yesButton.isEnabled = true
+          noButton.isEnabled = true
+        // when switching to the next question, remove the frame and color
+        imageView.layer.borderColor = nil
+        imageView.layer.borderWidth = 0
         let nextQuestion = questions[currentQuestionIndex]
         let vieModel = convert(model: nextQuestion)
           
