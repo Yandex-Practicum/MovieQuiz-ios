@@ -9,7 +9,6 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var noButton: UIButton!
     private var currentQuestionIndex: Int = 0
     private var correctAnswer: Int = 0
-    var appMode = 0
     
     
     // MARK: - Lifecycle
