@@ -23,10 +23,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="5jC-0U-6pL" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="IbV-Vv-vjt"/>
-                            <constraint firstItem="5jC-0U-6pL" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="Tfk-YY-3BI"/>
-                            <constraint firstItem="5jC-0U-6pL" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="seZ-h7-Xb1"/>
-                            <constraint firstAttribute="bottom" secondItem="5jC-0U-6pL" secondAttribute="bottom" id="uCB-ni-InO"/>
+                            <constraint firstAttribute="trailing" secondItem="5jC-0U-6pL" secondAttribute="trailing" id="DO9-j8-6Xr"/>
+                            <constraint firstItem="5jC-0U-6pL" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="Pxq-wg-Zh9"/>
+                            <constraint firstItem="5jC-0U-6pL" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="T5l-VD-4uC"/>
+                            <constraint firstAttribute="top" secondItem="5jC-0U-6pL" secondAttribute="top" id="UlJ-VG-v5X"/>
                         </constraints>
                     </view>
                 </viewController>
