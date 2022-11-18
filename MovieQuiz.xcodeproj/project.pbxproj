@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A302E0072926B0E900121EED /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A302E0062926B0E900121EED /* NetworkClient.swift */; };
+		A302E0092926B4AD00121EED /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A302E0082926B4AD00121EED /* MostPopularMovies.swift */; };
+		A302E00B2926B6C400121EED /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A302E00A2926B6C400121EED /* MoviesLoader.swift */; };
 		A316797A2916F99100237571 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31679792916F99100237571 /* StatisticService.swift */; };
 		A316797C2916FA0B00237571 /* StatisticServiceImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A316797B2916FA0B00237571 /* StatisticServiceImplementation.swift */; };
 		A316797E2916FDF800237571 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A316797D2916FDF800237571 /* GameRecord.swift */; };
@@ -32,6 +35,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A302E0062926B0E900121EED /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		A302E0082926B4AD00121EED /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
+		A302E00A2926B6C400121EED /* MoviesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoader.swift; sourceTree = "<group>"; };
 		A31679792916F99100237571 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		A316797B2916FA0B00237571 /* StatisticServiceImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceImplementation.swift; sourceTree = "<group>"; };
 		A316797D2916FDF800237571 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
@@ -107,6 +113,8 @@
 				A3CEC1EF290DD14C007706FB /* QuestionFactoryProtocol.swift */,
 				A3CEC1F1290DD5D8007706FB /* QuestionFactoryDelegate.swift */,
 				A31679792916F99100237571 /* StatisticService.swift */,
+				A302E0062926B0E900121EED /* NetworkClient.swift */,
+				A302E00A2926B6C400121EED /* MoviesLoader.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -119,6 +127,7 @@
 				A3CEC1ED290DB247007706FB /* QuizQuestion.swift */,
 				A3CEC1F3291149D2007706FB /* AlertModel.swift */,
 				A316797D2916FDF800237571 /* GameRecord.swift */,
+				A302E0082926B4AD00121EED /* MostPopularMovies.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,10 +269,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
+				A302E0092926B4AD00121EED /* MostPopularMovies.swift in Sources */,
 				A3CEC1F629114ABB007706FB /* AlertPresenter.swift in Sources */,
 				A3CEC1F4291149D2007706FB /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				A3CEC1F0290DD14C007706FB /* QuestionFactoryProtocol.swift in Sources */,
+				A302E0072926B0E900121EED /* NetworkClient.swift in Sources */,
+				A302E00B2926B6C400121EED /* MoviesLoader.swift in Sources */,
 				A3CEC1F2290DD5D8007706FB /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				A316797A2916F99100237571 /* StatisticService.swift in Sources */,
@@ -422,7 +434,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N29P9VDV4Y;
+				DEVELOPMENT_TEAM = SDLP5C8V69;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieQuiz/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -453,7 +465,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N29P9VDV4Y;
+				DEVELOPMENT_TEAM = SDLP5C8V69;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieQuiz/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
