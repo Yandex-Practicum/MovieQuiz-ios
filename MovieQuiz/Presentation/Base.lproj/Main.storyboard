@@ -116,10 +116,15 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="AGN-bg-bJa">
+                                <rect key="frame" x="177.66666666666666" y="396" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="ypBlack"/>
                         <constraints>
+                            <constraint firstItem="AGN-bg-bJa" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="53Z-Om-MF4"/>
+                            <constraint firstItem="AGN-bg-bJa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CCe-pI-eUZ"/>
                             <constraint firstItem="92E-hE-Spn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="f6T-F5-bBc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="92E-hE-Spn" secondAttribute="trailing" constant="20" id="myF-e8-Dd9"/>
                             <constraint firstItem="92E-hE-Spn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="pTh-6m-wB9"/>
@@ -127,6 +132,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="AGN-bg-bJa" id="B9h-kO-JYi"/>
                         <outlet property="counterLabel" destination="52d-TC-fbe" id="xMM-mE-bRq"/>
                         <outlet property="imageView" destination="c2s-y3-mXL" id="ANo-87-hPr"/>
                         <outlet property="noButtonOutlet" destination="gCh-7A-VMv" id="xOJ-fB-hAg"/>
