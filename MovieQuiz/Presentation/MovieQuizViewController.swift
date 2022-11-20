@@ -50,8 +50,22 @@ private let questions: [QuizQuestion] = [
 ]
 
 final class MovieQuizViewController: UIViewController {
+
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
+
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+    }
+
+    @IBAction private func noButtonClicked(_ sender: Any) {
+    }
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 }
+
+
+
