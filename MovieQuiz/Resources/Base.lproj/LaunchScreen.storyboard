@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="z8T-0Z-pFC">
-                                <rect key="frame" x="0.0" y="-20" width="414" height="936"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="z8T-0Z-pFC">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -25,8 +25,8 @@
                         <constraints>
                             <constraint firstItem="z8T-0Z-pFC" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="9hk-2q-bTH"/>
                             <constraint firstAttribute="trailing" secondItem="z8T-0Z-pFC" secondAttribute="trailing" id="EKd-k6-qJy"/>
-                            <constraint firstItem="z8T-0Z-pFC" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" constant="20" symbolic="YES" id="Kwu-ve-koK"/>
-                            <constraint firstAttribute="top" secondItem="z8T-0Z-pFC" secondAttribute="top" constant="20" symbolic="YES" id="lEH-ah-Fds"/>
+                            <constraint firstItem="z8T-0Z-pFC" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="Kwu-ve-koK"/>
+                            <constraint firstAttribute="top" secondItem="z8T-0Z-pFC" secondAttribute="top" id="lEH-ah-Fds"/>
                         </constraints>
                     </view>
                 </viewController>
