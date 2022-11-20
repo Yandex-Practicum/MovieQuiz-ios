@@ -19,25 +19,28 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers: Int = 0
     var currentQuestionIndex: Int = 0
     
+    // Структура вопроса
     struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
     }
-    // Структура вопроса
+    
+    // для состояния "Вопрос задан"
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    // для состояния "Вопрос задан"
+    
+    // для состояния "Результат квиза"
     struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
-    // для состояния "Результат квиза"
     
+    // массив вопросов+картинка+нужный ответ
     let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -80,20 +83,18 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-    // Индекс для определения порядкового номера вопроса
     
+    // Капот до настроек
     override func viewDidLoad() {
         let imageName = questions[currentQuestionIndex].image
         let text = questions[currentQuestionIndex].text
         guard let image = UIImage(named: imageName) else { return }
         imageView.image = image
         textLabel.text = text
-        
     }
-    // то что покажут первым
     
+    // Заполнение данных
     private func show(quiz step: QuizStepViewModel) {
-        // здесь мы заполняем нашу картинку, текст и счётчик данными хуй знает правда как
         let imageName = questions[currentQuestionIndex].image
         let text = questions[currentQuestionIndex].text
         guard let image = UIImage(named: imageName) else { return }
@@ -101,6 +102,7 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = text
     }
     
+    // Результат
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
@@ -128,8 +130,7 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    
-    
+    // Конверция
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let currentQuestion = questions[currentQuestionIndex]
         return QuizStepViewModel(
@@ -147,19 +148,14 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        
+        // рамка с цветом в зависимости от ответа
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor: UIColor.red.cgColor
         currentQuestionIndex += 1
         
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // запускаем задачу через 1 секунду
-            // код, который вы хотите вызвать через 1 секунду,
-            // в нашем случае это просто функция showNextQuestionOrResults()
-            guard let self = self else { return }
-            
-            
+        // запуск кода через 1 секунду
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             let imageName = self.questions[self.currentQuestionIndex].image
             let text = self.questions[self.currentQuestionIndex].text
             guard let image = UIImage(named: imageName) else { return }
@@ -168,10 +164,8 @@ final class MovieQuizViewController: UIViewController {
             
             self.counterLabel.text = "\(self.currentQuestionIndex + 1)/10"
         }
-        
     }
-    // Красит рамку
-    
+    // Действие после ответа на вопрос
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers) из 10"
@@ -188,7 +182,6 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-    
 }
 
 
