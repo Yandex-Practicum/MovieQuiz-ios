@@ -7,7 +7,8 @@
 
 import Foundation
 
-fileprivate let apiCode = "k_ragzez06"
+fileprivate let iMdbApiKey = "k_ragzez06"
+fileprivate let iMdbImageFormatKey = "._V0_UX600_.jpg"
 
 struct MostPopularMovies: Codable {
     let errorMessage: String
@@ -21,11 +22,10 @@ struct MostPopularMovie: Codable {
     
     var resizedImageURL: URL {
         let urlString = imageURL.absoluteString
-        let imageUrlString = urlString.components(separatedBy: "._")[0] + "._V0_UX600_.jpg"
+        let imageUrlString = urlString.components(separatedBy: "._")[0] + iMdbImageFormatKey
         guard let newURL = URL(string: imageUrlString) else {
             return imageURL
         }
-        
         return newURL
     }
     
@@ -46,7 +46,7 @@ struct MoviesLoader: MoviesLoading {
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
-        guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/" + apiCode) else {
+        guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/" + iMdbApiKey) else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         return url

@@ -13,13 +13,16 @@ fileprivate let questionScore: Float = 7
 class QuestionFactory : QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     private var delegate: QuestionFactoryDelegate?
-    
     private var movies: [MostPopularMovie] = []
-    
     
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
+    }
+    
+    enum ApiError: Error {
+        case responseError(String)
+        case imageError(String)
     }
     
     func loadData() {
@@ -28,8 +31,13 @@ class QuestionFactory : QuestionFactoryProtocol {
                 guard let self = self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
-                    self.movies = mostPopularMovies.items
-                    self.delegate?.didLoadDataFromServer()
+                    let apiErrorMessage = mostPopularMovies.errorMessage
+                    if apiErrorMessage.isEmpty {
+                        self.movies = mostPopularMovies.items
+                        self.delegate?.didLoadDataFromServer() }
+                    else {
+                        self.delegate?.didFailToLoadData(with: ApiError.responseError(apiErrorMessage))
+                    }
                 case.failure(let error):
                     self.delegate?.didFailToLoadData(with: error)
                 }
@@ -47,7 +55,8 @@ class QuestionFactory : QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
-                print("Unable to load image: " + movie.imageURL.absoluteString)
+                let imageLoadingError = "Unable to load image: " + movie.imageURL.absoluteString
+                self.delegate?.didFailToLoadData(with: ApiError.imageError(imageLoadingError))
             }
             
             let rating = Float(movie.rating) ?? 0
@@ -60,5 +69,5 @@ class QuestionFactory : QuestionFactoryProtocol {
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
-    }    
+    }
 }

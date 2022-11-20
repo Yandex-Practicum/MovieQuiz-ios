@@ -8,7 +8,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    private let alertPresenter: AlertPresenter? = nil
+    private var alertPresenter: AlertPresenter?
     
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
@@ -26,11 +26,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter = AlertPresenter()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         
         showLoadingIndicator()
         questionFactory?.loadData()
+        
+        currentQuestionIndex = 0
+        correctAnswers = 0
         
         yesButtonOutlet.isEnabled = true
         noButtonOutlet.isEnabled = true
@@ -74,11 +78,56 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
+        showNetworkErrorAlert(message: error.localizedDescription)
     }
     
+    // MARK: - Alerts
     
-    // MARK: - Private function
+    private func showNetworkErrorAlert(message: String) {
+        hideLoadingIndicator()
+        let errorAlertModel = AlertModel(title: "Ошибка",
+                                         message: message,
+                                         buttonText: "Попробовать еще раз") { [weak self] _ in
+            guard let self = self else { return }
+            self.restartGame()
+        }
+        
+        alertPresenter?.show(controller: self, model: errorAlertModel)
+    }
+    
+    private func showEndGameAlert() {
+        if let statisticService = statisticService {
+            // store current play result
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
+            // show alert message
+            let bestGame = statisticService.bestGame
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.YYYY HH:mm"
+            
+            let alertTitle = "Этот раунд окончен!"
+            let alertButtonText = "Сыграть ещё раз"
+            let alertText = """
+            Ваш результат: \(correctAnswers) из 10
+            Количество сыграных квизов: \(statisticService.gamesCount)
+            Рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))
+            Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)
+            """
+            let resultsAlertModel = AlertModel(title: alertTitle, message: alertText, buttonText: alertButtonText) { [weak self] _ in
+                guard let self = self else { return }
+                self.restartGame()
+            }
+            alertPresenter?.show(controller: self, model: resultsAlertModel)
+        }
+    }
+
+    // MARK: - Private functions
+    
+    private func restartGame() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
+    }
     
     private func getAppColor(_ name: String) -> CGColor {
         if let color = UIColor(named: name) {
@@ -86,19 +135,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             return UIColor.white.cgColor
         }
-    }
-    
-    private func showNetworkError(message: String) {
-        hideLoadingIndicator()
-        let errorAlertModel = AlertModel(title: "Ошибка",
-                                         message: message,
-                                         buttonText: "Попробовать еще раз") { [weak self] in
-            guard let self = self else { return }
-            print("Restarting game")
-            //self.presenter.restartGame()
-        }
-        
-        alertPresenter?.show(controller: self, model: errorAlertModel)
     }
     
     private func hideLoadingIndicator() {
@@ -119,8 +155,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             correctAnswers += 1
         }
         
+        showLoadingIndicator()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.hideLoadingIndicator()
+            self.yesButtonOutlet.isEnabled = true
+            self.noButtonOutlet.isEnabled = true
         }
     }
     
@@ -133,22 +174,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 0
     }
     
-    private func show(quiz result: QuizResultsViewModel) {
-        
-        let resultsAlertModel = AlertModel(title: result.title,
-                                           message: result.text,
-                                           buttonText: result.buttonText) { [weak self] in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
-        }
-        
-        alertPresenter?.show(controller: self, model: resultsAlertModel)
-    }
-    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        //let imageUrl = String(decoding: model.image, as: UTF8.self)
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -158,31 +184,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             // All questions are shown
-            if let statisticService = statisticService {
-                // store current play result
-                statisticService.store(correct: correctAnswers, total: questionsAmount)
-                
-                let bestGame = statisticService.bestGame
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd.MM.YYYY HH:mm"
-                
-                let text = "Ваш результат: \(correctAnswers) из 10\n" +
-                "Количество сыграных квизов: \(statisticService.gamesCount)\n" +
-                "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))\n" +
-                "Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)\n"
-                
-                let viewModel = QuizResultsViewModel(
-                    title: "Этот раунд окончен!",
-                    text: text,
-                    buttonText: "Сыграть ещё раз")
-                show(quiz: viewModel)
-            }
+            showEndGameAlert()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
-        yesButtonOutlet.isEnabled = true
-        noButtonOutlet.isEnabled = true
+        
     }
-    
 }
