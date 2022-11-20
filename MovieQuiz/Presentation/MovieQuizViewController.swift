@@ -5,7 +5,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentIndex = 0
     private var correctCount = 0
     
-    private let questionsAmount: Int = 3
+    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol? // связываем контроллер и класс QuestionFactory через "композицию", создавая экземпляр внутри контроллера. // также прописываем это свойство не напрямую через класс, а через протокол в котором описана функция// после добавления делегата в фабрику - необходимо его указывать, но через self этого сделать нельзя, тк свойство еще не инициализировано
     private var currentQuestion: QuizQuestion? // аналогично, делаем через композицию
     
@@ -28,12 +28,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         statisticService = StatisticServiceImplementation()
         
-        //используем метод requestNextQuestion для получения вопроса из фабрики, этот вопрос принимает опциональный тип
-//        if let firstQuestion = questionFactory.requestNextQuestion() {
-//            currentQuestion = firstQuestion
-//            let viewModel = convert(model: firstQuestion)
-//            show(quiz: viewModel)
-//        }
     }
     
     
@@ -43,7 +37,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
 
     
-    //MARK: работа с 2мя кнопками
+    // работа с 2мя кнопками
     @IBAction private func noButtonClicked(_ sender: Any) {
         
         guard let currentQuestion = currentQuestion else {
@@ -71,7 +65,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
-    // MARK: - QuestionFactoryDelegate -  реализация метода из протокола
+    //  - QuestionFactoryDelegate -  реализация метода из протокола
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -85,8 +79,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
-    //MARK: функция отображения информации о правильности/ неправильности ответа на текущий вопрос
-    //MARK: в ней же делается переход на след вопрос
+    // функция отображения информации о правильности/ неправильности ответа на текущий вопрос
+    // в ней же делается переход на след вопрос
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
@@ -106,7 +100,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     
-    // MARK: функция перевода данных из исходного вида QuizQuestion в QuizStepViewModel для последующего отображения на экране
+    // функция перевода данных из исходного вида QuizQuestion в QuizStepViewModel для последующего отображения на экране
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         
         return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
@@ -115,7 +109,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
       }
     
     
-    //MARK: основная функция, которая отвечает за логику того, что будет показано на экране в зависимости от номера текущего вопроса
+    // основная функция, которая отвечает за логику того, что будет показано на экране в зависимости от номера текущего вопроса
     private func showNextQuestionOrResults() {
         if currentIndex == questionsAmount - 1 {
             
@@ -146,7 +140,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     
     
-    //MARK: показываем новую картинку
+    //показываем новую картинку
     private func show(quiz step: QuizStepViewModel) {
       // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image =  step.image
