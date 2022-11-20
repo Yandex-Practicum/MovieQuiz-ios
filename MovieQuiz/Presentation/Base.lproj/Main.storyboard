@@ -25,8 +25,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ble-uc-0IH">
-                                <rect key="frame" x="20" y="69" width="390" height="856.66666666666663"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ble-uc-0IH">
+                                <rect key="frame" x="20" y="69" width="390" height="829"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Adc-cg-GnH">
                                         <rect key="frame" x="0.0" y="0.0" width="390" height="23.666666666666668"/>
@@ -53,10 +53,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUc-Jy-hpL">
-                                        <rect key="frame" x="0.0" y="648.66666666666663" width="390" height="128"/>
+                                        <rect key="frame" x="0.0" y="648.66666666666663" width="390" height="100.33333333333337"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ClX-NT-kbZ" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="306" height="102"/>
+                                                <rect key="frame" x="42" y="13" width="306" height="74.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -70,16 +70,12 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="dUN-lV-6Ng">
-                                        <rect key="frame" x="0.0" y="796.66666666666663" width="390" height="60"/>
+                                        <rect key="frame" x="0.0" y="769" width="390" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qJx-EX-3zg" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
                                                 <rect key="contentStretch" x="1" y="0.0" width="1" height="1"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="158" id="1Yv-pQ-iTH"/>
-                                                    <constraint firstAttribute="height" constant="60" id="rCM-C0-c1L"/>
-                                                </constraints>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="YP Black"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -124,6 +120,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="Ble-uc-0IH" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="4QD-wH-4QI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ble-uc-0IH" secondAttribute="trailing" constant="20" id="9Je-3o-Q6G"/>
                             <constraint firstItem="Ble-uc-0IH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="qHQ-3J-rzO"/>
                             <constraint firstItem="Ble-uc-0IH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="sK4-kV-9fH"/>
@@ -132,7 +129,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="Bn5-c7-ywR" id="Q8o-W6-NN8"/>
                         <outlet property="imageView" destination="dnB-aB-pUs" id="z8X-bb-7l6"/>
+                        <outlet property="noButton" destination="qJx-EX-3zg" id="04i-0r-cgA"/>
                         <outlet property="textLabel" destination="ClX-NT-kbZ" id="eMg-kJ-1mN"/>
+                        <outlet property="yesButton" destination="UTw-CJ-M4X" id="a8v-R3-I05"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
