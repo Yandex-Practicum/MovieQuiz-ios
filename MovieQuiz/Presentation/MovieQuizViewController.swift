@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private var currentIndex = 0
     private var correctCount = 0
@@ -27,8 +27,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
         alert = AlertPresenter(controller: self)
         
         statisticService = StatisticServiceImplementation()
-        
-        //print(statisticService?.bestGame)
         
         //используем метод requestNextQuestion для получения вопроса из фабрики, этот вопрос принимает опциональный тип
 //        if let firstQuestion = questionFactory.requestNextQuestion() {
@@ -120,8 +118,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     //MARK: основная функция, которая отвечает за логику того, что будет показано на экране в зависимости от номера текущего вопроса
     private func showNextQuestionOrResults() {
         if currentIndex == questionsAmount - 1 {
+            
+            statisticService?.store(correct: correctCount, total: questionsAmount)
+            guard let gamesCount = statisticService?.gamesCount else {return}
+            guard let bestGame = statisticService?.bestGame else {return}
+            guard let totalAccuracy = statisticService?.totalAccuracy else {return}
+          
             let viewModel = AlertModel(title: "Этот раунд закончен",
-                                                 text: "Ваш результат \(correctCount) из \(questionsAmount)",
+                                       text: "Ваш результат: \(correctCount)/\(questionsAmount)\nКоличество сыгранных квизов: \(gamesCount)\nРекорд: \(bestGame.correct)/\(bestGame.total) \(bestGame.date.dateTimeString) \nСредняя точность: \(String(format: "%.2f", totalAccuracy))%",
                                        buttonText: "Сыграть еще раз") {
                 self.currentIndex = 0
                 self.correctCount = 0

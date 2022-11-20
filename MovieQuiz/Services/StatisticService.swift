@@ -13,13 +13,13 @@ struct GameRecord: Codable {
     let total: Int //общее число вопросов
     let date: Date //дата прохождения квиза
     
-//    func compare(source cmpr: GameRecord) -> Bool {
-//        if (self.correct > cmpr.correct) && (self.total == cmpr.total){
-//            return true
-//        } else {
-//            return false
-//        }
-//    }
+    func compare(source cmpr: GameRecord) -> Bool {
+        if (self.correct < cmpr.correct){
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 
@@ -57,29 +57,28 @@ final class StatisticServiceImplementation: StatisticService {
     
     
     func store(correct count: Int, total amount: Int) { // функция сохранения результата с проверкой, что новый результат лучше предыдущих
-        
+        gamesCount += 1
         userDefaults.set(self.total + amount, forKey: Keys.total.rawValue)
         userDefaults.set(self.correct + count, forKey: Keys.correct.rawValue)
         
-//        if GameRecord.compare(source:
-//                                GameRecord(correct: count, total: amount, date: date)){
-//            bestGame = GameRecord(correct: count, total: amount, date: date)
-//        }
-     return
+        if bestGame.compare(source:
+                                GameRecord(correct: count, total: amount, date: date)){
+            bestGame = GameRecord(correct: count, total: amount, date: date)
+        }
     }
     
     
     var totalAccuracy: Double {
         get {
-            let a = Double(userDefaults.integer(forKey: Keys.total.rawValue))
-            let b = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
-            return a/b
+            let a = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
+            let b = Double(userDefaults.integer(forKey: Keys.total.rawValue))
+            return 100*(a/b)
         }
     }
     
 
     //сохраним без JSON
-    var gamesCount: Int {
+    private(set) var gamesCount: Int {
         get {
             let count = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
             return count
