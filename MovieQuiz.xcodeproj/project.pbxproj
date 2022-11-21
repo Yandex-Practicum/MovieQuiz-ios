@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B4B04AF292A66A3007DCA2B /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B2A8089291CF5A20053A545 /* YS Display-Medium.ttf */; };
+		5B4B04B0292A66A7007DCA2B /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B2A8088291CF5A20053A545 /* YS Display-Bold.ttf */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -45,6 +47,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5B4B04AE292A666D007DCA2B /* MovieQuizFonts */ = {
+			isa = PBXGroup;
+			children = (
+				5B2A8089291CF5A20053A545 /* YS Display-Medium.ttf */,
+				5B2A8088291CF5A20053A545 /* YS Display-Bold.ttf */,
+			);
+			path = MovieQuizFonts;
+			sourceTree = "<group>";
+		};
 		8F4738322848DE2A005DF65E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -57,8 +68,7 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				5B2A8088291CF5A20053A545 /* YS Display-Bold.ttf */,
-				5B2A8089291CF5A20053A545 /* YS Display-Medium.ttf */,
+				5B4B04AE292A666D007DCA2B /* MovieQuizFonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
@@ -181,6 +191,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
+				5B4B04AF292A66A3007DCA2B /* YS Display-Medium.ttf in Resources */,
+				5B4B04B0292A66A7007DCA2B /* YS Display-Bold.ttf in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
 			);

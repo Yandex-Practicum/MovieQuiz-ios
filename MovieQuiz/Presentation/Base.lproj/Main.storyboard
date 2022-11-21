@@ -93,7 +93,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="NoButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="86u-Wo-8eH"/>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Aap-9F-SBK"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EFU-YQ-dl4" userLabel="Yes Button">
@@ -111,7 +111,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="YesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="C3c-fh-rh1"/>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iyR-3h-CPr"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -134,6 +134,8 @@
                     </view>
                     <connections>
                         <outlet property="ImageView" destination="AE3-hq-H3W" id="qbd-Jx-Ony"/>
+                        <outlet property="buttonNo" destination="QD2-Er-yez" id="VjU-5M-pUo"/>
+                        <outlet property="buttonYes" destination="EFU-YQ-dl4" id="4jg-CM-sFM"/>
                         <outlet property="counterLabel" destination="GMc-QA-mkw" id="V9B-ld-Knb"/>
                         <outlet property="textLabel" destination="j50-wb-Hub" id="UZa-OW-sZF"/>
                     </connections>
