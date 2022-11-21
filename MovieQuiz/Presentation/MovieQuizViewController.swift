@@ -70,6 +70,11 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        showFirstTime()
+    }
+
     @IBAction private func yesButtonClicked(_ sender: Any) {
         showAnswerResult(
             isCorrect:
@@ -82,13 +87,8 @@ final class MovieQuizViewController: UIViewController {
                 questions[currentQuestionIndex].correctAnswer == false)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        showFirstTime()
-    }
-
     private func show(quiz step: QuizStepViewModel) {
-        drawFrame(thickness: 0, color: UIColor.ypWhite)
+        configureImageLayer(thickness: 0, color: UIColor.ypWhite)
         counterLabel.text = step.questionNumber
         imageView.image = step.image
         textLabel.text = step.question
@@ -137,20 +137,21 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
-            drawFrame(thickness: 8, color: UIColor.ypGreen)
+            configureImageLayer(thickness: 8, color: UIColor.ypGreen)
         }
         else {
-            drawFrame(thickness: 8, color: UIColor.ypRed)
+            configureImageLayer(thickness: 8, color: UIColor.ypRed)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
     }
 
-    private func drawFrame(thickness: Int, color: UIColor) {
+    private func configureImageLayer(thickness: Int, color: UIColor) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = CGFloat(thickness)
         imageView.layer.borderColor = color.cgColor
+        imageView.layer.cornerRadius = 15
     }
 
     private func createStepViewModel(index: Int) -> QuizStepViewModel {
@@ -174,6 +175,3 @@ final class MovieQuizViewController: UIViewController {
     }
 
 }
-
-
-
