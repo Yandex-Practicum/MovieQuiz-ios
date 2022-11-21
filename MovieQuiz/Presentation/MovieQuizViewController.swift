@@ -10,22 +10,6 @@ final class MovieQuizViewController: UIViewController {
         self.show(quiz: viewModel)
     }
     
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var counterLabel: UILabel!
-    
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func noButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
     private struct QuizStepViewModel {
         let image: UIImage
         let question: String
@@ -60,6 +44,29 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var counterLabel: UILabel!
+    
+    
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
+    
+    
+    
+    
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         print(step.image)
@@ -85,16 +92,20 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showAnswerResult(isCorrect: Bool) {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
-        imageView.layer.borderColor = isCorrect ? #colorLiteral(red: 0.3759999871, green: 0.7609999776, blue: 0.5569999814, alpha: 1) : #colorLiteral(red: 0.9610000253, green: 0.4199999869, blue: 0.423999995, alpha: 1)
+        imageView.layer.borderColor = isCorrect ? UIColor(named: "Green")?.cgColor : UIColor(named: "Red")?.cgColor
         if isCorrect {
             correctAnswers += 1
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
     }
     
