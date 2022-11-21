@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {
@@ -6,10 +5,8 @@ class AlertPresenter: AlertPresenterProtocol {
     weak var movieQuizViewController: UIViewController?
     
     init(movieQuizViewController: UIViewController?) {
-        print("AlertPresenter init")
         self.movieQuizViewController = movieQuizViewController
     }
-    
     func displayAlert(_ alert: AlertModel) {
         let ac = UIAlertController(title: alert.title,
                                    message: alert.message,
@@ -18,21 +15,6 @@ class AlertPresenter: AlertPresenterProtocol {
                                    style: .default) { _ in
             alert.completion()
         }
-        
-        ac.addAction(action)
-        movieQuizViewController?.present(ac, animated: false)
-    }
-    
-    func showNetworkError(_ alert: AlertModel) {
-
-        let ac = UIAlertController(title: alert.title,
-                                   message: alert.message,
-                                   preferredStyle: .alert)
-        let action = UIAlertAction(title: alert.buttonText,
-                                   style: .default) { _ in
-            alert.completion()
-        }
-        
         ac.addAction(action)
         movieQuizViewController?.present(ac, animated: true)
         

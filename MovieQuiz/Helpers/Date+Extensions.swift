@@ -14,6 +14,3 @@ extension Date {
 extension Float {
     var myOwnRounded: String { String(format: "%.2f", self)}
 }
-extension Double {
-    var myOwnRounded: String { String(format: "%.1f", self)}
-}

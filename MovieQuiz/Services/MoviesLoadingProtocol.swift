@@ -1,5 +1,3 @@
-import Foundation
-
 protocol MoviesLoadingProtocol {
-    func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>)-> Void)
+    func loadMovies(handler: @escaping (Result<[OneMovie], Errors>) -> Void)
 }

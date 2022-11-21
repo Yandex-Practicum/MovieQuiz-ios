@@ -30,14 +30,17 @@ final class StatisticServiceImplementation: StatisticService {
         allResults.append(count)
         
     }
+    
     var totalAccuracy: Float {
         let sumOfAllResults = allResults.reduce(0, +)
         let accuracy = Float(sumOfAllResults * 100) / Float((bestGame.total) * allResults.count)
         return accuracy
     }
+    
     var gamesCount: Int {
-            return allResults.count
+        return allResults.count
     }
+    
     private(set) var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -53,6 +56,7 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
+    
     private(set) var allResults: [Int] {
         get {
             return userDefaults.object(forKey: Keys.allResults.rawValue) as? [Int] ?? []
@@ -68,8 +72,5 @@ final class StatisticServiceImplementation: StatisticService {
         case bestGame, allResults
     }
     
-    init() {
-        print("StatisticServiceImplementation init")
-    }
 }
 
