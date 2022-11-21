@@ -1,9 +1,6 @@
 import Foundation
 
 enum Errors: Error {
-    // Знаю что мог добавить сюда весь текст как rowValue,
-    // но хотел использовать assoсiated values но что то недоразобрался
-    // что с ними делать и зачем они мне нужны
     case itemsEmpty
     case decodingError
     case invalidResponse

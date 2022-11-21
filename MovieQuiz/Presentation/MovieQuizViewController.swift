@@ -18,7 +18,7 @@ final class MovieQuizViewController: UIViewController {
     
     
     // MARK: - UIElements
-    private var questionTitleLabel = UILabel()
+    private let questionTitleLabel = UILabel()
     private let indexLabel = UILabel()
     private let questionLabel = UILabel()
     private let viewForQuestionLabel = UIView()
@@ -53,8 +53,6 @@ final class MovieQuizViewController: UIViewController {
         questionsFactory?.loadData()
         activityIndicator.startAnimating()
         questionsFactory?.requestNextQuestion()
-        // немного напрягает что при открытии приложения белый экран, думал может первую картинку с
-        // вопросом брать из локальных данных рандомно ? а мож и плохая идея =)
     }
     private func setUpDependencies() {
         let questionsFactory = QuestionFactory(moviesLoader: MoviesLoader())
