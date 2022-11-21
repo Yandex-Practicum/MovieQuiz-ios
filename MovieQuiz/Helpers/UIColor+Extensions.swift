@@ -1,4 +1,6 @@
 import Foundation
 import UIKit
 
-extension UIColor { }
+extension UIColor {
+    
+}

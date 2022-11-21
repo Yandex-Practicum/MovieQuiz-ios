@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,85 +17,138 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ceA-VG-wo2">
-                                <rect key="frame" x="20" y="54" width="374" height="728"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BT6-fw-g4w" userLabel="Stack View General">
+                                <rect key="frame" x="20" y="54" width="374" height="774"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s9W-yy-6SB" userLabel="Stack View Question/Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ceA-VG-wo2">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="774"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2J5-cu-VEc" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
-                                                <color key="backgroundColor" name="Black"/>
-                                                <color key="tintColor" name="White"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                                <color key="textColor" name="White"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNH-u2-pIr" userLabel="Index Label">
-                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
-                                                <color key="backgroundColor" name="Black"/>
-                                                <color key="tintColor" name="White"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                                <color key="textColor" name="White"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5d5-pP-D2j" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
-                                        <color key="backgroundColor" name="White"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="5d5-pP-D2j" secondAttribute="height" multiplier="2:3" id="x3o-E0-Qmw"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3Q-yM-mgp" userLabel="Question Label">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="23.5"/>
-                                        <color key="backgroundColor" name="Black"/>
-                                        <color key="tintColor" name="White"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                        <color key="textColor" name="White"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1Mu-ld-C19" userLabel="Stack View Bottons">
-                                        <rect key="frame" x="0.0" y="668" width="374" height="60"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MOQ-sa-Eer" userLabel="No button">
-                                                <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
-                                                <color key="backgroundColor" name="White"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s9W-yy-6SB" userLabel="Stack View Question/Label">
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2J5-cu-VEc" userLabel="Question Title Label">
+                                                        <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
+                                                        <color key="backgroundColor" name="Black"/>
+                                                        <color key="tintColor" name="White"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="Вопрос:">
+                                                                <attributes>
+                                                                    <color key="NSColor" name="White"/>
+                                                                    <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNH-u2-pIr" userLabel="Index Label">
+                                                        <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
+                                                        <color key="backgroundColor" name="Black"/>
+                                                        <color key="tintColor" name="White"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="1/10">
+                                                                <attributes>
+                                                                    <color key="NSColor" name="White"/>
+                                                                    <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5d5-pP-D2j" userLabel="Preview Image">
+                                                <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                                <color key="backgroundColor" name="Background"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="60" id="GUK-MY-EID"/>
+                                                    <constraint firstAttribute="width" secondItem="5d5-pP-D2j" secondAttribute="height" multiplier="2:3" id="x3o-E0-Qmw"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <color key="tintColor" name="Black"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Нет">
-                                                    <color key="titleColor" name="Black"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="15"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0vm-PD-Ht5" userLabel="Yes button">
-                                                <rect key="frame" x="197" y="0.0" width="177" height="60"/>
-                                                <color key="backgroundColor" name="White"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <color key="tintColor" name="Black"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Да">
-                                                    <color key="titleColor" name="Black"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="15"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </button>
+                                            </imageView>
+                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xda-c7-FkU">
+                                                <rect key="frame" x="0.0" y="624.5" width="374" height="69.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3Q-yM-mgp" userLabel="Question Label">
+                                                        <rect key="frame" x="42" y="0.0" width="290" height="69.5"/>
+                                                        <color key="backgroundColor" name="Background"/>
+                                                        <color key="tintColor" name="White"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="Рейтинг этого фильма меньше чем 5?">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <font key="NSFont" size="26" name="YSDisplay-Medium"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <color key="highlightedColor" name="Background"/>
+                                                    </label>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="w3Q-yM-mgp" firstAttribute="top" secondItem="xda-c7-FkU" secondAttribute="top" id="1WB-gL-2pm"/>
+                                                    <constraint firstAttribute="trailing" secondItem="w3Q-yM-mgp" secondAttribute="trailing" constant="42" id="Kpb-ed-XAO"/>
+                                                    <constraint firstAttribute="bottom" secondItem="w3Q-yM-mgp" secondAttribute="bottom" id="pE9-rU-zjS"/>
+                                                    <constraint firstItem="w3Q-yM-mgp" firstAttribute="leading" secondItem="xda-c7-FkU" secondAttribute="leading" constant="42" id="vJi-Xx-RUR"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1Mu-ld-C19" userLabel="Stack View Bottons">
+                                                <rect key="frame" x="0.0" y="714" width="374" height="60"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MOQ-sa-Eer" userLabel="No button">
+                                                        <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                                        <color key="backgroundColor" name="White"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="60" id="GUK-MY-EID"/>
+                                                        </constraints>
+                                                        <color key="tintColor" name="Black"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal">
+                                                            <attributedString key="attributedTitle">
+                                                                <fragment content="Нет">
+                                                                    <attributes>
+                                                                        <color key="NSColor" name="Black"/>
+                                                                        <font key="NSFont" size="20" name="YSDisplay-Bold"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="noButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Iy0-TG-Mdl"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0vm-PD-Ht5" userLabel="Yes button">
+                                                        <rect key="frame" x="197" y="0.0" width="177" height="60"/>
+                                                        <color key="backgroundColor" name="White"/>
+                                                        <color key="tintColor" name="Black"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal">
+                                                            <attributedString key="attributedTitle">
+                                                                <fragment content="Да">
+                                                                    <attributes>
+                                                                        <color key="NSColor" name="Black"/>
+                                                                        <font key="NSFont" size="20" name="YSDisplay-Bold"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="yesButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Im-mo-dUh"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="WNL-XV-u9O"/>
+                                                </constraints>
+                                            </stackView>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="WNL-XV-u9O"/>
-                                        </constraints>
                                     </stackView>
                                 </subviews>
                             </stackView>
@@ -103,11 +156,17 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="Black"/>
                         <constraints>
-                            <constraint firstItem="ceA-VG-wo2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="4at-8n-bUy"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ceA-VG-wo2" secondAttribute="trailing" constant="20" id="Q7y-xp-JGt"/>
-                            <constraint firstItem="ceA-VG-wo2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="pE2-HA-Jde"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BT6-fw-g4w" secondAttribute="bottom" constant="34" id="Pc4-rq-Zr4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BT6-fw-g4w" secondAttribute="trailing" constant="20" id="RoC-Ko-Pvq"/>
+                            <constraint firstItem="BT6-fw-g4w" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="kvv-lt-beL"/>
+                            <constraint firstItem="BT6-fw-g4w" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="spl-gg-T6z"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="cNH-u2-pIr" id="ex2-Yl-FAc"/>
+                        <outlet property="imageView" destination="5d5-pP-D2j" id="tUT-RM-uAY"/>
+                        <outlet property="textlabel" destination="w3Q-yM-mgp" id="kOq-32-Zno"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -115,8 +174,11 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="Background">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Black">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
