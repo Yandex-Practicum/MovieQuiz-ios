@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="79p-4h-D4V">
-                                <rect key="frame" x="20" y="58" width="374" height="792"/>
+                                <rect key="frame" x="20" y="58" width="374" height="790.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aI8-jh-fnC">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -46,31 +46,32 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4SS-ef-9kb" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="43.5" width="374" height="559.5"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="4SS-ef-9kb" secondAttribute="height" multiplier="2:3" id="pBT-lY-shM"/>
+                                            <constraint firstAttribute="width" secondItem="4SS-ef-9kb" secondAttribute="height" multiplier="2:3" constant="1" id="pBT-lY-shM"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lar-xj-yuI">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="111.5"/>
+                                        <rect key="frame" x="0.0" y="623" width="374" height="111.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-Un-Ovo" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="85.5"/>
+                                                <rect key="frame" x="20" y="13" width="312" height="85.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="Nf5-Un-Ovo" firstAttribute="top" secondItem="Lar-xj-yuI" secondAttribute="top" constant="13" id="D15-kI-NNI"/>
-                                            <constraint firstItem="Nf5-Un-Ovo" firstAttribute="leading" secondItem="Lar-xj-yuI" secondAttribute="leading" constant="42" id="fIn-Px-dZU" userLabel="Question Label.leading = leading + 42"/>
+                                            <constraint firstItem="Nf5-Un-Ovo" firstAttribute="leading" secondItem="Lar-xj-yuI" secondAttribute="leading" constant="20" symbolic="YES" id="fIn-Px-dZU" userLabel="Question Label.leading = leading + 42"/>
                                             <constraint firstAttribute="bottom" secondItem="Nf5-Un-Ovo" secondAttribute="bottom" constant="13" id="hCA-iV-HU8"/>
                                             <constraint firstAttribute="trailing" secondItem="Nf5-Un-Ovo" secondAttribute="trailing" constant="42" id="m98-LX-l3x"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="uXb-N0-0od">
-                                        <rect key="frame" x="0.0" y="756" width="374" height="36"/>
+                                        <rect key="frame" x="0.0" y="754.5" width="374" height="36"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9w-Sq-58J" userLabel="NoButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="36"/>
@@ -87,7 +88,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TCW-WY-d1e"/>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HJ9-c7-XyB"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sac-FV-ghD" userLabel="YesButton">
@@ -105,7 +106,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="yesButtonCliked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LzS-Pr-uHY"/>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hWG-V5-WUY"/>
                                                 </connections>
                                             </button>
                                         </subviews>
