@@ -8,6 +8,8 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private weak var imageView: UIImageView!
     
+    
+    
     @IBOutlet private weak var textLabel: UILabel!
     
     @IBOutlet private weak var counterLabel: UILabel!
@@ -69,19 +71,14 @@ final class MovieQuizViewController: UIViewController {
         
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
                 self.showNextQuestionOrResults()
-                
+                imageView.layer.borderWidth = 0
                 
             
             }
         }
-    private func removeLayer() {
-        imageView.layer.cornerRadius = 0
-        imageView.layer.borderWidth = 0
-    }
+
     
     private func showNextQuestionOrResults() {
-        
-        removeLayer()
         
         if currentQuestionIndex == questions.count - 1 {
             let textResult = "Ваш результат: \(countCorrectAnswer)/10"
@@ -99,6 +96,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
+        imageView.layer.cornerRadius = 20
         let alert = UIAlertController(
             title: result.title,
             message: result.text,
