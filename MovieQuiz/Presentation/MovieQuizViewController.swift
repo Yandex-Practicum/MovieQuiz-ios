@@ -87,7 +87,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         hideLoadingIndicator()
         let errorAlertModel = AlertModel(title: "Ошибка",
                                          message: message,
-                                         buttonText: "Попробовать еще раз") { [weak self] _ in
+                                         buttonText: "Попробовать еще раз") { [weak self] in
             guard let self = self else { return }
             self.restartGame()
         }
@@ -113,7 +113,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             Рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))
             Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)
             """
-            let resultsAlertModel = AlertModel(title: alertTitle, message: alertText, buttonText: alertButtonText) { [weak self] _ in
+            let resultsAlertModel = AlertModel(title: alertTitle, message: alertText, buttonText: alertButtonText) { [weak self] in
                 guard let self = self else { return }
                 self.restartGame()
             }

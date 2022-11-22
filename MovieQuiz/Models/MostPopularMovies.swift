@@ -56,13 +56,14 @@ struct MoviesLoader: MoviesLoading {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
             switch result {
             case .success(let data):
-                print("data is: \(data)")
-                let movies = try! JSONDecoder().decode(MostPopularMovies.self, from: data)
-                handler(.success(movies))
-                return
-            case .failure(let error):
-                handler(.failure(error))
-                return
+                do {
+                    let movies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
+                    handler(.success(movies))
+                } catch let jsonError {
+                    handler(.failure(jsonError))
+                }
+            case .failure(let responseError):
+                handler(.failure(responseError))
             }
         }
     }
