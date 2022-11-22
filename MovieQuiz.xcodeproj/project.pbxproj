@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32053574292CC5C7005DD9CE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32053573292CC5C7005DD9CE /* Models.swift */; };
 		3295EB4029237E9800E17EAF /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3295EB3E29237E9800E17EAF /* YS Display-Bold.ttf */; };
 		3295EB4129237E9800E17EAF /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3295EB3F29237E9800E17EAF /* YS Display-Medium.ttf */; };
 		32C3A0E4291D238C002AC1D8 /* Win.png in Resources */ = {isa = PBXBuildFile; fileRef = 32C3A0E0291D238C002AC1D8 /* Win.png */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32053573292CC5C7005DD9CE /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		3295EB3E29237E9800E17EAF /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		3295EB3F29237E9800E17EAF /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		32C3A0E0291D238C002AC1D8 /* Win.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Win.png; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */,
 				AD7AFA542836189F00399704 /* Array+Extensions.swift */,
 				AD77F5732857F8810062FB14 /* Date+Extensions.swift */,
+				32053573292CC5C7005DD9CE /* Models.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
+				32053574292CC5C7005DD9CE /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
