@@ -1,12 +1,33 @@
 import UIKit
 
-extension UILabel {
-    func setText(_ text: String, animated: Bool = true) {
-        let duration = animated ? 0.5 : 0.0
+extension UIView {
+    func animateQuestion(animated: Bool = true) {
+        let duration = animated ? 1 : 0.0
         UIView.transition(with: self,
                           duration: duration,
-                          options: .transitionFlipFromLeft,
-                          animations: { self.text = text },
+                          options: .transitionCurlUp,
+                          animations: nil,
                           completion: nil)
+    }
+}
+
+extension UIStackView {
+    func animateImage(animated: Bool = true) {
+        let duration = animated ? 1 : 0.0
+        UIView.transition(with: self,
+                          duration: duration,
+                          options: .transitionCurlUp,
+                          animations: nil,
+                          completion: nil)
+    }
+}
+extension Int {
+    mutating func increment() {
+        self += 1
+    }
+}
+extension UInt8 {
+    mutating func increment() {
+        self += 1
     }
 }

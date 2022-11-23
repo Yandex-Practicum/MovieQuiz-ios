@@ -1,9 +1,5 @@
 import Foundation
 
-struct MostPopularMovies {
-    var items: [OneMovie]
-    let errorMessage: String
-}
 struct OneMovie {
     let title: String
     let imageURL: URL

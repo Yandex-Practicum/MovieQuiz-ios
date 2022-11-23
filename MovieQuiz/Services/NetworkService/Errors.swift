@@ -32,7 +32,7 @@ extension Errors: LocalizedError {
             return NSLocalizedString("Невозможно получить данные",
                                      comment: "Нет комментариев")
         case .exceedAPIRequestLimit:
-            return NSLocalizedString("Превышено максимальное число запросов",
+            return NSLocalizedString("Превышено максимальное число запросов на сегодня",
                                      comment: "Максимальное число запросов 100 в день")
         }
     }

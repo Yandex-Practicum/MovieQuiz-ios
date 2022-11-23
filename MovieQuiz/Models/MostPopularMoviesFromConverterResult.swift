@@ -1,17 +1,18 @@
 import Foundation
 
-struct MostPopularMoviesFromConverterResult {
+struct FromOptionalResultToNonOptional {
     
     func convert(result: MostPopularMoviesResult.OneMovieResult?) -> OneMovie? {
         guard
             let title       = result?.title,
-            let ratingValue = result?.imDbRating,
             let imageUrl    = result?.image
         else {
-            
             return nil
         }
-        let rating = Double(ratingValue) ?? 7
+        
+        var rating: Double {
+            Double(result?.imDbRating ?? "7") ?? 7
+        }
         return .init(title: title, imageURL: imageUrl, rating: rating)
     }
 }
