@@ -15,11 +15,15 @@ struct GameRecord: Codable, Comparable {
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         if lhs.correct < rhs.correct {
             return true
+        } else {
+            return false
         }
     }
     static func > (lhs: GameRecord, rhs: GameRecord) -> Bool {
         if lhs.correct > rhs.correct {
             return true
+        } else {
+            return false
         }
     }
     
