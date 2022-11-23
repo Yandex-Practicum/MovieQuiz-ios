@@ -19,11 +19,13 @@ struct MoviesLoader: MoviesLoadingProtocol {
             switch result {
             case .success(let data):
                 let decoder = JSONDecoder()
-                let converter = MostPopularMoviesFromConverterResult()
+                let converter = FromOptionalResultToNonOptional()
                 do {
                     let model = try decoder.decode(MostPopularMoviesResult.self, from: data)
-                    guard let _ = model.errorMessage else {
-                        handler(.failure(Errors.exceedAPIRequestLimit))
+                    guard let errorMessage = model.errorMessage,
+                          errorMessage.isEmpty
+                    else {
+                        handler(.failure(.exceedAPIRequestLimit))
                         return
                     }
                     let items = model.items.compactMap { converter.convert(result: $0) }

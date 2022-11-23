@@ -7,6 +7,7 @@ class AlertPresenter: AlertPresenterProtocol {
     init(movieQuizViewController: UIViewController?) {
         self.movieQuizViewController = movieQuizViewController
     }
+    
     func displayAlert(_ alert: AlertModel) {
         let ac = UIAlertController(title: alert.title,
                                    message: alert.message,
@@ -17,6 +18,5 @@ class AlertPresenter: AlertPresenterProtocol {
         }
         ac.addAction(action)
         movieQuizViewController?.present(ac, animated: true)
-        
     }
 }

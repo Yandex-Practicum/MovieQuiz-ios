@@ -8,6 +8,7 @@ struct MostPopularMoviesResult: Codable {
         let title: String?
         let image: URL?
         let imDbRating: String?
+        
     }
 }
 

@@ -2,12 +2,17 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Global variables
-    private var currentQuestionIndex: Int8 = 0
+    private var currentQuestionIndex: UInt8 = 0 {
+        didSet {
+            questionsFactory?.requestNextQuestion()
+        }
+    }
     private var correctAnswers = 0
     private let questionsAmount = 10
     private var lastQuestion: Bool {
         currentQuestionIndex == (questionsAmount - 1)
     }
+    private var afterFirstQuestion = false
     private var currentQuestion: QuizQuestion?
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
@@ -32,6 +37,7 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.cornerRadius = 20
         return previewImage
     }()
+    
     private let activityIndicator: UIActivityIndicatorView = {
        let activityIndicator = UIActivityIndicatorView()
         activityIndicator.style = .large
@@ -39,7 +45,7 @@ final class MovieQuizViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
         return activityIndicator
     }()
-
+    private let stackViewForPreviewImage = UIStackView()
     private let stackViewForButtons = UIStackView()
     private let stackViewForLabels = UIStackView()
     private let stackViewForAll = UIStackView()
@@ -50,10 +56,10 @@ final class MovieQuizViewController: UIViewController {
         setUpDependencies()
         throwAllElementsOnScreen()
         createConstraints()
-        questionsFactory?.loadData()
         activityIndicator.startAnimating()
-        questionsFactory?.requestNextQuestion()
+        questionsFactory?.loadData()
     }
+   
     private func setUpDependencies() {
         let questionsFactory = QuestionFactory(moviesLoader: MoviesLoader())
         questionsFactory.delegate = self
@@ -74,7 +80,7 @@ final class MovieQuizViewController: UIViewController {
         makeAppearance(of: indexLabel, text: "1/10", font: .ysMedium ?? UIFont(), textAlignment: .right)
         indexLabel.setContentHuggingPriority(UILayoutPriority(252), for: .horizontal)
         
-        makeAppearance(of: questionLabel, text: "Рэйтинг этого фильма больше чем ?", font: .ysBold ?? UIFont(), numberOfLines: 2, textAlignment: .center)
+        makeAppearance(of: questionLabel, text: "", font: .ysBold ?? UIFont(), numberOfLines: 2, textAlignment: .center)
         
         questionLabel.setContentCompressionResistancePriority(UILayoutPriority(751.0), for: .vertical)
         
@@ -131,9 +137,10 @@ final class MovieQuizViewController: UIViewController {
         stackViewForButtons.addArrangedSubViews(noButton,
                                            yesButton)
         viewForQuestionLabel.addSubview(questionLabel)
-    
+        stackViewForPreviewImage.addArrangedSubview(previewImage)
+        
         stackViewForAll.addArrangedSubViews(stackViewForLabels,
-                                       previewImage,
+                                       stackViewForPreviewImage,
                                        viewForQuestionLabel,
                                        stackViewForButtons)
         
@@ -150,11 +157,13 @@ final class MovieQuizViewController: UIViewController {
                                  questionNumber:
                                     "\(currentQuestionIndex+1)/\(questionsAmount)")
     }
-    //gets called after each press of button through factory
+    
     private func show(quiz step: QuizStepViewModel) {
         indexLabel.text = step.questionNumber
-        previewImage.setImage(step.image)
-        questionLabel.setText(step.question)
+        previewImage.image = step.image
+        questionLabel.text = step.question
+        viewForQuestionLabel.animateQuestion(animated: afterFirstQuestion)
+        stackViewForPreviewImage.animateImage(animated: afterFirstQuestion)
         
     }
     
@@ -165,21 +174,18 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect == correctAnswer {
             activityIndicator.color = .ypGreen
             previewImage.layer.borderColor = UIColor.ypGreen.cgColor
+            correctAnswers.increment()
             
-            correctAnswers += 1
         } else {
             activityIndicator.color = .ypRed
             previewImage.layer.borderColor = UIColor.ypRed.cgColor
-            
         }
         
         [noButton,yesButton].forEach { $0.isEnabled.toggle() }
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self = self else { return }
-            
-            [self.noButton,self.yesButton].forEach { $0.isEnabled.toggle() }
             self.showNextQuestionOrResult()
+            
         }
     }
     
@@ -188,8 +194,7 @@ final class MovieQuizViewController: UIViewController {
         if lastQuestion {
             showEndOfRoundAlert()
         } else {
-            currentQuestionIndex += 1
-            questionsFactory?.requestNextQuestion()
+            currentQuestionIndex.increment()
         }
     }
     
@@ -216,14 +221,25 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter?.displayAlert(endOfRoundAlert)
     }
     
+    private func with(error: String, completion: @escaping () -> Void) -> AlertModel {
+        return AlertModel(
+            title: "Ошибка",
+            message: error,
+            buttonText: "Попробовать еще раз",
+            completion: completion)
+    }
+    
+    
     // buttons action
     @objc private func noButtonPressed(sender: UIButton) {
         showAnswerResult(isCorrect: false)
         activityIndicator.startAnimating()
+        afterFirstQuestion = true
     }
     @objc private func yesButtonPressed(sender: UIButton) {
         showAnswerResult(isCorrect: true)
         activityIndicator.startAnimating()
+        afterFirstQuestion = true
     }
 }
 
@@ -240,6 +256,7 @@ extension MovieQuizViewController {
         button.titleLabel?.font =  font
         button.setTitleColor(titleColor, for: .normal)
         button.titleLabel?.textAlignment = .center
+        button.isEnabled = false
         button.addTarget(self, action: action, for: .touchUpInside)
     }
     private func makeAppearance(of label: UILabel, text: String, textColor: UIColor = .ypWhite, font: UIFont,
@@ -258,35 +275,45 @@ extension MovieQuizViewController {
         stackView.alignment = alignment
         stackView.spacing = spacing
     }
+    
+    
 }
 
 extension MovieQuizViewController: QuestionFactoryDelegate {
-        
+    
     func didLoadDataFromServer() {
         activityIndicator.stopAnimating()
         questionsFactory?.requestNextQuestion()
     }
-    
+   
     func didFailToLoadDataFromServer(with error: Errors) {
-        activityIndicator.color = .gray
-        let alert = AlertModel(
-            title: "Ошибка",
-            message: error.errorDescription ?? "Неизвестная ошибка",
-            buttonText: "Попробовать еще раз",
-            completion: { [weak self] in
+
+        alertPresenter?.displayAlert(with(
+            error: error.errorDescription ?? "Неизвестная ошибка") {
+                [weak self] in
+                self?.activityIndicator.startAnimating()
                 self?.questionsFactory?.loadData()
+            })
+    }
+    func didFailToLoadImageFromServer(with error: Errors) {
+        activityIndicator.color = .gray
+
+        alertPresenter?.displayAlert(with(
+            error: error.errorDescription ?? "Неизвестная ошибка") {
+                [weak self] in
                 self?.activityIndicator.startAnimating()
                 self?.questionsFactory?.requestNextQuestion()
             })
-        alertPresenter?.displayAlert(alert)
     }
     
     func didReceiveNextQuestion(question: QuizQuestion) {
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        
         previewImage.layer.borderWidth = 0
         previewImage.layer.borderColor = nil
         activityIndicator.stopAnimating()
-        currentQuestion = question
-        let viewModel = convert(model: question)
+        [noButton,yesButton].forEach { $0.isEnabled.toggle() }
         
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
