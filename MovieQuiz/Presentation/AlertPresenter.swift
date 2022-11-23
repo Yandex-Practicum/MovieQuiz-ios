@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {
@@ -11,14 +10,13 @@ class AlertPresenter: AlertPresenterProtocol {
     
     func displayAlert(_ alert: AlertModel) {
         let ac = UIAlertController(title: alert.title,
-                                      message: alert.message,
-                                      preferredStyle: .alert)
+                                   message: alert.message,
+                                   preferredStyle: .alert)
         let action = UIAlertAction(title: alert.buttonText,
                                    style: .default) { _ in
             alert.completion()
         }
-        
         ac.addAction(action)
-        movieQuizViewController?.present(ac, animated: false)
+        movieQuizViewController?.present(ac, animated: true)
     }
 }

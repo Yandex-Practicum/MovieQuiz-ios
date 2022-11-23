@@ -14,3 +14,4 @@ extension Date {
 extension Float {
     var myOwnRounded: String { String(format: "%.2f", self)}
 }
+

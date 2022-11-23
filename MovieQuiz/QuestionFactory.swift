@@ -1,54 +1,57 @@
-import Foundation
+import UIKit
 
 class QuestionFactory: QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
+    private let moviesLoader: MoviesLoadingProtocol
+    private let networkClient = NetworkClient()
     
-    init(delegate: QuestionFactoryDelegate?) {
-        self.delegate = delegate
-       
+    init(moviesLoader: MoviesLoadingProtocol) {
+        self.moviesLoader = moviesLoader
     }
     
-    private var quizQuestions = [
-        QuizQuestion(image: "The Godfather",
-                  text: "Рейтинг этого фильма больше чем 7?",
-                  correctAnswer: true),
-        QuizQuestion(image: "The Dark Knight",
-                  text: "Рейтинг этого фильма больше чем 7?",
-                  correctAnswer: false),
-        QuizQuestion(image: "Kill Bill",
-                  text: "Рейтинг этого фильма больше чем 7?",
-                  correctAnswer: true),
-        QuizQuestion(image: "The Avengers",
-                  text: "Рейтинг этого фильма больше чем 7?",
-                  correctAnswer: true),
-        QuizQuestion(image: "Deadpool",
-                  text: "Рейтинг этого фильма больше чем 7?",
-                  correctAnswer: false),
-        QuizQuestion(image: "The Green Knight",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: true),
-        QuizQuestion(image: "Old",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-        QuizQuestion(image: "Tesla",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-        QuizQuestion(image: "The Ice Age Adventures of Buck Wild",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-        QuizQuestion(image: "Vivarium",
-                  text: "Рейтинг этого фильма больше чем 6?",
-                  correctAnswer: false),
-    ]
+    private var movies: [OneMovie] = []
+    private var quizQuestions: [QuizQuestion] = []
+
+    func loadData() {
+        moviesLoader.loadMovies { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else {return}
+                switch result {
+                case .success(let mostPopularMovies):
+                    self.movies = mostPopularMovies
+                    self.delegate?.didLoadDataFromServer()
+                    
+                case .failure(let error):
+                    self.delegate?.didFailToLoadDataFromServer(with: error)
+                }
+            }
+        }
+    }
     
     func requestNextQuestion() {
-        guard let index = (0..<quizQuestions.count).randomElement() else {
-            delegate?.didReceiveNextQuestion(question: nil)
-            return
-        }
         
-        let question = quizQuestions[safe: index]
-            delegate?.didReceiveNextQuestion(question: question)
+        let index = (0..<self.movies.count).randomElement() ?? 0
+        guard let question = self.movies[safe: index] else { return }
+        let randomNumber = Double.random(in: 5.0...9.1)
+        let correctAnswer = (question.rating > randomNumber)
+        let text = "Рейтинг этого фильма больше чем \(Int(randomNumber))?"
+        
+        networkClient.fetch(url: question.resizedImageURL) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else {return}
+                switch result {
+                case .success(let data):
+                    let quizQuestion = QuizQuestion(image: data,
+                                                    text: text,
+                                                    correctAnswer: correctAnswer)
+                    
+                    self.delegate?.didReceiveNextQuestion(question: quizQuestion)
+                case .failure(let error):
+                    self.delegate?.didFailToLoadImageFromServer(with: error)
+                }
+            }
+        }
     }
 }
+
