@@ -27,7 +27,8 @@ final class MovieQuizViewController: UIViewController {
       let text: String
       let buttonText: String
     }
-    //
+    // MARK: - Questions
+    
   private  let questions:[QuizQuestion] = [QuizQuestion(image: "The Godfather", text:  "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
                                     QuizQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
                                     QuizQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
@@ -56,6 +57,8 @@ final class MovieQuizViewController: UIViewController {
     //MARK: - vars
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+    private var countOfSessions: Int = 0
+    private var biggesNumberOfRightAnsers:Int = 0
     
     //MARK: - funcs
     private func showAnswerResult(isCorrect:Bool) {
@@ -100,14 +103,23 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResults(){
         if currentQuestionIndex == questions.count - 1{
-            let text = "Ваш результат:\(correctAnswers) / \(questions.count)"
-            let newViewModel =  QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз?")
+            countOfSessions += 1
+            
+            if correctAnswers > biggesNumberOfRightAnsers {
+            biggesNumberOfRightAnsers = correctAnswers
+            }
+            var date = Date()
+            var dateTimeString = date.dateTimeString
+            var srednyayaTochnist: Float = (100.00 * Float(correctAnswers)) / 10
+            let text = "Ваш результат: \(correctAnswers)/\(questions.count) \n Количество сыгранных квизов: \(countOfSessions) \n Рекорд: \(biggesNumberOfRightAnsers)/\(questions.count) (\(dateTimeString)) \n Cредняя точность: \(srednyayaTochnist)%"
+            let newViewModel =  QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
             show(quiz: newViewModel)
             correctAnswers = 0
-         
-        } else{
-            currentQuestionIndex += 1
             imageView.layer.borderWidth = 0
+         
+        } else {
+            imageView.layer.borderWidth = 0
+            currentQuestionIndex += 1
             show(quiz: self.convert(model: questions[currentQuestionIndex]))
                     }
     }
