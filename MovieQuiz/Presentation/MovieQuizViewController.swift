@@ -2,11 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Global variables
-    private var currentQuestionIndex: UInt8 = 0 {
-        didSet {
-            questionsFactory?.requestNextQuestion()
-        }
-    }
+    private var currentQuestionIndex: UInt8 = 0
     private var correctAnswers = 0
     private let questionsAmount = 10
     private var lastQuestion: Bool {
@@ -185,7 +181,6 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResult()
-            
         }
     }
     
@@ -195,6 +190,7 @@ final class MovieQuizViewController: UIViewController {
             showEndOfRoundAlert()
         } else {
             currentQuestionIndex.increment()
+            questionsFactory?.requestNextQuestion()
         }
     }
     
