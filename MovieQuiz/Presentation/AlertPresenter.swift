@@ -9,10 +9,15 @@ import Foundation
 import UIKit
 
 
-struct AlertPresenter {
-    
+struct AlertPresenter: AlertProtocol {
+   
     weak var viewController: UIViewController?
-    func showAlert(quiz result: AlertModel) {
+    
+    init(viewController: UIViewController) {
+        self.viewController = viewController
+    }
+    
+    internal func showAlert(quiz result: AlertModel) {
         
         let alert = UIAlertController(
             title: result.title,

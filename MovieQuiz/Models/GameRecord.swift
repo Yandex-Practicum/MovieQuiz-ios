@@ -14,6 +14,7 @@ struct GameRecord: Codable {
     let date: Date
 }
 
+
 // MARK: - Extension GameRecord
 extension GameRecord: Comparable {
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
