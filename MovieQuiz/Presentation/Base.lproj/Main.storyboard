@@ -39,7 +39,7 @@
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="px5-X3-eKn" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
-                                        <color key="backgroundColor" name="white"/>
+                                        <color key="backgroundColor" name="ypBlack"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="px5-X3-eKn" secondAttribute="height" multiplier="2:3" id="19E-t9-NYl"/>
                                         </constraints>
@@ -106,10 +106,11 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
+                                <color key="backgroundColor" name="ypBlack"/>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="ypBlack"/>
                         <constraints>
                             <constraint firstItem="vL3-nQ-Rui" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="3C4-hk-6Sd"/>
                             <constraint firstItem="vL3-nQ-Rui" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="qh1-DR-jUe"/>
@@ -119,7 +120,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="ker-sQ-Ig6" id="Awv-V7-ljT"/>
                         <outlet property="imageView" destination="px5-X3-eKn" id="bEo-Fe-89u"/>
+                        <outlet property="noButton" destination="lPQ-gD-cye" id="M17-ND-VOn"/>
                         <outlet property="textLabel" destination="UYb-O6-FdU" id="Xbr-jY-u23"/>
+                        <outlet property="yesButton" destination="63r-Jq-CYU" id="5hC-Yz-c11"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -130,6 +133,9 @@
     <resources>
         <namedColor name="white">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ypBlack">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
