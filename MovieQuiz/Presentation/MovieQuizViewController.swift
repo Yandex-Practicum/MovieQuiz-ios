@@ -9,12 +9,6 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == correctAnswer)
         
-        /* Авторское решение:
-        let currectQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currectQuestion.correctAnswer)
-        */
-        
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -22,18 +16,12 @@ final class MovieQuizViewController: UIViewController {
         let correctAnswer = currentQuestion.correctAnswer
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == correctAnswer)
-        
-        /* Авторское решение:
-        let currectQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currectQuestion.correctAnswer)
-        */
 
     }
     
-    @IBOutlet weak private var imageView: UIImageView!
-    @IBOutlet weak private var textLabel: UILabel!
-    @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
     
     struct QuizQuestion {
         let image: String
@@ -129,14 +117,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            show(quiz: convert(model: questions[currentQuestionIndex]))
-            
-            /* Авторское решение:
-            currentQuestionIndex += 1
-            let nextQuestion = questions[currentQuestionIndex]
-            let viewModel = convert(model: nextQuestion)
-            show(quiz: viewModel)
-            */
+            show(quiz: convert(model: questions[currentQuestionIndex])) 
         }
     }
     

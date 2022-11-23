@@ -61,7 +61,7 @@
                                         <rect key="frame" x="0.0" y="566.33333333333337" width="335" height="74.666666666666629"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNS-l9-Orr" userLabel="Question Label">
-                                                <rect key="frame" x="20" y="12.999999999999996" width="295" height="48.666666666666657"/>
+                                                <rect key="frame" x="20" y="0.0" width="295" height="74.666666666666671"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -70,8 +70,8 @@
                                         <constraints>
                                             <constraint firstItem="YNS-l9-Orr" firstAttribute="leading" secondItem="R6z-jW-v1j" secondAttribute="leading" constant="20" id="L2L-93-oVX"/>
                                             <constraint firstAttribute="trailing" secondItem="YNS-l9-Orr" secondAttribute="trailing" constant="20" id="XCT-7N-eR4"/>
-                                            <constraint firstAttribute="bottom" secondItem="YNS-l9-Orr" secondAttribute="bottom" constant="13" id="YD5-b9-U6d"/>
-                                            <constraint firstItem="YNS-l9-Orr" firstAttribute="top" secondItem="R6z-jW-v1j" secondAttribute="top" constant="13" id="dMv-yw-UIp"/>
+                                            <constraint firstAttribute="bottom" secondItem="YNS-l9-Orr" secondAttribute="bottom" id="YD5-b9-U6d"/>
+                                            <constraint firstItem="YNS-l9-Orr" firstAttribute="top" secondItem="R6z-jW-v1j" secondAttribute="top" id="dMv-yw-UIp"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="g3Y-tG-ged">
@@ -118,7 +118,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="YP BackgroundDarkGray"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="eFm-Dj-d8i" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="1rQ-Uc-X16"/>
                             <constraint firstItem="eFm-Dj-d8i" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="LGs-2Q-5dD"/>
@@ -138,9 +138,6 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="YP BackgroundDarkGray">
-            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
