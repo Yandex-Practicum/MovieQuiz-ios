@@ -10,6 +10,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Properties
     
@@ -27,11 +28,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad(){
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-               questionFactory = QuestionFactory(delegate: self)
-               questionFactory?.requestNextQuestion()
-               alertPresenter = AlertPresenter(viewController: self)
-               statisticService = StatisticServiceImplementation()
-        
+    
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+        alertPresenter = AlertPresenter(viewController: self)
+        statisticService = StatisticServiceImplementation()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -46,6 +47,34 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - Private functions
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индекатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadingIndicator() {
+            activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать ещё раз") { [weak self] _ in
+            guard let self = self else {return}
+            self.restartGame()
+        }
+        alertPresenter = AlertPresenter(viewController: self)
+        alertPresenter?.showAlert(quiz: model)
+    }
+    
+    private func restartGame() {
+        self.currentQuestionIndex = 0
+        self.questionFactory?.requestNextQuestion()
+        self.correctAnswers = 0
+    }
     
     private func showAnswerResult(isCorrect: Bool){
         if isCorrect {
@@ -142,6 +171,39 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         blockButtons()
+    }
+    
+    // MARK: - URL
+    func sendFirstRequestion() {
+        //создаем адрес
+        guard let url = URL(string: "https://imdb-api.com/en/API/MostPopularTVs/k_q8w9sd9g") else { return }
+        // создаем запрос
+        var request = URLRequest(url: url)
+        
+        /*
+           Также запросу можно добавить HTTP метод, хедеры и тело запроса.
+           
+           request.httpMethod = "GET" // здесь можно указать HTTP метод — по умолчанию он GET
+           request.allHTTPHeaderFields = [:] // а тут хедеры
+           request.httpBody = nil // а здесь тело запроса
+        */
+        
+        request.httpBody = Data() // тело запроса
+        request.httpMethod = "POST" // имя HTTP метода
+        request.setValue("test", forHTTPHeaderField: "TEST") // название заголовка
+        
+        // Создаем задачу на отправление запроса в сеть
+        
+        let task: URLSessionDataTask = URLSession.shared.dataTask(with: request) {data, response, error in
+            // здесь мы обрабатываем ответ от сервера
+                   
+            // data — данные от сервера
+            // response — ответ от сервера, содержащий код ответа, хедеры и другую информацию об ответе
+            // error — ошибка ответа, если что-то пошло не так
+        }
+        // Отправляем запрос
+        task.resume()
+        
     }
 }
 
