@@ -16,18 +16,37 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textlabel: UILabel!
     private var currentQuestionIndex: Int = 0
     
+    @IBOutlet weak var noButtonOutlet: UIButton!
+    
+    @IBOutlet weak var yesButtonOutlet: UIButton!
+    
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
+        
         let currentQuestion: QuizQuestion = questions[currentQuestionIndex]
+        
         let quizStepViewModelReturned: QuizStepViewModel = convert(model: currentQuestion)
+        
         show(quiz: quizStepViewModelReturned)
     }
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+     return QuizStepViewModel(
+        image: UIImage(named: model.image) ?? UIImage(),
+        question: model.text,
+        questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+      }
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         counterLabel.text = step.questionNumber
         textlabel.text = step.question
     }
+    private var correctAnswers: Int = 0
 
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
@@ -39,8 +58,11 @@ final class MovieQuizViewController: UIViewController {
         title: result.buttonText,
         style: .default,
         handler: { _ in
+        
          self.currentQuestionIndex = 0
+            
             self.correctAnswers = 0
+            
          let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
@@ -49,41 +71,29 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-     return QuizStepViewModel(
-        image: UIImage(named: model.image) ?? UIImage(),
-        question: model.text,
-        questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
-      }
-   private var correctAnswers: Int = 0
-    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect == true {
             correctAnswers += 1
         }
-        imageView.layer.masksToBounds = true
+        noButtonOutlet.isEnabled = false
+        yesButtonOutlet.isEnabled = false
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
-        imageView.layer.cornerRadius = 20
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {  // запускаем задачу через 1 секунду
-            // код, который вы хотите вызвать через 1 секунду,
-            // в нашем случае это просто функция showNextQuestionOrResults()
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.noButtonOutlet.isEnabled = true
+            self.yesButtonOutlet.isEnabled = true
         }
 }
   
-    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             imageView.layer.borderWidth = 0
-            imageView.layer.cornerRadius = 0
-            let QuizStep: QuizResultsViewModel = QuizResultsViewModel(title: "Сыграть ещё раз?", text: "Правильных ответов \(correctAnswers)", buttonText: "OK")
-           show(quiz: QuizStep)
+            let QuizResult: QuizResultsViewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswers)/\(questions.count)", buttonText: "Сыграть ещё раз")
+           show(quiz: QuizResult)
         } else {
             imageView.layer.borderWidth = 0
-            imageView.layer.cornerRadius = 0
             currentQuestionIndex += 1
             viewDidLoad()
         }
@@ -151,7 +161,6 @@ final class MovieQuizViewController: UIViewController {
     ]
     
 }
-
 
 
 

@@ -74,7 +74,7 @@
                                                             <fragment content="Рейтинг этого фильма меньше чем 5?">
                                                                 <attributes>
                                                                     <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <font key="NSFont" size="26" name="YSDisplay-Medium"/>
+                                                                    <font key="NSFont" size="23" name="YSDisplay-Bold"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>
                                                             </fragment>
@@ -105,7 +105,7 @@
                                                                 <fragment content="Нет">
                                                                     <attributes>
                                                                         <color key="NSColor" name="Black"/>
-                                                                        <font key="NSFont" size="20" name="YSDisplay-Bold"/>
+                                                                        <font key="NSFont" size="20" name="YSDisplay-Medium"/>
                                                                     </attributes>
                                                                 </fragment>
                                                             </attributedString>
@@ -128,8 +128,8 @@
                                                             <attributedString key="attributedTitle">
                                                                 <fragment content="Да">
                                                                     <attributes>
-                                                                        <color key="NSColor" name="Black"/>
-                                                                        <font key="NSFont" size="20" name="YSDisplay-Bold"/>
+                                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                        <font key="NSFont" size="20" name="YSDisplay-Medium"/>
                                                                     </attributes>
                                                                 </fragment>
                                                             </attributedString>
@@ -165,7 +165,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="cNH-u2-pIr" id="ex2-Yl-FAc"/>
                         <outlet property="imageView" destination="5d5-pP-D2j" id="tUT-RM-uAY"/>
+                        <outlet property="noButtonOutlet" destination="MOQ-sa-Eer" id="Yqg-UM-V2d"/>
                         <outlet property="textlabel" destination="w3Q-yM-mgp" id="kOq-32-Zno"/>
+                        <outlet property="yesButtonOutlet" destination="0vm-PD-Ht5" id="ktK-9e-wkw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
