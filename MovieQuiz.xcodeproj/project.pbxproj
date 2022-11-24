@@ -47,13 +47,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		40DD6B7C2920EFF800FAADAA /* Fonts */ = {
+		40DD6B7C2920EFF800FAADAA /* MovieQuizFonts */ = {
 			isa = PBXGroup;
 			children = (
 				40DD6B7D2920F00B00FAADAA /* YS Display-Bold.ttf */,
 				40DD6B7E2920F00B00FAADAA /* YS Display-Medium.ttf */,
 			);
-			path = Fonts;
+			path = MovieQuizFonts;
 			sourceTree = "<group>";
 		};
 		8F4738322848DE2A005DF65E /* Presentation */ = {
@@ -68,7 +68,7 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				40DD6B7C2920EFF800FAADAA /* Fonts */,
+				40DD6B7C2920EFF800FAADAA /* MovieQuizFonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,

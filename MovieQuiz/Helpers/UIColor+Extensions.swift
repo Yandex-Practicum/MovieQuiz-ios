@@ -2,10 +2,10 @@ import Foundation
 import UIKit
 
 extension UIColor {
-    static var ypBlack: UIColor { UIColor(named: "ypBlack")! }
-    static var ypRed: UIColor { UIColor(named: "ypRed")! }
-    static var ypWhite: UIColor { UIColor(named: "ypWhite")! }
-    static var ypGreen: UIColor { UIColor(named: "ypGreen")! }
-    static var ypGray: UIColor { UIColor(named: "ypGray")! }
-    static var ypBackGround: UIColor { UIColor(named: "ypBackGround")! }
+    static var ypBlack: UIColor { UIColor(named: "black")! }
+    static var ypRed: UIColor { UIColor(named: "red")! }
+    static var ypWhite: UIColor { UIColor(named: "white")! }
+    static var ypGreen: UIColor { UIColor(named: "green")! }
+    static var ypGray: UIColor { UIColor(named: "gray")! }
+    static var ypBackGround: UIColor { UIColor(named: "background")! }
 }
