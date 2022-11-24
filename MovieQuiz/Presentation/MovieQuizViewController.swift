@@ -18,6 +18,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService = StatisticServiceImplementation()
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // преобразовываем данные модели вопроса в те, что нужно показать на экране
@@ -39,129 +40,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter = AlertPresenter(viewController: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
-        
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        
-        let inceptionPath = documentsURL.appendingPathComponent("inception.json")
-        let jsonString = try? String(contentsOf: inceptionPath)
-        let data = jsonString?.data(using: .utf8)
-        guard let data = data else { return }
-
-        struct Actor: Codable {
-            let id: String
-            let image: String
-            let name: String
-            let asCharacter: String
-        }
-        struct Movie: Codable {
-            let id: String
-            let title: String
-            let year: Int
-            let image: String
-            let releaseDate: String
-            let runtimeMins: Int
-            let directors: String
-            let actorList: [Actor]
-        }
-
-        do {
-            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-
-            guard let json = json,
-                  let id = json["id"] as? String,
-                  let title = json["title"] as? String,
-                  let jsonYear = json["year"] as? String,
-                  let year = Int(jsonYear),
-                  let image = json["image"] as? String,
-                  let releaseDate = json["releaseData"] as? String,
-                  let jsonRuntimeMins = json["runtimeMins"] as? String,
-                  let runtimeMins = Int(jsonRuntimeMins),
-                  let directors = json["directors"] as? String,
-                  let actorList = json["actorList"] as? [Any] else {
-                return
-            }
-            var actors: [Actor] = []
-
-            for actor in actorList {
-                guard let actor = actor as? [String: Any],
-                      let id = actor["id"] as? String,
-                      let image = actor["image"] as? String,
-                      let name = actor["name"] as? String,
-                      let asCharacter = actor["asCharacter"] as? String else {
-                    return
-                }
-                let mainActor = Actor(id: id, image: image, name: name, asCharacter: asCharacter)
-                actors.append(mainActor)
-            }
-            
-            let movie = Movie(id: id,
-                              title: title,
-                              year: year,
-                              image: image,
-                              releaseDate: releaseDate,
-                              runtimeMins: runtimeMins,
-                              directors: directors,
-                              actorList: actors)
-            
-        } catch {
-            print("Failed to parsed: \(String(describing: jsonString))")
-        }
-        
-        let topPath = documentsURL.appendingPathComponent("top250MoviesIMDB.json")
-        let jsongTop = try? String(contentsOf: topPath)
-        let dataTop = jsongTop?.data(using: .utf8)
-        guard let dataTop = dataTop else { return }
-        
-        struct MovieTop: Codable {
-            let id: String
-            let rank: String
-            let title: String
-            let fullTitle: String
-            let year: String
-            let image: String
-            let crew: String
-            let imDbRating: String
-            let imDbRatingCount: String
-        }
-        
-        struct Top: Decodable {
-            let items: [MovieTop]
-        }
-        
-        do {
-            let top = try JSONDecoder().decode(Top.self, from: dataTop)
-            
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-        
-//        print(NSHomeDirectory())
-//        print(Bundle.main.bundlePath)
-//        print(documentsURL)
-//        print(documentsURL.scheme!)
-        print(documentsURL.path)
-//
-//        let fileName = "text.swift"
-//        documentsURL.appendPathComponent(fileName)
-//        print(documentsURL.path)
-//        if !FileManager.default.fileExists(atPath: documentsURL.path){
-//            let hello = "Hello world!"
-//            let data = hello.data(using: .utf8)
-//            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
-//
-//        enum FileManagerError: Error {
-//            case fileDoesntExist
-//        }
-//
-//        func string(from documentsURL: URL) throws -> String {
-//            if !FileManager.default.fileExists(atPath: documentsURL.path) {
-//                throw FileManagerError.fileDoesntExist
-//            }
-//            return try String(contentsOf: documentsURL)
-//        }
     }
     
-    // MARK: - QuestionFactoryDelegate ++
+    // MARK: - QuestionFactoryDelegate
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -197,10 +78,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         if currentQuestionIndex == questionsAmount - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
             // показать результат квизa
-            let textMessage = correctAnswers == questionsAmount ?
-            "Поздравляем, Вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let alert = AlertModel(title: "Игра окончена", message: textMessage, buttonText: "Cыграть еще раз") { [weak self] in
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let textMessage =
+            """
+Ваш результат: \(correctAnswers) из 10,
+Количество сыгранных квизов: \(statisticService.gamesCount)
+Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+"""
+            let alert = AlertModel(title: "Этот раунд окончен!", message: textMessage, buttonText: "Cыграть еще раз") { [weak self] in
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 guard let currentQuestion = self.currentQuestion else { return }
