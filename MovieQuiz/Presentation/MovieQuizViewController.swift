@@ -95,7 +95,9 @@ final class MovieQuizViewController: UIViewController {
         } else {
             imageView.layer.borderWidth = 0
             currentQuestionIndex += 1
-            viewDidLoad()
+            let currentQuestion: QuizQuestion = questions[currentQuestionIndex]
+            let quizStepViewModelReturned: QuizStepViewModel = convert(model: currentQuestion)
+            show(quiz: quizStepViewModelReturned)
         }
     }
     
