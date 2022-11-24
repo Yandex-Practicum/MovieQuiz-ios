@@ -16,8 +16,8 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
-		C13A0E112926B2CA006BDDEF /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C13A0E0F2926B2CA006BDDEF /* YS Display-Bold.ttf */; };
-		C13A0E122926B2CA006BDDEF /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C13A0E102926B2CA006BDDEF /* YS Display-Medium.ttf */; };
+		C1642721293006F30055A8AA /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C164271F293006F30055A8AA /* YS Display-Bold.ttf */; };
+		C1642722293006F30055A8AA /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1642720293006F30055A8AA /* YS Display-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +32,8 @@
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
-		C13A0E0F2926B2CA006BDDEF /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Bold.ttf"; path = "../../../../../Downloads/MovieQuizFonts/YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		C13A0E102926B2CA006BDDEF /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Medium.ttf"; path = "../../../../../Downloads/MovieQuizFonts/YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		C164271F293006F30055A8AA /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		C1642720293006F30055A8AA /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +124,8 @@
 		C107C5322926A721006F8307 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				C13A0E0F2926B2CA006BDDEF /* YS Display-Bold.ttf */,
-				C13A0E102926B2CA006BDDEF /* YS Display-Medium.ttf */,
+				C164271F293006F30055A8AA /* YS Display-Bold.ttf */,
+				C1642720293006F30055A8AA /* YS Display-Medium.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -193,8 +193,8 @@
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
-				C13A0E112926B2CA006BDDEF /* YS Display-Bold.ttf in Resources */,
-				C13A0E122926B2CA006BDDEF /* YS Display-Medium.ttf in Resources */,
+				C1642721293006F30055A8AA /* YS Display-Bold.ttf in Resources */,
+				C1642722293006F30055A8AA /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
