@@ -5,6 +5,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     private let questions: [QuizQuestion] = [
         .init(image: "The Godfather", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
@@ -26,32 +28,26 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         let currentQuestion = questions[currentQuestionIndex]
         show(quiz: convert(model: currentQuestion))
     }
     
-    /// "Yes" button processing
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let correctAnswer = questions[currentQuestionIndex].correctAnswer
         showAnswerResult(isCorrect: correctAnswer == true)
     }
-    /// "No" button processing
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let correctAnswer = questions[currentQuestionIndex].correctAnswer
         showAnswerResult(isCorrect: correctAnswer == false)
     }
     
-    /// Question display
-    /// - Parameter step: converted question into a view model
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     
-    /// Result display
-    /// - Parameter result: result view model
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(title: result.title,
                                       message: result.text,
@@ -69,17 +65,12 @@ final class MovieQuizViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    /// Converting the QuizQuestion model to QuizStepViewModel
-    /// - Parameter model: instance of QuizQuestion
-    /// - Returns: instance of QuizQuestion
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
                           question: model.text,
                           questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
-    
-    /// Showing the result
-    /// - Parameter isCorrect: Checking the correctness of the answer
+
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect { correctAnswers += 1 }
         
@@ -88,12 +79,17 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen?.cgColor : UIColor.ypRed?.cgColor
         
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
     }
     
-    /// Showing the next question or results
     private func showNextQuestionOrResults() {
         imageView.layer.borderWidth = 0
         

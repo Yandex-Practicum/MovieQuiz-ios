@@ -35,13 +35,13 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJG-Bl-KoV" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="309" height="23.666666666666668"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZD-Ef-9mv" userLabel="Index Label">
                                                 <rect key="frame" x="317" y="0.0" width="36" height="23.666666666666668"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -57,19 +57,19 @@
                                         <rect key="frame" x="0.0" y="593.33333333333337" width="353" height="80.666666666666629"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twy-Nl-QDj" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="12.999999999999996" width="269" height="54.666666666666657"/>
+                                                <rect key="frame" x="42" y="0.0" width="269" height="80.666666666666671"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="twy-Nl-QDj" firstAttribute="leading" secondItem="hsg-fW-w7Q" secondAttribute="leading" constant="42" id="0fl-Gg-KDv"/>
-                                            <constraint firstItem="twy-Nl-QDj" firstAttribute="top" secondItem="hsg-fW-w7Q" secondAttribute="top" constant="13" id="5mz-Rn-HFh"/>
+                                            <constraint firstItem="twy-Nl-QDj" firstAttribute="top" secondItem="hsg-fW-w7Q" secondAttribute="top" id="5mz-Rn-HFh"/>
                                             <constraint firstItem="twy-Nl-QDj" firstAttribute="centerY" secondItem="hsg-fW-w7Q" secondAttribute="centerY" id="BG3-gv-wsd"/>
                                             <constraint firstAttribute="trailing" secondItem="twy-Nl-QDj" secondAttribute="trailing" constant="42" id="JGT-Hu-RjP"/>
                                             <constraint firstItem="twy-Nl-QDj" firstAttribute="centerX" secondItem="hsg-fW-w7Q" secondAttribute="centerX" id="Zh6-lD-sMn"/>
-                                            <constraint firstAttribute="bottom" secondItem="twy-Nl-QDj" secondAttribute="bottom" constant="13" id="gBz-Sm-rDJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="twy-Nl-QDj" secondAttribute="bottom" id="gBz-Sm-rDJ"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gpl-u6-gNg" userLabel="Buttons Stack View">
@@ -134,7 +134,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="jZD-Ef-9mv" id="fRE-1s-g8d"/>
                         <outlet property="imageView" destination="BrS-fb-ftz" id="OzR-Lc-BB0"/>
+                        <outlet property="noButton" destination="dyb-z5-obw" id="9Uu-Ti-iR3"/>
                         <outlet property="textLabel" destination="twy-Nl-QDj" id="PbU-Mn-w6t"/>
+                        <outlet property="yesButton" destination="duR-3Q-RFo" id="J4a-NJ-4qa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5x4-ov-UsG" sceneMemberID="firstResponder"/>
