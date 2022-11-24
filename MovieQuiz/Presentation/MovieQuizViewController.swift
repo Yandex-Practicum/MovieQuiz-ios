@@ -66,10 +66,10 @@ final class MovieQuizViewController: UIViewController {
     }
    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true, button: sender)
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false, button: sender)
     }
     
     private func showQuestion() {
@@ -103,7 +103,9 @@ final class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    private func showAnswerResult(isCorrect: Bool, button actionButton: UIButton) {
+        actionButton.isEnabled = false
+        
         if isCorrect {
             correctAnswers += 1
         }
@@ -112,6 +114,8 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            actionButton.isEnabled = true
+            
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
             self.imageView.layer.borderColor = nil
