@@ -2,12 +2,14 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
+    private var currentQuestionIndex = 0
+    private var correctAnswers: Int = 0
+    
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var questionLabel: UILabel!
-    
-    private var currentQuestionIndex = 0
-    private var correctAnswers: Int = 0
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     // MARK: Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -73,13 +75,20 @@ final class MovieQuizViewController: UIViewController {
             correctAnswers += 1
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { self.showNextQuestionOrResults()
+        self.noButton.isEnabled = false
+        self.yesButton.isEnabled = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
         }
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+
     }
     
     private func showNextQuestionOrResults() {
@@ -89,13 +98,13 @@ final class MovieQuizViewController: UIViewController {
                 title: "Этот раунд окончен!",
                 text: text,
                 buttonText: "Сыграть ещё раз")
-            imageView.layer.borderWidth = 0
+            imageView.layer.borderColor = UIColor.clear.cgColor
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
-            imageView.layer.borderWidth = 0
+            imageView.layer.borderColor = UIColor.clear.cgColor
             show(quiz: viewModel)
         }
     }

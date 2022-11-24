@@ -51,6 +51,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="lGH-OT-SDt" secondAttribute="height" multiplier="2:3" id="4nG-hJ-Vcy"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wBA-3l-xxb" userLabel="View Question Label">
                                         <rect key="frame" x="0.0" y="641" width="374" height="93"/>
@@ -131,7 +136,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="97R-JJ-rzf" id="Wlx-cZ-OSp"/>
                         <outlet property="imageView" destination="lGH-OT-SDt" id="46a-d5-fcE"/>
+                        <outlet property="noButton" destination="IhF-CS-bV9" id="83m-oJ-Vbr"/>
                         <outlet property="questionLabel" destination="Z6B-gW-nFp" id="0Iq-Bz-2tX"/>
+                        <outlet property="yesButton" destination="KKe-px-VpO" id="QM3-do-WGs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
