@@ -16,9 +16,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textlabel: UILabel!
     private var currentQuestionIndex: Int = 0
     
-    @IBOutlet weak var noButtonOutlet: UIButton!
+    @IBOutlet private var noButtonOutlet: UIButton!
     
-    @IBOutlet weak var yesButtonOutlet: UIButton!
+    @IBOutlet private var yesButtonOutlet: UIButton!
     
     
     // MARK: - Lifecycle
@@ -95,7 +95,9 @@ final class MovieQuizViewController: UIViewController {
         } else {
             imageView.layer.borderWidth = 0
             currentQuestionIndex += 1
-            viewDidLoad()
+            let currentQuestion: QuizQuestion = questions[currentQuestionIndex]
+            let quizStepViewModelReturned: QuizStepViewModel = convert(model: currentQuestion)
+            show(quiz: quizStepViewModelReturned)
         }
     }
     
