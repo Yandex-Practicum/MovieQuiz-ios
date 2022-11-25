@@ -9,10 +9,16 @@ import Foundation
 
 final class StatisticServiceImplementation: StatisticService {
     
+    private let userDefaults = UserDefaults.standard
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
-    
+    private var correct: Double {
+        userDefaults.double(forKey: Keys.correct.rawValue)
+    }
+    private var total: Double {
+        userDefaults.double(forKey: Keys.total.rawValue)
+    }
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -31,21 +37,17 @@ final class StatisticServiceImplementation: StatisticService {
     }
     var totalAccuracy: Double {
         get {
-            let getCorrect = Double((userDefaults.integer(forKey: Keys.correct.rawValue)))
-            let getTotal = Double((userDefaults.integer(forKey: Keys.total.rawValue)))
-            return (getCorrect/getTotal) * 100
+            return (correct / total) * 100
         }
     }
     var gamesCount: Int {
         get {
-            let data = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
-            return data
+            return userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
-    private let userDefaults = UserDefaults.standard
     
     func store(correct count: Int, total amount: Int) {
         gamesCount += 1
