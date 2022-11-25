@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NOd-UR-KJD">
-                                <rect key="frame" x="20" y="58" width="374" height="832.5"/>
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qJ7-yl-6nE">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -47,10 +47,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rvn-BO-TfT">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="128"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ezo-NU-jaw" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="102"/>
+                                                <rect key="frame" x="42" y="0.0" width="290" height="99.5"/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="white"/>
@@ -59,13 +59,13 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="Ezo-NU-jaw" secondAttribute="trailing" constant="42" id="JAr-UW-2LJ"/>
-                                            <constraint firstItem="Ezo-NU-jaw" firstAttribute="top" secondItem="Rvn-BO-TfT" secondAttribute="top" constant="13" id="cN5-3P-4T8"/>
-                                            <constraint firstAttribute="bottom" secondItem="Ezo-NU-jaw" secondAttribute="bottom" constant="13" id="osG-mA-9b0"/>
+                                            <constraint firstItem="Ezo-NU-jaw" firstAttribute="top" secondItem="Rvn-BO-TfT" secondAttribute="top" id="cN5-3P-4T8"/>
+                                            <constraint firstAttribute="bottom" secondItem="Ezo-NU-jaw" secondAttribute="bottom" id="osG-mA-9b0"/>
                                             <constraint firstItem="Ezo-NU-jaw" firstAttribute="leading" secondItem="Rvn-BO-TfT" secondAttribute="leading" constant="42" id="qCs-6P-woG"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ngG-Yt-jCx">
-                                        <rect key="frame" x="0.0" y="772.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Ne-VD-SoY" userLabel="no button ">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -112,17 +112,20 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="black"/>
                         <constraints>
                             <constraint firstItem="NOd-UR-KJD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="bRe-ze-ZZW"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NOd-UR-KJD" secondAttribute="trailing" constant="20" id="h8C-b8-9BS"/>
                             <constraint firstItem="NOd-UR-KJD" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="hK8-Ia-sfd"/>
+                            <constraint firstItem="NOd-UR-KJD" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zQc-nQ-Exa"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="counterLabel" destination="r4v-Lq-omx" id="i2L-in-JXf"/>
                         <outlet property="imageView" destination="XV1-Ol-vGk" id="rtB-zk-jdq"/>
+                        <outlet property="noButtonOutlet" destination="4Ne-VD-SoY" id="5ke-dy-vdX"/>
                         <outlet property="textLabel" destination="Ezo-NU-jaw" id="RoI-yl-XMs"/>
+                        <outlet property="yesButtonOutlet" destination="RVV-lZ-mvd" id="IZR-tf-iFT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -43,11 +43,15 @@ final class MovieQuizViewController: UIViewController {
     
 
     // MARK: - IB
+    @IBOutlet private var noButtonOutlet: UIButton!
+    @IBOutlet private var yesButtonOutlet: UIButton!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        noButtonOutlet.isEnabled = false
         showAnswerResult(isCorrect: false == questions[currentQuestionIndex].correctAnswer )
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        yesButtonOutlet.isEnabled = false
         showAnswerResult(isCorrect: true == questions[currentQuestionIndex].correctAnswer )
     }
     @IBOutlet private var imageView: UIImageView!
@@ -73,6 +77,8 @@ final class MovieQuizViewController: UIViewController {
                 self.correctAnswers += 1
             }
             self.showNextQuestionOrResults()
+            self.noButtonOutlet.isEnabled = true
+            self.yesButtonOutlet.isEnabled = true
         }
         
     }
