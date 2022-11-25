@@ -100,7 +100,9 @@ final class MovieQuizViewController: UIViewController {
             message: result.text,
             preferredStyle: .alert)
 
-        let action = UIAlertAction(title: result.buttonText, style: .default) {_ in
+        let action = UIAlertAction(
+            title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
             self.showFirstTime()
         }
 
@@ -142,7 +144,8 @@ final class MovieQuizViewController: UIViewController {
         else {
             configureImageLayer(thickness: 8, color: UIColor.ypRed)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
             self.showNextQuestionOrResults()
         }
     }
