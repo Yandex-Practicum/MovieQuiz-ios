@@ -1,25 +1,5 @@
 import UIKit
 
-/*
-Здравствуйте, Александра. Я планирую после вашего финального ревью взять академ, не только из-за
-проблем со временем, но и из-за постоянных исправлений учебника по ходу обучения первой кагорты.
- 
-5 спринт выдался очень сложным, принёс очень много разочарования и растерянности, а также сомнений,
- надо ли мне вообще это. Его я выполнял с помощью ребят с кагорты, самостоятельно в такие сроки не
- выполнил бы.
- 
- Хочу у вас попросить помощи, если вам будет несложно ответить, я понимаю, что это не в зоне вашх
- обязанностей, поэтому я пойму, если не станете отвечать, я ценю ваше время. У меня два вопроса.
- Что можно делать в ситуации сильной демотивации, когда всё не получается и очень тяжело всё
- понять и осознать? А так же, что вы посоветуете поизучать во время академа, чтобы вернуться с пониманием
- этого материала? Учебник мне не помогает, всё объяснено непонятно, на сложных примерах, запутанно
- и так далее. Я буду вам очень благодарен за совет..
- 
- На счёт цвета, я не понимаю, в чём проблема. Цвет Background в сториборде #1A1B22 с 60% alpha,
- как в макете фигмы.. :/
- Плюс в прошлый раз всё было нормально, а я ничего в цвете не менял. Может дело в названии? Сменил.
-*/
-
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate  {
     
     
@@ -28,6 +8,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -98,7 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -164,5 +145,36 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         })
         alertPresenter?.showAlert(model: alertModel)
 
+    }
+    
+    // MARK: Индикатор загрузки
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        activityIndicator.isHidden = true // hideLoadingIndicator()
+        activityIndicator.stopAnimating()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: "При загрузке данных произошла ошибка, повторите запрос",
+                               buttonText: "Попробовать ещё раз") { [weak self] in
+            
+            guard let self = self else { return }
+            //self.presenter.restartGame()
+            self.showLoadingIndicator()
+        }
+        alertPresenter?.showAlert(model: model)
+        //alertPresenter.show(in: self, model: model)
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
     }
 }
