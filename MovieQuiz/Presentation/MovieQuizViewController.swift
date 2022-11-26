@@ -20,9 +20,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         self.imageView.layer.cornerRadius = 20
         
-        questionFactory = QuestionFactory(delegate: self) //здесь инициализируем фабрику
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader() ) //здесь инициализируем фабрику
+
+        questionFactory?.loadData() // начинаем загрузку - внутри loadData() в зависимости от состояния вызываются функции didLoadDataFromServer() и didFailToLoadData()
+        showLoadingIndicator() // показываем индикатор
         
-        questionFactory?.requestNextQuestion()
+        //questionFactory?.requestNextQuestion()
         
         alert = AlertPresenter(controller: self)
         
@@ -31,11 +34,43 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
     
 
+    //функция для отображения индикатора
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    
+    //функция отображения ошибки
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        
+        // создайте и покажите алерт
+        let viewModel = AlertModel(title: "Ошибка",
+                                   text: message,
+                                   buttonText: "Попробовать еще раз") {[weak self] in
+            guard let self = self else {return}
+            self.presenter.restartGame() //  откуда рестартГейм и что за объект презентер?
+        }
+        alert?.showAlert(result: viewModel)
+    }
+    
+    
+     func didLoadDataFromServer() {//скрываем индикатор и показываем новый экран
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+
+     func didFailToLoadData(with error: Error) { // функция для отображения ошибки
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     
     // работа с 2мя кнопками
     @IBAction private func noButtonClicked(_ sender: Any) {
@@ -103,7 +138,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // функция перевода данных из исходного вида QuizQuestion в QuizStepViewModel для последующего отображения на экране
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
                                  question: model.text,
                                  questionNumber: String(currentIndex + 1) + "/" + String(questionsAmount))
       }
