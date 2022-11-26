@@ -1,65 +1,8 @@
 import UIKit
 
-private struct QuizQuestion {
-    let image: String
-    let text: String
-    let correctAnswer: Bool
-}
-
-private struct QuizStepViewModel {
-    let image: UIImage
-    let question: String
-    let questionNumber: String
-}
-
-private struct QuizResultsViewModel {
-    let title: String
-    let text: String
-    let buttonText: String
-}
-
-private let questions: [QuizQuestion] = [
-    QuizQuestion(
-        image: "The Godfather",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "The Dark Knight",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "Kill Bill",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "The Avengers",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "Deadpool",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "The Green Knight",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "Old",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion(
-        image: "The Ice Age Adventures of Buck Wild",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion(
-        image: "Tesla",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion(
-        image: "Vivarium",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false)
-]
+private let questionsAmount: Int = 10
+private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+private var currentQuestion: QuizQuestion?
 
 final class MovieQuizViewController: UIViewController {
 
@@ -67,24 +10,33 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
 
+    private var currentQuestion: QuizQuestion? = nil
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        showFirstTime()
+        initFirstTime()
+        showQuestionImpl()
     }
 
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        showAnswerResult(
-            isCorrect:
-                questions[currentQuestionIndex].correctAnswer == true)
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
 
     @IBAction private func noButtonClicked(_ sender: Any) {
-        showAnswerResult(
-            isCorrect:
-                questions[currentQuestionIndex].correctAnswer == false)
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
+    }
+
+    private func initFirstTime() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
     }
 
     private func show(quiz step: QuizStepViewModel) {
@@ -103,7 +55,7 @@ final class MovieQuizViewController: UIViewController {
         let action = UIAlertAction(
             title: result.buttonText, style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.showFirstTime()
+            self.showQuestionImpl()
         }
 
         alert.addAction(action)
@@ -111,14 +63,15 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    private func showFirstTime() {
-        currentQuestionIndex = 0
-        correctAnswers = 0
-        self.show(quiz: self.createStepViewModel(index: self.currentQuestionIndex))
+    private func showQuestionImpl() {
+        if let question = questionFactory.requestNextQuestion() {
+            currentQuestion = question
+            self.show(quiz: convert(model: currentQuestion!))
+        }
     }
 
     private func showFinalResult() {
-        let text = "Ваш результат: \(correctAnswers) из \(questions.count)"
+        let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
         let viewModel = QuizResultsViewModel(
             title: "Этот раунд окончен!",
             text: text,
@@ -127,12 +80,12 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == (questions.count - 1) {
-            currentQuestionIndex = 0
+        if currentQuestionIndex == (questionsAmount - 1) {
             showFinalResult()
+            initFirstTime()
         } else {
             currentQuestionIndex += 1
-            show(quiz: convert(model: questions[currentQuestionIndex]))
+            showQuestionImpl()
         }
     }
 
@@ -157,24 +110,11 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 15
     }
 
-    private func createStepViewModel(index: Int) -> QuizStepViewModel {
-        if index < 0 || index >= questions.count {
-            return convert(model: QuizQuestion(
-                image: "",
-                text: "Неправильное значение индекса (\(index))",
-                correctAnswer: questions[index].correctAnswer))
-        }
-        return convert(model: QuizQuestion(
-            image: questions[index].image,
-            text: questions[index].text,
-            correctAnswer: questions[index].correctAnswer))
-    }
-
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
 
 }
