@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait" appearance="dark"/>
+    <device id="retina6_72" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
@@ -14,23 +14,23 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MovieQuizViewController" customModule="MovieQuiz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="HC6-lh-E6F">
-                                <rect key="frame" x="20" y="-10" width="335" height="720.5"/>
+                                <rect key="frame" x="20" y="69" width="390" height="829"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TFC-N2-RRv">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="24"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="24"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SHL-Nx-wTh" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="298.5" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="353.66666666666669" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EuD-xa-ftr" userLabel="Index Label">
-                                                <rect key="frame" x="298.5" y="0.0" width="36.5" height="24"/>
+                                                <rect key="frame" x="353.66666666666669" y="0.0" width="36.333333333333314" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -38,17 +38,17 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N9J-Mg-RX5" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="44" width="335" height="502.5"/>
+                                        <rect key="frame" x="0.0" y="44" width="390" height="585"/>
                                         <color key="backgroundColor" name="white"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="N9J-Mg-RX5" secondAttribute="height" multiplier="2:3" id="XvJ-PR-ZnX"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQq-VY-6cL">
-                                        <rect key="frame" x="0.0" y="566.5" width="335" height="74"/>
+                                        <rect key="frame" x="0.0" y="649" width="390" height="100"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWT-XV-a10" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="251" height="48"/>
+                                                <rect key="frame" x="42" y="0.0" width="306" height="100"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -56,16 +56,16 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="WWT-XV-a10" firstAttribute="leading" secondItem="aQq-VY-6cL" secondAttribute="leading" constant="42" id="Dqe-BV-oem"/>
-                                            <constraint firstItem="WWT-XV-a10" firstAttribute="top" secondItem="aQq-VY-6cL" secondAttribute="top" constant="13" id="KTP-qa-0qe"/>
+                                            <constraint firstItem="WWT-XV-a10" firstAttribute="top" secondItem="aQq-VY-6cL" secondAttribute="top" id="KTP-qa-0qe"/>
                                             <constraint firstAttribute="trailing" secondItem="WWT-XV-a10" secondAttribute="trailing" constant="42" id="MQp-la-EoF"/>
-                                            <constraint firstAttribute="bottom" secondItem="WWT-XV-a10" secondAttribute="bottom" constant="13" id="fVJ-gW-Izy"/>
+                                            <constraint firstAttribute="bottom" secondItem="WWT-XV-a10" secondAttribute="bottom" id="fVJ-gW-Izy"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="H8R-d4-YsH">
-                                        <rect key="frame" x="0.0" y="660.5" width="335" height="60"/>
+                                        <rect key="frame" x="0.0" y="769" width="390" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kBj-3k-iQd" userLabel="No button">
-                                                <rect key="frame" x="0.0" y="0.0" width="157.5" height="60"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -83,7 +83,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ujy-jD-sip" userLabel="Yes button">
-                                                <rect key="frame" x="177.5" y="0.0" width="157.5" height="60"/>
+                                                <rect key="frame" x="205" y="0.0" width="185" height="60"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -109,11 +109,12 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="HC6-lh-E6F" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="PUR-Ga-asB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="HC6-lh-E6F" secondAttribute="bottom" id="Pai-AC-8NT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HC6-lh-E6F" secondAttribute="trailing" constant="20" id="U5u-8K-Bc1"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="HC6-lh-E6F" secondAttribute="top" constant="10" id="bWW-3n-W9x"/>
+                            <constraint firstItem="HC6-lh-E6F" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="bWW-3n-W9x"/>
                         </constraints>
                     </view>
                     <connections>
@@ -131,6 +132,9 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="YP Black">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="white">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

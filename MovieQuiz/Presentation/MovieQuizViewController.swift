@@ -31,11 +31,11 @@ final class MovieQuizViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    textLabel.font = UIFont.YSDisplay_Medium
-    counterLabel.font = UIFont.YSDisplay_Medium
-    questionLabel.font = UIFont.YSDisplay_Medium
-    yesButton.titleLabel?.font = UIFont.YSDisplay_Medium
-    noButton.titleLabel?.font = UIFont.YSDisplay_Medium
+    textLabel.font = UIFont.ysDisplayBold.withSize(50)
+    counterLabel.font = UIFont.ysDisplayMedium
+    questionLabel.font = UIFont.ysDisplayMedium
+    yesButton.titleLabel?.font = UIFont.ysDisplayMedium
+    noButton.titleLabel?.font = UIFont.ysDisplayMedium
     
     show(quiz: getNextQuestion())
   }
@@ -91,23 +91,25 @@ final class MovieQuizViewController: UIViewController {
       currentQuestionIndex += 1
       self.show(quiz: self.getNextQuestion())
     }
+    setButtonsAvailability(true)
   }
   
   private func showAnswerResult(isCorrect: Bool) {
-    imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-    imageView.layer.borderWidth = 8 // толщина рамки
-    imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor  // делаем рамку белой
-    imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
+    imageView.layer.masksToBounds = true
+    imageView.layer.borderWidth = 8
+    imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    imageView.layer.cornerRadius = 20
     
     if isCorrect {
       correctAnswers += 1
     }
-    
+    setButtonsAvailability(false)
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       self.showNextQuestionOrResults()
     }
   }
-  
+ 
+
   private func getNextQuestion() -> QuizStepViewModel {
     let currentQuestion = questions[currentQuestionIndex]
     let quizStepVM = convert(model: currentQuestion)
@@ -122,6 +124,10 @@ final class MovieQuizViewController: UIViewController {
     )
   }
   
+  private func setButtonsAvailability(_ value: Bool) {
+    yesButton.isEnabled = value
+    noButton.isEnabled = value
+  }
   
 }
 // MARK: - Model
