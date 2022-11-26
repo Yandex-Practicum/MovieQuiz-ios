@@ -28,6 +28,7 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet weak private var imageView: UIImageView!
     
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +62,6 @@ final class MovieQuizViewController: UIViewController {
             self.noButton.isEnabled = true
             self.yesButton.isEnabled = true
         }
-        
     }
     
     private var correctAnswers = 0
@@ -84,9 +84,9 @@ final class MovieQuizViewController: UIViewController {
         
         alert.addAction(action)
         
-        
         self.present(alert, animated: true, completion: nil)
     }
+    
     
     private func showNextQuestionOrResults() {
         imageView.layer.masksToBounds = true
@@ -165,7 +165,6 @@ final class MovieQuizViewController: UIViewController {
             image: "Vivarium",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false),
-        
     ]
 }
 
