@@ -114,10 +114,7 @@ final class MovieQuizViewController: UIViewController {
             if correctAnswers > biggesNumberOfRightAnsers {
             biggesNumberOfRightAnsers = correctAnswers
             }
-            var date = Date()
-            var dateTimeString = date.dateTimeString
-            var srednyayaTochnist: Float = (100.00 * Float(correctAnswers)) / 10
-            let text = "Ваш результат: \(correctAnswers)/\(questions.count) \n Количество сыгранных квизов: \(countOfSessions) \n Рекорд: \(biggesNumberOfRightAnsers)/\(questions.count) (\(dateTimeString)) \n Cредняя точность: \(srednyayaTochnist)%"
+            let text = "Ваш результат: \(correctAnswers)/\(questions.count) \n Количество сыгранных квизов: \(countOfSessions) \n Рекорд: \(biggesNumberOfRightAnsers)/\(questions.count)"
             let newViewModel =  QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
             show(quiz: newViewModel)
             correctAnswers = 0
