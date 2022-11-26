@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="yIf-Gb-eJT" userLabel="Stack View 1">
-                                <rect key="frame" x="20" y="54" width="374" height="798"/>
+                                <rect key="frame" x="20" y="54" width="374" height="774"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hAo-0r-Pk1" userLabel="Stack View 2">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -64,10 +64,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X82-Yo-gcB">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="93.5"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="69.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IHp-ix-Qdp" userLabel="Question Label">
-                                                <rect key="frame" x="43" y="0.0" width="288" height="93.5"/>
+                                                <rect key="frame" x="43" y="0.0" width="288" height="69.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Рейтинг этого фильма меньше, чем 5?">
@@ -90,7 +90,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ro1-5e-FXO">
-                                        <rect key="frame" x="0.0" y="738" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="714" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="64d-Tp-uV8" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -153,7 +153,7 @@
                         <constraints>
                             <constraint firstItem="yIf-Gb-eJT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="BkT-2W-x2h"/>
                             <constraint firstItem="yIf-Gb-eJT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="GZ3-4S-9Ej"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yIf-Gb-eJT" secondAttribute="bottom" constant="10" id="Wgg-sY-YQM"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yIf-Gb-eJT" secondAttribute="bottom" constant="34" id="Ns3-4A-Cmb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yIf-Gb-eJT" secondAttribute="trailing" constant="20" id="fQb-66-Bd5"/>
                         </constraints>
                     </view>
