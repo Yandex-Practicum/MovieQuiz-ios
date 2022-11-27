@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class StatisticServiceImplementation: StatisticService {
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
@@ -72,7 +71,9 @@ final class StatisticServiceImplementation: StatisticService {
         if gamesCount >= 0 {
             gamesCount += 1
         }
+
     }
+    
 }
     
 struct GameRecord: Codable {
