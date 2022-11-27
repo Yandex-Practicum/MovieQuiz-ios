@@ -31,7 +31,7 @@ final class MovieQuizViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    textLabel.font = UIFont.ysDisplayBold.withSize(50)
+    textLabel.font = UIFont.ysDisplayBold.withSize(23)
     counterLabel.font = UIFont.ysDisplayMedium
     questionLabel.font = UIFont.ysDisplayMedium
     yesButton.titleLabel?.font = UIFont.ysDisplayMedium
