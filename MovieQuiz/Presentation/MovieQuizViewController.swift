@@ -26,12 +26,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.viewController = self
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
         statisticsService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         questionFactory?.loadData()
         showLoadingIndicator()
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
 
     // MARK: - QuestionFactoryDelegate
@@ -115,25 +127,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         alertPresenter?.makeAlertController(alertModel: alertModel)
     }
     
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else { return }
-        let answer = false
-        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else { return }
-        let answer = true
-        showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
-    }
-    
     private func show(quiz step: QuizStepViewModel) {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.image = step.image
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         imageView.layer.borderWidth = 8
         if isCorrect {
             imageView.layer.borderColor = UIColor.ypGreen?.cgColor;
