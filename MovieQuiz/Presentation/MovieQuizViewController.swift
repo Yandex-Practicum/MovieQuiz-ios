@@ -27,12 +27,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        
         imageView.layer.cornerRadius = 20
-    
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        alertPresenter = AlertPresenter(viewController: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
         statisticService = StatisticServiceImplementation()
+        showLoadingIndicator()
+    }
+    
+    //MARK: - Did Load Date From Server
+    
+    internal func didLoadDateFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+    //MARK: - Did Fail To Load Data
+    
+    internal func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // Берем в качестве сообщения описание ошибки
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -137,7 +150,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }

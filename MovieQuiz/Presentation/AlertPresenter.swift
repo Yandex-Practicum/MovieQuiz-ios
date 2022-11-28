@@ -33,3 +33,10 @@ struct AlertPresenter: AlertProtocol {
         viewController?.present(alert, animated: true, completion: nil)
     }
 }
+
+struct AlertModel {
+    let title: String
+    let message: String
+    let buttonText: String
+    let completion: ((UIAlertAction) -> Void)?
+}
