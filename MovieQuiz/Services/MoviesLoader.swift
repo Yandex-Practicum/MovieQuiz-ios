@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MoviesLoading {
-    func loadMovies(headler: @escaping (Result<MostPopularMovies, Error>) -> Void)
+    func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
 
 
@@ -24,16 +24,40 @@ struct MoviesLoader: MoviesLoading {
         return url
     }
     
-    func loadMovies(headler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
+
+    func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
             switch result {
             case .failure(let error):
-                headler(.failure(error))
+                handler(.failure(error))
             case .success(let data):
-                guard let jsonData = try? JSONDecoder().decode( MostPopularMovies.self, from: data ) else { return }
-                headler(.success(jsonData))
+                do {
+                    let movies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
+                    handler(.success(movies))
+                } catch let error {
+                    handler(.failure(error))
+                }
             }
         }
     }
     
 }
+
+// Александра, можете подсказать, как этот код можно выполнить через guard - else. Пробовал - не получилось 
+
+//func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
+//    networkClient.fetch(url: mostPopularMoviesUrl) { result in
+//        switch result {
+//        case .failure(let error):
+//            headler(.failure(error))
+//        case .success(let data):
+//            guard let jsonData = try? JSONDecoder().decode(MostPopularMovies.self, from: data) else {
+//                // Вернуть ошибку в handler
+//                return
+//            }
+//            headler(.success(jsonData))
+//        }
+//    }
+//}
+
+    

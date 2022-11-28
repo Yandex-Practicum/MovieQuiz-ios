@@ -1,5 +1,9 @@
 import UIKit
 
+// Спасибо за подробный ревью, вроде бы все ошибки исправил!
+// Отдельное спасибо за комбинацию клавиш control + i ;) почему я раньше не знал про неё
+// Комментарии и "лишний код" я оставляю на случай неудовлетвориельных ревью, чтобы лучше проанализировать свою работу, обычно я стараюсь убрать, как 
+
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate  {
         
     // MARK: - Lifecycle
@@ -28,7 +32,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
         let giveAnswer = false
         showAnswerResult(isCorrect: currentQuestion.correctAnswer)
-        //showAnswerResult(isCorrect: giveAnswer == currentQuestion.correctAnswer)
+
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         buttonYes.isEnabled = false
@@ -178,12 +182,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     // MARK: Индикатор загрузки
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
+        activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
     }
     
     private func hideLoadingIndicator() {
-         activityIndicator.isHidden = true
+         //activityIndicator.isHidden = true
          activityIndicator.stopAnimating()
      }
     
