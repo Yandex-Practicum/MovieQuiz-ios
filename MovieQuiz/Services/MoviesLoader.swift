@@ -15,9 +15,10 @@ struct MoviesLoader: MoviesLoading {
     
     private enum DecodeError: Error {
         case codeError
+        case invalidCharacter
     }
     
-    // MARK: - NetworkClient
+    // MARK: - Network Client
     private let networkClient = NetworkClient()
     
     // MARK: - URL
@@ -31,21 +32,25 @@ struct MoviesLoader: MoviesLoading {
     
     
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
-        networkClient.fetch(url: mostPopularMoviesUrl) { result in
+        networkClient.fetch(url: mostPopularMoviesUrl, handler:  { result in
                     switch result {
                     case .failure(let error):
                         handler(.failure(error))
                         
                     case .success(let data):
-                        let movieList = try? JSONDecoder().decode(MostPopularMovies.self, from: data)
-                        
-                        if let movieList = movieList {
-                            handler(.success(movieList))
+                        let mostPopularMovies = try? JSONDecoder().decode(MostPopularMovies.self, from: data)
+                        if let mostPopularMovies = mostPopularMovies {
+                            if mostPopularMovies.items.isEmpty {
+                            handler(.failure(DecodeError.invalidCharacter))
+                           } else {
+                               handler(.success(mostPopularMovies)
+                               )
+                           }
                         } else {
                             handler(.failure(DecodeError.codeError))
                 }
             }
-        }
+        })
     }
 }
 

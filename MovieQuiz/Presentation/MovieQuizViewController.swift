@@ -22,7 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService!
-  
+
     //MARK: - View Did Loade
     
     override func viewDidLoad(){
@@ -30,26 +30,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        questionFactory?.loadData()
         statisticService = StatisticServiceImplementation()
+        alertPresenter = AlertPresenter(viewController: self)
         showLoadingIndicator()
+        questionFactory?.loadData()
     }
     
-    //MARK: - Did Load Date From Server
+    //MARK: - Internal functions
     
-    internal func didLoadDateFromServer() {
-        activityIndicator.isHidden = true // скрываем индикатор загрузки
+   func didLoadDateFromServer() {
+        hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
     
-    //MARK: - Did Fail To Load Data
-    
-    internal func didFailToLoadData(with error: Error) {
+   func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription) // Берем в качестве сообщения описание ошибки
     }
     
-    // MARK: - QuestionFactoryDelegate
-
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
         currentQuestion = question
@@ -73,14 +70,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNetworkError(message: String) {
         hideLoadingIndicator() // скрываем индикатор загрузки
         
-        let model = AlertModel(title: "Ошибка",
+        let networkError = AlertModel(title: "Ошибка",
                                message: message,
                                buttonText: "Попробовать ещё раз") { [weak self] _ in
             guard let self = self else {return}
             self.restartGame()
+            self.questionFactory?.loadData()
+            self.showLoadingIndicator()
         }
         alertPresenter = AlertPresenter(viewController: self)
-        alertPresenter?.showAlert(quiz: model)
+        alertPresenter?.showAlert(quiz: networkError)
     }
     
     private func restartGame() {
@@ -89,21 +88,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.correctAnswers = 0
     }
     
-    private func showAnswerResult(isCorrect: Bool){
-        if isCorrect {
-            correctAnswers += 1
+    private func showAnswerResult(isCorrect: Bool) {
+            imageView.layer.masksToBounds = true
+            imageView.layer.borderWidth = 8
+            imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+            if isCorrect { correctAnswers += 1 }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self = self else { return }
+                self.showNextQuestionOrResults()
+                self.imageView.layer.borderWidth = 0
+            }
         }
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 20
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    guard let self = self else { return }
-                    self.showNextQuestionOrResults()
-                    self.imageView.layer.borderWidth = 0
-        }
-    }
     
     private func show(quiz step: QuizStepViewModel){
         counterLabel.text = step.questionNumber
@@ -141,9 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 buttonText: result.buttonText)
                 { [weak self] _ in
                     guard let self = self else { return }
-                    self.currentQuestionIndex = 0
-                    self.correctAnswers = 0
-                    self.questionFactory?.requestNextQuestion()
+                    self.restartGame()
             }
             alertPresenter?.showAlert(quiz: alertModel)
         }
@@ -184,39 +177,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         blockButtons()
-    }
-    
-    // MARK: - URL
-    func sendFirstRequestion() {
-        //создаем адрес
-        guard let url = URL(string: "https://imdb-api.com/en/API/MostPopularTVs/k_q8w9sd9g") else { return }
-        // создаем запрос
-        var request = URLRequest(url: url)
-        
-        /*
-           Также запросу можно добавить HTTP метод, хедеры и тело запроса.
-           
-           request.httpMethod = "GET" // здесь можно указать HTTP метод — по умолчанию он GET
-           request.allHTTPHeaderFields = [:] // а тут хедеры
-           request.httpBody = nil // а здесь тело запроса
-        */
-        
-        request.httpBody = Data() // тело запроса
-        request.httpMethod = "POST" // имя HTTP метода
-        request.setValue("test", forHTTPHeaderField: "TEST") // название заголовка
-        
-        // Создаем задачу на отправление запроса в сеть
-        
-        let task: URLSessionDataTask = URLSession.shared.dataTask(with: request) {data, response, error in
-            // здесь мы обрабатываем ответ от сервера
-                   
-            // data — данные от сервера
-            // response — ответ от сервера, содержащий код ответа, хедеры и другую информацию об ответе
-            // error — ошибка ответа, если что-то пошло не так
-        }
-        // Отправляем запрос
-        task.resume()
-        
     }
 }
 

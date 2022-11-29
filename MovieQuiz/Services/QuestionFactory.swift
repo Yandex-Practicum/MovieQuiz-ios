@@ -1,9 +1,3 @@
-//
-//  QuestionFactory.swift
-//  MovieQuiz
-//
-//  Created by Respect on 09.11.2022.
-//
 
 import Foundation
 
@@ -13,28 +7,24 @@ class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
     
-    
-    
     //MARK: - init
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
     
-    
-    
     // MARK: - Func
     
     func loadData() {
-        moviesLoader.loadMovies { result in
+        moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
                     self.movies = mostPopularMovies.items
-                    self.delegate.didLoadDataFromServer()
+                    self.delegate?.didLoadDateFromServer()
                 case .failure(let error):
-                    self.delegate.didFailToLoadData(with: error)
+                    self.delegate?.didFailToLoadData(with: error)
                 }
             }
         }
@@ -42,7 +32,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     func requestNextQuestion(){
         DispatchQueue.global().async { [weak self] in
-            guard let self = self else {return}
+            guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
             
             guard let movie = self.movies[safe: index] else { return }
@@ -50,7 +40,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             var imageData = Data()
             
             do {
-                imageData = try Data(contentsOf: movie.imageURL)
+                imageData = try Data(contentsOf: movie.resizedImageUrl)
             } catch {
                 print("Failed to load image")
             }
