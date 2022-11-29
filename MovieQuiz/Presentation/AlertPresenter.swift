@@ -16,11 +16,13 @@ struct AlertPresenter: AlertPresenterProtocol {
         self.alertDelegate = alertDelegate
     }
     
-    internal func makeAlertController(alertModel: AlertModel) {
+    func makeAlertController(alertModel: AlertModel) {
         let alert = UIAlertController(
             title: alertModel.title,
             message: alertModel.message,
             preferredStyle: .alert)
+        
+        alert.view.accessibilityIdentifier = "Final Alert"
         
         let action = UIAlertAction(
             title: alertModel.buttonText,
