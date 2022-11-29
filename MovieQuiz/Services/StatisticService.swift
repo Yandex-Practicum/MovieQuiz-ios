@@ -1,13 +1,6 @@
-//
-//  StatisticService.swift
-//  MovieQuiz
-//
-//  Created by Respect on 10.11.2022.
-//
-
 import Foundation
 
-protocol StatisticService {
+protocol StatisticService{
     func store(correct count: Int, total amount: Int)
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
@@ -78,4 +71,18 @@ final class StatisticServiceImplementation: StatisticService {
     }
 }
 
+// MARK: - GameRecord
+struct GameRecord: Codable {
+    let correct: Int
+    let total: Int
+    let date: Date
+}
+
+
+// MARK: - Extension GameRecord
+extension GameRecord: Comparable {
+    static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
+        return lhs.correct < rhs.correct
+    }
+}
 

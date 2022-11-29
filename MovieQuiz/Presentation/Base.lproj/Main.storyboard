@@ -50,7 +50,7 @@
                                         </subviews>
                                         <color key="backgroundColor" name="black"/>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" image="The Godfather" translatesAutoresizingMaskIntoConstraints="NO" id="u5R-ll-RWK" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="u5R-ll-RWK" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.333333333333343" width="335" height="502.66666666666663"/>
                                         <color key="backgroundColor" name="black"/>
                                         <constraints>
@@ -173,7 +173,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="The Godfather" width="1192" height="1716"/>
         <namedColor name="black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
