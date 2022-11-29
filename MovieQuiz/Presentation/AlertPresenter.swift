@@ -16,7 +16,7 @@ struct AlertPresenter: AlertPresenterProtocol {
         self.alertDelegate = alertDelegate
     }
     
-    internal func makeAlertController(alertModel: AlertModel) {
+    func makeAlertController(alertModel: AlertModel) {
         let alert = UIAlertController(
             title: alertModel.title,
             message: alertModel.message,

@@ -12,20 +12,45 @@ final class MovieQuizPresenter {
     
     var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
+    weak var questionFactory: QuestionFactory?
+    var correctAnswers: Int = 0
     
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     
     func yesButtonClicked() {
-        guard let currentQuestion = currentQuestion else { return }
-        let givenAnswer = true
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        didAnswerYes(isYes: true)
     }
     
     func noButtonClicked() {
+        didAnswerYes(isYes: false)
+    }
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
+    
+    private func didAnswerYes(isYes: Bool) {
         guard let currentQuestion = currentQuestion else { return }
-        let givenAnswer = false
+        
+        let givenAnswer = isYes
+        
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func showNextQuestionOrResults() {
+        if self.isLastQuestion() {
+            viewController?.showFinalAlert()
+        } else {
+            self.switchtoNextQuestion()
+            questionFactory?.requestNextQuestion()
+        }
     }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
