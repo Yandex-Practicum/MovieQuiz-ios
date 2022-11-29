@@ -1,9 +1,3 @@
-//
-//  QuestionFactory.swift
-//  MovieQuiz
-//
-//  Created by Respect on 09.11.2022.
-//
 
 import Foundation
 
@@ -32,9 +26,9 @@ class QuestionFactory: QuestionFactoryProtocol {
                 switch result {
                 case .success(let mostPopularMovies):
                     self.movies = mostPopularMovies.items
-                    self.delegate.didLoadDataFromServer()
+                    self.delegate?.didLoadDateFromServer()
                 case .failure(let error):
-                    self.delegate.didFailToLoadData(with: error)
+                    self.delegate?.didFailToLoadData(with: error)
                 }
             }
         }

@@ -35,22 +35,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showLoadingIndicator()
     }
     
-    //MARK: - Did Load Date From Server
+    //MARK: - Internal functions
     
     internal func didLoadDateFromServer() {
         activityIndicator.isHidden = true // скрываем индикатор загрузки
         questionFactory?.requestNextQuestion()
     }
     
-    //MARK: - Did Fail To Load Data
-    
     internal func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription) // Берем в качестве сообщения описание ошибки
     }
     
-    // MARK: - QuestionFactoryDelegate
-
-    func didRecieveNextQuestion(question: QuizQuestion?) {
+    internal func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
         currentQuestion = question
         let viewModel = convert(model: question)
@@ -184,39 +180,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         blockButtons()
-    }
-    
-    // MARK: - URL
-    func sendFirstRequestion() {
-        //создаем адрес
-        guard let url = URL(string: "https://imdb-api.com/en/API/MostPopularTVs/k_q8w9sd9g") else { return }
-        // создаем запрос
-        var request = URLRequest(url: url)
-        
-        /*
-           Также запросу можно добавить HTTP метод, хедеры и тело запроса.
-           
-           request.httpMethod = "GET" // здесь можно указать HTTP метод — по умолчанию он GET
-           request.allHTTPHeaderFields = [:] // а тут хедеры
-           request.httpBody = nil // а здесь тело запроса
-        */
-        
-        request.httpBody = Data() // тело запроса
-        request.httpMethod = "POST" // имя HTTP метода
-        request.setValue("test", forHTTPHeaderField: "TEST") // название заголовка
-        
-        // Создаем задачу на отправление запроса в сеть
-        
-        let task: URLSessionDataTask = URLSession.shared.dataTask(with: request) {data, response, error in
-            // здесь мы обрабатываем ответ от сервера
-                   
-            // data — данные от сервера
-            // response — ответ от сервера, содержащий код ответа, хедеры и другую информацию об ответе
-            // error — ошибка ответа, если что-то пошло не так
-        }
-        // Отправляем запрос
-        task.resume()
-        
     }
 }
 
