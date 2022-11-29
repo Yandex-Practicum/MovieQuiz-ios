@@ -1,23 +1,33 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    func show(quiz step: QuizStepViewModel)
+    func showFinalAlert()
+    
+    func highlightImageBorder(isCorrectAnswer: Bool)
+    
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
+    
+    func showNetworkError(message: String)
+}
+
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol {
 
     // MARK: - Lifecycle
         
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     private var presenter: MovieQuizPresenter!
     private var alertModel: AlertModel?
     private var alertPresenter: AlertPresenterProtocol?
-    private var statisticsService: StatisticServiceProtocol?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-    
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
 // MARK: Lifecycle
     
@@ -26,10 +36,11 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
-        statisticsService = StatisticServiceImplementation()
         presenter = MovieQuizPresenter(viewController: self)
         showLoadingIndicator()
     }
+    
+    // MARK: Actions
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         presenter.noButtonClicked()
@@ -65,7 +76,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
         
         let alert = AlertModel(
             title: "Ошибка",
-            message: "Произошла ошибка сети",
+            message: message,
             buttonText: "Попробовать еще раз") { [weak self] _ in
                 guard let self = self else { return }
                 self.presenter.restartGame()
@@ -77,17 +88,15 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     
     func showFinalAlert() {
         
-        let text = "Ваш результат: \(presenter.correctAnswers)/\(presenter.questionsAmount)\nКоличество сыгранных квизов: \(String(describing: statisticsService!.gamesCount))\nРекорд: \(String(describing: statisticsService!.bestGame.correct))/\(String(describing: statisticsService!.bestGame.total)) (\(String(describing: statisticsService!.bestGame.date.dateTimeString)))\nСредняя точность: \(String(format: "%.2f", statisticsService!.totalAccuracy))%"
+        let message = presenter.makeResultMessage()
         
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
-            message: text,
+            message: message,
             buttonText: "Сыграть ещё раз") { [weak self] _ in
                 guard let self = self else { return }
                 self.presenter.restartGame()
             }
-        
-        if let statisticsService = statisticsService { statisticsService.store(correct: presenter.correctAnswers, total: presenter.questionsAmount) }
         
         alertPresenter = AlertPresenter(alertDelegate: self)
         alertPresenter?.makeAlertController(alertModel: alertModel)
@@ -96,22 +105,14 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     }
     
     func show(quiz step: QuizStepViewModel) {
+        imageView.layer.borderColor = UIColor.clear.cgColor
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.image = step.image
     }
     
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-
-        imageView.layer.masksToBounds = true
+    func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen?.cgColor : UIColor.ypRed?.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            self.presenter.showNextQuestionOrResults()
-            self.imageView.layer.borderWidth = 0
-        }
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen?.cgColor : UIColor.ypRed?.cgColor
     }
 }
