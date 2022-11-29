@@ -16,10 +16,10 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
 
     // MARK: - Lifecycle
         
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private var presenter: MovieQuizPresenter!
     private var alertModel: AlertModel?
