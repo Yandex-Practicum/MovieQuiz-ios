@@ -49,7 +49,10 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        startQuiz(with: 0)
+        imageView.layer.cornerRadius = 20
+        let firstQuestion = questions[currentQuestionIndex]
+        let viewModel = convert(model: firstQuestion)
+        show(quiz: viewModel)
         
     }
     
@@ -61,14 +64,15 @@ final class MovieQuizViewController: UIViewController {
                 title: "Этот раунд окончен!",
                 text: text,
                 buttonText: "Сыграть еще раз")
+            imageView.layer.borderWidth = 0
             show(quiz: viewModel)
-            startQuiz(with: 0)
+          
             
         } else {
             imageView.layer.borderWidth = 0
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1, т.о. мы сможем получить следующий урок
-            let currentQuestion = questions[currentQuestionIndex]
-            let viewModel = convert(model: currentQuestion)
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
         }
     }
@@ -107,23 +111,24 @@ final class MovieQuizViewController: UIViewController {
             preferredStyle: .alert)
         let action = UIAlertAction(
             title: result.buttonText,
-            style: .default,
-            handler: { _ in self.startQuiz(with: 0) })
+            style: .default) { _ in self.currentQuestionIndex = 0
+                
+                // скидываем счетчик правильных ответов
+                self.correctAnswers = 0
+                
+                // заново показываем первый вопрос
+                let firstQuestion = self.questions[self.currentQuestionIndex]
+                let viewModel = self.convert(model: firstQuestion)
+                self.show(quiz: viewModel)
+            }
+        
         alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        
+        self.present(alert, animated: true, completion: nil)
         
     }
     
-    private func startQuiz(with index: Int) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let viewModel = convert(model: currentQuestion)
-        currentQuestionIndex = index
-        imageView.layer.borderWidth = 0
-        imageView.layer.cornerRadius = 20
-        correctAnswers = 0
-        show(quiz: viewModel)
-    }
-    
+
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
