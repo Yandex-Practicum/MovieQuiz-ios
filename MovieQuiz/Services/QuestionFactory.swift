@@ -9,6 +9,9 @@ import Foundation
 
 class QuestionFactory : QuestionFactoryProtocol {
 
+    private var previousIndex: Int? = nil
+    weak var delegate: QuestionFactoryDelegate?
+
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -52,11 +55,28 @@ class QuestionFactory : QuestionFactoryProtocol {
             correctAnswer: false)
     ]
 
-    func requestNextQuestion() -> QuizQuestion? {
+    func requestNextQuestion() {
+        guard let index = getIndex() else {
+            delegate?.didRecieveNextQuestion(question: nil)
+            return
+        }
+        delegate?.didRecieveNextQuestion(question: questions[safe: index])
+    }
+
+    func setDelegate(delegate: QuestionFactoryDelegate?) {
+        self.delegate = delegate
+    }
+
+    private func getIndex() -> Int? {
         guard let index = (0..<questions.count).randomElement() else {
+            delegate?.didRecieveNextQuestion(question: nil)
             return nil
         }
-        return questions[safe: index]
+        if index == previousIndex {
+            return getIndex()
+        }
+        previousIndex = index
+        return index
     }
 
 }

@@ -1,10 +1,10 @@
 import UIKit
 
 private let questionsAmount: Int = 10
-private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
-private var currentQuestion: QuizQuestion?
+private let questionFactory: QuestionFactoryProtocol? = QuestionFactory()
+private var currentQuestion: QuizQuestion? = nil
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
@@ -14,8 +14,22 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
 
+    func didRecieveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        currentQuestion = question
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.show(quiz: self.convert(model: self.currentQuestion!))
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        questionFactory?.setDelegate(delegate: self)
         initFirstTime()
         showQuestionImpl()
     }
@@ -64,10 +78,7 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showQuestionImpl() {
-        if let question = questionFactory.requestNextQuestion() {
-            currentQuestion = question
-            self.show(quiz: convert(model: currentQuestion!))
-        }
+        questionFactory?.requestNextQuestion()
     }
 
     private func showFinalResult() {
