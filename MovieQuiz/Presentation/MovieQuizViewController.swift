@@ -60,34 +60,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.text = step.question
     }
 
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-
-        let action = UIAlertAction(
-            title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            self.showQuestionImpl()
-        }
-
-        alert.addAction(action)
-
-        self.present(alert, animated: true, completion: nil)
-    }
-
     private func showQuestionImpl() {
         questionFactory?.requestNextQuestion()
     }
 
     private func showFinalResult() {
-        let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
-        let viewModel = QuizResultsViewModel(
-            title: "Этот раунд окончен!",
-            text: text,
-            buttonText: "Сыграть ещё раз")
-        show(quiz: viewModel)
+        AlertPresenter().show(model: createAlertModel(), controller: self)
     }
 
     private func showNextQuestionOrResults() {
@@ -121,11 +99,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 15
     }
 
+    private func createResultModel() -> QuizResultsViewModel {
+        return QuizResultsViewModel(
+            title: "Этот раунд окончен!",
+            text: "Ваш результат: \(correctAnswers) из \(questionsAmount)",
+            buttonText: "Сыграть ещё раз")
+    }
+
+    private func createAlertModel() -> AlertModel {
+        return convert(model: createResultModel())
+    }
+
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+    }
+
+    private func convert(model: QuizResultsViewModel) -> AlertModel {
+        return AlertModel(
+            title: model.title,
+            message: model.text,
+            buttonText: model.buttonText) { [weak self] in
+                self?.showQuestionImpl()
+            }
     }
 
 }
