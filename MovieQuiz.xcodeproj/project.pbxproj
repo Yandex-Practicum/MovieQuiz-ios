@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B11DEA0295B1018007B93C8 /* top250MoviesIMDB.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B11DE9F295B1017007B93C8 /* top250MoviesIMDB.json */; };
 		5B4115992930AEF0009BE7B2 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4115982930AEF0009BE7B2 /* QuestionFactory.swift */; };
 		5B4B04AF292A66A3007DCA2B /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B2A8089291CF5A20053A545 /* YS Display-Medium.ttf */; };
 		5B4B04B0292A66A7007DCA2B /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B2A8088291CF5A20053A545 /* YS Display-Bold.ttf */; };
@@ -23,7 +24,6 @@
 		5BC302782933954C00A45152 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC302772933954C00A45152 /* AlertModel.swift */; };
 		5BC3027A2933972200A45152 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC302792933972200A45152 /* AlertPresenter.swift */; };
 		5BC3027C29339BA300A45152 /* AlertPresenterProtocol .swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC3027B29339BA300A45152 /* AlertPresenterProtocol .swift */; };
-		5BF32BFE29582CAA00AEE336 /* top250MoviesIMDB.json in Resources */ = {isa = PBXBuildFile; fileRef = 5BF32BFD29582CAA00AEE336 /* top250MoviesIMDB.json */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -36,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B11DE9F295B1017007B93C8 /* top250MoviesIMDB.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = top250MoviesIMDB.json; sourceTree = "<group>"; };
 		5B2A8088291CF5A20053A545 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		5B2A8089291CF5A20053A545 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		5B4115982930AEF0009BE7B2 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
@@ -52,7 +53,6 @@
 		5BC302772933954C00A45152 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		5BC302792933972200A45152 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		5BC3027B29339BA300A45152 /* AlertPresenterProtocol .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertPresenterProtocol .swift"; sourceTree = "<group>"; };
-		5BF32BFD29582CAA00AEE336 /* top250MoviesIMDB.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top250MoviesIMDB.json; path = ../../../../../Downloads/top250MoviesIMDB.json; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				5BF32BFD29582CAA00AEE336 /* top250MoviesIMDB.json */,
+				5B11DE9F295B1017007B93C8 /* top250MoviesIMDB.json */,
 				5B4B04AE292A666D007DCA2B /* MovieQuizFonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
@@ -235,7 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BF32BFE29582CAA00AEE336 /* top250MoviesIMDB.json in Resources */,
+				5B11DEA0295B1018007B93C8 /* top250MoviesIMDB.json in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				5B4B04AF292A66A3007DCA2B /* YS Display-Medium.ttf in Resources */,
 				5B4B04B0292A66A7007DCA2B /* YS Display-Bold.ttf in Resources */,

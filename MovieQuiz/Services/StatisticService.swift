@@ -61,15 +61,10 @@ class StatisticServiceImplementation: StatisticService {
             }
         }
     }
-    private(set) var totalAccuracy: Double {
-        get {
+     var totalAccuracy: Double {
           let data =  correctAnswer / totalQuestions * 100
-            print(data)
             return data
-        }
-        set {
-            
-        }
+
     }
     private(set) var gamesCount: Int {
         get {
