@@ -22,11 +22,15 @@ class AlertPresenter: AlertPresenterProtocol{
                                       preferredStyle: .alert)
     
         let action = UIAlertAction(title: "Сыграть еще раз",
-                                   style: .default, handler: {_ in result.completition() })
+                                   style: .default,
+                                   handler: {_ in result.completition() })
         
         alert.addAction(action)
         controller?.present(alert, animated: true, completion: nil )
-        
+    }
+    
+    func restartGame(){
+        controller?.viewDidLoad()
     }
     
 }

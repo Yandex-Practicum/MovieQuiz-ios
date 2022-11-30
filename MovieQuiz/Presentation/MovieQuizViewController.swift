@@ -7,10 +7,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol? // связываем контроллер и класс QuestionFactory через "композицию", создавая экземпляр внутри контроллера. // также прописываем это свойство не напрямую через класс, а через протокол в котором описана функция// после добавления делегата в фабрику - необходимо его указывать, но через self этого сделать нельзя, тк свойство еще не инициализировано
+    
     private var currentQuestion: QuizQuestion? // аналогично, делаем через композицию
-    
     private var alert: AlertPresenterProtocol?
-    
     private var statisticService: StatisticService?
     
     
@@ -22,15 +21,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader() ) //здесь инициализируем фабрику
 
+        self.showLoadingIndicator() // показываем индикатор
+        
         questionFactory?.loadData() // начинаем загрузку - внутри loadData() в зависимости от состояния вызываются функции didLoadDataFromServer() и didFailToLoadData()
-        showLoadingIndicator() // показываем индикатор
         
         //questionFactory?.requestNextQuestion()
         
         alert = AlertPresenter(controller: self)
         
         statisticService = StatisticServiceImplementation()
-        
     }
     
     
@@ -46,6 +45,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.startAnimating() // включаем анимацию
     }
     
+    private func hideLoadingIndicator(){
+        activityIndicator.isHidden = true // говорим, что индикатор загрузки не скрыт
+        activityIndicator.stopAnimating() // включаем анимацию
+    }
     
     //функция отображения ошибки
     private func showNetworkError(message: String) {
@@ -56,18 +59,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                    text: message,
                                    buttonText: "Попробовать еще раз") {[weak self] in
             guard let self = self else {return}
-            self.presenter.restartGame() //  откуда рестартГейм и что за объект презентер?
+            self.alert?.restartGame()
         }
         alert?.showAlert(result: viewModel)
     }
     
     
-     func didLoadDataFromServer() {//скрываем индикатор и показываем новый экран
+    func didLoadDataFromServer() {//скрываем индикатор и показываем новый экран
         activityIndicator.isHidden = true
         questionFactory?.requestNextQuestion()
     }
 
-     func didFailToLoadData(with error: Error) { // функция для отображения ошибки
+    func didFailToLoadData(with error: Error) { // функция для отображения ошибки
         showNetworkError(message: error.localizedDescription)
     }
     
@@ -102,15 +105,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     //  - QuestionFactoryDelegate -  реализация метода из протокола
     func didReceiveNextQuestion(question: QuizQuestion?) {
+        
         guard let question = question else {
             return
         }
         
         currentQuestion = question
         let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async{ [weak self] in
                     self?.show(quiz: viewModel)
                 }
+        
     }
     
     
@@ -161,7 +166,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.questionFactory?.requestNextQuestion()
             }
             
-            self.imageView.layer.borderColor = nil
+            self.imageView.layer.borderWidth = 0
             alert?.showAlert(result: viewModel)
 
             
@@ -169,7 +174,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             currentIndex += 1
             questionFactory?.requestNextQuestion()
             
-            self.imageView.layer.borderColor = nil
+            self.imageView.layer.borderWidth = 0
 
             }
         }
@@ -182,7 +187,5 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterLabel.text = step.questionNumber
         textLabel.text = step.question
     }
-
-    
 }
 

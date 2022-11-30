@@ -28,9 +28,9 @@ class QuestionFactory: QuestionFactoryProtocol { //устанавливаем п
                 switch result {
                 case .success(let mostPopularMovies): // почему тут в success передается let??? и откуда у нас эта переменная
                     self.movies = mostPopularMovies.items // сохраняем фильм в нашу новую переменную
-                    self.delegate.didLoadDataFromServer() // сообщаем, что данные загрузились
+                    self.delegate?.didLoadDataFromServer() // сообщаем, что данные загрузились
                 case .failure(let error):
-                    self.delegate.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
+                    self.delegate?.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
                 }
             }
         }
@@ -60,7 +60,7 @@ class QuestionFactory: QuestionFactoryProtocol { //устанавливаем п
 //        delegate?.didReceiveNextQuestion(question: question) //отправляем в делегат вопрос
         
         
-        DispatchQueue.global.async(){ [weak self] in // перевод в другой поток
+        DispatchQueue.global().async{ [weak self] in // перевод в другой поток
             guard let self = self else {return}
             
             let index = (0..<self.movies.count).randomElement() ?? 0 //получается что на момент вызова этой функции все фильмы уже загружены в массив movies?
@@ -69,26 +69,27 @@ class QuestionFactory: QuestionFactoryProtocol { //устанавливаем п
             
             var imageData = Data() // инициализируем как пустой Data
             
-            do { // пытаемся получить картинку
-                imageData = try Data(contentsOf: movie.imageURL)
-            }else {
-                print("Failed to load image")
+            do { // пытаемся получить картинку -  ловим ошибку
+                imageData = try Data(contentsOf: movie.resizedImageURL)
+            } catch {
+                DispatchQueue.main.async(){ [weak self] in // возвращение в основной поток
+                    guard let self = self else {return}
+                    self.delegate?.didFailToLoadData(with: MoviesLoader.ErrorList.imageError)
+                }
             }
             
             let rating = Float(movie.rating) ?? 0 // преобразуем текстовый рейтинг из JSON в дробь
+            let board = Float.random(in: 1.0 ..< 10.0) // задаем рандомную границу для вопроса
             
-            let board = (1..<10).randomElement()! // задаем рандомную границу для вопроса
-            
-            let text = "Рейтинг этого фильма больше \(board)?"
+            let text = "Рейтинг этого фильма больше \(String(format:"%.1F", board))?"
             let correctAnswer = rating > board
             
             let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
             
             
-            DispatchQueue.main.async(){[weak self] in // возвращение в основной поток
+            DispatchQueue.main.async(){ [weak self] in // возвращение в основной поток
                 guard let self = self else {return}
                 self.delegate?.didReceiveNextQuestion(question: question) // показываем новый вопрос
-                
             }
         }
     } 

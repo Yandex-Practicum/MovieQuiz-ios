@@ -10,10 +10,17 @@ import Foundation
 /// сетевой клиент для получения данных с API IMDb
 struct NetworkClient{
     
-    private enum NetworkError: Error{
-        case codeError
+    private enum NetworkError: LocalizedError{
+        
+        case codeError(code: Int)
+        
+        var errorDescription: String? {
+            switch self {
+            case .codeError(let code):
+                return "Код ошибки - \(code)"
+            }
+        }
     }
-    
     
     //функция забирает данные из сети, отдает результат асинхронно через замыкание handler
     
@@ -31,7 +38,7 @@ struct NetworkClient{
             
             // Проверяем, что нам пришёл успешный код ответа
             if let response = response as? HTTPURLResponse, response.statusCode < 200 || response.statusCode >= 300 {//HTTPURLResponse - это наследник URLResponse, класс URLResponce - базовый класс для работы со всеми сетевыми протоколами
-                handler(.failure(NetworkError.codeError))
+                handler(.failure(NetworkError.codeError(code: response.statusCode)))
             }
             
             // Возвращаем данные

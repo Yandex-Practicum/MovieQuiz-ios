@@ -10,6 +10,6 @@ import Foundation
 //Создаём протокол QuestionFactoryDelegate, который будем использовать в фабрике как делегата.
 protocol QuestionFactoryDelegate: class {
     func didReceiveNextQuestion(question: QuizQuestion?)
-    func didLoadFromServer() //сообщение об успешной загрузки с сервера
+    func didLoadDataFromServer() //сообщение об успешной загрузки с сервера
     func didFailToLoadData(with error: Error) //сообщение об ошибки загрузки с сервера
 } 
