@@ -65,7 +65,7 @@
                                                 <string key="text">Рейтинг этого фильма
 меньше чем 5?</string>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
