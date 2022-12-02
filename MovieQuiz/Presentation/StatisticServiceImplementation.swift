@@ -14,10 +14,14 @@ final class StatisticServiceImplementation: StatisticService {
         case correct, total, bestGame, gamesCount
     }
     private var correct: Double {
-        userDefaults.double(forKey: Keys.correct.rawValue)
+        get {
+            userDefaults.double(forKey: Keys.correct.rawValue)
+        }
     }
     private var total: Double {
-        userDefaults.double(forKey: Keys.total.rawValue)
+        get {
+            userDefaults.double(forKey: Keys.total.rawValue)
+        }
     }
     var bestGame: GameRecord {
         get {
@@ -52,8 +56,8 @@ final class StatisticServiceImplementation: StatisticService {
     func store(correct count: Int, total amount: Int) {
         gamesCount += 1
         let currentGame = GameRecord(correct: count, total: amount, date: Date())
-        userDefaults.set(userDefaults.integer(forKey: "correct") + count, forKey: "correct")
-        userDefaults.set(userDefaults.integer(forKey: "total") + amount, forKey: "total")
+        userDefaults.set(Int(correct) + count, forKey: "correct")
+        userDefaults.set(Int(total) + amount, forKey: "total")
         if currentGame > bestGame {
             bestGame = currentGame
         }
