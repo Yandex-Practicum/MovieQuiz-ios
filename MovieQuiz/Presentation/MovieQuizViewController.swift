@@ -51,12 +51,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textlabel: UILabel!
     private var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion { questions[currentQuestionIndex] }
-    
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-    }
-    
-    @IBAction private func noButtonClicked(_ sender: Any) {
-    }
+
     // для состояния "Вопрос задан"
     struct QuizStepViewModel {
       let image: UIImage
@@ -100,6 +95,13 @@ final class MovieQuizViewController: UIViewController {
         }
         let firstQuestionViewModel = convert(model: firstQuestion)
         self.show(quiz:firstQuestionViewModel)
+    }
+    
+    
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: Any) {
     }
 }
 
