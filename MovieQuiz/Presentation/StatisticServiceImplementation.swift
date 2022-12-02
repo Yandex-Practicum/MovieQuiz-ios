@@ -14,10 +14,14 @@ final class StatisticServiceImplementation: StatisticService {
         case correct, total, bestGame, gamesCount
     }
     private var correct: Double {
-        userDefaults.double(forKey: Keys.correct.rawValue)
+        get {
+            userDefaults.double(forKey: Keys.correct.rawValue)
+        }
     }
     private var total: Double {
-        userDefaults.double(forKey: Keys.total.rawValue)
+        get {
+            userDefaults.double(forKey: Keys.total.rawValue)
+        }
     }
     var bestGame: GameRecord {
         get {
