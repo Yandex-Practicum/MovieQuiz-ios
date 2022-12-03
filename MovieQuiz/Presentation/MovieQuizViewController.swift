@@ -8,6 +8,7 @@ final class MovieQuizViewController: UIViewController {
             let firstQuestion = questionFactory.requestNextQuestion() {
             currentQuestion = firstQuestion
             let viewModel = convert(model: firstQuestion)
+            
             show(quiz: viewModel)
         }
                 
