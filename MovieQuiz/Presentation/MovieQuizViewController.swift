@@ -9,6 +9,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
 
     private var currentQuestion: QuizQuestion? = nil
     private var currentQuestionIndex = 0
@@ -29,6 +31,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserDefaults.standard.set(true, forKey: "viewDidLoad")
         questionFactory?.setDelegate(delegate: self)
         initFirstTime()
         showQuestionImpl()
@@ -69,6 +72,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showNextQuestionOrResults() {
+        makeButtonsEnable(isEnable: true)
         if currentQuestionIndex == (questionsAmount - 1) {
             showFinalResult()
             initFirstTime()
@@ -79,6 +83,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showAnswerResult(isCorrect: Bool) {
+        makeButtonsEnable(isEnable: false)
         if isCorrect {
             correctAnswers += 1
             configureImageLayer(thickness: 8, color: UIColor.ypGreen)
@@ -90,6 +95,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else { return }
             self.showNextQuestionOrResults()
         }
+    }
+
+    private func makeButtonsEnable(isEnable: Bool) {
+        noButton.isEnabled = isEnable
+        yesButton.isEnabled = isEnable
     }
 
     private func configureImageLayer(thickness: Int, color: UIColor) {
