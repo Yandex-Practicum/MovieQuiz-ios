@@ -1,8 +1,8 @@
 import UIKit
 
-private let questionsAmount: Int = 10
+private let questionsAmount: Int = 5
 private let questionFactory: QuestionFactoryProtocol? = QuestionFactory()
-private var currentQuestion: QuizQuestion? = nil
+private let statisticService: StatisticServiceProtocol? = StatisticServiceUserDefaults()
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
@@ -31,7 +31,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserDefaults.standard.set(true, forKey: "viewDidLoad")
         questionFactory?.setDelegate(delegate: self)
         initFirstTime()
         showQuestionImpl()
@@ -74,6 +73,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         makeButtonsEnable(isEnable: true)
         if currentQuestionIndex == (questionsAmount - 1) {
+            if let stat = statisticService {
+                stat.store(correct: correctAnswers, total: questionsAmount)
+            }
             showFinalResult()
             initFirstTime()
         } else {
@@ -109,10 +111,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 15
     }
 
+    private func createTextResult() -> String {
+        let currentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
+        guard let stat = statisticService else {
+            return currentResult
+        }
+        let accuracy = "\(String(format: "%.2f", stat.totalAccuracy))"
+        return """
+        \(currentResult)
+        Количество сыгранных квизов: \(stat.gamesCount)
+        Рекорд: \(stat.bestGame.toString())
+        Средняя точность: \(accuracy)%
+        """
+    }
+
     private func createResultModel() -> QuizResultsViewModel {
         return QuizResultsViewModel(
             title: "Этот раунд окончен!",
-            text: "Ваш результат: \(correctAnswers) из \(questionsAmount)",
+            text: createTextResult(),
             buttonText: "Сыграть ещё раз")
     }
 

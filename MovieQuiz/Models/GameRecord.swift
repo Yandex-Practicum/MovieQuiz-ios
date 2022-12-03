@@ -21,4 +21,8 @@ struct GameRecord : Codable, Comparable {
         return lhs.correct == rhs.correct
     }
 
+    func toString() -> String {
+        return "\(correct)/\(total) (\(date.dateTimeString))"
+    }
+
 }

@@ -11,11 +11,11 @@ final class StatisticServiceUserDefaults : StatisticServiceProtocol {
 
     private let userDefaults = UserDefaults.standard
 
-    private var totalAccuracyPrivate: Double = 0.0
+    private var totalAccuracyPrivate = 0.0
 
     func store(correct count: Int, total amount: Int) {
-        setTotalAccuracy(correct: count, total: amount)
         increaseGamesCount()
+        setTotalAccuracy(correct: count, total: amount)
         updateBestGameIfNeeded(correct: count, total: amount)
     }
 
@@ -27,7 +27,7 @@ final class StatisticServiceUserDefaults : StatisticServiceProtocol {
 
     var totalAccuracy: Double {
         get {
-            totalAccuracyPrivate
+            100.0 * totalAccuracyPrivate
         }
     }
 
@@ -81,16 +81,17 @@ final class StatisticServiceUserDefaults : StatisticServiceProtocol {
         calcAccuracy(gameRecord: bestGame)
     }
 
-    private func isDoubleLess(lhs: Double, rhs: Double) -> Bool {
+    private func isDoubleEqual(lhs: Double, rhs: Double) -> Bool {
         let delta = 1e-6
-        return fabs(lhs - rhs) > delta
+        return fabs(lhs - rhs) < delta
     }
 
     private func updateBestGameIfNeeded(correct count: Int, total amount: Int)
     {
-        if isDoubleLess(
-            lhs: getLastAccuracy(),
-            rhs: calcAccuracy(correct: count, total: amount)) {
+        let lastAccuracy = getLastAccuracy()
+        let accuracy = calcAccuracy(correct: count, total: amount)
+        let isEqual = isDoubleEqual(lhs: lastAccuracy, rhs: accuracy)
+        if lastAccuracy < accuracy || isEqual {
             setBestGame(bestGame: GameRecord(
                 correct: count,
                 total: amount,
