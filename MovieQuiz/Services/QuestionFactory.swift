@@ -50,9 +50,10 @@ class QuestionFactory {
             correctAnswer: false)
     ]
     func requestNextQuestion() -> QuizQuestion? {
-        guard let index = (0..<questions.count).randomElement() else {
-            return nil
-        }
+       // guard let index = (0..<questions.count).randomElement() else {
+        //    return nil
+        let index = 1  //  для проверки, ошибка такая же.... не понятно. Рендом тут не причем, получается
+        //}
         return questions[safe: index]
     }
     
