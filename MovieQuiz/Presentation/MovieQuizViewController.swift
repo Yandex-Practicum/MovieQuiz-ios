@@ -1,23 +1,39 @@
 import UIKit
 
-
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+//final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        questionFactory.delegate = self
         if
             let firstQuestion = questionFactory.requestNextQuestion() {
             currentQuestion = firstQuestion
             let viewModel = convert(model: firstQuestion)
-            
             show(quiz: viewModel)
         }
                 
     }
+    // MARK: - QuestionFactoryDelegate
+
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+            guard let question = question else {
+                return
+            }
+            
+            currentQuestion = question
+            let viewModel = convert(model: question)
+            DispatchQueue.main.async { [weak self] in
+                self?.show(quiz: viewModel)
+            }
+        }
+    
+    //
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    //private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
+    private let questionFactory: QuestionFactoryProtocol?
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {return}
@@ -42,17 +58,23 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            if let nextQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = nextQuestion
-                let viewModel = self.convert(model: nextQuestion)
-                self.show(quiz: viewModel)
-            }}}
+         //   if let nextQuestion = self.questionFactory.requestNextQuestion() {
+           //     self.currentQuestion = nextQuestion
+             //   let viewModel = self.convert(model: nextQuestion)
+              //  self.show(quiz: viewModel)
+            //}
+            questionFactory.requestNextQuestion()
+        
+    }}
     private func show(quiz step: QuizStepViewModel) {
-        if let firstQuestion = self.questionFactory.requestNextQuestion() {
-            self.currentQuestion = firstQuestion
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
-        }}
+       // if let firstQuestion = self.questionFactory.requestNextQuestion() {
+       //     self.currentQuestion = firstQuestion
+       //     let viewModel = self.convert(model: firstQuestion)
+       //     self.show(quiz: viewModel)
+       // }
+        questionFactory.requestNextQuestion()
+    
+}
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -98,12 +120,13 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
+          //  if let firstQuestion = self.questionFactory.requestNextQuestion() {
+           //     self.currentQuestion = firstQuestion
+          //      let viewModel = self.convert(model: firstQuestion)
                 
-                self.show(quiz: viewModel)
-            }
+          //      self.show(quiz: viewModel)
+            questionFactory.requestNextQuestion()
+          //  }
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
