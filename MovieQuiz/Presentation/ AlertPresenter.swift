@@ -8,20 +8,15 @@
 import Foundation
 import UIKit
 
-struct AlertPresenter {
+class AlertPresenter {
     
-    var viewController : UIViewController?
+    var alertController : UIViewController?
+    init(alertController: UIViewController? = nil) {self.alertController = alertController}
     
-    init(viewController: UIViewController? = nil) {
-        self.viewController = viewController
-    }
-    
-     func show(quiz result : AlertModel) {
-        // здесь мы показываем результат прохождения квиза
+     func show(result : AlertModel) {
         let alert = UIAlertController(title: result.title, message: result.message, preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default, handler: result.completion)
+        let action = UIAlertAction(title: result.buttonText, style: .default)        
         alert.addAction(action)
-        
-        viewController?.present(alert, animated: true, completion: nil)
+        alertController?.present(alert, animated: true, completion: nil)
     }
 }
