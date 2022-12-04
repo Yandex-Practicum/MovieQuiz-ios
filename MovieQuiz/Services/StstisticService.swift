@@ -15,9 +15,9 @@ struct GameRecord: Codable {
     
     var total: Int
     
-   var date: Date
+    var date: Date
     
-    mutating func gamerecord(correct: Int, total: Int, date: Date) {
+    mutating func recordGame(correct: Int, total: Int, date: Date) {
         
         if self.correct < correct {
             
@@ -28,14 +28,9 @@ struct GameRecord: Codable {
             self.date = date
         }
         
-        
-        
     }
     
-    
-    
 }
-
 
  protocol StatisticService {
     
@@ -43,15 +38,15 @@ struct GameRecord: Codable {
     
      var totalAccuracy: Double {get}
     
-    var gamesCount: Int {get}
+     var gamesCount: Int {get}
     
-    var bestGame: GameRecord {get}
+     var bestGame: GameRecord {get}
     
 }
 
 
 class SatisicServiceImplementation: StatisticService {
-    func store(correct count: Int, total amount: Int) {
+        func store(correct count: Int, total amount: Int) {
        
         if count >= bestGame.correct {
             
@@ -59,42 +54,24 @@ class SatisicServiceImplementation: StatisticService {
             
             bestGame.date = Date()
             
-
         }
+            gamesCount += 1
         
-        gamesCount += 1
-        
-        totalAccuracy += (Double(count)/Double(amount))
-        
-
+            totalAccuracy += (Double(count)/Double(amount))
         
     }
     
  private(set) var totalAccuracy: Double {
         get {
             
-            guard let data = UserDefaults.standard.data(forKey: Keys.total.rawValue),
-                    
-                    let totalaccuracy = try? JSONDecoder().decode(Double.self, from: data) else {
-                
-                return .init(0)
-            }
-            
+            let totalaccuracy = UserDefaults.standard.double(forKey: Keys.total.rawValue)
             return totalaccuracy
         }
         
         
         set {
-            
-          guard let data = try? JSONEncoder().encode(newValue) else {
-                
-                print("Невозможно сохранить результат")
-                
-                return
-            }
-            
-            UserDefaults.standard.set(data, forKey: Keys.total.rawValue)
-            
+              
+            UserDefaults.standard.set(newValue, forKey: Keys.total.rawValue)
             
         }
         
@@ -103,44 +80,26 @@ class SatisicServiceImplementation: StatisticService {
   private(set)  var gamesCount: Int {
         
         get {
-            
-            guard let data = UserDefaults.standard.data(forKey: Keys.gamesCount.rawValue),
-                  
-                    let gamescount = try? JSONDecoder().decode(Int.self, from: data) else {
-                
-                return .init(0)
-            }
-            
+            let gamescount = UserDefaults.standard.integer(forKey: Keys.gamesCount.rawValue)
             return gamescount
             
         }
         
         set {
-            
-            guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат")
-                
-                return
-            }
-            
-            UserDefaults.standard.set(data, forKey: Keys.gamesCount.rawValue)
-            
+            UserDefaults.standard.set(newValue,forKey: Keys.gamesCount.rawValue)
         }
         
     }
     
-    private enum Keys: String {
-        
-        case correct, total, bestGame, gamesCount
-    }
+    
     
     private(set) var bestGame: GameRecord {
         
         get {
             
             
-            guard let data = UserDefaults.standard.data(forKey: Keys.bestGame.rawValue),
-                  let recordw = try? JSONDecoder().decode(GameRecord.self, from: data)
+                guard let data = UserDefaults.standard.data(forKey: Keys.bestGame.rawValue),
+                let record = try? JSONDecoder().decode(GameRecord.self, from: data)
                     
             else {
                 
@@ -148,24 +107,29 @@ class SatisicServiceImplementation: StatisticService {
                 
             }
             
-            return recordw
+                return record
             
         }
         
         set {
             
             
-            guard let data = try? JSONEncoder().encode(newValue) else {
+                guard let data = try? JSONEncoder().encode(newValue) else {
                 
-                print("Невозможно сохранить результат")
+                assertionFailure("Невозможно сохранить результат")
                 
                 return
             }
             
-            UserDefaults.standard.set(data, forKey: Keys.bestGame.rawValue)
+                UserDefaults.standard.set(data, forKey: Keys.bestGame.rawValue)
             
             
         }
+    }
+    
+    private enum Keys: String {
+        
+        case correct, total, bestGame, gamesCount
     }
     
     

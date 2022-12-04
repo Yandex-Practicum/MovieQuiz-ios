@@ -11,13 +11,13 @@ import UIKit
 
 struct AlertModel {
     
-    var title: String
+    let title: String
     
-    var message: String
+    let message: String
     
-    var buttonText: String
+    let buttonText: String
     
-    var completion: ((UIAlertAction)->Void)?
+    let completion: ((UIAlertAction)->Void)?
     
     
     

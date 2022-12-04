@@ -2,36 +2,45 @@ import UIKit
 
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    
-    
-    
-    
-    
-    
-    
-    
-    
+                
+     
     private var currentQuestionIndex: Int = 0
-    
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol? = nil
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
-    
-   
-    
     private var statisticService: StatisticService?
-    
-    
     private var correctanswerQuestion = 0
     
-    
-    
+       
     @IBOutlet var nobutton: UIButton!
-    
-    
+       
     @IBOutlet var yesbutton: UIButton!
+           
+       // Картинка
     
+    @IBOutlet private var imageView: UIImageView!
+    
+    // Текст вопрса
+    
+    @IBOutlet private var textLabel: UILabel!
+    
+    // Счетчик текущего вопроса
+    
+    @IBOutlet private var counterLabel: UILabel!
+    
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        imageView.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+        alertPresenter = AlertPresenter(viewController: self)
+        statisticService = SatisicServiceImplementation()
+               
+    }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         
@@ -49,21 +58,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
-    
-    // Картинка
-    
-    @IBOutlet private var imageView: UIImageView!
-    
-    // Текст вопрса
-    
-    @IBOutlet private var textLabel: UILabel!
-    
-    // Счетчик текущего вопроса
-    
-    @IBOutlet private var counterLabel: UILabel!
-    
-    
-    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -72,21 +66,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
-    
-    
     private func showAnswerResult(isCorrect: Bool) {
         
         if isCorrect {
             correctanswerQuestion+=1
         }
         
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
-        imageView.layer.cornerRadius = 20
-        
-        
-        
+            imageView.layer.masksToBounds = true
+            imageView.layer.borderWidth = 8
+            imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
+            imageView.layer.cornerRadius = 20
+            
+                
         self.yesbutton.isEnabled = false
         
         self.nobutton.isEnabled = false
@@ -94,40 +85,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             
             guard let self = self else{return}
-            
-            
-            
-            
+                        
             self.yesbutton.isEnabled = true
-            
             self.nobutton.isEnabled = true
-            
             self.imageView.layer.borderColor = UIColor.clear.cgColor
-            
             self.showNextQuestionOrResults()
-            
-            
             
         }
         
     }
     
     
-    
-    
     private func show(quiz step: QuizStepViewModel) {
-        imageView.image = step.image
-        counterLabel.text = step.questionNumber
-        textLabel.text = step.question
+            imageView.image = step.image
+            counterLabel.text = step.questionNumber
+            textLabel.text = step.question
     }
-    
-    
     
     
     private func showNextQuestionOrResults(){
         
         
-        if currentQuestionIndex == questionsAmount - 1{
+            if currentQuestionIndex == questionsAmount - 1{
             
             self.statisticService?.store(correct: correctanswerQuestion, total: questionsAmount)
             
@@ -138,31 +117,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                                  buttonText: "Сыграть еще раз")
             self.correctanswerQuestion = 0
             
-
             
             show(quiz: viewModel)
-            
-
-                
-                
-                
+               
             }
-            
            
-            
-
-            
-            
-            
-       
-        
         
         else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
     }
-    
     
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -173,54 +138,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
            
             self.currentQuestionIndex = 0
             self.correctanswerQuestion = 0
-            
-            
-            
             self.questionFactory?.requestNextQuestion()
             
-
-            
         }
-        alertPresenter?.show(results: alertModel)
+            alertPresenter?.show(results: alertModel)
         
     }
 
 
-    
-    
-    
-    
-    override func viewDidLoad() {
-        
-        super.viewDidLoad()
-        
-        imageView.layer.cornerRadius = 20
-        
-        questionFactory = QuestionFactory(delegate: self)
-        
-        questionFactory?.requestNextQuestion()
-        
-        alertPresenter = AlertPresenter(viewController: self)
-        
-        // 5 sprint
-        
-      statisticService = SatisicServiceImplementation()
-        
-        
-        
-            // ТРЕНИРОВКА ТЕОРИИ
-        
-        print(NSHomeDirectory())
-        
-        UserDefaults.standard.set(true, forKey: "viewDidLoad")
-        
-        print(Bundle.main.bundlePath)
-        
-       
-        
-        
-        
-    }
     
     // MARK: - QuestionFactoryDelegate
     
@@ -236,13 +161,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
-    
-    
-    // MARK: - 
-    
-   
-    
-    
     
     
 }
