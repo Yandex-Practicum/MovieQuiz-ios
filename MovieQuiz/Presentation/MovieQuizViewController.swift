@@ -2,24 +2,24 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {return}
-        show(quiz: convert(model: question))
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        questionFactory?.delegate = self
-        questionFactory?.requestNextQuestion()
-    }
-    // MARK: - QuestionFactoryDelegate
-
-    func didReceiveNextQuestion(question: QuizQuestion?) {
             guard let question = question else {return}
             currentQuestion = question
             let viewModel = convert(model: question)
             DispatchQueue.main.async { [weak self] in
                 self?.show(quiz: viewModel)
             }}
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //questionFactory?.delegate = self                   --- Почему такая конструкция не верна? И почему в фабрику нужно добавить init?
+        //questionFactory?.requestNextQuestion()
+        
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+    }
+    // MARK: - QuestionFactoryDelegate
+
+ 
     //
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
