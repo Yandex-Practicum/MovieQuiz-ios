@@ -1,6 +1,7 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -13,19 +14,29 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswer: Int = 0
     
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
     }
-    // here we fill our picture, text and counter with data
+    // MARK: - QuestionFactoryDelegate
+    func didRecieveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+               return
+           }
+           
+           currentQuestion = question
+           let viewModel = convert(model: question)
+           DispatchQueue.main.async { [weak self] in
+                    self?.show(quiz: viewModel)
+                }
+           show(quiz: viewModel)
+    }
+    // MARK: - Private functions
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -40,19 +51,15 @@ final class MovieQuizViewController: UIViewController {
                                       preferredStyle: .alert) // alert
 
         // create action buttons for it
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) {[weak self] _ in
+            guard let self = self else {return}
             self.currentQuestionIndex = 0
             
             // we reset the counter of correct answers
                 self.correctAnswer = 0
             
             // re-show the first question
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-                
-                self.show(quiz: viewModel)
-            }
+            self.questionFactory?.requestNextQuestion()
         }
         // add buttons to alert
         alert.addAction(action)
@@ -80,29 +87,13 @@ final class MovieQuizViewController: UIViewController {
         noButton.isEnabled = false
 
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else {return}
             self.showNextQuestionOrResults()
             self.yesButton.isEnabled = true
             self.noButton.isEnabled = true
         }
     }
-    // MARK: - Action
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
-        
-    }
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
-    }
-    
     private func showNextQuestionOrResults() {
       if currentQuestionIndex == questionsAmount - 1 {
           let text = correctAnswer == questionsAmount ?
@@ -121,12 +112,23 @@ final class MovieQuizViewController: UIViewController {
         // when switching to the next question, remove the frame and color
         imageView.layer.borderColor = nil
         imageView.layer.borderWidth = 0
-          if let nextQuestion = questionFactory.requestNextQuestion() {
-              currentQuestion = nextQuestion
-              let viewModel = convert(model: nextQuestion)
-              
-              show(quiz: viewModel)
-          }
+          questionFactory?.requestNextQuestion()
       }
+    }
+    // MARK: - Actions
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
+        
+    }
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
     }
 }
