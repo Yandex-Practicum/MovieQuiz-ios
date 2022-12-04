@@ -16,6 +16,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenter?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -37,37 +38,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
            show(quiz: viewModel)
     }
     // MARK: - Private functions
+    private func showAlert(){
+        guard let alertPresenter = alertPresenter else { return }
+        alertPresenter.showAlert()
+    }
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     
-    private func show(quiz result: QuizResultsViewModel) {
-        //here we show the result of passing the quiz
-        // create popup objects
-        let alert = UIAlertController(title: result.text, // popup title
-                                      message: result.text, // popup text
-                                      preferredStyle: .alert) // alert
-
-        // create action buttons for it
-        let action = UIAlertAction(title: result.buttonText, style: .default) {[weak self] _ in
-            guard let self = self else {return}
-            self.currentQuestionIndex = 0
-            
-            // we reset the counter of correct answers
-                self.correctAnswer = 0
-            
-            // re-show the first question
-            self.questionFactory?.requestNextQuestion()
-        }
-        // add buttons to alert
-        alert.addAction(action)
-
-        // show popup window
-        self.present(alert, animated: true, completion: nil)
-
-    }
     
     // Converting converting data from one format to another
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -99,14 +80,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
           let text = correctAnswer == questionsAmount ?
           "Поздравляем, Вы ответили на 10 из 10!" :
           "Вы ответили на \(correctAnswer) из 10, попробуйте ещё раз!"
-          let viewModel = QuizResultsViewModel(
-            title: "Этот раунд окончен!",
-            text: text,
-            buttonText: "Сыграть ещё раз")
-          // at the end of the quiz, remove the frame and color
+          alertPresenter = AlertPresenter(modelShowAlert: AlertModel.init(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть еще раз", completion: {self.currentQuestionIndex = 0
+              self.correctAnswer = 0
+              self.questionFactory?.requestNextQuestion()
+          }))
+          alertPresenter?.viewController = self
+          showAlert()
           imageView.layer.borderColor = nil
           imageView.layer.borderWidth = 0
-        show(quiz: viewModel)
       } else {
         currentQuestionIndex += 1
         // when switching to the next question, remove the frame and color
