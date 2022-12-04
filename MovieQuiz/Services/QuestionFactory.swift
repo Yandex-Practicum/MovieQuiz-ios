@@ -35,7 +35,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                      text: "Рейтинг этого фильма больше чем 6?",
                      correctAnswer: false)
     ]
-    weak var delegate: QuestionFactoryDelegate? = nil
+    weak var delegate: QuestionFactoryDelegate?
     func requestNextQuestion() {
         guard  let index = (0..<questions.count).randomElement() else {
             delegate?.didRecieveNextQuestion(question: nil)

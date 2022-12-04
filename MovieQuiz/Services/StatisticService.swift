@@ -30,11 +30,8 @@ final class StaticticServiceImplementation: StatisticService {
            let totalQuestions = try? JSONDecoder().decode(Int.self, from: dataTotalQuestions),
            totalQuestions != 0 {
                 return Double(totalCorrect) / Double(totalQuestions) * 100
-
-        } else {
-            return 0.0
         }
-    
+            return 0.0
 
     }
     

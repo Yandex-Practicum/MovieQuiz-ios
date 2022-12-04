@@ -27,9 +27,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         questionFactory?.delegate = self
         questionFactory?.requestNextQuestion()
         
-        
-        
- 
+        alertPresenter = AlertPresenter()
+        alertPresenter?.delegate = self
 
     }
    
@@ -103,9 +102,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionAmount - 1 {
             statisticService.store(current: correctAnswers, total: questionAmount)
-            alertPresenter = AlertPresenter()
-            alertPresenter?.delegate = self
-            var alertModelResult = AlertModel(title: "Этот раунд окончен",
+            let alertModelResult = AlertModel(title: "Этот раунд окончен",
                                               message: "Ваш результат: \(correctAnswers)/\(questionAmount)\n Количество сыгранных квизов: \(statisticService.gamesCount) \n Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))\n Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%",
                                               buttonText: "Сыграть еще раз",
                                               completion: { [weak self] _ in
@@ -115,19 +112,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                                                             self.correctAnswers = 0
                                                             self.currentQuestionIndex = 0
                                                             self.questionFactory?.requestNextQuestion()
-      
                                             })
-
             alertPresenter?.showResult(alertModel: alertModelResult)
-            
-            
         } else {
-
             currentQuestionIndex += 1
-            
             questionFactory?.requestNextQuestion()
-            
-            
         }
     }
     
@@ -149,10 +138,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
          
         let correctAnswer = currentQuestion.correctAnswer
         showAnswerResult(isCorrect: correctAnswer == true)
-        
 
     }
-    
 }
 
 /*
