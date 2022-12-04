@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import UIKit
+
 class QuestionFactory: QuestionFactoryProtocol {
     
-    var delegate: QuestionFactoryDelegate? 
+    weak var delegate: QuestionFactoryDelegate?
     
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -53,22 +53,14 @@ class QuestionFactory: QuestionFactoryProtocol {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-   // func requestNextQuestion() -> QuizQuestion? {
-       // guard let index = (0..<questions.count).randomElement() else {
-        //    return nil
-    //    let index = 1  //  для проверки, ошибка такая же.... не понятно. Рендом тут не причем, получается
-        //}
-     //   return questions[safe: index]
-  //  }
+  
     func requestNextQuestion() {
-        guard let index = (0..<questions.count).randomElement() else {  // 2
-             delegate?.didReceiveNextQuestion(question: nil)
-             return
+        guard let index = (0..<questions.count).randomElement() else {
+            delegate?.didRecieveNextQuestion(question: nil)
+            return
         }
         
         let question = questions[safe: index]
         delegate?.didRecieveNextQuestion(question: question)
     }
-    
-    
 }

@@ -4,36 +4,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 //final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory.delegate = self
-        if
-            let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
-                
+        questionFactory?.delegate = self
+        questionFactory?.requestNextQuestion()
     }
     // MARK: - QuestionFactoryDelegate
 
     func didReceiveNextQuestion(question: QuizQuestion?) {
-            guard let question = question else {
-                return
-            }
-            
+            guard let question = question else {return}
             currentQuestion = question
             let viewModel = convert(model: question)
             DispatchQueue.main.async { [weak self] in
                 self?.show(quiz: viewModel)
-            }
-        }
-    
+            }}    
     //
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
     private let questionsAmount: Int = 10
     //private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
-    private let questionFactory: QuestionFactoryProtocol?
+    private var questionFactory: QuestionFactoryProtocol? = nil
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {return}
@@ -63,7 +52,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
              //   let viewModel = self.convert(model: nextQuestion)
               //  self.show(quiz: viewModel)
             //}
-            questionFactory.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
         
     }}
     private func show(quiz step: QuizStepViewModel) {
