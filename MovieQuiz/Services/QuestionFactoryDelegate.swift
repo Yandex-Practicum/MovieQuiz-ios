@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol QuestionFactoryDelegate: AnyObject {                   // 1
     func didRecieveNextQuestion(question: QuizQuestion?)   // 2
