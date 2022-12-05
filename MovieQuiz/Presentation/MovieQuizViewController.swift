@@ -11,24 +11,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //questionFactory?.delegate = self                   --- Почему такая конструкция не верна? И почему в фабрику нужно добавить init?
-        //questionFactory?.requestNextQuestion()
+   
         alertPresenter = AlertPresenter(alertController: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        statisticService = StatisticServiceImplementation()
     }
     // MARK: - QuestionFactoryDelegate
-
- 
-    //
-    private var alertPresenter : AlertPresenter?
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
     private let questionsAmount: Int = 10
-    //private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var alertPresenter : AlertPresenter?
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol? = nil
-    
+    private var statisticService: StatisticService?
     
     
     
@@ -48,29 +44,52 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var YesButton: UIButton!
-    private func showNextQuestionOrResults() {
+/*
+        Рабочий вариант, но без записи результата
+        private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            // let text = "Ваш результат: \(correctAnswers) из 10"
-            //let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",text: text,buttonText: "Сыграть ещё раз")
-            //show(quiz: viewModel)
+
             let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             let viewModel = AlertModel(title: "Этот раунд окончен!",message: text, buttonText: "Сыграть ещё раз")
             
           
             self.alertPresenter?.show(result: viewModel)
             self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-        } else {
-            currentQuestionIndex += 1
-
-          //  questionFactory?.requestNextQuestion()
+            self.correctAnswers = 0            
+        }
+        else {currentQuestionIndex += 1
+            questionFactory?.requestNextQuestion()
+        }
         
-    }
-        questionFactory?.requestNextQuestion()
-    }
+*/
+    private func showNextQuestionOrResults() {
+          if currentQuestionIndex == questionsAmount - 1 {
+              statisticService?.store(correct: self.correctAnswers, total: self.questionsAmount)
+              guard  let gameCount = statisticService?.gamesCount,
+                    let bestGame = statisticService?.bestGame,
+                    let totalAccuracy = statisticService?.totalAccuracy  else { return  }
+              
+              let messageResult = """
+                Вы результат: \(correctAnswers)/\(questionsAmount) \n
+                Количество сыгранных квизов: \(gameCount) \n
+                Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))\n
+                Средняя точность: \(totalAccuracy)%
+                """
+
+              let viewModel = AlertModel(title: "Этот раунд окончен!", message: messageResult,buttonText: "Сыграть ещё раз")
+              currentQuestionIndex = 0
+              self.currentQuestionIndex = 0
+              self.alertPresenter?.show(result: viewModel)
+              }
+           
+              
+           else {
+              currentQuestionIndex += 1
+                  questionFactory?.requestNextQuestion()
+          }
+      }
+        
     private func show(quiz step: QuizStepViewModel) {
-        //questionFactory?.requestNextQuestion()}
         self.imageView.image = step.image
         self.textLabel.text = step.question
         self.counterLabel.text = step.questionNumber
@@ -84,21 +103,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     private func showAnswerResult(isCorrect: Bool) {
     
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 1 // толщина рамки
-        imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
-        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
-       // imageView.layer.borderColor = isCorrect ?? UIColor.yp Green.cgColor : UIColor.yp Red.cgColor Почемуто не видет мой цвет
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.cornerRadius = 20
+ 
         
         
-     //  почему то не поулчается обратиться к подгруженным цветам....
-        if isCorrect == true
-        {
+  
+        if isCorrect == true {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
             correctAnswers = correctAnswers + 1
         }
-        else
-            {
+        else{
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
             self.YesButton.isEnabled = false
