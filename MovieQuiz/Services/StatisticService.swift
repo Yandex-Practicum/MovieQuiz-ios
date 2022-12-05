@@ -56,7 +56,7 @@ final class StatisticServiceImplementation: StatisticService {
             let total = userDefaults.double(forKey: Keys.total.rawValue)
             let result = (correct / total) * 100
             //return result.rounding(before: 2)
-            return result.rounded
+            return result.rounded()
         }
     }
         
