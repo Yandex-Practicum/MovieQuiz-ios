@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol QuestionFactoryDelegate {
+protocol QuestionFactoryDelegate: class {
     
     func didRecieveNextQuestion(question: QuizQuestion?)
 }

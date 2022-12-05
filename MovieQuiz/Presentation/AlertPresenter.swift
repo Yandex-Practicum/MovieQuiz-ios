@@ -10,7 +10,7 @@ import UIKit
 
 
 struct AlertPresenter: AlertPresenterProtocol {
-        
+    
     weak var viewController: UIViewController?
     
     func show(results: AlertModel) {
@@ -26,14 +26,14 @@ struct AlertPresenter: AlertPresenterProtocol {
     
     
 }
-    
 
-        
-        
-        
-        
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
 

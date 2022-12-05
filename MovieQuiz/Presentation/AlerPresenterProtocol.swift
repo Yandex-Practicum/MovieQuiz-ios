@@ -11,8 +11,8 @@ import Foundation
 protocol AlertPresenterProtocol {
     
     func show(results: AlertModel)
-        
-        
+    
+    
     
     
     
