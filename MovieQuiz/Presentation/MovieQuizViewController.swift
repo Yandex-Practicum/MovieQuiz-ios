@@ -29,16 +29,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private var counterLabel: UILabel!
     
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+//        questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
+        
+        questionFactory?.loadData()
+        
+//        questionFactory?.loadData()
+            showLoadingIndicator()
+        
         
     }
     
@@ -57,12 +64,38 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenanswer == currentQuestion.correctAnswer)
     }
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+//    private func showNetworkError(message: String) {
+//        hideLoadingIndicator()
+//
+//        let model = AlertModel(title: "Ошибка",
+//                               message: message,
+//                               buttonText: "Попробовать еще раз") { [weak self] in
+//            guard let self = self else { return }
+//            self.presenter.restartGame()
+//        }
+//
+//        alertPresenter.show(in: self, model: model)
+//    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+//        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+    }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+            image: UIImage(data: model.image) ?? UIImage(),
+                   question: model.text,
+                   questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     
