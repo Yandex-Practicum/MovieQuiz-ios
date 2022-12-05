@@ -9,8 +9,7 @@ import Foundation
 
 class QuestionFactory : QuestionFactoryProtocol {
 
-    private var previousIndex: Int? = nil
-    weak var delegate: QuestionFactoryDelegate?
+    private weak var delegate: QuestionFactoryDelegate?
 
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -23,37 +22,40 @@ class QuestionFactory : QuestionFactoryProtocol {
             correctAnswer: true),
         QuizQuestion(
             image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
+            text: "Она убила Балла к конце?",
+            correctAnswer: false),
         QuizQuestion(
             image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
+            text: "Это фильм для взрослых?",
+            correctAnswer: false),
         QuizQuestion(
             image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
+            text: "Макконахи сыграл главную роль?",
+            correctAnswer: false),
         QuizQuestion(
             image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
+            text: "Рейтинг этого фильма больше чем 5?",
             correctAnswer: true),
         QuizQuestion(
             image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
+            text: "Рейтинг этого фильма больше чем 4?",
+            correctAnswer: true),
         QuizQuestion(
             image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
+            text: "Это фильм для детей?",
+            correctAnswer: true),
         QuizQuestion(
             image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
+            text: "Этот фильм про автомобили?",
             correctAnswer: false),
         QuizQuestion(
             image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
+            text: "Этот фильм популярный?",
             correctAnswer: false)
     ]
+
+    private var index = 0
+    private var indexes: [Int] = []
 
     func requestNextQuestion() {
         guard let index = getIndex() else {
@@ -68,15 +70,35 @@ class QuestionFactory : QuestionFactoryProtocol {
     }
 
     private func getIndex() -> Int? {
-        guard let index = (0..<questions.count).randomElement() else {
-            delegate?.didRecieveNextQuestion(question: nil)
+        if questions.isEmpty {
             return nil
         }
-        if index == previousIndex {
-            return getIndex()
+        if questions.count == 1 {
+            return 0
         }
-        previousIndex = index
-        return index
+        return getIndexImpl()
+    }
+
+    private func getIndexImpl() -> Int {
+        if index == questions.count {
+            var currentIndex = indexes.last
+            index = 0
+            while true {
+                indexes.shuffle()
+                if indexes.first != currentIndex {
+                    break
+                }
+            }
+        }
+        if indexes.isEmpty {
+            for i in 0..<questions.count {
+                indexes.append(i)
+            }
+            indexes.shuffle()
+        }
+        var currentIndex = indexes[index]
+        index += 1
+        return currentIndex
     }
 
 }

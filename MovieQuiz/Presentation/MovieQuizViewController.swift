@@ -1,9 +1,5 @@
 import UIKit
 
-private let questionsAmount: Int = 5
-private let questionFactory: QuestionFactoryProtocol? = QuestionFactory()
-private let statisticService: StatisticServiceProtocol? = StatisticServiceUserDefaults()
-
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     @IBOutlet private var counterLabel: UILabel!
@@ -15,6 +11,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion? = nil
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+
+    private let questionsAmount: Int = 5
+    private let questionFactory: QuestionFactoryProtocol? = QuestionFactory()
+    private let statisticService: StatisticServiceProtocol? = StatisticServiceUserDefaults()
+    private let alertPresenter = AlertPresenter()
 
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
@@ -67,7 +68,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showFinalResult() {
-        AlertPresenter().show(model: createAlertModel(), controller: self)
+        alertPresenter.show(model: createAlertModel(), controller: self)
     }
 
     private func showNextQuestionOrResults() {

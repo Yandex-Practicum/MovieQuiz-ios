@@ -5,12 +5,11 @@
 //  Created by Александр Сироткин on 30.11.2022.
 //
 
-import Foundation
 import UIKit
 
 final class AlertPresenter {
 
-    func show (model: AlertModel, controller: UIViewController) -> Void {
+    func show (model: AlertModel, controller: UIViewController) {
         let alert = UIAlertController(
             title: model.title,
             message: model.message,
