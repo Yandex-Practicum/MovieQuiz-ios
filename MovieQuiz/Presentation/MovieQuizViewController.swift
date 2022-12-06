@@ -5,8 +5,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Outlet
     
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -32,14 +32,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(viewController: self)
-        showLoadingIndicator()
+        loadingIndicator(isShown: false)
         questionFactory?.loadData()
     }
     
     //MARK: - Internal functions
     
    func didLoadDateFromServer() {
-        hideLoadingIndicator()
+        loadingIndicator(isShown: true)
         questionFactory?.requestNextQuestion()
     }
     
@@ -58,17 +58,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Private functions
     
-    private func showLoadingIndicator() {
-        activityIndicator.isHidden = false // говорим, что индекатор загрузки не скрыт
-        activityIndicator.startAnimating() // включаем анимацию
-    }
-    
-    private func hideLoadingIndicator() {
-            activityIndicator.isHidden = true
+    private func loadingIndicator(isShown: Bool) {
+        activityIndicator.isHidden = !isShown
+        isShown ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
     }
     
     private func showNetworkError(message: String) {
-        hideLoadingIndicator() // скрываем индикатор загрузки
+        loadingIndicator(isShown: true) // скрываем индикатор загрузки
         
         let networkError = AlertModel(title: "Ошибка",
                                message: message,
@@ -76,7 +72,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else {return}
             self.restartGame()
             self.questionFactory?.loadData()
-            self.showLoadingIndicator()
+            self.loadingIndicator(isShown: false)
         }
         alertPresenter = AlertPresenter(viewController: self)
         alertPresenter?.showAlert(quiz: networkError)
