@@ -1,6 +1,6 @@
 import Foundation
 
-enum Errors: Error {
+enum Errors: String, Error {
     case itemsEmpty
     case decodingError
     case invalidResponse
@@ -8,6 +8,7 @@ enum Errors: Error {
     case invalidURL
     case parsingError
     case exceedAPIRequestLimit
+    case testError = "Test Error"
 }
 
 extension Errors: LocalizedError {
@@ -34,6 +35,10 @@ extension Errors: LocalizedError {
         case .exceedAPIRequestLimit:
             return NSLocalizedString("Превышено максимальное число запросов на сегодня",
                                      comment: "Максимальное число запросов 100 в день")
+        case .testError:
+            return NSLocalizedString("Test Error",
+                                     comment: "Test Error")
         }
     }
 }
+

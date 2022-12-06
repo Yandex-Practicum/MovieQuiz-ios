@@ -1,6 +1,6 @@
 import Foundation
 
-struct NetworkClient {
+struct NetworkClient: NetworkRouting {
     typealias Handler = (Result<Data, Errors>) -> Void
 
     func fetch(url: URL, handler: @escaping Handler) {

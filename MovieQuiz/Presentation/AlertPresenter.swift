@@ -1,12 +1,15 @@
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
-    
-    weak var movieQuizViewController: UIViewController?
-    
-    init(movieQuizViewController: UIViewController?) {
-        self.movieQuizViewController = movieQuizViewController
+class AlertPresenter {
+
+    weak var viewController: UIViewController?
+    init(viewController: UIViewController?) {
+        self.viewController = viewController
     }
+    
+}
+
+extension AlertPresenter: AlertPresenterProtocol {
     
     func displayAlert(_ alert: AlertModel) {
         let ac = UIAlertController(title: alert.title,
@@ -17,6 +20,6 @@ class AlertPresenter: AlertPresenterProtocol {
             alert.completion()
         }
         ac.addAction(action)
-        movieQuizViewController?.present(ac, animated: true)
+        viewController?.present(ac, animated: true)
     }
 }

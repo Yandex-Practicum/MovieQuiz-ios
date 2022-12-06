@@ -1,11 +1,11 @@
 import UIKit
 
-extension UIView {
+extension UILabel {
     func animateQuestion(animated: Bool = true) {
         let duration = animated ? 1 : 0.0
         UIView.transition(with: self,
                           duration: duration,
-                          options: .transitionCurlUp,
+                          options: .transitionFlipFromRight,
                           animations: nil,
                           completion: nil)
     }
@@ -16,7 +16,7 @@ extension UIStackView {
         let duration = animated ? 1 : 0.0
         UIView.transition(with: self,
                           duration: duration,
-                          options: .transitionCurlUp,
+                          options: .transitionFlipFromRight,
                           animations: nil,
                           completion: nil)
     }

@@ -4,7 +4,10 @@ struct MoviesLoader: MoviesLoadingProtocol {
     
     typealias Handler = (Result<[OneMovie],Errors>)->Void
     // MARK: - NetworkClient
-    private let networkClient = NetworkClient()
+    private let networkClient: NetworkRouting
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+    }
    
     
     // MARK: - URL
@@ -43,3 +46,4 @@ struct MoviesLoader: MoviesLoadingProtocol {
         }
     }
 }
+
