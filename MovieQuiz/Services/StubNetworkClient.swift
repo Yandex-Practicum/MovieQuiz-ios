@@ -1,5 +1,6 @@
 import Foundation
 
+
 struct StubNetworkClient: NetworkRouting {
     enum TestError: Error {
         case test
@@ -9,10 +10,13 @@ struct StubNetworkClient: NetworkRouting {
     func fetch(url: URL, handler: @escaping (Result<Data, Errors>) -> Void) {
         if emulateError {
             handler(.failure(Errors.testError))
+
         } else {
             handler(.success(expectedResponse))
         }
     }
+
+
 
     private var expectedResponse: Data {
          """

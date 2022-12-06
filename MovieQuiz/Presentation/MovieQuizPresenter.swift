@@ -1,3 +1,4 @@
+
 import Foundation
 import UIKit
 
@@ -41,3 +42,4 @@ final class MovieQuizPresenter {
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }
+

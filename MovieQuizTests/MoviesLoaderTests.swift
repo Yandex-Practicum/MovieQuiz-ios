@@ -6,6 +6,7 @@
 //
 
 import XCTest
+
 @testable import MovieQuiz
 
 final class MoviesLoaderTests: XCTestCase {
@@ -51,4 +52,3 @@ final class MoviesLoaderTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
-}

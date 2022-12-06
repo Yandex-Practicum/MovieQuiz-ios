@@ -1,3 +1,4 @@
+
 //  ArrayTest.swift
 //  MovieQuizTests
 //
@@ -5,6 +6,7 @@
 //
 
 import XCTest
+
 @testable import MovieQuiz
 
 final class ArrayTest: XCTestCase {
@@ -31,4 +33,4 @@ final class ArrayTest: XCTestCase {
         // Then
         XCTAssertNil(result)
     }
-}
+    }
