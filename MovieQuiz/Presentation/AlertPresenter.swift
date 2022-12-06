@@ -17,6 +17,7 @@ class AlertPresenter: AlertPresenterProtocol {
 
     func showAlert(model: AlertModel) {
         let alert = UIAlertController(title: model.title, message: model.message, preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = "Game Results"
         let action = UIAlertAction(title: model.buttonText, style: .default, handler: {  _ in model.completion() })
         alert.addAction(action)
         delegate?.didShowAlert(controller: alert)

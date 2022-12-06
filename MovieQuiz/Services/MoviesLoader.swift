@@ -11,10 +11,13 @@ protocol MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
 
-
 struct MoviesLoader: MoviesLoading {
-    // MARK: - NetworkClient
-    private let networkClient = NetworkClient()
+  // MARK: - NetworkClient
+  private let networkClient: NetworkRouting
+  
+  init(networkClient: NetworkRouting = NetworkClient()) {
+      self.networkClient = networkClient
+  }
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
@@ -24,40 +27,22 @@ struct MoviesLoader: MoviesLoading {
         return url
     }
     
-
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
             switch result {
-            case .failure(let error):
-                handler(.failure(error))
             case .success(let data):
                 do {
-                    let movies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
-                    handler(.success(movies))
-                } catch let error {
+                    let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
+                    handler(.success(mostPopularMovies))
+                } catch {
                     handler(.failure(error))
                 }
+            case .failure(let error):
+                handler(.failure(error))
             }
         }
     }
-    
 }
 
-// Александра, можете подсказать, как этот код можно выполнить через guard - else. Пробовал - не получилось 
-
-//func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
-//    networkClient.fetch(url: mostPopularMoviesUrl) { result in
-//        switch result {
-//        case .failure(let error):
-//            headler(.failure(error))
-//        case .success(let data):
-//            guard let jsonData = try? JSONDecoder().decode(MostPopularMovies.self, from: data) else {
-//                // Вернуть ошибку в handler
-//                return
-//            }
-//            headler(.success(jsonData))
-//        }
-//    }
-//}
 
     
