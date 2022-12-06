@@ -4,7 +4,10 @@ struct MoviesLoader: MoviesLoadingProtocol {
     
     typealias Handler = (Result<[OneMovie],Errors>)->Void
     // MARK: - NetworkClient
-
+    let networkClient: NetworkRouting
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+    }
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
         guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_6nnz4gev") else { preconditionFailure("Unable to construct mostPopularMoviesUrl")
