@@ -4,15 +4,18 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
     private let moviesLoader: MoviesLoadingProtocol
-    private let networkClient = NetworkClient()
+    private let networkClient: NetworkRouting
     
-    init(moviesLoader: MoviesLoadingProtocol) {
+    init(delegate: QuestionFactoryDelegate,
+         moviesLoader: MoviesLoadingProtocol = MoviesLoader(),
+         networkClient: NetworkRouting = NetworkClient()) {
+        self.delegate = delegate
         self.moviesLoader = moviesLoader
+        self.networkClient = networkClient
     }
     
     private var movies: [OneMovie] = []
-    private var quizQuestions: [QuizQuestion] = []
-
+    
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
@@ -37,9 +40,9 @@ class QuestionFactory: QuestionFactoryProtocol {
         let correctAnswer = (question.rating > randomNumber)
         let text = "Рейтинг этого фильма больше чем \(Int(randomNumber))?"
         
-        networkClient.fetch(url: question.resizedImageURL) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else {return}
+        networkClient.fetch(url: question.resizedImageURL) { result in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 switch result {
                 case .success(let data):
                     let quizQuestion = QuizQuestion(image: data,
