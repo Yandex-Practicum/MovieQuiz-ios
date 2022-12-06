@@ -32,6 +32,22 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
+    private(set) var total: Int {
+        get {
+            userDefaults.integer(forKey: Keys.total.rawValue)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Keys.total.rawValue)
+        }
+    }
+    private(set) var correct: Int {
+        get {
+            userDefaults.integer(forKey: Keys.total.rawValue)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Keys.total.rawValue)
+        }
+    }
     
     var bestGame: GameRecord {
         get {
@@ -65,12 +81,8 @@ final class StatisticServiceImplementation: StatisticService {
         if self.bestGame < gameRecord {
             self.bestGame = gameRecord
         }
-        
-        let correct = userDefaults.integer(forKey: Keys.correct.rawValue)
-        userDefaults.set(correct + count, forKey: Keys.correct.rawValue)
-        
-        let total = userDefaults.integer(forKey: Keys.total.rawValue)
-        userDefaults.set(total + amount, forKey: Keys.total.rawValue)
-        userDefaults.set(gamesCount + 1, forKey: Keys.gamesCount.rawValue)
+        correct = correct + count
+        total = total + amount
+        gamesCount = gamesCount + 1
     }
 }
