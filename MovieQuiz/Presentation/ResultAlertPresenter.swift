@@ -9,16 +9,16 @@ import Foundation
 import UIKit
 
 class ResultAlertPresenter {
-    private weak var controller: UIViewController?
+    private weak var delegate: ResultAlertPresenterDelegate?
     
-    init(controller: UIViewController) {
-        self.controller = controller
+    init(delegate: ResultAlertPresenterDelegate) {
+        self.delegate = delegate
     }
     
     func present(alert: AlertModel, style: UIAlertController.Style) {
         let alertController = UIAlertController(title: alert.title, message: alert.message, preferredStyle: style)
         let action = UIAlertAction(title: alert.buttonText, style: .default, handler: alert.completion)
         alertController.addAction(action)
-        controller?.present(alertController, animated: true)
+        delegate?.didRecieveAlert(alert: alertController)
     }
 }
