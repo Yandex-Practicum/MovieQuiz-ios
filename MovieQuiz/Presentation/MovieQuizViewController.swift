@@ -28,8 +28,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol? = nil
     private var statisticService: StatisticService?
     
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
     
-    
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var YesButton: UIButton!
+
     @IBAction private func yesButtonClicked(_ sender: Any)
     {
         guard let currentQuestion = currentQuestion else { return }
@@ -42,13 +47,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
     
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var YesButton: UIButton!
-
+    
+    
     private func showNextQuestionOrResults()
     {
           if currentQuestionIndex == questionsAmount - 1
