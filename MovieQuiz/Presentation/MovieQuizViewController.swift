@@ -47,6 +47,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
+    
+    
+    
     private func showNextQuestionOrResults()
     {
         if currentQuestionIndex == questionsAmount - 1
@@ -59,17 +62,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 return
                 
             }
+            
             let messageResult = """
                 Вы результат: \(correctAnswers)/\(questionsAmount)
                 Количество сыгранных квизов: \(gameCount)
                 Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
                 Средняя точность: \(totalAccuracy)%
                 """
-            let viewModel = AlertModel(title: "Этот раунд окончен!", message: messageResult,buttonText: "Сыграть ещё раз")
-            currentQuestionIndex = 0
-            correctAnswers = 0
-            self.currentQuestionIndex = 0
-            self.alertPresenter?.show(result: viewModel)
+            
+            let viewModel = AlertModel(title: "Этот раунд окончен!",
+                                       message: messageResult,
+                                       buttonText: "Сыграть ещё раз")
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                self.questionFactory?.requestNextQuestion()
+                self.alertPresenter?.show(result: viewModel)
         }
         
         else {
