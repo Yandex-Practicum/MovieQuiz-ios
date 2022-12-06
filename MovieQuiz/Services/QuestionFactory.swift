@@ -56,11 +56,11 @@ class QuestionFactory: QuestionFactoryProtocol {
   
     func requestNextQuestion() {
         guard let index = (0..<questions.count).randomElement() else {
-            delegate?.didRecieveNextQuestion(question: nil)
+            delegate?.didReceiveNextQuestion(question: nil)
             return
         }
         
         let question = questions[safe: index]
-        delegate?.didRecieveNextQuestion(question: question)
+        delegate?.didReceiveNextQuestion(question: question)
     }
 }

@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mqm-KP-ghi" userLabel="Genetal Stack View">
-                                <rect key="frame" x="20" y="58" width="374" height="814"/>
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="sRj-VA-MA2">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -53,10 +53,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6tD-ap-JnH">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="109.5"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKi-sW-KsH" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="83.5"/>
+                                                <rect key="frame" x="42" y="13" width="290" height="73.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -70,7 +70,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="det-Gi-K6Q">
-                                        <rect key="frame" x="0.0" y="754" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rru-mh-qtH" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -121,12 +121,12 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="mqm-KP-ghi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="1eC-ZA-LUU"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mqm-KP-ghi" secondAttribute="trailing" constant="20" id="38h-GZ-nyx"/>
                             <constraint firstItem="mqm-KP-ghi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Goc-Rc-cFM"/>
-                            <constraint firstItem="mqm-KP-ghi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="10" id="xXc-ce-mYF"/>
+                            <constraint firstItem="mqm-KP-ghi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="xXc-ce-mYF"/>
                         </constraints>
                     </view>
                     <connections>
