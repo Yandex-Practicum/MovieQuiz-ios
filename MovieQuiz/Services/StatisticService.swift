@@ -21,7 +21,7 @@ private enum Keys: String {
 
 final class StatisticServiceImplementation: StatisticService {
     
-
+    
     private let userDefaults = UserDefaults.standard
     
     private(set) var gamesCount: Int {
@@ -52,7 +52,7 @@ final class StatisticServiceImplementation: StatisticService {
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
-                let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
+                  let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
                 return .init(correct: 0, total: 0, date: Date())
             }
             return record
@@ -71,12 +71,12 @@ final class StatisticServiceImplementation: StatisticService {
             let correct = userDefaults.double(forKey: Keys.correct.rawValue)
             let total = userDefaults.double(forKey: Keys.total.rawValue)
             let result = (correct / total) * 100
-            return (round(result * pow(100.0, 1.0)) / (pow(100.0, 1.0)))           
+            return (round(result * pow(100.0, 1.0)) / (pow(100.0, 1.0)))
         }
     }
-        
+    
     func store(correct count: Int, total amount: Int) {
-      let gameRecord = GameRecord(correct: count, total: amount, date: Date())
+        let gameRecord = GameRecord(correct: count, total: amount, date: Date())
         
         if self.bestGame < gameRecord {
             self.bestGame = gameRecord
