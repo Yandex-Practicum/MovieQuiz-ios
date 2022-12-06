@@ -73,13 +73,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let viewModel = AlertModel(title: "Этот раунд окончен!",
                                        message: messageResult,
                                        buttonText: "Сыграть ещё раз")
-            //{ [weak self] in
-              //  guard let self = self else { return }
+         
+            self.alertPresenter?.show(result: viewModel)
+            UIView.animate(withDuration: 0, delay: 0.5, options: [], animations: { })
+       
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.questionFactory?.requestNextQuestion()
-            //}
-            self.alertPresenter?.show(result: viewModel)
         }
             else {
             currentQuestionIndex += 1

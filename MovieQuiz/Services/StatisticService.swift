@@ -22,8 +22,7 @@ private enum Keys: String {
 final class StatisticServiceImplementation: StatisticService {
     
     
-    private let userDefaults = UserDefaults.standard
-    
+    private let userDefaults = UserDefaults.standard    
     private(set) var gamesCount: Int {
         get {
             userDefaults.integer(forKey: Keys.gamesCount.rawValue)

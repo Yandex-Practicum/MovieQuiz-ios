@@ -19,12 +19,15 @@ class AlertPresenter {
     
     func show(result : AlertModel) {
         let alert = UIAlertController(title: result.title, message: result.message, preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default, handler: { (action) in  self.questionFactory?.requestNextQuestion()} )
-   
+        let action = UIAlertAction(title: result.buttonText, style: .default)
+      //      guard let completion? = result.completion else { return }
+       //                    completion()
+     
         alert.addAction(action)
         
         alertController?.present(alert, animated: true, completion: nil)
-        questionFactory?.requestNextQuestion()
+        UIView.animate(withDuration: 0, delay: 1.5, options: [], animations: { })
+            //questionFactory?.requestNextQuestion()
         
     }
 }
