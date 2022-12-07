@@ -2,7 +2,6 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
-    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -17,12 +16,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
+
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
-        super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        statisticService = StatisticServiceImplementation()
     }
     // MARK: - QuestionFactoryDelegate
     func didRecieveNextQuestion(question: QuizQuestion?) {
@@ -49,12 +50,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterLabel.text = step.questionNumber
     }
     
-    
-    // Converting converting data from one format to another
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
-    // response result display state
+    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswer += 1
@@ -77,9 +76,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     private func showNextQuestionOrResults() {
       if currentQuestionIndex == questionsAmount - 1 {
-          let text = correctAnswer == questionsAmount ?
-          "Поздравляем, Вы ответили на 10 из 10!" :
-          "Вы ответили на \(correctAnswer) из 10, попробуйте ещё раз!"
+          
+          guard let statisticService = statisticService else { return }
+          statisticService.store(correct: correctAnswer, total: questionsAmount)
+          
+          let text = """
+Ваш результат: \(correctAnswer) из \(questionsAmount)
+Количество сыгранных квизов: \(statisticService.gamesCount)
+Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+"""
+          
           alertPresenter = AlertPresenter(modelShowAlert: AlertModel.init(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть еще раз", completion: {self.currentQuestionIndex = 0
               self.correctAnswer = 0
               self.questionFactory?.requestNextQuestion()
