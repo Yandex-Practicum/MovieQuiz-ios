@@ -38,10 +38,10 @@ final class StatisticServiceImplementation: StatisticService {
     }
     private(set) var correct: Int {
         get {
-            userDefaults.integer(forKey: Keys.total.rawValue)
+            userDefaults.integer(forKey: Keys.correct.rawValue)
         }
         set {
-            userDefaults.set(newValue, forKey: Keys.total.rawValue)
+            userDefaults.set(newValue, forKey: Keys.correct.rawValue)
         }
     }
     
@@ -67,6 +67,9 @@ final class StatisticServiceImplementation: StatisticService {
             let correct = userDefaults.double(forKey: Keys.correct.rawValue)
             let total = userDefaults.double(forKey: Keys.total.rawValue)
             let result = (correct / total) * 100
+            print (correct)
+            print (total)
+            print (result)
             return (round(result * pow(100.0, 1.0)) / (pow(100.0, 1.0)))
         }
     }
