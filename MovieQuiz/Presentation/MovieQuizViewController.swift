@@ -5,8 +5,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
     
     private var currentQuestionIndex: Int = 0
     
@@ -33,10 +33,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
            
            currentQuestion = question
            let viewModel = convert(model: question)
-           DispatchQueue.main.async { [weak self] in
+           
+        DispatchQueue.main.async { [weak self] in
                     self?.show(quiz: viewModel)
                 }
-           show(quiz: viewModel)
     }
     // MARK: - Private functions
     private func showAlert(){
@@ -108,15 +108,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer )
         
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer )
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer )
     }
 }
