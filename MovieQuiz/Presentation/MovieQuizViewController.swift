@@ -32,14 +32,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(viewController: self)
-        loadingIndicator(isShown: false)
+        loadingIndicator()
         questionFactory?.loadData()
     }
     
     //MARK: - Internal functions
     
    func didLoadDateFromServer() {
-        loadingIndicator(isShown: true)
+
         questionFactory?.requestNextQuestion()
     }
     
@@ -58,13 +58,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Private functions
     
-    private func loadingIndicator(isShown: Bool) {
-        activityIndicator.isHidden = !isShown
-        isShown ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+    private func loadingIndicator() {
+        activityIndicator.stopAnimating()
     }
     
     private func showNetworkError(message: String) {
-        loadingIndicator(isShown: true) // скрываем индикатор загрузки
+         // скрываем индикатор загрузки
         
         let networkError = AlertModel(title: "Ошибка",
                                message: message,
@@ -72,7 +71,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else {return}
             self.restartGame()
             self.questionFactory?.loadData()
-            self.loadingIndicator(isShown: false)
+            
         }
         
         alertPresenter = AlertPresenter(viewController: self)
