@@ -1,25 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {return}
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }}
-    
-    override func viewDidLoad()
-    {
-        super.viewDidLoad()
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 20
-        alertPresenter = AlertPresenter(alertController: self)
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        statisticService = StatisticServiceImplementation()
-    }
-    
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
     private let questionsAmount: Int = 10
@@ -27,11 +8,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol? = nil
     private var statisticService: StatisticService?
-    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var YesButton: UIButton!
     
@@ -47,39 +26,48 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
-    
-    
-    private func showNextQuestionOrResults()
-    {
-        if currentQuestionIndex == questionsAmount - 1
-        {
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }        
+    }
+    override func viewDidLoad(){
+        super.viewDidLoad()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
+        alertPresenter = AlertPresenter(viewController: self)
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+        statisticService = StatisticServiceImplementation()
+    }
+    private func showNextQuestionOrResults(){
+        if currentQuestionIndex == questionsAmount - 1{
             statisticService?.store(correct: self.correctAnswers, total: self.questionsAmount)
             guard  let gameCount = statisticService?.gamesCount,
                    let bestGame = statisticService?.bestGame,
                    let totalAccuracy = statisticService?.totalAccuracy
             else {
                 return
-                
             }
-            
             let messageResult = """
                 Вы результат: \(correctAnswers)/\(questionsAmount)
                 Количество сыгранных квизов: \(gameCount)
                 Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
                 Средняя точность: \(totalAccuracy)%
                 """
-            
             let viewModel = AlertModel(title: "Этот раунд окончен!",
                                        message: messageResult,
-                                       buttonText: "Сыграть ещё раз")
-         
+                                       buttonText: "Сыграть ещё раз",
+                                       completion: { [weak self] _ in
+                                               self?.currentQuestionIndex = 0
+                                               self?.correctAnswers = 0
+                                               self?.questionFactory?.requestNextQuestion()
+                                            }
+                                        )
             self.alertPresenter?.show(result: viewModel)
-            UIView.animate(withDuration: 0, delay: 0.5, options: [], animations: { })
-       
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
         }
             else {
             currentQuestionIndex += 1

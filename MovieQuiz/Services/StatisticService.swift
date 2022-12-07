@@ -18,10 +18,7 @@ private enum Keys: String {
     case correct, total, bestGame, gamesCount
 }
 
-
 final class StatisticServiceImplementation: StatisticService {
-    
-    
     private let userDefaults = UserDefaults.standard    
     private(set) var gamesCount: Int {
         get {
@@ -73,10 +70,8 @@ final class StatisticServiceImplementation: StatisticService {
             return (round(result * pow(100.0, 1.0)) / (pow(100.0, 1.0)))
         }
     }
-    
     func store(correct count: Int, total amount: Int) {
         let gameRecord = GameRecord(correct: count, total: amount, date: Date())
-        
         if self.bestGame < gameRecord {
             self.bestGame = gameRecord
         }
