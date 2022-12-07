@@ -36,6 +36,7 @@ final class MovieQuizViewController: UIViewController {
     private var questionFactory: QuestionFactory? = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
