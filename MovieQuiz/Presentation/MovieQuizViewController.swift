@@ -3,12 +3,15 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var textLabel: UILabel!
     @IBOutlet weak private var counterLabel: UILabel!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        noButton.isEnabled = false
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -17,6 +20,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        yesButton.isEnabled = false
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -34,7 +38,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
-        //        show(quiz: convert(model: questions[currentQuestionIndex]))
     }
     // MARK: - QuestionFactoryDelegate
     
@@ -51,14 +54,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz step: QuizStepViewModel) {
-        // здесь мы заполняем нашу картинку, текст и счётчик данными
+        imageView.layer.borderWidth = 0
+        imageView.layer.cornerRadius = 30
+        
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-           // здесь мы показываем результат прохождения квиза
            let alert = UIAlertController(
                title: result.title,
                message: result.text,
