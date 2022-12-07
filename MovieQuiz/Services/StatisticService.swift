@@ -1,6 +1,6 @@
 import Foundation
 
-protocol StatisticService{
+protocol StatisticService {
     func store(correct count: Int, total amount: Int)
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
@@ -8,7 +8,6 @@ protocol StatisticService{
 }
 
 //MARK: - Class Statistic
-
 final class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
@@ -49,7 +48,7 @@ final class StatisticServiceImplementation: StatisticService {
             }
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
-        }
+            }
     }
 
 
@@ -72,15 +71,16 @@ final class StatisticServiceImplementation: StatisticService {
 }
 
 // MARK: - GameRecord
-struct GameRecord: Codable {
+struct GameRecord: Codable, Comparable {
     let correct: Int
     let total: Int
     let date: Date
-}
-
-
-// MARK: - Extension GameRecord
-extension GameRecord: Comparable {
+    
+    init(correct: Int, total: Int, date: Date) {
+        self.correct = correct
+        self.total = total
+        self.date = date
+    }
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         return lhs.correct < rhs.correct
     }
