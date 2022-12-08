@@ -3,11 +3,11 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     
     //Outlets
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet weak private var yesButton: UIButton!
+    @IBOutlet weak private var noButton: UIButton!
+    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet weak private var counterLabel: UILabel!
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -61,23 +61,17 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //let currentQuestion = questions[currentQuestionIndex]
         let viewModel = convert(model: currentQuestion)
         show(quiz: viewModel)
         
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        print(sender.frame)
         let givenAnswer = true
-        //let currentQuestion = questions[currentQuestionIndex]
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        print(currentQuestion)
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let givenAnswer = false
-        //let currentQuestion = questions[currentQuestionIndex]
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
     }
     
     private func showAnswerResult(isCorrect: Bool) {
