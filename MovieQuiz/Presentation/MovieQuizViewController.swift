@@ -32,15 +32,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(viewController: self)
-        loadingIndicator()
+        activityIndicator.startAnimating()
         questionFactory?.loadData()
     }
     
     //MARK: - Internal functions
     
    func didLoadDateFromServer() {
-
-        questionFactory?.requestNextQuestion()
+       activityIndicator.stopAnimating()
+       questionFactory?.requestNextQuestion()
     }
     
    func didFailToLoadData(with error: Error) {
@@ -58,13 +58,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Private functions
     
+    
+    var vSpinner : [UIView] = []
+
     private func loadingIndicator() {
-        activityIndicator.stopAnimating()
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 40, 40))
+        self.view.addSubview(activityIndicator)
     }
     
     private func showNetworkError(message: String) {
          // скрываем индикатор загрузки
-        
+        activityIndicator.stopAnimating()
         let networkError = AlertModel(title: "Ошибка",
                                message: message,
                                buttonText: "Попробовать ещё раз") { [weak self] _ in
