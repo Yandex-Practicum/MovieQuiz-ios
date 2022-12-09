@@ -83,6 +83,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func restartGame() {
+        self.activityIndicator.stopAnimating()
         self.currentQuestionIndex = 0
         self.questionFactory?.requestNextQuestion()
         self.correctAnswers = 0
@@ -130,7 +131,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-            let alertModel = AlertModel(
+        activityIndicator.startAnimating()
+        let alertModel = AlertModel(
                 title: result.title,
                 message: result.text,
                 buttonText: result.buttonText)
@@ -139,6 +141,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     self.restartGame()
             }
             alertPresenter?.showAlert(quiz: alertModel)
+            
         }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -151,11 +154,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func blockButtons() {
         yesButton.isEnabled = false
         noButton.isEnabled = false
-        
+        activityIndicator.startAnimating()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
             self.yesButton.isEnabled = true
             self.noButton.isEnabled = true
+            self.activityIndicator.stopAnimating()
         }
     }
     
