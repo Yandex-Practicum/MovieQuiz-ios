@@ -24,6 +24,48 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(alertController: self)
+       /*
+        print(NSHomeDirectory())
+        UserDefaults.standard.set(true, forKey: "viewDidLoad")
+        print(Bundle.main.bundlePath)
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //print(documentsURL)
+        
+        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileName = "text.swift"
+        documentsURL.appendPathComponent(fileName)
+        if !FileManager.default.fileExists(atPath: documentsURL.path) {
+            let hello = "Hello world!"
+            let data = hello.data(using: .utf8)
+            FileManager.default.createFile(atPath: documentsURL.path, contents: data)
+        }
+        try? FileManager.default.removeItem(atPath: documentsURL.path)
+        */
+        //let jsonString = "inception.json"
+        var documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        documentDirectory.appendPathComponent("inception.json")
+        let jsonString = try? String(contentsOf: documentDirectory)
+        let data = jsonString?.data(using: .utf8)!
+        
+        //class func jsonObject(with data: Data, options opt: JSONSerialization.ReadingOptions = []) throws -> Any
+        
+        do {
+            let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
+            let title = json?["title"]
+            //print(json)
+            let year = json?["year"]
+            print(json)
+            let actorList = json!["actorList"] as! [Any]
+            
+            for actor in actorList {
+                if let actor = actor as? [String: Any] {
+                    print(actor["asCharacter"])
+                }
+            }
+        } catch {
+            print("Failed to parse: \(jsonString)")
+        }
         
     }
     // MARK: - QuestionFactoryDelegate
