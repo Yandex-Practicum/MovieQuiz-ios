@@ -83,7 +83,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func restartGame() {
-        self.activityIndicator.stopAnimating()
+        self.activityIndicator.startAnimating()
         self.currentQuestionIndex = 0
         self.questionFactory?.requestNextQuestion()
         self.correctAnswers = 0
@@ -121,7 +121,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 title: "Этот раунд окончен!",
                 text: text,
                 buttonText: "Сыграть еще раз")
-            
+           
             self.correctAnswers = 0
             show(quiz: viewModel)
         }else{
@@ -131,7 +131,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        activityIndicator.startAnimating()
+        
         let alertModel = AlertModel(
                 title: result.title,
                 message: result.text,
@@ -139,7 +139,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 { [weak self] _ in
                     guard let self = self else { return }
                     self.restartGame()
+                    self.activityIndicator.stopAnimating()
             }
+        
             alertPresenter?.showAlert(quiz: alertModel)
             
         }
