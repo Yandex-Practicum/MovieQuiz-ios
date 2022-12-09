@@ -8,6 +8,10 @@
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
+    
+    private enum errorURL: Error {
+        case errorurl
+    }
        
     private let moviesLoader: MoviesLoading
     private var movies: [MostPopularMovie] = []
@@ -22,9 +26,12 @@ class QuestionFactory: QuestionFactoryProtocol {
                 switch result {
                 case .success(let mostPopularMovies):
                     
-                    if mostPopularMovies.errorMessage.isEmpty == true{
+                    if mostPopularMovies.errorMessage.isEmpty {
                         self.movies = mostPopularMovies.items
                         self.delegate?.didLoadDataFromServer() }
+                    else {
+                        self.delegate?.didFailToLoadData(with: errorURL.errorurl)
+                    }
                                            
                     case .failure(let error):
                         self.delegate?.didFailToLoadData(with: error)

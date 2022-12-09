@@ -32,15 +32,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
         @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {return}
-        let givenanswer = false
-        showAnswerResult(isCorrect: givenanswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
     }
     
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {return}
-        let givenanswer = true
-        showAnswerResult(isCorrect: givenanswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer)
     }
     
     private func showLoadingIndicator() {
