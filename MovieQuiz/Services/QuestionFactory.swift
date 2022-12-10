@@ -81,7 +81,7 @@ class QuestionFactory : QuestionFactoryProtocol {
 
     private func getIndexImpl() -> Int {
         if index == questions.count {
-            var currentIndex = indexes.last
+            let currentIndex = indexes.last
             index = 0
             while true {
                 indexes.shuffle()
@@ -96,7 +96,7 @@ class QuestionFactory : QuestionFactoryProtocol {
             }
             indexes.shuffle()
         }
-        var currentIndex = indexes[index]
+        let currentIndex = indexes[index]
         index += 1
         return currentIndex
     }
