@@ -47,12 +47,10 @@ final class StatisticServiceImplementation: StatisticService {
     
     var gamesCount: Int {
         get {
-            //возврощаем значения game count
             let count = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
             return count
         }
         set {
-            // Сохраняем новое значение для games count
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
@@ -84,7 +82,6 @@ struct GameRecord: Codable {
     
 }
 
-// расширения Comparable дает возможность сравнивать
 extension GameRecord: Comparable {
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         return lhs.correct < rhs.correct
