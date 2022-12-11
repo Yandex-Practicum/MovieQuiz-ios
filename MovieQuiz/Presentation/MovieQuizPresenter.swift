@@ -11,13 +11,12 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     private let statisticService: StatisticService!
-    let questionsAmount: Int = 10
+    private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
-    var correctanswerQuestion: Int = 0
-    var currentQuestion: QuizQuestion?
-//
+    private var correctanswerQuestion: Int = 0
+    private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
-    weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewController?
     
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
@@ -106,15 +105,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     func proceedWithAnswer(isCorrect: Bool) {
-        
-        didAnswerQuestion(isCorrect: isCorrect)
-        
+                didAnswerQuestion(isCorrect: isCorrect)
         viewController?.hightLightImageBorder(isCorrectAnswer: isCorrect)
-        
-//        imageView.layer.masksToBounds = true
-//        imageView.layer.borderWidth = 8
-//        imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
-//        imageView.layer.cornerRadius = 20
         self.viewController?.yesbutton.isEnabled = false
         self.viewController?.nobutton.isEnabled = false
         
@@ -123,9 +115,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             guard let self = self else{return}
             self.viewController?.yesbutton.isEnabled = true
             self.viewController?.nobutton.isEnabled = true
-            self.viewController?.imageView.layer.borderColor = UIColor.clear.cgColor
-//
-////            self.presenter.questionFactory = self.questionFactory
             self.proceedToNextQuestionResults()
         }
         
@@ -135,3 +124,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 }
 
 
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    func show(quiz step: QuizStepViewModel)
+    func show(quiz rezult: QuizResultsViewModel)
+    func hightLightImageBorder(isCorrectAnswer: Bool)
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
+    func showNetworkError(message: String)
+    
+}
