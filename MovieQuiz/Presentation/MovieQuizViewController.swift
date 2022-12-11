@@ -6,10 +6,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let presenter = MovieQuizPresenter()
 //    private var currentQuestionIndex: Int = 0
 //    private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+    var questionFactory: QuestionFactoryProtocol?
+//    private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
-    private var statisticService: StatisticService?
+    var statisticService: StatisticService?
     private var correctanswerQuestion = 0
     @IBOutlet private var nobutton: UIButton!
     @IBOutlet private var yesbutton: UIButton!
@@ -38,13 +38,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         presenter.viewController = self
             }
         @IBAction private func noButtonClicked(_ sender: UIButton) {
-            presenter.currentQuestion = currentQuestion
+            
             presenter.noButtonClicked()
     }
     
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        presenter.currentQuestion = currentQuestion
+        
         presenter.yesButtonClicked()
     }
     
@@ -106,13 +106,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.yesbutton.isEnabled = true
             self.nobutton.isEnabled = true
             self.imageView.layer.borderColor = UIColor.clear.cgColor
-            self.showNextQuestionOrResults()
+            self.presenter.correctanswerQuestion = self.correctanswerQuestion
+            self.presenter.questionFactory = self.questionFactory as? QuestionFactory
+            self.presenter.showNextQuestionOrResults()
         }
         
     }
     
     
-    private func show(quiz step: QuizStepViewModel) {
+     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         counterLabel.text = step.questionNumber
         textLabel.text = step.question
@@ -139,7 +141,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
-    private func show(quiz result: QuizResultsViewModel) {
+    func show(quiz result: QuizResultsViewModel) {
         
         
         let alertModel = AlertModel(title: result.title, message: result.text , buttonText: result.buttonText) {[weak self] _ in guard let self = self else {return}
@@ -155,12 +157,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - QuestionFactoryDelegate
     
     func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {return}
-        currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
+       
+        presenter.didRecieveNextQuestion(question: question)
     }
     
     
