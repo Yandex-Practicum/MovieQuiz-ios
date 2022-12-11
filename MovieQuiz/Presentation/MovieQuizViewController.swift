@@ -21,8 +21,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
+    let galertt = UIAlertController()
+   
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter = AlertPresenter(viewController: self)
@@ -139,6 +145,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.questionFactory?.requestNextQuestion()
         }
         alertPresenter?.show(results: alertModel)
+        
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -151,6 +158,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
+    
+    
 }
 
 
