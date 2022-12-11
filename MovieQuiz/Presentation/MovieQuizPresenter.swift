@@ -10,7 +10,7 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-    
+    private let statisticService: StatisticService!
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     var correctanswerQuestion: Int = 0
@@ -21,7 +21,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
-        
+        statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
@@ -77,7 +77,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {return}
         let givenAnswer = isYes
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {return}
@@ -87,13 +87,13 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             self?.viewController?.show(quiz: viewModel)
         }
     }
-    func showNextQuestionOrResults(){
+    func proceedToNextQuestionResults(){
         
         if self.isLastQuestion(){
-            self.viewController?.statisticService?.store(correct: correctanswerQuestion, total: questionsAmount)
+            self.statisticService?.store(correct: correctanswerQuestion, total: questionsAmount)
             
             
-            let text = "Ваш результат: \(correctanswerQuestion)/\(questionsAmount) \n Количество сыграных квизов: \(self.viewController?.statisticService?.gamesCount ?? 0) \n      Рекорд: \(self.viewController?.statisticService?.bestGame.correct ?? 0)/\(questionsAmount) (\(self.viewController?.statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString )) \n Средняя точность: \(String(format: "%.2f", 100*(self.viewController?.statisticService?.totalAccuracy ?? 0)/Double(self.viewController?.statisticService?.gamesCount ?? 0)))%"
+            let text = "Ваш результат: \(correctanswerQuestion)/\(questionsAmount) \n Количество сыграных квизов: \(self.statisticService?.gamesCount ?? 0) \n      Рекорд: \(self.statisticService?.bestGame.correct ?? 0)/\(questionsAmount) (\(self.statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString )) \n Средняя точность: \(String(format: "%.2f", 100*(self.statisticService?.totalAccuracy ?? 0)/Double(self.statisticService?.gamesCount ?? 0)))%"
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
                                                  text: text,
                                                  buttonText: "Сыграть еще раз")
@@ -104,6 +104,31 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                         self.switchToNextQuestion()
                         self.questionFactory?.requestNextQuestion()
         }
+    }
+    func proceedWithAnswer(isCorrect: Bool) {
+        
+        didAnswerQuestion(isCorrect: isCorrect)
+        
+        viewController?.hightLightImageBorder(isCorrectAnswer: isCorrect)
+        
+//        imageView.layer.masksToBounds = true
+//        imageView.layer.borderWidth = 8
+//        imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
+//        imageView.layer.cornerRadius = 20
+        self.viewController?.yesbutton.isEnabled = false
+        self.viewController?.nobutton.isEnabled = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            
+            guard let self = self else{return}
+            self.viewController?.yesbutton.isEnabled = true
+            self.viewController?.nobutton.isEnabled = true
+            self.viewController?.imageView.layer.borderColor = UIColor.clear.cgColor
+//
+////            self.presenter.questionFactory = self.questionFactory
+            self.proceedToNextQuestionResults()
+        }
+        
     }
     
     

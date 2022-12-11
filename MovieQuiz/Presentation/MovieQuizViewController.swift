@@ -10,12 +10,12 @@ final class MovieQuizViewController: UIViewController {
 //    var questionFactory: QuestionFactoryProtocol?
 //    private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
-    var statisticService: StatisticService?
+//    var statisticService: StatisticService?
 //    private var correctanswerQuestion = 0
-    @IBOutlet private var nobutton: UIButton!
-    @IBOutlet private var yesbutton: UIButton!
+    @IBOutlet  var nobutton: UIButton!
+    @IBOutlet var yesbutton: UIButton!
     // Картинка
-    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet var imageView: UIImageView!
     // Текст вопроса
     @IBOutlet private var textLabel: UILabel!
     // Счетчик текущего вопроса
@@ -34,7 +34,7 @@ final class MovieQuizViewController: UIViewController {
         presenter = MovieQuizPresenter(viewController: self)
 //        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter = AlertPresenter(viewController: self)
-        statisticService = StatisticServiceImplementation()
+//        statisticService = StatisticServiceImplementation()
 //        questionFactory?.loadData()
 //        showLoadingIndicator()
 //        presenter = MovieQuizPresenter()
@@ -88,30 +88,39 @@ final class MovieQuizViewController: UIViewController {
 //            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
 //    }
     
-    
-    func showAnswerResult(isCorrect: Bool) {
-        
-        presenter.didAnswerQuestion(isCorrect: isCorrect)
+    func hightLightImageBorder(isCorrectAnswer: Bool) {
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
         imageView.layer.cornerRadius = 20
-        self.yesbutton.isEnabled = false
-        self.nobutton.isEnabled = false
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            
-            guard let self = self else{return}
-            self.yesbutton.isEnabled = true
-            self.nobutton.isEnabled = true
-            self.imageView.layer.borderColor = UIColor.clear.cgColor
-            
-//            self.presenter.questionFactory = self.questionFactory
-            self.presenter.showNextQuestionOrResults()
-        }
         
     }
+    
+    
+//    func showAnswerResult(isCorrect: Bool) {
+//        
+//        presenter.didAnswerQuestion(isCorrect: isCorrect)
+//        
+//        imageView.layer.masksToBounds = true
+//        imageView.layer.borderWidth = 8
+//        imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
+//        imageView.layer.cornerRadius = 20
+//        self.yesbutton.isEnabled = false
+//        self.nobutton.isEnabled = false
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+//            
+//            guard let self = self else{return}
+//            self.yesbutton.isEnabled = true
+//            self.nobutton.isEnabled = true
+//            self.imageView.layer.borderColor = UIColor.clear.cgColor
+//            
+////            self.presenter.questionFactory = self.questionFactory
+//            self.presenter.showNextQuestionOrResults()
+//        }
+//        
+//    }
     
     
      func show(quiz step: QuizStepViewModel) {
@@ -121,24 +130,26 @@ final class MovieQuizViewController: UIViewController {
     }
     
     
-    private func showNextQuestionOrResults(){
+//    private func showNextQuestionOrResults(){
         
-        if presenter.isLastQuestion(){
-            self.statisticService?.store(correct: presenter.correctanswerQuestion, total: presenter.questionsAmount)
-            
-            
-            let text = "Ваш результат: \(presenter.correctanswerQuestion)/\(presenter.questionsAmount) \n Количество сыграных квизов: \(statisticService?.gamesCount ?? 0) \n      Рекорд: \(statisticService?.bestGame.correct ?? 0)/\(presenter.questionsAmount) (\(statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString )) \n Средняя точность: \(String(format: "%.2f", 100*(statisticService?.totalAccuracy ?? 0)/Double(statisticService?.gamesCount ?? 0)))%"
-            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
-                                                 text: text,
-                                                 buttonText: "Сыграть еще раз")
-            self.presenter.restartGame()
-            show(quiz: viewModel)
-        }
-                    else {
-                        presenter.switchToNextQuestion()
-                        self.presenter.restartGame()
-        }
-    }
+        
+        
+//        if presenter.isLastQuestion(){
+//            self.statisticService?.store(correct: presenter.correctanswerQuestion, total: presenter.questionsAmount)
+//
+//
+//            let text = "Ваш результат: \(presenter.correctanswerQuestion)/\(presenter.questionsAmount) \n Количество сыграных квизов: \(statisticService?.gamesCount ?? 0) \n      Рекорд: \(statisticService?.bestGame.correct ?? 0)/\(presenter.questionsAmount) (\(statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString )) \n Средняя точность: \(String(format: "%.2f", 100*(statisticService?.totalAccuracy ?? 0)/Double(statisticService?.gamesCount ?? 0)))%"
+//            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
+//                                                 text: text,
+//                                                 buttonText: "Сыграть еще раз")
+//            self.presenter.restartGame()
+//            show(quiz: viewModel)
+//        }
+//                    else {
+//                        presenter.switchToNextQuestion()
+//                        self.presenter.restartGame()
+//        }
+//    }
     
     
     func show(quiz result: QuizResultsViewModel) {
