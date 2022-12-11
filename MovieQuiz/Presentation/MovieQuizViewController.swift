@@ -4,6 +4,10 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+
+    // проверка состояния кнопок
+    @IBOutlet private weak var noBtnState: UIButton!
+    @IBOutlet private weak var yesBtnState: UIButton!
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
@@ -60,7 +64,12 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
+        self.noBtnState.isEnabled = false
+        self.yesBtnState.isEnabled = false
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.noBtnState.isEnabled = true
+            self.yesBtnState.isEnabled = true
             self.showNextQuestionOrResults()
         }
     }
