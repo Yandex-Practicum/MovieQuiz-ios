@@ -2,10 +2,12 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
-    
     @IBAction private func noButtonClicked(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAmswer = false
@@ -16,9 +18,6 @@ final class MovieQuizViewController: UIViewController {
         let givenAmswer = true
         showAnswerResult(isCorrect: givenAmswer == currentQuestion.correctAnswer)
     }
-    
-    private var currentQuestionIndex: Int = 0
-    private var correctAnswers: Int = 0
 
     // Конвертируем из массива во QuizStepViewModel
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -30,6 +29,7 @@ final class MovieQuizViewController: UIViewController {
     // Функция отображения
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
+        imageView.layer.borderWidth = 0
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
@@ -57,10 +57,7 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -78,12 +75,17 @@ final class MovieQuizViewController: UIViewController {
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             
+            
             show(quiz: viewModel)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
+        
         let currentQuestion = questions[currentQuestionIndex]
         let currentStep = convert(model: currentQuestion)
         show(quiz: currentStep)

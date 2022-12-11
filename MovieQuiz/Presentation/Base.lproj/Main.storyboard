@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="6re-Wc-VAc">
-                                <rect key="frame" x="20" y="58" width="374" height="832.5"/>
+                                <rect key="frame" x="20" y="58" width="374" height="784.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ife-1V-YAU">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -50,26 +51,31 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="B5L-UK-yOa" secondAttribute="height" multiplier="2:3" id="GCZ-rD-9X1"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yJS-c7-fDj">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="128"/>
+                                    <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="yJS-c7-fDj">
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="80"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zr-yH-dB1" userLabel="Question Label">
-                                                <rect key="frame" x="10" y="25" width="355" height="78"/>
+                                                <rect key="frame" x="62" y="14" width="251" height="52"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="3zr-yH-dB1" secondAttribute="trailing" constant="42" id="Ak3-M8-EaM"/>
-                                            <constraint firstItem="3zr-yH-dB1" firstAttribute="leading" secondItem="yJS-c7-fDj" secondAttribute="leading" constant="42" id="B7G-j3-tYl"/>
-                                            <constraint firstItem="3zr-yH-dB1" firstAttribute="top" secondItem="yJS-c7-fDj" secondAttribute="top" constant="13" id="rsF-FE-qi3"/>
-                                            <constraint firstAttribute="bottom" secondItem="3zr-yH-dB1" secondAttribute="bottom" constant="13" id="zmI-zL-dIL"/>
+                                            <constraint firstAttribute="trailing" secondItem="3zr-yH-dB1" secondAttribute="trailing" constant="42" id="De3-3r-Kg9"/>
+                                            <constraint firstItem="3zr-yH-dB1" firstAttribute="top" secondItem="yJS-c7-fDj" secondAttribute="top" constant="13" id="WTq-JM-Mkv"/>
+                                            <constraint firstAttribute="bottom" secondItem="3zr-yH-dB1" secondAttribute="bottom" constant="13" id="fS9-jI-jdr"/>
+                                            <constraint firstItem="3zr-yH-dB1" firstAttribute="leading" secondItem="yJS-c7-fDj" secondAttribute="leading" constant="42" id="iLr-tm-WOg"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ZOh-Kg-pch">
-                                        <rect key="frame" x="0.0" y="772.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="724.5" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SaC-gY-d0O" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -116,7 +122,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="ypBlack"/>
                         <constraints>
                             <constraint firstItem="6re-Wc-VAc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="8W3-hV-3vI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6re-Wc-VAc" secondAttribute="trailing" constant="20" id="vi5-xv-HDH"/>
@@ -134,4 +140,9 @@
             <point key="canvasLocation" x="-55.072463768115945" y="55.580357142857139"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="ypBlack">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
