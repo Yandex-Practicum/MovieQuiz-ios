@@ -9,20 +9,44 @@
 
 import UIKit
 
-final class MovieQuizPresenter {
+final class MovieQuizPresenter: QuestionFactoryDelegate {
+    
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     var correctanswerQuestion: Int = 0
     var currentQuestion: QuizQuestion?
-    var questionFactory: QuestionFactory?
+//
+    private var questionFactory: QuestionFactoryProtocol?
     weak var viewController: MovieQuizViewController?
+    
+    init(viewController: MovieQuizViewController) {
+        self.viewController = viewController
+        
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+        
+    }
+    
+    func didLoadDataFromServer() {
+        viewController?.hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        let message = error.localizedDescription
+        viewController?.showNetworkError(message: message)
+    }
+    
     
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
     
-    func resetQuestionIndex() {
+    func restartGame() {
         currentQuestionIndex = 0
+        correctanswerQuestion = 0
+        questionFactory?.requestNextQuestion()
     }
     
     func switchToNextQuestion() {
@@ -43,6 +67,13 @@ final class MovieQuizPresenter {
     func noButtonClicked() {
         didAnswer(isYes: false)
 }
+    func didAnswerQuestion(isCorrect: Bool) {
+        if isCorrect {
+            correctanswerQuestion += 1
+            
+        }
+    }
+    
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {return}
         let givenAnswer = isYes
