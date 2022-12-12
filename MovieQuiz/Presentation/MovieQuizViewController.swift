@@ -26,6 +26,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //MARK: - View Did Loade
     
     override func viewDidLoad(){
+
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
@@ -121,12 +122,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 text: text,
                 buttonText: "Сыграть еще раз")
            
-            self.correctAnswers = 0
-            show(quiz: viewModel)
-        }else{
-            currentQuestionIndex += 1
-            questionFactory?.requestNextQuestion()
-        }
+
+
     }
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -161,27 +158,58 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.yesButton.isEnabled = true
             self.noButton.isEnabled = true
             self.activityIndicator.stopAnimating()
+=======
+        
+        
+        }
+        
+        private func show(quiz result: QuizResultsViewModel) {
+                let alertModel = AlertModel(
+                    title: result.title,
+                    message: result.text,
+                    buttonText: result.buttonText)
+                    { [weak self] _ in
+                        guard let self = self else { return }
+                        self.restartGame()
+                }
+                alertPresenter?.showAlert(quiz: alertModel)
+            }
+        
+        private func convert(model: QuizQuestion) -> QuizStepViewModel {
+            return QuizStepViewModel(
+                image: UIImage(data: model.image) ?? UIImage(),
+                question: model.text,
+                questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        }
+        
+        private func blockButtons() {
+            yesButton.isEnabled = false
+            noButton.isEnabled = false
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self = self else {return}
+                self.yesButton.isEnabled = true
+                self.noButton.isEnabled = true
+            }
+        }
+        
+        // MARK: - Action button
+        
+        @IBAction private func yesButtonClicked(_ sender: UIButton) {
+            guard let currentQuestion = currentQuestion else {
+                return
+            }
+            let givenAnswer = true
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+            blockButtons()
+        }
+        
+        @IBAction private func noButtonClicked(_ sender: UIButton) {
+            guard let currentQuestion = currentQuestion else {
+                return
+            }
+            let givenAnswer = false
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+            blockButtons()
         }
     }
-    
-    // MARK: - Action button
-    
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        blockButtons()
-    }
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        blockButtons()
-    }
-}
-

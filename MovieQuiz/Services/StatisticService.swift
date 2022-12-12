@@ -8,7 +8,6 @@ protocol StatisticService {
 }
 
 //MARK: - Class Statistic
-
 final class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
