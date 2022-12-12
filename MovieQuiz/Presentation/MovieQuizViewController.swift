@@ -5,7 +5,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     
     private var presenter: MovieQuizPresenter!
-    var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
+    private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
     @IBOutlet private var nobutton: UIButton!
     @IBOutlet private var yesbutton: UIButton!
     @IBOutlet private var imageView: UIImageView!

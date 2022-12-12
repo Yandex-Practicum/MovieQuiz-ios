@@ -21,6 +21,7 @@ class MovieQuizUITests: XCTestCase {
        
         continueAfterFailure = false
 
+        sleep(1)
        
     }
 
