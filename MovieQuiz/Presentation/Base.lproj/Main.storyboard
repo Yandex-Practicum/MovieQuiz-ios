@@ -56,7 +56,7 @@
                                         <rect key="frame" x="0.0" y="625" width="374" height="99"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eu-Wq-i3F" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="20" width="290" height="59"/>
+                                                <rect key="frame" x="42" y="13" width="290" height="73"/>
                                                 <string key="text">Рейтинг этого фильма
 меньше чем 5?</string>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="24"/>
@@ -65,8 +65,8 @@
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="6eu-Wq-i3F" firstAttribute="top" secondItem="n1i-wX-UfK" secondAttribute="top" constant="20" symbolic="YES" id="8nm-3N-oRI"/>
-                                            <constraint firstAttribute="bottom" secondItem="6eu-Wq-i3F" secondAttribute="bottom" constant="20" symbolic="YES" id="Tce-jR-PMA"/>
+                                            <constraint firstItem="6eu-Wq-i3F" firstAttribute="top" secondItem="n1i-wX-UfK" secondAttribute="top" constant="13" id="8nm-3N-oRI"/>
+                                            <constraint firstAttribute="bottom" secondItem="6eu-Wq-i3F" secondAttribute="bottom" constant="13" id="Tce-jR-PMA"/>
                                             <constraint firstAttribute="trailing" secondItem="6eu-Wq-i3F" secondAttribute="trailing" constant="42" id="a5p-Gv-QRF"/>
                                             <constraint firstItem="6eu-Wq-i3F" firstAttribute="leading" secondItem="n1i-wX-UfK" secondAttribute="leading" constant="42" id="nBx-KO-fca"/>
                                         </constraints>
@@ -153,7 +153,7 @@
     </scenes>
     <resources>
         <namedColor name="YP Background (iOS)">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.59880328652085058" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.59899997711181641" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP Black (iOS)">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
