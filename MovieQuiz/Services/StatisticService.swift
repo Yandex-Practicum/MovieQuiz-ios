@@ -86,3 +86,5 @@ struct GameRecord: Codable, Comparable {
     }
 }
 
+
+
