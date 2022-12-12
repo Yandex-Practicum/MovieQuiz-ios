@@ -3,7 +3,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     @IBOutlet private weak var yesButton: UIButton!
-    
+    @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
