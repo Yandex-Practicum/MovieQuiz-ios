@@ -10,7 +10,7 @@ import Foundation
 
 protocol AlertPresenterProtocol {
     
-    func show(results: AlertModel)
+    mutating func show(results: AlertModel)
     
     
     

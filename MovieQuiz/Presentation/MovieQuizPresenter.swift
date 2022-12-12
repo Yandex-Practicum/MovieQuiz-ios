@@ -16,9 +16,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var correctanswerQuestion: Int = 0
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
+     weak var viewController: MovieQuizViewControllerProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -107,14 +107,15 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func proceedWithAnswer(isCorrect: Bool) {
                 didAnswerQuestion(isCorrect: isCorrect)
         viewController?.hightLightImageBorder(isCorrectAnswer: isCorrect)
-        self.viewController?.yesbutton.isEnabled = false
-        self.viewController?.nobutton.isEnabled = false
+//        self.viewController?.yesbutton.isEnabled = false
+//        self.viewController?.nobutton.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             
             guard let self = self else{return}
-            self.viewController?.yesbutton.isEnabled = true
-            self.viewController?.nobutton.isEnabled = true
+           
+//            self.viewController?.yesbutton.isEnabled = true
+//            self.viewController?.nobutton.isEnabled = true
             self.proceedToNextQuestionResults()
         }
         

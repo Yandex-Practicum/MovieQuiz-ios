@@ -6,8 +6,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     private var presenter: MovieQuizPresenter!
     private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
-    @IBOutlet  var nobutton: UIButton!
-    @IBOutlet  var yesbutton: UIButton!
+    @IBOutlet private var nobutton: UIButton!
+    @IBOutlet private var yesbutton: UIButton!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -25,11 +25,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         presenter.noButtonClicked()
+        nobutton.isEnabled = false
     }
     
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
+        yesbutton.isEnabled = false
     }
     
     func showLoadingIndicator() {
@@ -78,6 +80,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             self.presenter.restartGame()
         }
         alertPresenter?.show(results: alertModel)
+        
     }
     
 }
