@@ -77,7 +77,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.questionFactory?.loadData()
             
         }
-        
         alertPresenter = AlertPresenter(viewController: self)
         alertPresenter?.showAlert(quiz: networkError)
     }
