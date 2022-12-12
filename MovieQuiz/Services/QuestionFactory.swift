@@ -7,9 +7,8 @@
 
 import Foundation
 
-
 class QuestionFactory: QuestionFactoryProtocol {
-
+    
     weak var delegate: QuestionFactoryDelegate?
     
     private let questions: [QuizQuestion] = [
@@ -50,7 +49,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             delegate?.didRecieveNextQuestion(question: nil)
             return
         }
-
+        
         let question = questions[safe: index]
         delegate?.didRecieveNextQuestion(question: question)
     }
