@@ -135,8 +135,6 @@
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="8Zv-UF-spS" id="A2X-GH-ETD"/>
-                        <outlet property="buttonNo" destination="PCg-vJ-Pek" id="ypV-s2-cf5"/>
-                        <outlet property="buttonYes" destination="qIn-Ew-WYZ" id="M8E-Bs-sUP"/>
                         <outlet property="counterLabel" destination="gcc-JJ-FAX" id="bX2-zr-k6h"/>
                         <outlet property="imageView" destination="fIu-86-7pu" id="f17-2b-a26"/>
                         <outlet property="textLabel" destination="Fe3-Sa-avA" id="UZU-q4-b35"/>
