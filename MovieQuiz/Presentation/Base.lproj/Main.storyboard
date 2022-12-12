@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina5_9" orientation="portrait" appearance="dark"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
@@ -19,23 +19,23 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MovieQuizViewController" customModule="MovieQuiz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="6Bn-Kl-rmI">
-                                <rect key="frame" x="20" y="57" width="335" height="721"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="6Bn-Kl-rmI">
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jM7-a6-3sw">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="24"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="24"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b8j-ON-YST" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="299" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="338" height="24"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pat-bM-adv" userLabel="Index Label">
-                                                <rect key="frame" x="299" y="0.0" width="36" height="24"/>
+                                                <rect key="frame" x="338" y="0.0" width="36" height="24"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <nil key="highlightedColor"/>
@@ -46,17 +46,17 @@
                                         </constraints>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="umH-C9-vIE" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="34.000000000000028" width="335" height="502.66666666666674"/>
+                                        <rect key="frame" x="0.0" y="44" width="374" height="561"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="umH-C9-vIE" secondAttribute="height" multiplier="2:3" id="Ocq-Ga-rv9"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n1i-wX-UfK">
-                                        <rect key="frame" x="0.0" y="546.66666666666663" width="335" height="104.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="625" width="374" height="99"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eu-Wq-i3F" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="20" width="251" height="64.333333333333329"/>
+                                                <rect key="frame" x="42" y="20" width="290" height="59"/>
                                                 <string key="text">Рейтинг этого фильма
 меньше чем 5?</string>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="24"/>
@@ -66,16 +66,16 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="6eu-Wq-i3F" firstAttribute="top" secondItem="n1i-wX-UfK" secondAttribute="top" constant="20" symbolic="YES" id="8nm-3N-oRI"/>
-                                            <constraint firstItem="6eu-Wq-i3F" firstAttribute="leading" secondItem="n1i-wX-UfK" secondAttribute="leading" constant="42" id="Lee-9O-nMk"/>
                                             <constraint firstAttribute="bottom" secondItem="6eu-Wq-i3F" secondAttribute="bottom" constant="20" symbolic="YES" id="Tce-jR-PMA"/>
                                             <constraint firstAttribute="trailing" secondItem="6eu-Wq-i3F" secondAttribute="trailing" constant="42" id="a5p-Gv-QRF"/>
+                                            <constraint firstItem="6eu-Wq-i3F" firstAttribute="leading" secondItem="n1i-wX-UfK" secondAttribute="leading" constant="42" id="nBx-KO-fca"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="CGv-iB-2Mn">
-                                        <rect key="frame" x="0.0" y="661" width="335" height="60"/>
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ro-l4-qlB" userLabel="No Button">
-                                                <rect key="frame" x="0.0" y="0.0" width="157.66666666666666" height="60"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="YP White (iOS)"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain">
@@ -99,7 +99,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eQ7-E7-Ibf" userLabel="Yes Button">
-                                                <rect key="frame" x="177.66666666666663" y="0.0" width="157.33333333333337" height="60"/>
+                                                <rect key="frame" x="197" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="YP White (iOS)"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain">
@@ -136,7 +136,6 @@
                             <constraint firstItem="6Bn-Kl-rmI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="2aP-TA-MyK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6Bn-Kl-rmI" secondAttribute="trailing" constant="20" id="Dg2-Mo-EGJ"/>
                             <constraint firstItem="6Bn-Kl-rmI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Xca-Ua-l4s"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6Bn-Kl-rmI" secondAttribute="bottom" id="kvs-Rs-gdh"/>
                         </constraints>
                     </view>
                     <connections>

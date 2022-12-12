@@ -66,20 +66,18 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
-    @IBOutlet var yesButton: UIButton!
-    @IBOutlet var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
     @IBOutlet private var counterLabel: UILabel!
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         disableButtons()
         let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer)
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         disableButtons()
         let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
     }
 
     private var currentQuestionIndex: Int = 0
@@ -108,23 +106,17 @@ final class MovieQuizViewController: UIViewController {
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
-            correctAnswers += 1
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypGreen.cgColor
-            imageView.layer.cornerRadius = 20
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.showNextQuestionOrResults()
-            }
+              correctAnswers += 1
+              imageView.layer.borderColor = UIColor.ypGreen.cgColor
+        } else {
+              imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
-        else {
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypRed.cgColor
-            imageView.layer.cornerRadius = 20
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.showNextQuestionOrResults()
-            }
+
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+              self.showNextQuestionOrResults()
         }
     }
     private func showNextQuestionOrResults(){
@@ -160,12 +152,12 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     private func disableButtons(){
-        self.noButton.isUserInteractionEnabled = false
-        self.yesButton.isUserInteractionEnabled = false
+        self.noButton.isEnabled = false
+        self.yesButton.isEnabled = false
     }
     private func enableButtons(){
-        self.noButton.isUserInteractionEnabled = true
-        self.yesButton.isUserInteractionEnabled = true
+        self.noButton.isEnabled = true
+        self.yesButton.isEnabled = true
     }
 }
 
