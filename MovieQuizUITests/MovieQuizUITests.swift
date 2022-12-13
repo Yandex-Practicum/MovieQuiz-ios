@@ -91,28 +91,6 @@ final class MovieQuizUITests: XCTestCase {
         
         XCTAssertFalse(app.alerts["Game results"].exists)
         XCTAssertTrue(indexLabel.label == "1/10")
-    } 
-    
-//    func testAlertDismiss() {
-//        for _ in 1...10 {
-//            app.buttons["Yes"].tap()
-//            sleep(3)
-//        }
-//
-//        sleep(3)
-//
-//        let alert = app.alerts["Game results"]
-//        alert.buttons.firstMatch.tap()
-//
-//        sleep(3)
-//
-//        let poster = app.images["Poster"]
-//        let indexLabel = app.staticTexts["Index"]
-//
-//        XCTAssertTrue(indexLabel.label == "1/10")
-//        XCTAssertFalse(alert.exists)
-//        XCTAssertTrue(poster.exists)
-//
-//    }
-    
+    }
+
 }
