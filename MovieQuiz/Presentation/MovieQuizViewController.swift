@@ -3,7 +3,6 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
-    
     private var presenter: MovieQuizPresenter!
     private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
     @IBOutlet private var nobutton: UIButton!
@@ -16,8 +15,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         imageView.layer.cornerRadius = 20
         presenter = MovieQuizPresenter(viewController: self)
         alertPresenter = AlertPresenter(viewController: self)
@@ -25,17 +22,23 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         presenter.noButtonClicked()
-        nobutton.isEnabled = false
     }
     
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
-        yesbutton.isEnabled = false
+    }
+    
+    func yesButtonIsEnabled(result: Bool) {
+        yesbutton?.isEnabled = result
+    }
+    
+    func noButtonIsEnabled(result: Bool) {
+        nobutton?.isEnabled = result
     }
     
     func showLoadingIndicator() {
-       activityIndicator?.isHidden = false
+        activityIndicator?.isHidden = false
         activityIndicator?.startAnimating()
     }
     
@@ -61,15 +64,10 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrectAnswer ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
         imageView.layer.cornerRadius = 20
-        
     }
-    
-    
     
     func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
-        yesbutton.isEnabled = true
-        nobutton.isEnabled = true
         imageView.image = step.image
         counterLabel.text = step.questionNumber
         textLabel.text = step.question

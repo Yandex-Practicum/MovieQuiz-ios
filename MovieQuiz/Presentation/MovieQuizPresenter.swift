@@ -13,10 +13,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private let statisticService: StatisticService!
     private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
-    private var correctanswerQuestion: Int = 0
+    private var correctAnswerQuestion: Int = 0
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
-     weak var viewController: MovieQuizViewControllerProtocol?
+    weak var viewController: MovieQuizViewControllerProtocol?
     
     init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
@@ -44,7 +44,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     func restartGame() {
         currentQuestionIndex = 0
-        correctanswerQuestion = 0
+        correctAnswerQuestion = 0
         questionFactory?.requestNextQuestion()
     }
     
@@ -65,10 +65,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     func noButtonClicked() {
         didAnswer(isYes: false)
-}
+    }
     func didAnswerQuestion(isCorrect: Bool) {
         if isCorrect {
-            correctanswerQuestion += 1
+            correctAnswerQuestion += 1
             
         }
     }
@@ -89,41 +89,38 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func proceedToNextQuestionResults(){
         
         if self.isLastQuestion(){
-            self.statisticService?.store(correct: correctanswerQuestion, total: questionsAmount)
+            self.statisticService?.store(correct: correctAnswerQuestion, total: questionsAmount)
             
             
-            let text = "Ваш результат: \(correctanswerQuestion)/\(questionsAmount) \n Количество сыграных квизов: \(self.statisticService?.gamesCount ?? 0) \n      Рекорд: \(self.statisticService?.bestGame.correct ?? 0)/\(questionsAmount) (\(self.statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString )) \n Средняя точность: \(String(format: "%.2f", 100*(self.statisticService?.totalAccuracy ?? 0)/Double(self.statisticService?.gamesCount ?? 0)))%"
+            let text = "Ваш результат: \(correctAnswerQuestion)/\(questionsAmount) \n Количество сыграных квизов: \(self.statisticService?.gamesCount ?? 0) \n      Рекорд: \(self.statisticService?.bestGame.correct ?? 0)/\(questionsAmount) (\(self.statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString )) \n Средняя точность: \(String(format: "%.2f", 100*(self.statisticService?.totalAccuracy ?? 0)/Double(self.statisticService?.gamesCount ?? 0)))%"
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
                                                  text: text,
                                                  buttonText: "Сыграть еще раз")
-            self.correctanswerQuestion = 0
+            self.correctAnswerQuestion = 0
             self.viewController?.show(quiz: viewModel)
         }
-                    else {
-                        self.switchToNextQuestion()
-                        self.questionFactory?.requestNextQuestion()
+        else {
+            self.switchToNextQuestion()
+            self.questionFactory?.requestNextQuestion()
         }
     }
     func proceedWithAnswer(isCorrect: Bool) {
-                didAnswerQuestion(isCorrect: isCorrect)
+        didAnswerQuestion(isCorrect: isCorrect)
         viewController?.hightLightImageBorder(isCorrectAnswer: isCorrect)
-//        self.viewController?.yesbutton.isEnabled = false
-//        self.viewController?.nobutton.isEnabled = false
+        viewController?.yesButtonIsEnabled(result: false)
+        viewController?.noButtonIsEnabled(result: false)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             
             guard let self = self else{return}
-           
-//            self.viewController?.yesbutton.isEnabled = true
-//            self.viewController?.nobutton.isEnabled = true
+            
+            self.viewController?.yesButtonIsEnabled(result: true)
+            self.viewController?.noButtonIsEnabled(result: true)
             self.proceedToNextQuestionResults()
         }
         
     }
-    
-    
 }
-
 
 protocol MovieQuizViewControllerProtocol: AnyObject {
     func show(quiz step: QuizStepViewModel)
@@ -132,5 +129,6 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     func showLoadingIndicator()
     func hideLoadingIndicator()
     func showNetworkError(message: String)
-    
+    func yesButtonIsEnabled(result: Bool)
+    func noButtonIsEnabled(result: Bool)
 }

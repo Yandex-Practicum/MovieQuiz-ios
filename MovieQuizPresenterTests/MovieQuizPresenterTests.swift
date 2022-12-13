@@ -9,6 +9,14 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerProtocolMock: MovieQuizViewControllerProtocol {
+    func yesButtonIsEnabled(result: Bool) {
+        
+    }
+    
+    func noButtonIsEnabled(result: Bool) {
+       
+    }
+    
     func show(quiz step: MovieQuiz.QuizStepViewModel) {
         
     }
