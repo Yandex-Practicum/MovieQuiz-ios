@@ -11,17 +11,20 @@ import UIKit
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     
-    let questionsAmount: Int = 10
-    var currentQuestion: QuizQuestion?
+    private let questionsAmount: Int = 10
+    private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 0
-    var correctAnswers: Int = 0
+    private var correctAnswers: Int = 0
     
+    private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewController?
     
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
-        
+
+        statisticService = StatisticServiceImplementation()
+
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
@@ -75,25 +78,25 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // MARK: Buttons
     // Button Actions
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-      
-        let givenAnswer = true
-        
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-      
-        let givenAnswer = false
-        
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
+//    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+//        guard let currentQuestion = currentQuestion else {
+//            return
+//        }
+//
+//        let givenAnswer = true
+//
+//        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+//    }
+//
+//    @IBAction private func noButtonClicked(_ sender: UIButton) {
+//        guard let currentQuestion = currentQuestion else {
+//            return
+//        }
+//
+//        let givenAnswer = false
+//
+//        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+//    }
     
     // Button Functions
     func yesButtonClicked() {
@@ -108,15 +111,54 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        
+
         let givenAnswer = isYes
-        
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     // MARK: Other Functions
     
-    func showNextQuestionOrResults() {
+    func restartGame() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didAnswer(isCorrectAnswer: Bool) {
+        correctAnswers += 1
+    }
+    
+    // MARK: Alert
+    
+    func makeResultsMessage() -> String {
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        
+        let bestGame = statisticService.bestGame
+        
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
+        + " (\(bestGame.date.dateTimeString))"
+        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        
+        let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine].joined(separator: "\n")
+        
+        return resultMessage
+    }
+    
+    private func proceedWithAnswer(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.proceedToNextQuestionOrResults()
+        }
+    }
+    
+    private func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
             let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             
@@ -129,16 +171,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
-    }
-    
-    func restartGame() {
-        currentQuestionIndex = 0
-        correctAnswers = 0
-        questionFactory?.requestNextQuestion()
-    }
-    
-    func didAnswer(isCorrectAnswer: Bool) {
-        correctAnswers += 1
     }
     
 }
