@@ -60,6 +60,8 @@ final class MovieQuizViewController: UIViewController {
       } else {
         currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
         // показать следующий вопрос
+          imageView.layer.masksToBounds = true
+          imageView.layer.borderWidth = 0
           let nextQuestion = questions[currentQuestionIndex]
           let viewModel = convert(model: nextQuestion)
           show(quiz: viewModel)
@@ -78,6 +80,8 @@ final class MovieQuizViewController: UIViewController {
             style: .default) {_ in
                 self.currentQuestionIndex = 0
                 self.correctAnswer = 0
+                self.imageView.layer.masksToBounds = true
+                self.imageView.layer.borderWidth = 0
                 let firstQuestion = questions[self.currentQuestionIndex]
                 let viewModel = self.convert(model: firstQuestion)
                 self.show(quiz: viewModel)
