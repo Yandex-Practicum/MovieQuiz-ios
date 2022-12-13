@@ -9,8 +9,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    
-    //private var questionFactory: QuestionFactoryProtocol?
+
     private var alertPresenter: AlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
     
@@ -24,10 +23,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter = MovieQuizPresenter(viewController: self)
         
         imageView.layer.cornerRadius = 20
-        //questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        //statisticService = StatisticServiceImplementation()
-
-        //questionFactory?.loadData()
         showLoadingIndicator()
     }
     
@@ -85,12 +80,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         let action = UIAlertAction(title: "Попробовать еще раз",
                                    style: .default) { [weak self] _ in
             guard let self = self else { return }
-
-//            self.presenter.resetQuestionIndex()
-//            self.correctAnswers = 0
             self.presenter.restartGame()
-
-            //self.questionFactory?.requestNextQuestion()
         }
 
         alert.addAction(action)

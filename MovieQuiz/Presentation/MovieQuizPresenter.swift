@@ -77,26 +77,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     // MARK: Buttons
-    // Button Actions
-//    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-//        guard let currentQuestion = currentQuestion else {
-//            return
-//        }
-//
-//        let givenAnswer = true
-//
-//        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-//    }
-//
-//    @IBAction private func noButtonClicked(_ sender: UIButton) {
-//        guard let currentQuestion = currentQuestion else {
-//            return
-//        }
-//
-//        let givenAnswer = false
-//
-//        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-//    }
     
     // Button Functions
     func yesButtonClicked() {
