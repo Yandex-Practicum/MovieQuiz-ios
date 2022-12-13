@@ -3,7 +3,7 @@
 //  MovieQuiz
 //
 //  Created by Кирилл Брызгунов on 25.11.2022.
-//
+// k_adn67lp5
 
 import Foundation
 
@@ -12,13 +12,17 @@ protocol MoviesLoading {
 }
 
 struct MoviesLoader: MoviesLoading {
-    // MARK: - NetworkClient
-    private let networkClient = NetworkClient()
+  // MARK: - NetworkClient
+  private let networkClient: NetworkRouting
+  
+  init(networkClient: NetworkRouting = NetworkClient()) {
+      self.networkClient = networkClient
+  }
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
-        guard let url = URL(string: "https://imdb-api.com/en/API/MostPopularMovies/k_adn67lp5") else {
-            preconditionFailure("Unable to construct mostPopularMoviesUrl") // Если мы не смогли преобразовать строку в URL, то наше приложение упадёт с ошибкой
+        guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_adn67lp5") else {
+            preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         return url
     }
@@ -39,6 +43,5 @@ struct MoviesLoader: MoviesLoading {
         }
     }
 }
-
 
     

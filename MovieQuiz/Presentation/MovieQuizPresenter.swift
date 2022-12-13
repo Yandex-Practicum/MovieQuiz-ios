@@ -21,7 +21,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private weak var viewController: MovieQuizViewControllerProtocol?
     
     init(viewController: MovieQuizViewControllerProtocol) {
-         self.viewController = viewController
+        self.viewController = viewController
 
         statisticService = StatisticServiceImplementation()
 
@@ -80,7 +80,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // Button Functions
     func yesButtonClicked() {
-        didAnswer(isYes: false)
+        didAnswer(isYes: true)
     }
     
     func noButtonClicked() {
@@ -106,7 +106,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func didAnswer(isCorrectAnswer: Bool) {
-        correctAnswers += 1
+        if isCorrectAnswer {
+            correctAnswers += 1
+        }
     }
     
     // MARK: Alert

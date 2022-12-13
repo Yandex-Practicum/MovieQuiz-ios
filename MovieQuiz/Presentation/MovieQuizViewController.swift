@@ -48,10 +48,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     func show(quiz result: QuizResultsViewModel) {
         let message = presenter.makeResultsMessage()
         
+        
         let alert = UIAlertController(
             title: result.title,
             message: message,
             preferredStyle: .alert)
+        
+        alert.view.accessibilityIdentifier = "Game Results"
             
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
                 guard let self = self else { return }
