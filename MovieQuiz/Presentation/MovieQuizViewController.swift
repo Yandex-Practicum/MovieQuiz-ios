@@ -14,8 +14,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers = 0
 
     private let questionsAmount: Int = 5
-    private let questionFactory: QuestionFactoryProtocol? = QuestionFactory()
-    private let statisticService: StatisticServiceProtocol? = StatisticServiceUserDefaults()
+    private let questionFactory: QuestionFactoryProtocol? =
+        QuestionFactoryImdb(moviesLoader: MoviesLoader())
+    //private let questionFactory: QuestionFactoryProtocol? =
+    //    QuestionFactoryMockData()
+    private let statisticService: StatisticServiceProtocol? =
+        StatisticServiceUserDefaults()
     private let alertPresenter = AlertPresenter()
 
     func didRecieveNextQuestion(question: QuizQuestion?) {
@@ -31,10 +35,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
 
+    func didLoadDataFromServer() {
+        showLoadingIndicator(isLoad: false)
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+        loadMoviesData()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory?.setDelegate(delegate: self)
         initFirstTime()
+        loadMoviesData()
         showQuestionImpl()
     }
 
@@ -55,6 +70,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func initFirstTime() {
         currentQuestionIndex = 0
         correctAnswers = 0
+    }
+
+    private func loadMoviesData() {
+        showLoadingIndicator(isLoad: true)
+        questionFactory?.loadData()
     }
 
     private func show(quiz step: QuizStepViewModel) {
@@ -140,7 +160,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }

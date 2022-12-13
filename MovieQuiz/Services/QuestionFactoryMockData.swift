@@ -6,50 +6,51 @@
 //
 
 import Foundation
+import UIKit
 
-class QuestionFactory : QuestionFactoryProtocol {
+class QuestionFactoryMockData : QuestionFactoryProtocol {
 
     private weak var delegate: QuestionFactoryDelegate?
 
     private let questions: [QuizQuestion] = [
         QuizQuestion(
-            image: "The Godfather",
+            image: UIImage(named: "The Godfather")!.pngData()!,
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
         QuizQuestion(
-            image: "The Dark Knight",
+            image: UIImage(named: "The Dark Knight")!.pngData()!,
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
         QuizQuestion(
-            image: "Kill Bill",
+            image: UIImage(named: "Kill Bill")!.pngData()!,
             text: "Она убила Балла к конце?",
             correctAnswer: false),
         QuizQuestion(
-            image: "The Avengers",
+            image: UIImage(named: "The Avengers")!.pngData()!,
             text: "Это фильм для взрослых?",
             correctAnswer: false),
         QuizQuestion(
-            image: "Deadpool",
+            image: UIImage(named: "Deadpool")!.pngData()!,
             text: "Макконахи сыграл главную роль?",
             correctAnswer: false),
         QuizQuestion(
-            image: "The Green Knight",
+            image: UIImage(named: "The Green Knight")!.pngData()!,
             text: "Рейтинг этого фильма больше чем 5?",
             correctAnswer: true),
         QuizQuestion(
-            image: "Old",
+            image: UIImage(named: "Old")!.pngData()!,
             text: "Рейтинг этого фильма больше чем 4?",
             correctAnswer: true),
         QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
+            image: UIImage(named: "The Ice Age Adventures of Buck Wild")!.pngData()!,
             text: "Это фильм для детей?",
             correctAnswer: true),
         QuizQuestion(
-            image: "Tesla",
+            image: UIImage(named: "Tesla")!.pngData()!,
             text: "Этот фильм про автомобили?",
             correctAnswer: false),
         QuizQuestion(
-            image: "Vivarium",
+            image: UIImage(named: "Vivarium")!.pngData()!,
             text: "Этот фильм популярный?",
             correctAnswer: false)
     ]
@@ -67,6 +68,10 @@ class QuestionFactory : QuestionFactoryProtocol {
 
     func setDelegate(delegate: QuestionFactoryDelegate?) {
         self.delegate = delegate
+    }
+
+    func loadData() {
+        delegate?.didLoadDataFromServer()
     }
 
     private func getIndex() -> Int? {

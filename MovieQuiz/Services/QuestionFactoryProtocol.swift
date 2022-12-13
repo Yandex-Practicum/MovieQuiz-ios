@@ -13,4 +13,8 @@ protocol QuestionFactoryProtocol {
 
     func setDelegate(delegate: QuestionFactoryDelegate?)
 
+    func loadData()
+
+    
+
 }

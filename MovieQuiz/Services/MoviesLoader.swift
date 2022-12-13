@@ -17,6 +17,10 @@ struct MoviesLoader: MoviesLoading {
 
     private let networkClient = NetworkClient()
 
+    private enum MovieLoaderError: Error {
+        case emptyMovies
+    }
+
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
             switch result {
@@ -24,7 +28,11 @@ struct MoviesLoader: MoviesLoading {
                 do {
                     let movies = try JSONDecoder().decode(
                         MostPopularMovies.self, from: data)
-                    handler(.success(movies))
+                    if movies.items.isEmpty {
+                        handler(.failure(MovieLoaderError.emptyMovies))
+                    } else {
+                        handler(.success(movies))
+                    }
                 } catch {
                     handler(.failure(error))
                 }
@@ -35,7 +43,7 @@ struct MoviesLoader: MoviesLoading {
     }
 
     private var mostPopularMoviesUrl: URL {
-        let url = "https://imdb-api.com/en/API/Top250Movies/k_kiwxbi4y"
+        let url = "https://imdb-api.com/en/API/Top250Movies/k_iarr5x1w"
         guard let url = URL(string: url) else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
