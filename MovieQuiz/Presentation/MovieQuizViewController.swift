@@ -1,4 +1,5 @@
 import UIKit
+import Foundation
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
@@ -25,15 +26,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol? = nil
+    
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter : AlertPresenter?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
-        
+        alertPresenter = AlertPresenter(viewController: self)
     }
     
     
@@ -102,27 +105,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
+    private func show(quiz result : QuizResultsViewModel) {
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            
+        let alertModel = AlertModel(title: result.title,
+                                    message: result.text,
+                                    buttonText: result.buttonText) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
             self.questionFactory?.requestNextQuestion()
         }
-        
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
+        alertPresenter?.showAlert(quiz: alertModel)
     }
-    
     
 }
 
