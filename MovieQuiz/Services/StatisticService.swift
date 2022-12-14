@@ -73,7 +73,6 @@ final class StaticticServiceImplementation: StatisticService {
         }
     }
 
-    
     func store(current count: Int, total amount: Int) {
         // Save new best game
         let currentBestGame = bestGame
@@ -93,7 +92,7 @@ final class StaticticServiceImplementation: StatisticService {
             }
             userDefaults.set(data, forKey: Keys.totalQuestions.rawValue)
         } else {
-            var totalQuestions = amount
+            let totalQuestions = amount
             guard let data = try? JSONEncoder().encode(totalQuestions) else {
                 print("Невозможно сохранить результат")
                 return
@@ -111,16 +110,14 @@ final class StaticticServiceImplementation: StatisticService {
             }
             userDefaults.set(data, forKey: Keys.totalCorrect.rawValue)
         } else {
-            var totalCorrect = count
+            let totalCorrect = count
             guard let data  = try? JSONEncoder().encode(totalCorrect) else {
                 print ("Невозможно сохранить результат")
                 return
             }
             userDefaults.set(data, forKey: Keys.totalCorrect.rawValue)
         }
-    }
-    
-    
+    }  
 }
 struct GameRecord: Codable {
     let correct: Int
