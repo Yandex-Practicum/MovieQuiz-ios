@@ -20,27 +20,7 @@ class QuestionFactoryImdb : QuestionFactoryProtocol {
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
-
-            guard let movie = self.movies[safe: index] else { return }
-
-            var imageData = Data()
-
-            do {
-                imageData = try Data(contentsOf: movie.resizedImageURL)
-            } catch {
-                print("Failed to load image")
-            }
-
-            let rating = Float(movie.rating) ?? 0
-
-            let text = "Рейтинг этого фильма больше чем 7?"
-            let correctAnswer = rating > 7
-
-            let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
-
+            let question = self.createQuestion()
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.delegate?.didRecieveNextQuestion(question: question)
@@ -73,6 +53,55 @@ class QuestionFactoryImdb : QuestionFactoryProtocol {
                     self.delegate?.didFailToLoadData(with: error)
                 }
             }
+        }
+    }
+
+    private enum CompareType : String, CaseIterable {
+        case More = "больше чем"
+        case Less = "меньше чем"
+        case Equal = "равен"
+        case NotMore = "не больше"
+        case NotLess = "не меньше"
+        case NotEqual = "не равен"
+    }
+
+    private func createQuestion() -> QuizQuestion? {
+        let index = (0..<self.movies.count).randomElement() ?? 0
+        guard let movie = self.movies[safe: index] else { return nil }
+        var imageData = Data()
+        do {
+            imageData = try Data(contentsOf: movie.resizedImageURL)
+        } catch {
+            print("Failed to load image")
+        }
+        let rating = Float(movie.rating) ?? 0
+        let compareType = CompareType.allCases.randomElement()!
+        let randomRating = Float((2...9).randomElement()!)
+        let text = "Рейтинг этого фильма \(compareType.rawValue) \(randomRating)?"
+        let correctAnswer = getCompareResult(
+            compareType: compareType,
+            rating: rating,
+            randomRating: randomRating)
+        return QuizQuestion(image: imageData,
+                            text: text,
+                            correctAnswer: correctAnswer)
+    }
+
+    private func getCompareResult(
+        compareType: CompareType, rating: Float, randomRating: Float) -> Bool {
+        switch(compareType) {
+        case .More:
+            return rating > randomRating
+        case .Less:
+            return rating < randomRating
+        case .Equal:
+            return rating == randomRating
+        case .NotMore:
+            return rating <= randomRating
+        case .NotLess:
+            return rating >= randomRating
+        case .NotEqual:
+            return rating != randomRating
         }
     }
 
