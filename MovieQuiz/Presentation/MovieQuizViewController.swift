@@ -1,9 +1,19 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
+    
+    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var labelCounter: UILabel!
+    var counter: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    
+    @IBAction func buttonCounter(_ sender: Any) {
+        counter += 1
+        labelCounter.text = "Значение счетчика:" + " " + String(counter)
     }
 }
 
