@@ -10,7 +10,7 @@ final class AlertPresenter: AlertPresenterProtocol {
     
     private weak var viewController: UIViewController?
     
-    init(viewController: UIViewController) {
+    init(viewController: UIViewController?) {
         self.viewController = viewController
     }
     
@@ -22,4 +22,8 @@ final class AlertPresenter: AlertPresenterProtocol {
         alert.addAction(action)
         viewController?.present(alert, animated: true)
     }
+    
+//    func restartGame() {
+//        viewController?.viewDidLoad()
+//    }
 }

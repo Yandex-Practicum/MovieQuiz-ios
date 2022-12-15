@@ -8,4 +8,5 @@ import UIKit
 
 protocol AlertPresenterProtocol: AnyObject {
     func present(model: AlertModel)
+//    func restartGame()
 }

@@ -121,6 +121,9 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="KYu-bb-dim">
+                                <rect key="frame" x="177.66666666666666" y="396" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YPBlack"/>
@@ -129,9 +132,12 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="cw2-mG-uH4" secondAttribute="bottom" id="HxJ-Gc-dgs"/>
                             <constraint firstItem="cw2-mG-uH4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="VH1-Dv-3zg"/>
                             <constraint firstItem="cw2-mG-uH4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="a2T-OB-8YL"/>
+                            <constraint firstItem="KYu-bb-dim" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="bL3-ba-e5P"/>
+                            <constraint firstItem="KYu-bb-dim" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lDd-Jk-Gw1"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="KYu-bb-dim" id="Yhm-7C-uO4"/>
                         <outlet property="counterLabel" destination="9r5-f2-Rbt" id="rLe-Jj-kZh"/>
                         <outlet property="imageView" destination="31w-kj-Eho" id="5kn-3C-UJI"/>
                         <outlet property="noButton" destination="CoU-K8-5zr" id="gkz-rz-Dgj"/>
