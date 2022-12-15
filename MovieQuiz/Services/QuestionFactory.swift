@@ -48,11 +48,20 @@ class QuestionFactory: QuestionFactoryProtocol {
             DispatchQueue.main.async {
                 guard let self = self else {return}
                 switch result {
-                case .success(let mostPopularMovies):
+                case .success(let mostPopularMovies) where mostPopularMovies.errorMessage == "":
                     self.movies = mostPopularMovies.items
                     self.delegate?.didLoadDataFromServer()
+                    
+                case .success(let mostPopularMovies) where mostPopularMovies.errorMessage != "":
+                    if let error = (mostPopularMovies.errorMessage as? Error) {
+                        self.delegate?.didFailToLoadData(with: error)
+                    } else {
+                        self.delegate?.didFailToLoadData(with: "Not determined fail" as! Error)
+                    }
                 case .failure(let error):
                     self.delegate?.didFailToLoadData(with: error)
+                default:
+                    self.delegate?.didFailToLoadData(with: "Not determined fail" as! Error)
                 }
             }
         }
