@@ -10,11 +10,7 @@ import Foundation
 class QuestionFactory: QuestionFactoryProtocol {
     
     private let moviesLoader: MoviesLoadingProtocol //связываем загрузчик с QuestionFactory
-    
-    init(moviesLoader: MoviesLoadingProtocol) {
-        self.moviesLoader = moviesLoader
-    }
-    
+    private var movies: [MostPopularMovie] = []
     weak var delegate: QuestionFactoryDelegate? //фабрика будет общаться с этим свойством
     //Мало создать фабрику и делегата — нужно как-то сообщить фабрике о делегате.
     
@@ -22,8 +18,6 @@ class QuestionFactory: QuestionFactoryProtocol {
         self.delegate = delegate
         self.moviesLoader = moviesLoader
     }
-    
-    private var movies: [MostPopularMovie] = []
     
     //    private let questions: [QuizQuestion] = [
     //        QuizQuestion(image: "The Godfather",
@@ -75,17 +69,6 @@ class QuestionFactory: QuestionFactoryProtocol {
     }
     
     func requestNextQuestion() {
-        //        guard let index = (0..<questions.count).randomElement() else {
-        //            delegate?.didRecieveNextQuestion(question: nil)
-        //            return
-        //        }
-        //        let question = questions[safe: index]
-        //        delegate?.didRecieveNextQuestion(question: question)
-        //    }
-        //
-        //    init(delegate: QuestionFactoryDelegate?) {
-        //        self.delegate = delegate
-        //    }
         
         DispatchQueue.global().async { [weak self] in // запускаем код в другом потоке
             // Выбираем произвольный элемент из массива, чтобы показать его.

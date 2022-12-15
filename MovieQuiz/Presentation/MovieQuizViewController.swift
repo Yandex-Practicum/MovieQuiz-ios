@@ -40,8 +40,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // скрытие индикатора загрузки
     private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true // говорим, что индикатор загрузки не скрыт
-        activityIndicator.stopAnimating() // включаем анимацию
+        activityIndicator.isHidden = true // говорим, что индикатор загрузки скрыт
+        activityIndicator.stopAnimating() // анимация отключена
     }
     
     private func showNetworkError(message: String) {
@@ -71,7 +71,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.imageView.layer.cornerRadius = 20
         alertPresenter = AlertPresenter(viewController: self)
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         statisticService = StatisticServiceImplementation()
