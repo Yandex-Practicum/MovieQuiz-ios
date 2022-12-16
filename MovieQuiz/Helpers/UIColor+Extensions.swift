@@ -1,4 +1,6 @@
 import Foundation
 import UIKit
 
-extension UIColor { }
+extension UIColor {
+    static var ypBlack: UIColor { UIColor(named: "black")! }
+}
