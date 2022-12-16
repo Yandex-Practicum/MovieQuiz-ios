@@ -96,7 +96,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             guard let self = self else {return}
             self.yesButton.isEnabled = true
             self.noButton.isEnabled = true
-            self.hideLoadingIndicator()
+                self.hideLoadingIndicator()
         }
     }
     

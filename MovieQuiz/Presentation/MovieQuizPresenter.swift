@@ -6,20 +6,18 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
+    weak var viewController: MovieQuizViewControllerProtocol?
 
     private var currentQuestion: QuizQuestion?
     private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
-        
-        statisticService = StatisticServiceImplementation()
-        
-        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        questionFactory?.loadData()
+        self.statisticService = StatisticServiceImplementation()
+        self.questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        self.questionFactory?.loadData()
         viewController.showLoadingIndicator()
         }
     
@@ -82,7 +80,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                 let viewModel = QuizResultsViewModel(
                     title: "Этот раунд окончен!",
                     text: text,
-                    buttonText: "Сыграть ещё раз")
+                    buttonText: "Сыграть еще раз")
                     viewController?.show(quiz: viewModel)
             } else {
                 self.switchToNextQuestion()
