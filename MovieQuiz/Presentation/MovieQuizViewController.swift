@@ -57,6 +57,10 @@ final class MovieQuizViewController: UIViewController {
         QuizQuestion(
             image: "Vivarium",
             text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "The Green Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
     
@@ -66,30 +70,10 @@ final class MovieQuizViewController: UIViewController {
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let currentQuestion = questions[currentQuestionIndex]
-        show(quiz: convert(model: currentQuestion))
-        
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    @IBAction private func noButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
                correctAnswers += 1
            }
-        
         imageView.layer.cornerRadius = 20
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
@@ -99,7 +83,6 @@ final class MovieQuizViewController: UIViewController {
                 self.showNextQuestionOrResults()
             }
         }
-    
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
@@ -148,7 +131,24 @@ final class MovieQuizViewController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let currentQuestion = questions[currentQuestionIndex]
+        show(quiz: convert(model: currentQuestion))
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    @IBAction private func noButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
     @IBOutlet weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
