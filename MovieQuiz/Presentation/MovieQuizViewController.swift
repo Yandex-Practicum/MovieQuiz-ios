@@ -1,6 +1,5 @@
 import UIKit
 
-
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Outlet
@@ -14,9 +13,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Properties
     
+    private let presenter = MovieQuizPresenter()
+    
     private var correctAnswers: Int = 0
-    private var currentQuestionIndex: Int = 0
-    private let questionsAmount: Int = 10
+   
     
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
@@ -51,7 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -68,7 +68,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNetworkError(message: String) {
-         // скрываем индикатор загрузки
         activityIndicator.stopAnimating()
         let networkError = AlertModel(title: "Ошибка",
                                message: message,
@@ -83,10 +82,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func restartGame() {
-        self.activityIndicator.startAnimating()
-        self.currentQuestionIndex = 0
+        self.presenter.resetQuestionIndex()
         self.questionFactory?.requestNextQuestion()
         self.correctAnswers = 0
+        self.activityIndicator.startAnimating()
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -98,8 +97,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 guard let self = self else { return }
                 self.showNextQuestionOrResults()
                 self.imageView.layer.borderWidth = 0
-            }
         }
+    }
     
     private func show(quiz step: QuizStepViewModel){
         counterLabel.text = step.questionNumber
@@ -108,11 +107,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults(){
-        if currentQuestionIndex == questionsAmount - 1 {
-            statisticService?.store(correct: correctAnswers, total: questionsAmount)
+        if presenter.isLastQuestion() {
+            statisticService?.store(correct: correctAnswers, total: presenter.questionsAmount)
             guard let bestGame = statisticService?.bestGame else {return}
             let text = """
-                       Ваш результат: \(correctAnswers) из \(questionsAmount)
+                       Ваш результат: \(correctAnswers) из \(presenter.questionsAmount)
                        Количество сыгранных квизов: \(statisticService.gamesCount)
                        Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(bestGame.date.dateTimeString))
                        Средняя точность: \(Int(statisticService.totalAccuracy))%
@@ -125,20 +124,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.correctAnswers = 0
             show(quiz: viewModel)
         }else{
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
     
-    
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
-    
-        private func blockButtons() {
+    private func blockButtons() {
             yesButton.isEnabled = false
             noButton.isEnabled = false
             activityIndicator.startAnimating()
@@ -147,10 +138,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.yesButton.isEnabled = true
                 self.noButton.isEnabled = true
                 self.activityIndicator.stopAnimating()
-            }
         }
+    }
         
-        private func show(quiz result: QuizResultsViewModel) {
+    private func show(quiz result: QuizResultsViewModel) {
                 let alertModel = AlertModel(
                     title: result.title,
                     message: result.text,

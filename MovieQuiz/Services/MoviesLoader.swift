@@ -6,9 +6,9 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
   // MARK: - NetworkClient
-  private let networkClient: NetworkRouting
+  private let networkClient: NetworkRoutingProtocol
   
-  init(networkClient: NetworkRouting = NetworkClient()) {
+  init(networkClient: NetworkRoutingProtocol = NetworkClient()) {
       self.networkClient = networkClient
   }
     

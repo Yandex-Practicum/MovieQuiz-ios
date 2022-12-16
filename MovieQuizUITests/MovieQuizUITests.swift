@@ -1,4 +1,3 @@
-
 import XCTest
 
 class MovieQuizUITests: XCTestCase {
@@ -51,7 +50,7 @@ class MovieQuizUITests: XCTestCase {
     }
     
     func testGameFinish() {
-       tapButtonNo()
+        tapButtonNo()
         
         sleep(2)
         

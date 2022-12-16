@@ -1,6 +1,5 @@
 import UIKit
 
-
 struct AlertPresenter: AlertProtocol {
    
     weak var viewController: UIViewController?
