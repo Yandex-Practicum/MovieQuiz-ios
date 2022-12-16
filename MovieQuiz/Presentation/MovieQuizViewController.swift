@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
 
     // MARK: - Outlet
     
@@ -14,16 +14,13 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Properties
     
     private var presenter: MovieQuizPresenter!
-    var vSpinner : [UIView] = []
 
     //MARK: - View Did Loade
     
     override func viewDidLoad(){
-
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
-       
         showLoadingIndicator()
         presenter = MovieQuizPresenter(viewController: self)
     }
@@ -65,8 +62,7 @@ final class MovieQuizViewController: UIViewController {
             alert.addAction(action)
     }
     
-    
-   func show(quiz step: QuizStepViewModel){
+    func show(quiz step: QuizStepViewModel){
        counterLabel.text = step.questionNumber
        imageView.image = step.image
        textLabel.text = step.question
@@ -90,22 +86,20 @@ final class MovieQuizViewController: UIViewController {
             alert.addAction(action)
 
             self.present(alert, animated: true, completion: nil)
-        }
-        
+    }
     
     private func blockButtons() {
-            yesButton.isEnabled = false
-            noButton.isEnabled = false
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         showLoadingIndicator()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                guard let self = self else {return}
-                self.yesButton.isEnabled = true
-                self.noButton.isEnabled = true
-                self.hideLoadingIndicator()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else {return}
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+            self.hideLoadingIndicator()
         }
     }
     
-
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
         blockButtons()
