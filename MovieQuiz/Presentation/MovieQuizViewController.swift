@@ -19,7 +19,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
    
     
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+   
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService!
 
@@ -35,6 +35,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter = AlertPresenter(viewController: self)
         activityIndicator.startAnimating()
         questionFactory?.loadData()
+        presenter.viewController = self
     }
     
     //MARK: - Internal functions
@@ -50,7 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
-        currentQuestion = question
+        presenter.currentQuestion = question
         let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
@@ -88,7 +89,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.activityIndicator.startAnimating()
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
             imageView.layer.masksToBounds = true
             imageView.layer.borderWidth = 8
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -129,17 +130,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func blockButtons() {
-            yesButton.isEnabled = false
-            noButton.isEnabled = false
-            activityIndicator.startAnimating()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                guard let self = self else {return}
-                self.yesButton.isEnabled = true
-                self.noButton.isEnabled = true
-                self.activityIndicator.stopAnimating()
-        }
-    }
+    
         
     private func show(quiz result: QuizResultsViewModel) {
                 let alertModel = AlertModel(
@@ -153,27 +144,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 alertPresenter?.showAlert(quiz: alertModel)
             }
         
-        
-        
-    
-        
-        // MARK: - Action button
-        
-        @IBAction private func yesButtonClicked(_ sender: UIButton) {
-            guard let currentQuestion = currentQuestion else {
-                return
-            }
-            let givenAnswer = true
-            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-            blockButtons()
-        }
-        
-        @IBAction private func noButtonClicked(_ sender: UIButton) {
-            guard let currentQuestion = currentQuestion else {
-                return
-            }
-            let givenAnswer = false
-            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-            blockButtons()
+    private func blockButtons() {
+            yesButton.isEnabled = false
+            noButton.isEnabled = false
+            activityIndicator.startAnimating()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self = self else {return}
+                self.yesButton.isEnabled = true
+                self.noButton.isEnabled = true
+                self.activityIndicator.stopAnimating()
         }
     }
+
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        presenter.yesButtonClicked()
+        blockButtons()
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        presenter.noButtonClicked()
+        blockButtons()
+    }
+
+}
+
