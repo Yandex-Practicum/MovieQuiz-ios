@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
+final class MovieQuizViewController: UIViewController {
 
     // MARK: - Outlet
     
@@ -15,8 +15,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     private var presenter: MovieQuizPresenter!
     var vSpinner : [UIView] = []
-    private var alertPresenter: AlertPresenter?
-   
 
     //MARK: - View Did Loade
     
@@ -25,7 +23,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
-        alertPresenter = AlertPresenter(viewController: self)
+       
         showLoadingIndicator()
         presenter = MovieQuizPresenter(viewController: self)
     }
@@ -49,41 +47,49 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             activityIndicator.isHidden = true
     }
     
-    func extinguishImageBorder() {
-        imageView.layer.borderWidth = 0
+    func showNetworkError(message: String) {
+            hideLoadingIndicator()
+
+            let alert = UIAlertController(
+                title: "Ошибка",
+                message: message,
+                preferredStyle: .alert)
+
+                let action = UIAlertAction(title: "Попробовать ещё раз",
+                style: .default) { [weak self] _ in
+                    guard let self = self else { return }
+
+                    self.presenter.restartGame()
+                }
+
+            alert.addAction(action)
     }
     
-    func showNetworkError(message: String) {
-      
-        let networkError = AlertModel(
-            title: "Ошибка",
-            message: message,
-            buttonText: "Попробовать ещё раз") { [weak self] _ in
-            guard let self = self else {return}
-            self.presenter.restartGame()
-            
-            
-        }
-        alertPresenter = AlertPresenter(viewController: self)
-        alertPresenter?.showAlert(quiz: networkError)
-    }
     
    func show(quiz step: QuizStepViewModel){
-        counterLabel.text = step.questionNumber
-        imageView.image = step.image
-        textLabel.text = step.question
+       counterLabel.text = step.questionNumber
+       imageView.image = step.image
+       textLabel.text = step.question
+       imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
     func show(quiz result: QuizResultsViewModel) {
-            let alertModel = AlertModel(
+            let message = presenter.makeResultsMessage()
+
+            let alert = UIAlertController(
                 title: result.title,
-                message: result.text,
-                buttonText: result.buttonText)
-            { [weak self] _ in
-                guard let self = self else { return }
-                self.presenter.restartGame()
-            }
-            alertPresenter?.showAlert(quiz: alertModel)
+                message: message,
+                preferredStyle: .alert)
+
+                let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+                    guard let self = self else { return }
+
+                    self.presenter.restartGame()
+                }
+
+            alert.addAction(action)
+
+            self.present(alert, animated: true, completion: nil)
         }
         
     
