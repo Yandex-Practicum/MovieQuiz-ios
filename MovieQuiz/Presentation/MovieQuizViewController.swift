@@ -12,6 +12,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int = 0
     private lazy var currentQuestion  = questions[currentQuestionIndex]
     private var correctAnswer: Int = 0
+    private var allowAnswer: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +63,7 @@ final class MovieQuizViewController: UIViewController {
         // показать следующий вопрос
           imageView.layer.masksToBounds = true
           imageView.layer.borderWidth = 0
+          allowAnswer = true
           let nextQuestion = questions[currentQuestionIndex]
           let viewModel = convert(model: nextQuestion)
           show(quiz: viewModel)
@@ -82,6 +84,7 @@ final class MovieQuizViewController: UIViewController {
                 self.correctAnswer = 0
                 self.imageView.layer.masksToBounds = true
                 self.imageView.layer.borderWidth = 0
+                self.allowAnswer = true
                 let firstQuestion = questions[self.currentQuestionIndex]
                 let viewModel = self.convert(model: firstQuestion)
                 self.show(quiz: viewModel)
@@ -93,16 +96,22 @@ final class MovieQuizViewController: UIViewController {
     }
     
     @IBAction private func nuButtoneClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        if allowAnswer == true {
+            let currentQuestion = questions[currentQuestionIndex]
+            let givenAnswer = false
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+            allowAnswer = false
+        }
     }
     
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        if allowAnswer == true {
+            let currentQuestion = questions[currentQuestionIndex]
+            let givenAnswer = true
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+            allowAnswer = false
+        }
     }
     
 }
@@ -148,7 +157,7 @@ private let questions: [QuizQuestion] = [
         correctAnswer: true),
     QuizQuestion(
         image: "Deadpool",
-        text: "Deadpool",
+        text: "Рейтинг этого фильма больше чем 6?",
         correctAnswer: true),
     QuizQuestion(
         image: "The Green Knight",
