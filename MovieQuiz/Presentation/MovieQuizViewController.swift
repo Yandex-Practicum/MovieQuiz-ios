@@ -20,7 +20,6 @@ final class MovieQuizViewController: UIViewController {
         let buttonText: String
     }
    
-   
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
