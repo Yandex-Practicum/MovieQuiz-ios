@@ -70,22 +70,22 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func show(quiz result: QuizResultsViewModel) {
-            let message = presenter.makeResultsMessage()
+        let message = presenter.makeResultsMessage()
 
-            let alert = UIAlertController(
+        let alert = UIAlertController(
                 title: result.title,
                 message: message,
                 preferredStyle: .alert)
 
-                let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-                    guard let self = self else { return }
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.presenter.restartGame()
+        }
+        
+        alert.addAction(action)
+        alert.view.accessibilityIdentifier = "Alert"
 
-                    self.presenter.restartGame()
-                }
-
-            alert.addAction(action)
-
-            self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     private func blockButtons() {
@@ -102,12 +102,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
-        blockButtons()
+      
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         presenter.noButtonClicked()
-        blockButtons()
+        
     }
 
 }

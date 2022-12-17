@@ -2,7 +2,7 @@ import UIKit
 
 class AlertPresenter: AlertProtocol {
    
-    
+
     private weak var delegate: AlertDelegate?
     
     func configure(model: AlertModel) {
@@ -11,7 +11,6 @@ class AlertPresenter: AlertProtocol {
             model.completion?()
         })
         alert.addAction(action)
-        alert.view.accessibilityIdentifier = "Alert"
         delegate?.show(alert: alert)
     }
     

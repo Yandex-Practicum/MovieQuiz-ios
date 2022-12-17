@@ -50,6 +50,7 @@ class MovieQuizUITests: XCTestCase {
     }
     
     func testGameFinish() {
+
         tapButtonNo()
         
         sleep(2)
