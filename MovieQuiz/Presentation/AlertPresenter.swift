@@ -1,10 +1,9 @@
 
-import Foundation
 import UIKit
 
 struct AlertPresenter: AlertPresenterProtocol {
   
-  var delegate: AlertPresenterDelegate?
+  weak var delegate: AlertPresenterDelegate?
   
   func showResult(quizResult: AlertModel) {   
     let alert = UIAlertController(

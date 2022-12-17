@@ -24,6 +24,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    imageView.layer.cornerRadius = 20
+    
     questionFactory.delegate = self
     alertPresenter.delegate = self
     
@@ -77,14 +79,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
   private func showNextQuestionOrResults() {
     if currentQuestionIndex == questionsAmount - 1 {
       statisticService.store(correct: correctAnswers, total: questionsAmount)
-      let currentGameResultText = "Ваш результат: \(correctAnswers) из 10"
-      let amountOfGamesText = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-      let recordInfoText = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
-      let accuracyText = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
-      let text = currentGameResultText + "\n"
-        + amountOfGamesText + "\n"
-        + recordInfoText + "\n"
-        + accuracyText
+      let text = """
+      Ваш результат: \(correctAnswers)/10
+      Количество сыгранных квизов: \(statisticService.gamesCount)
+      Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+      Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+      """
+
       let viewModel = QuizResultsViewModel(
         title: "Этот раунд окончен!",
         text: text,
@@ -101,7 +102,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     imageView.layer.masksToBounds = true
     imageView.layer.borderWidth = 8
     imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-    imageView.layer.cornerRadius = 20
     
     if isCorrect {
       correctAnswers += 1

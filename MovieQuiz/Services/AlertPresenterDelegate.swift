@@ -1,7 +1,6 @@
 
-import Foundation
 import UIKit
 
-protocol AlertPresenterDelegate {
+protocol AlertPresenterDelegate: AnyObject {
   func presentQuizResults(_ alert: UIAlertController)
 }
