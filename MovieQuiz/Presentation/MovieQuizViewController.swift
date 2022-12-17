@@ -19,8 +19,8 @@ final class MovieQuizViewController: UIViewController {
         let text: String
         let buttonText: String
     }
-    private var correctAnswers: Int = 0
-    private var currentQuestionIndex: Int = 0
+   
+   
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -64,26 +64,6 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false)
     ]
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
-                                 question: model.text,
-                                 questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
-    }
-    
-    private func showAnswerResult(isCorrect: Bool) {
-        if isCorrect {
-               correctAnswers += 1
-           }
-        imageView.layer.cornerRadius = 20
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { 
-                self.showNextQuestionOrResults()
-            }
-        }
-    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
            let text = "Ваш результат: \(correctAnswers) из 10"
@@ -104,6 +84,46 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let currentQuestion = questions[currentQuestionIndex]
+        show(quiz: convert(model: currentQuestion))
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    private var currentQuestionIndex: Int = 0
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
+                                 question: model.text,
+                                 questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+    }
+    
+    private var correctAnswers: Int = 0
+    private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+               correctAnswers += 1
+           }
+        imageView.layer.cornerRadius = 20
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { 
+                self.showNextQuestionOrResults()
+            }
+        }
+    
+   
     private func show(quiz step: QuizStepViewModel) {
         
         imageView.image = step.image
@@ -132,22 +152,7 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let currentQuestion = questions[currentQuestionIndex]
-        show(quiz: convert(model: currentQuestion))
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    @IBAction private func noButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
+
     
     @IBOutlet weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
