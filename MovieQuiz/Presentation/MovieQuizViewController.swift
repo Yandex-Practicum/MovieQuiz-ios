@@ -7,10 +7,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var textLabel: UILabel!
     
-
-
     private var currentQuestionIndex: Int = 0
-    private lazy var currentQuestion  = questions[currentQuestionIndex]
+    private lazy var currentQuestion = questions[currentQuestionIndex]
     private var correctAnswer: Int = 0
     private var allowAnswer: Bool = true
     
@@ -44,7 +42,8 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer += 1
         } else { imageView.layer.borderColor = UIColor(named: "YP Red")?.cgColor
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {self.showNextQuestionOrResults()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
         }
                    
 
