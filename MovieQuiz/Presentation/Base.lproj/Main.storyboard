@@ -55,10 +55,11 @@
                                             </label>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="TpV-6h-5eb" firstAttribute="centerY" secondItem="xDU-Kn-q3K" secondAttribute="centerY" id="9Hq-uw-WDP"/>
                                             <constraint firstItem="TpV-6h-5eb" firstAttribute="top" secondItem="xDU-Kn-q3K" secondAttribute="top" constant="13" id="9zK-xu-QVR"/>
                                             <constraint firstAttribute="bottom" secondItem="TpV-6h-5eb" secondAttribute="bottom" constant="13" id="KFU-eU-Q6W"/>
-                                            <constraint firstItem="TpV-6h-5eb" firstAttribute="leading" secondItem="xDU-Kn-q3K" secondAttribute="leading" constant="42" id="Lz6-pb-eAb"/>
-                                            <constraint firstAttribute="trailing" secondItem="TpV-6h-5eb" secondAttribute="trailing" constant="42" id="cYP-2a-fgK"/>
+                                            <constraint firstItem="TpV-6h-5eb" firstAttribute="centerX" secondItem="xDU-Kn-q3K" secondAttribute="centerX" id="MyB-2x-c7a"/>
+                                            <constraint firstItem="TpV-6h-5eb" firstAttribute="leading" secondItem="xDU-Kn-q3K" secondAttribute="leading" constant="42" id="ybs-ex-0k8"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="l3N-aQ-vfX">
