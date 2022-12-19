@@ -1,8 +1,7 @@
 import UIKit
 
 class AlertPresenter: AlertProtocol {
-   
-
+    
     private weak var delegate: AlertDelegate?
     
     func configure(model: AlertModel) {
