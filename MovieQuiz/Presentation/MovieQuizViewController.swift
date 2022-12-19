@@ -155,7 +155,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             return
         }
         let correctAnswer = currentQuestion.correctAnswer
-        showAnswerResult(isCorrect: correctAnswer == false)
+        showAnswerResult(isCorrect: !correctAnswer)
         
     }
     
@@ -166,7 +166,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
          
         let correctAnswer = currentQuestion.correctAnswer
-        showAnswerResult(isCorrect: correctAnswer == true)
+        showAnswerResult(isCorrect: correctAnswer)
 
     }
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!

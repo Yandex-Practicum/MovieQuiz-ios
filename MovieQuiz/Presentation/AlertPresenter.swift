@@ -8,7 +8,7 @@
 import UIKit
 struct AlertPresenter {
 
-    var delegate: AlertPresenterDelegate?
+    weak var delegate: AlertPresenterDelegate?
     
     func showResult(alertModel: AlertModel) {
         let alert = UIAlertController(title: alertModel.title,
