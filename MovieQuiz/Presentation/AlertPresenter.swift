@@ -5,16 +5,20 @@ struct AlertPresenter: AlertPresenterProtocol {
   
   weak var delegate: AlertPresenterDelegate?
   
-  func showResult(quizResult: AlertModel) {   
+  func show(alertModel: AlertModel) {   
     let alert = UIAlertController(
-      title: quizResult.title,
-      message: quizResult.message,
+      title: alertModel.title,
+      message: alertModel.message,
       preferredStyle: .alert)
     
-    let action = UIAlertAction(title: quizResult.buttonText, style: .default, handler: quizResult.completion)
+    let action = UIAlertAction(title: alertModel.buttonText, style: .default, handler: alertModel.completion)
     alert.addAction(action)
 
     delegate?.presentQuizResults(alert)
+  }
+  
+  func show() {
+    
   }
   
 }
