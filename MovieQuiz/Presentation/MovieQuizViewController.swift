@@ -2,31 +2,14 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
-    private var currentQuestionIndex: Int = 0
-    private var correctAnswers: Int = 0
-    private let questionsAmount: Int = 10
-    
-    private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
-    private var alert: AlertPresenterProtocol?
-    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    
-    // MARK: - Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        
-        alert = AlertPresenter(controller: self)
-        
-    }
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        yesButton.isEnabled = false
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -35,6 +18,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        noButton.isEnabled = false
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -42,10 +26,66 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
+    
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
+    private let questionsAmount: Int = 10
+    
+    private var questionFactory: QuestionFactoryProtocol?
+    private var currentQuestion: QuizQuestion?
+    private var alert: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
+    
+    private enum FileManagerError: Error {
+        case fileDoesntExist
+    }
+    
+    private enum ParseError: Error {
+        case yearFailure
+        case runtimeMinsFailure
+    }
+    
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentDirectory.appendingPathComponent("top250MoviesIMDB.json")
+        var jsonString = ""
+        
+        do {
+            jsonString = try String(contentsOf: fileURL)
+        } catch FileManagerError.fileDoesntExist {
+            print("Файл по адресу \(fileURL) не существует")
+        } catch {
+            print("Неизвестная ошибка чтения из файла \(fileURL)")
+        }
+        
+        let data = jsonString.data(using: .utf8)!
+        
+        do {
+            let result = try JSONDecoder().decode(Top.self, from: data)
+        } catch {
+            print("Failed to parse \(jsonString)")
+        }
+        
+        
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+        
+        alert = AlertPresenter(controller: self)
+        statisticService = StatisticServiceImplementation()
+    }
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -66,7 +106,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 0
         
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = "Ваш результат: \(correctAnswers) из 10"
+           
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
+            guard let gamesCount = statisticService?.gamesCount else {return}
+            guard let bestGame = statisticService?.bestGame else {return}
+            guard let totalAccuracy = statisticService?.totalAccuracy else {return}
+            
+            let text = "Ваш результат: \(correctAnswers)/\(questionsAmount)\nКоличество сыгранных квизов: \(gamesCount)\nРекорд: \(bestGame.correct)/\(bestGame.total) \(bestGame.date.dateTimeString) \nСредняя точность: \(String(format: "%.2f", totalAccuracy))%"
+            
             let alertModel = AlertModel(
                 title: "Этот раунд окончен!",
                 message: text,
