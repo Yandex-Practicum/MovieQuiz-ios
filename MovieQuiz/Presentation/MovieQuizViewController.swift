@@ -5,6 +5,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet var yesButton: UIButton!
+    @IBOutlet var noButton: UIButton!
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -57,14 +59,26 @@ final class MovieQuizViewController: UIViewController {
         
         show(quiz: question)
     }
-    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: true == questions[currentQuestionIndex].correctAnswer)
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
+        // MARK: - Авторское решение из урока
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
     }
     
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: false == questions[currentQuestionIndex].correctAnswer)
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+
+        // MARK: - Авторское решение из урока
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
     }
     
@@ -113,6 +127,9 @@ final class MovieQuizViewController: UIViewController {
         UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+            self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
     }
