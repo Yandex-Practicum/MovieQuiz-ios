@@ -7,20 +7,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
     private var currentQuestion: QuizQuestion? = nil
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
 
-    private let questionsAmount: Int = 5
-    private let questionFactory: QuestionFactoryProtocol? =
-        QuestionFactoryImdb(moviesLoader: MoviesLoader())
-    //private let questionFactory: QuestionFactoryProtocol? =
-    //    QuestionFactoryMockData()
-    private let statisticService: StatisticServiceProtocol? =
-        StatisticServiceUserDefaults()
-    private let alertPresenter = AlertPresenter()
+    private let questionsAmount: Int = 10
+    private var questionFactory: QuestionFactoryProtocol?;
+    private var statisticService: StatisticServiceProtocol?;
+    private var alertPresenter: AlertPresenter?;
 
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
@@ -47,7 +43,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory?.setDelegate(delegate: self)
+        setBaseProperties()
+        initAbstractClasses()
         initFirstTime()
         loadMoviesData()
         showQuestionImpl()
@@ -65,6 +62,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
+    }
+
+    private func setBaseProperties() {
+        activityIndicator.hidesWhenStopped = true;
+    }
+
+    private func initAbstractClasses() {
+        questionFactory = QuestionFactoryImdb(moviesLoader: MoviesLoader())
+        questionFactory?.setDelegate(delegate: self)
+        statisticService = StatisticServiceUserDefaults()
+        alertPresenter = AlertPresenter()
     }
 
     private func initFirstTime() {
@@ -89,7 +97,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showFinalResult() {
-        alertPresenter.show(model: createAlertModel(), controller: self)
+        alertPresenter?.show(model: createAlertModel(), controller: self)
     }
 
     private func showNextQuestionOrResults() {
@@ -176,10 +184,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func showLoadingIndicator(isLoad: Bool) {
         if isLoad {
-            activityIndicator.isHidden = false
             activityIndicator.startAnimating()
         } else {
-            activityIndicator.isHidden = true
             activityIndicator.stopAnimating()
         }
     }
@@ -191,7 +197,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             message: message,
             buttonText: "Попробовать ещё раз") {
             }
-        alertPresenter.show(model: model, controller: self)
+        alertPresenter?.show(model: model, controller: self)
     }
 
 }
