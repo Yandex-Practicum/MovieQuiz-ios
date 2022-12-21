@@ -15,7 +15,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var aletPresenter: AlertPresenter?
+    private var aletPresenter: AlertProtocol? = nil
+    private var statisticService: StatisticService?
     
     
     override func viewDidLoad() {
@@ -25,6 +26,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.masksToBounds = true
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        aletPresenter = AlertPresenter(viewController: self)
+        statisticService = StatisticServiceImplementation()
+        
+        
     }
     // MARK: - QuestionFactoryDelegate
 
@@ -55,6 +60,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let givenAnswer = false
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
+    
+    private func show(quiz result: QuizResultsViewModel) {
+        guard let statisticService = statisticService else {
+            return
+        }
+        let message = "\(result.text)\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy * 100))%"
+        
+        
+             let alertModel = AlertModel(title: result.title, message: message, buttonText: result.buttonText) {[weak self]_ in
+                 guard self != nil else {return}
+             }
+             self.aletPresenter?.show(result: alertModel)
+             self.counterLabel.text = "1/10"
+             self.currentQuestionIndex = 0
+             self.correctAnswers = 0
+             self.questionFactory?.requestNextQuestion()
+         }
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -94,15 +116,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResult() {
         if currentQuestionIndex == questionsAmount - 1 {
+            statisticService?.store(correct: correctAnswers, total: 10)
             let text = correctAnswers == questionsAmount ?
-                    "Поздравляем, Вы ответили на 10 из 10!" :
-                    "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuizResultsViewModel(
-                title: "Этот раунд окончен",
-                text: text,
-                buttonText: "Сыграть еще раз")
+            "Поздравляем, Вы ответили 10 из 10!" :
+            "Ваш результат: \(correctAnswers) из 10"
+                     let viewModel = QuizResultsViewModel(
+                        title: "Этот раунд окончен!",
+                        text: text,
+                        buttonText: "Сыграть еще раз")
+                     show(quiz: viewModel)
             
-            show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
