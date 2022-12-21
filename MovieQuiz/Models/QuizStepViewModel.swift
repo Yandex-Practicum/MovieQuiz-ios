@@ -5,7 +5,6 @@
 //  Created by Александр Ершов on 30.11.2022.
 //
 
-import Foundation
 import UIKit 
 
 // структура для состояния "Вопрос задан"
