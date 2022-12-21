@@ -58,6 +58,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="xIA-Oy-NDI" secondAttribute="height" multiplier="2:3" id="QCv-KH-UYT"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EQn-3f-UE3">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="80"/>
@@ -145,7 +150,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="DyN-wc-mvC" id="jGh-01-nGM"/>
                         <outlet property="imageView" destination="xIA-Oy-NDI" id="vV2-6n-Oql"/>
+                        <outlet property="noButton" destination="qzL-vt-i1y" id="RpG-ge-3Yg"/>
                         <outlet property="textLabel" destination="KTz-iw-veH" id="A61-pB-l4l"/>
+                        <outlet property="yesButton" destination="Qyc-xW-M5r" id="OVp-kM-PLV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
