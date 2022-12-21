@@ -12,7 +12,7 @@ final class StatisticServiceUserDefaults : StatisticServiceProtocol {
     private let userDefaults = UserDefaults.standard
 
     func store(correct count: Int, total amount: Int) {
-        increaseGamesCount()
+        gamesCount += 1
         setTotalAccuracy(correct: count, total: amount)
         updateBestGameIfNeeded(correct: count, total: amount)
     }
@@ -29,34 +29,40 @@ final class StatisticServiceUserDefaults : StatisticServiceProtocol {
         }
     }
 
-    var gamesCount: Int {
+    private(set) var gamesCount: Int {
+        set {
+            userDefaults.set(newValue, forKey: StatisticKeys.gamesCount.rawValue)
+        }
         get {
-            getGamesCount()
+            userDefaults.integer(forKey: StatisticKeys.gamesCount.rawValue)
+        }
+    }
+
+    private var correct: Int {
+        set {
+            userDefaults.set(newValue, forKey: StatisticKeys.correct.rawValue)
+        }
+        get {
+            userDefaults.integer(forKey: StatisticKeys.correct.rawValue)
+        }
+    }
+
+    private var total: Int {
+        set {
+            userDefaults.set(newValue, forKey: StatisticKeys.total.rawValue)
+        }
+        get {
+            userDefaults.integer(forKey: StatisticKeys.total.rawValue)
         }
     }
 
     private func getTotalAccuracy() -> Double {
-        let total = userDefaults.integer(forKey: StatisticKeys.total.rawValue)
-        if total == 0 {
-            return 0.0
-        }
-        let correct = userDefaults.integer(forKey: StatisticKeys.correct.rawValue)
-        return (Double(correct) / Double(total))
+        return (total == 0) ? 0.0 : (Double(correct) / Double(total))
     }
 
     private func setTotalAccuracy(correct count: Int, total amount: Int) {
-        let correct = userDefaults.integer(forKey: StatisticKeys.correct.rawValue)
-        let total = userDefaults.integer(forKey: StatisticKeys.total.rawValue)
-        userDefaults.set(correct + count, forKey: StatisticKeys.correct.rawValue)
-        userDefaults.set(total + amount, forKey: StatisticKeys.total.rawValue)
-    }
-
-    private func getGamesCount() -> Int {
-        userDefaults.integer(forKey: StatisticKeys.gamesCount.rawValue)
-    }
-
-    private func increaseGamesCount() {
-        userDefaults.set(gamesCount + 1, forKey: StatisticKeys.gamesCount.rawValue)
+        correct += count
+        total += amount
     }
 
     private func getBestGame() -> GameRecord {
@@ -78,9 +84,7 @@ final class StatisticServiceUserDefaults : StatisticServiceProtocol {
     }
 
     private func calcAccuracy(correct count: Int, total amount: Int) -> Double {
-        (amount != 0)
-        ? Double(count) / Double(amount)
-        : 0.0
+        (amount != 0) ? Double(count) / Double(amount) : 0.0
     }
 
     private func calcAccuracy(gameRecord: GameRecord) -> Double {
@@ -96,8 +100,7 @@ final class StatisticServiceUserDefaults : StatisticServiceProtocol {
         return fabs(lhs - rhs) < delta
     }
 
-    private func updateBestGameIfNeeded(correct count: Int, total amount: Int)
-    {
+    private func updateBestGameIfNeeded(correct count: Int, total amount: Int) {
         let lastAccuracy = getLastAccuracy()
         let accuracy = calcAccuracy(correct: count, total: amount)
         let isEqual = isDoubleEqual(lhs: lastAccuracy, rhs: accuracy)
