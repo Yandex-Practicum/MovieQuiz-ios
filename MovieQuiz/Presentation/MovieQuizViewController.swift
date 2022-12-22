@@ -34,10 +34,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 20
                        
         if isCorrect == true {
-            imageView.layer.borderColor = UIColor(named: "YP Green")?.cgColor
+            imageView.layer.borderColor = UIColor(named: "green")?.cgColor
             correctAnswer += 1
         } else {
-            imageView.layer.borderColor = UIColor(named: "YP Red")?.cgColor
+            imageView.layer.borderColor = UIColor(named: "red")?.cgColor
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
