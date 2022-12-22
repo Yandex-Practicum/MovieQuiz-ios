@@ -35,7 +35,8 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex = 0
             
             self.correctAnswers = 0
-            // заново показываем первый вопрос
+            self.imageView.layer.borderWidth = 0
+            self.imageView.layer.borderColor = nil
             let firstQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: firstQuestion)
             self.show(quiz: viewModel)
@@ -70,12 +71,13 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
+            
         } else {
-            imageView.layer.borderColor = .none
+            imageView.layer.borderWidth = 0
+            imageView.layer.borderColor = nil
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
-            
             show(quiz: viewModel)
         }
     }
