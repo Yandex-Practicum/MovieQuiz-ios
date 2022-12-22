@@ -164,7 +164,7 @@ private let questions: [QuizQuestion] = [
     QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
 ]
 
-let currentQuestion = questions[currentQuestionIndex]
+private let currentQuestion = questions[currentQuestionIndex]
 private var currentQuestionIndex: Int = 0
 
 private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -173,7 +173,7 @@ private func convert(model: QuizQuestion) -> QuizStepViewModel {
         question: model.text, // берём текст вопроса
         questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // высчитываем номер вопроса
 }
-let viewConverted = convert(model: currentQuestion)
+private let viewConverted = convert(model: currentQuestion)
 
 
 /*
