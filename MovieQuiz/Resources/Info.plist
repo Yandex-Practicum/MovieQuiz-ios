@@ -8,7 +8,7 @@
              <array>
                  <string>YS Display-Bold</string>
                  <string>YS Display-Medium</string>
-        </array> 
+             </array>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 		<key>UISceneConfigurations</key>
