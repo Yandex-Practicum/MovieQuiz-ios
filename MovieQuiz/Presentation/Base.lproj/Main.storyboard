@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xSE-4L-ZIo">
-                                <rect key="frame" x="20" y="58" width="374" height="784.5"/>
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VUS-Lf-pdr">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -58,10 +58,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="awr-11-wJt">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="80"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ENt-qm-2HV" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="54"/>
+                                                <rect key="frame" x="42" y="23" width="290" height="54"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
@@ -69,8 +69,6 @@
                                         </subviews>
                                         <color key="backgroundColor" name="black"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="ENt-qm-2HV" secondAttribute="bottom" constant="13" id="4No-yP-pu6"/>
-                                            <constraint firstItem="ENt-qm-2HV" firstAttribute="top" secondItem="awr-11-wJt" secondAttribute="top" constant="13" id="Ozz-rU-MFl"/>
                                             <constraint firstItem="ENt-qm-2HV" firstAttribute="centerX" secondItem="awr-11-wJt" secondAttribute="centerX" id="Rtb-Cn-Hiw"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ENt-qm-2HV" secondAttribute="trailing" constant="42" id="THN-Wr-oJD"/>
                                             <constraint firstItem="ENt-qm-2HV" firstAttribute="centerY" secondItem="awr-11-wJt" secondAttribute="centerY" id="g7G-aB-JyJ"/>
@@ -78,7 +76,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Cqu-0C-qks">
-                                        <rect key="frame" x="0.0" y="724.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="umk-yG-bfS" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -122,12 +120,16 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="G3X-H6-Qmo" firstAttribute="top" secondItem="VUS-Lf-pdr" secondAttribute="bottom" constant="20" id="dWJ-ST-Hnv"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="black"/>
                         <constraints>
                             <constraint firstItem="xSE-4L-ZIo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="OHG-xz-2py"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xSE-4L-ZIo" secondAttribute="bottom" id="Z5M-KO-sYV"/>
                             <constraint firstItem="xSE-4L-ZIo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="dqm-G6-Jus"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xSE-4L-ZIo" secondAttribute="trailing" constant="20" id="uxI-wz-jJG"/>
                         </constraints>
