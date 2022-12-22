@@ -6,27 +6,26 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
-    
+   
+    private var correctAnswers: Int = 0     //счетчик правильных ответов
+    private var currentQuestionIndex = 0    //индекс текущего вопроса
+
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        waitShowNextQuestion()
-        
+        waitShowNextQuestion(button: sender)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        waitShowNextQuestion()
+        waitShowNextQuestion(button: sender)
     }
-    
-    private var correctAnswers: Int = 0     //счетчик правильных ответов
-    private var currentQuestionIndex = 0    //индекс текущего вопроса
-    
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         let currentQuestion = questions[currentQuestionIndex]
@@ -78,9 +77,7 @@ final class MovieQuizViewController: UIViewController {
         let question = model.text
         return QuizStepViewModel(image: image, question: question, questionNumber: questionNumber)
     }
-    
-    
-    
+        
     //Заполняем счетчик, картинку, текст вопроса данными. Рамку убираем
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
@@ -111,7 +108,7 @@ final class MovieQuizViewController: UIViewController {
     
     //функция показывающая правильный/неправильный результат
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.cornerRadius = 15
+        imageView.layer.cornerRadius = 20
         if isCorrect {
             correctAnswers += 1
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
@@ -120,17 +117,15 @@ final class MovieQuizViewController: UIViewController {
         else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
-        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        
     }
     
-    private func waitShowNextQuestion() {
+    private func waitShowNextQuestion(button: UIButton) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            button.isEnabled = true
         }
-
     }
     
     //функция показа следующего вопроса
@@ -143,14 +138,11 @@ final class MovieQuizViewController: UIViewController {
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
         } else {
-            
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
         }
     }
-    
-    
 }
 
