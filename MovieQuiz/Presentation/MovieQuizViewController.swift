@@ -2,9 +2,9 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
-    @IBOutlet weak private var counterLabel: UILabel!
-    @IBOutlet weak private var imageView: UIImageView!
-    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
     
     private var currentQuestionIndex: Int = 0
     private lazy var currentQuestion = questions[currentQuestionIndex]
@@ -48,8 +48,9 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResults() {
       if currentQuestionIndex == questions.count - 1 {
-          let text = "Ваш раунд результат: \(correctAnswer) из 10"
-          let viewModel = QuizResultsViewModel (title: "Этот раунд окончен", text: text, buttonText: "Сыграть еще раз")
+          let viewModel = QuizResultsViewModel (title: "Этот раунд окончен",
+                                                text: "Ваш результат: \(correctAnswer) из 10",
+                                                buttonText: "Сыграть еще раз")
           show(quiz: viewModel)
       } else {
           currentQuestionIndex += 1
@@ -85,7 +86,7 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert,animated: true, completion: nil)
     }
     
-    @IBAction private func nuButtoneClicked(_ sender: UIButton) {
+    @IBAction private func noButtoneClicked(_ sender: UIButton) {
         if allowAnswer == true {
             let currentQuestion = questions[currentQuestionIndex]
             let givenAnswer = false
