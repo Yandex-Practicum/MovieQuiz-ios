@@ -8,6 +8,9 @@
 import Foundation
 class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
+    private enum ServerError: Error {
+        case custom(description: String)
+    }
     weak private var delegate: QuestionFactoryDelegate?
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
@@ -27,22 +30,18 @@ class QuestionFactory: QuestionFactoryProtocol {
            
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
+                let rating = Float(movie.rating) ?? 0
+                let text = "Рейтинг этого фильма больше чем 7?"
+                let correctAnswer = rating > 7
+                let question = QuizQuestion(image: imageData,
+                                             text: text,
+                                             correctAnswer: correctAnswer)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.didRecieveNextQuestion(question: question)
+                }
             } catch {
                 print("Failed to load image")
-            }
-            
-            let rating = Float(movie.rating) ?? 0
-            
-            let text = "Рейтинг этого фильма больше чем 7?"
-            let correctAnswer = rating > 7
-            
-            let question = QuizQuestion(image: imageData,
-                                         text: text,
-                                         correctAnswer: correctAnswer)
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.didRecieveNextQuestion(question: question)
             }
         }
     }
@@ -53,8 +52,13 @@ class QuestionFactory: QuestionFactoryProtocol {
                 guard let self = self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
-                    self.movies = mostPopularMovies.items
-                    self.delegate?.didLoadDataFromServer()
+                    if mostPopularMovies.errorMessage.isEmpty {
+                        self.movies = mostPopularMovies.items
+                        self.delegate?.didLoadDataFromServer()
+                    } else {
+                        let error = ServerError.custom(description: mostPopularMovies.errorMessage)
+                        self.delegate?.didFailToLoadData(with: error)
+                    }
                 case .failure(let error):
                     self.delegate?.didFailToLoadData(with: error)
                 }

@@ -5,13 +5,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var counterLabel: UILabel!
     @IBOutlet weak private var textLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var alertPresenter: AlertPresenterProtocol? = nil
+    private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
     
     // Показ первого вопроса
@@ -52,8 +52,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         hideLoadingIndicator()
         let model = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз") {[weak self]_ in
             guard self != nil else {return}
-            self?.questionFactory?.loadData()
-            self?.showLoadingIndicator()
+            self!.questionFactory?.loadData()
+            self!.showLoadingIndicator()
         }
         alertPresenter?.show(results: model)
     }
