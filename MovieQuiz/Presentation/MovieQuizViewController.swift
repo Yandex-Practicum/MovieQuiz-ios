@@ -25,14 +25,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        //questionFactory?.requestNextQuestion()
+        questionFactory?.loadData()
+        showLoadingIndicator()
         alertPresenter = AlertPresenter(alertController: self)
         statisticService = StatisticServiceImplementation()
         
+        
     }
     // MARK: - QuestionFactoryDelegate
-    func didRecieveNextQuestion(question: QuizQuestion?) {
+    func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
@@ -71,7 +74,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -155,6 +158,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.questionFactory?.requestNextQuestion()
     })
         alertPresenter?.showAlert(result: alertModel)
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
     }
 }
 
