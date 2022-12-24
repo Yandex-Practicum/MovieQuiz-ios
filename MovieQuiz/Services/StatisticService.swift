@@ -32,7 +32,7 @@ final class StatisticServiceImplementation: StatisticService {
         totalAccuracy = TotalAccuracy(totalAccuracyOfGame: (oldAccuracy + Double(count) / Double(amount)) / 2)
     }
     
-   private(set) var bestGame: GameRecord {
+    private(set) var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGameKey.rawValue),
                   let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
@@ -57,14 +57,14 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-  private(set) var totalAccuracy: TotalAccuracy? {
+    private(set) var totalAccuracy: TotalAccuracy? {
         get {
             guard let data = userDefaults.data(forKey: Keys.totalAccuracyKey.rawValue),
                   let total = try? JSONDecoder().decode(TotalAccuracy.self, from: data) else {
                 return nil
             }
             return total
-            }
+        }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
                 print("Невозможно сохранить результат")
@@ -73,24 +73,24 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.totalAccuracyKey.rawValue)
         }
     }
-
-
-var gamesCount: GameCount {
-    get {
-        guard let data = userDefaults.data(forKey: Keys.gamesCountKey.rawValue),
-              let game = try? JSONDecoder().decode(GameCount.self, from: data) else {
-            return .init(countOfGames: 0)
+    
+    
+    var gamesCount: GameCount {
+        get {
+            guard let data = userDefaults.data(forKey: Keys.gamesCountKey.rawValue),
+                  let game = try? JSONDecoder().decode(GameCount.self, from: data) else {
+                return .init(countOfGames: 0)
+            }
+            return game
         }
-        return game
-    }
-    set {
-        guard let data = try? JSONEncoder().encode(newValue) else {
-            print("Невозможно сохранить результат")
-            return
+        set {
+            guard let data = try? JSONEncoder().encode(newValue) else {
+                print("Невозможно сохранить результат")
+                return
+            }
+            userDefaults.set(data, forKey: Keys.gamesCountKey.rawValue)
         }
-        userDefaults.set(data, forKey: Keys.gamesCountKey.rawValue)
     }
-}
 }
 
 

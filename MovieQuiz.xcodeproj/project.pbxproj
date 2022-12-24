@@ -31,6 +31,7 @@
 		C1C7F1EE2935075500DA287F /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C7F1ED2935075500DA287F /* QuizResultsViewModel.swift */; };
 		C1C7F1F02935076400DA287F /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C7F1EF2935076400DA287F /* QuizQuestion.swift */; };
 		C1D9749129464EC6001F1911 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D9749029464EC6001F1911 /* StatisticService.swift */; };
+		C1FF00402954D93B005912F0 /* Url.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FF003F2954D93B005912F0 /* Url.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		C1C7F1ED2935075500DA287F /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
 		C1C7F1EF2935076400DA287F /* QuizQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
 		C1D9749029464EC6001F1911 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
+		C1FF003F2954D93B005912F0 /* Url.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Url.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				C1BD6E62293F6BDB006F21B0 /* AlertPresenter.swift */,
+				C1FF003F2954D93B005912F0 /* Url.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				C1C7F1EE2935075500DA287F /* QuizResultsViewModel.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
 				C19E87D02943AB7D0097F5A2 /* Movie.swift in Sources */,
+				C1FF00402954D93B005912F0 /* Url.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

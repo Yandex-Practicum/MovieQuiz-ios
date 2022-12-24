@@ -4,14 +4,14 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Actions
     
-    @IBAction private func noButton(_ sender: UIButton) {
+    @IBAction private func noButtonTapped(_ sender: UIButton) {
         let answer = false
         guard let currentQuestion = currentQuestion else {
             return
         }
         showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
     }
-    @IBAction private func yesButton(_ sender: UIButton) {
+    @IBAction private func yesButtonTapped(_ sender: UIButton) {
         let answer = true
         guard let currentQuestion = currentQuestion else {
             return
@@ -33,12 +33,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter = AlertPresenter()
-    var statisticService: StatisticService = StatisticServiceImplementation()
+    private var statisticService: StatisticService = StatisticServiceImplementation()
+
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         let gameCount: GameCount = GameCount(countOfGames: statisticService.gamesCount.countOfGames + 1)
         statisticService.gamesCount = gameCount
         imageView.layer.cornerRadius = 20
@@ -59,7 +60,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         print(documentsURL)
         
         let fileURL = documentsURL.appendingPathComponent("text.swift")
-    
+        
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             let hello = "Hello world!"
             let data = hello.data(using: .utf8)
@@ -156,7 +157,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             imageView.layer.borderWidth = 0
             return
         }
-    
+        
         statisticService.store(correct: correctAnswers, total: questionsAmount)
         let bestRecord = statisticService.bestGame
         let totalCount = statisticService.gamesCount.countOfGames
@@ -167,7 +168,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             totalAccuracyString = "Нет статистики"
         }
-
+        
         let text = """
 Ваш результат: \(correctAnswers)/\(questionsAmount)\n
 Количесчтво сыгранных квизов: \(totalCount)\n

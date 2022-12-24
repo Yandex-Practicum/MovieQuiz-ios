@@ -5,7 +5,7 @@
 //  Created by Мария Авдеева on 06.12.2022.
 //
 import UIKit
-import Foundation
+
 
 struct AlertPresenter {
      func present(alert: AlertModel, presentingViewController: UIViewController) {
