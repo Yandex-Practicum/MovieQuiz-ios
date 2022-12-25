@@ -17,8 +17,4 @@ struct AlertPresenter: AlertPresenterProtocol {
     delegate?.presentQuizResults(alert)
   }
   
-  func show() {
-    
-  }
-  
 }
