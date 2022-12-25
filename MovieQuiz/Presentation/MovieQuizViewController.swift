@@ -30,46 +30,13 @@ final class MovieQuizViewController: UIViewController {
     
     private func getMovie(from jsonString: String) -> Movie? {
         guard let jsonData = jsonString.data(using: .utf8) else { return nil }
-        var movie: Movie? = nil
         do {
-            let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any]
-            guard let json = json,
-                  let id = json["id"] as? String,
-                  let title = json["title"] as? String,
-                  let year = json["year"] as? String,
-                  let image = json["image"] as? String,
-                  let releaseDate = json["releaseDate"] as? String,
-                  let runtimeMins = json["runtimeMins"] as? String,
-                  let directors = json["directors"] as? String,
-                  let actorList = json["actorList"] as? [Any]
-            else { return nil }
-            
-            var actors: [Actor] = []
-            for actor in actorList {
-                if let actor = actor as? [String: Any] {
-                    guard let id = actor["id"] as? String,
-                          let image = actor["image"] as? String,
-                          let name = actor["name"] as? String,
-                          let asCharacter = actor["asCharacter"] as? String
-                    else { return nil }
-                    
-                    actors.append(Actor(id: id, image: image, name: name, asCharacter: asCharacter))
-                }
-            }
-            
-            movie = Movie(id: id,
-                          title: title,
-                          year: year,
-                          image: image,
-                          releaseDate: releaseDate,
-                          runtimeMins: runtimeMins,
-                          directors: directors,
-                          actorList: actors)
+            return try JSONDecoder().decode(Movie.self, from: jsonData)
         } catch {
             print("Failed to parse: \(jsonString)")
         }
         
-        return movie
+        return nil
     }
     
     private func getJSONString() -> String? {
