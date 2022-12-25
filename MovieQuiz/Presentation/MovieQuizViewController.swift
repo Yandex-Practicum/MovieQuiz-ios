@@ -32,10 +32,9 @@ final class MovieQuizViewController: UIViewController {
         guard let jsonData = jsonString.data(using: .utf8) else { return nil }
         do {
             return try JSONDecoder().decode(Movie.self, from: jsonData)
-        } catch {
-            print("Failed to parse: \(jsonString)")
+        } catch let error {
+            print("Failed to parse: \(error.localizedDescription)")
         }
-        
         return nil
     }
     
