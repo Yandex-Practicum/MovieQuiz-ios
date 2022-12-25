@@ -26,7 +26,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        //questionFactory?.requestNextQuestion()
         questionFactory?.loadData()
         showLoadingIndicator()
         alertPresenter = AlertPresenter(alertController: self)
@@ -140,9 +139,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.startAnimating()
     }
     private func hideLoadingIndicator() {
-             activityIndicator.stopAnimating()
-             activityIndicator.isHidden = true
-         }
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
         let alertModel = AlertModel(
@@ -151,12 +150,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             buttonText: "Попробовать ещё раз",
             completion: { [weak self]  in
                 guard let self = self else {
-            return
-        }
-        self.correctAnswers = 0
-        self.currentQuestionIndex = 0
-        self.questionFactory?.requestNextQuestion()
-    })
+                    return
+                }
+                self.correctAnswers = 0
+                self.currentQuestionIndex = 0
+                self.questionFactory?.requestNextQuestion()
+            })
         alertPresenter?.showAlert(result: alertModel)
     }
     
@@ -164,7 +163,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.isHidden = true
         questionFactory?.requestNextQuestion()
     }
-
+    
     func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription)
     }
