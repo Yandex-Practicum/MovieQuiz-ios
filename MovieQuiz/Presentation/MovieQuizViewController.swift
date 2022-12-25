@@ -29,31 +29,6 @@ final class MovieQuizViewController: UIViewController {
         statisticService = StatisticServiceImplementation()
         
         questionFactory?.requestNextQuestion()
-        
-        // проверка json
-        if let jsonString = getJSONString() {
-            guard let movies = getMovies(from: jsonString) else { return }
-            print(movies[0].title)
-        }
-    }
-    
-    private func getMovies(from jsonString: String) -> [Movie]? {
-        guard let jsonData = jsonString.data(using: .utf8) else { return nil }
-        do {
-            let result = try JSONDecoder().decode(Movies.self, from: jsonData)
-            return result.items
-        } catch let error {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-        return nil
-    }
-    
-    private func getJSONString() -> String? {
-        guard let documentsURL = FileManager.default.urls(for: .documentDirectory,
-                                                          in: .userDomainMask).first else { return nil }
-        let fileName = "top250MoviesIMDB.json"
-        let fileURL = documentsURL.appendingPathComponent(fileName)
-        return try? String(contentsOf: fileURL)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
