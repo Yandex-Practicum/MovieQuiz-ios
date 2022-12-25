@@ -11,18 +11,26 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private let questionsAmount = 10
-    private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var alertPresenter: AlertPresenter? = AlertPresenter()
+    private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setDelegates()
+        
+        questionFactory = QuestionFactory()
+        questionFactory?.delegate = self
+        
+        alertPresenter = AlertPresenter()
+        alertPresenter?.delegate = self
+        
+        statisticService = StatisticServiceImplementation()
+        
         questionFactory?.requestNextQuestion()
         
-        // проверка
+        // проверка json
         if let jsonString = getJSONString() {
             guard let movies = getMovies(from: jsonString) else { return }
             print(movies[0].title)
@@ -46,11 +54,6 @@ final class MovieQuizViewController: UIViewController {
         let fileName = "top250MoviesIMDB.json"
         let fileURL = documentsURL.appendingPathComponent(fileName)
         return try? String(contentsOf: fileURL)
-    }
-    
-    private func setDelegates() {
-        questionFactory?.delegate = self
-        alertPresenter?.delegate = self
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -101,7 +104,18 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 0
         
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = "Ваш результат: \(correctAnswers) из 10"
+            
+            guard let statisticService = statisticService else { return }
+            
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
+            let currentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
+            let numberOfQuizzesPlayed = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+            let bestGame = statisticService.bestGame
+            let record = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
+            let accuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+            
+            let text = "\(currentResult) \n \(numberOfQuizzesPlayed) \n \(record) \n \(accuracy)"
             
             let alertModel = AlertModel(title: "Этот раунд окончен!",
                                         message: text,
