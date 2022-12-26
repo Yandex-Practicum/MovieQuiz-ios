@@ -14,6 +14,7 @@ struct AlertPresenter {
         let alert = UIAlertController(title: alertModel.title,
                                       message: alertModel.message,
                                       preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = "ResultAlert"
         let action = UIAlertAction(title: alertModel.buttonText, style: .default, handler: alertModel.completion)
 
         alert.addAction(action)
