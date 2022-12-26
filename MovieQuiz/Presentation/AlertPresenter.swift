@@ -1,12 +1,27 @@
-//
-//  AlertPresenter.swift
-//  MovieQuiz
-//
-//  Created by Марина Писарева on 18.12.2022.
-//
+import UIKit
 
-import Foundation
+struct AlertPresenter: AlertPresenterProtocol {
+    private weak var controller: UIViewController?
 
-struct AlertPresenter {
-    
+    init(controller: UIViewController) {
+        self.controller = controller
+    }
+
+    func showAlert(result: AlertModel) {
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.message,
+            preferredStyle: .alert)
+
+        let action = UIAlertAction(
+            title: "Сыграть еще раз",
+            style: .default,
+            handler: { _ in result.completion() }
+        )
+
+        alert.addAction(action)
+        
+        controller?.present(alert, animated: true, completion: nil)
+
+    }
 }
