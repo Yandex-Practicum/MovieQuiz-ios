@@ -66,7 +66,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h6L-zH-y2l">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="103.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GIg-bN-ZbX" userLabel="Question Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GIg-bN-ZbX" userLabel="Question Label">
                                                 <rect key="frame" x="43" y="0.0" width="288" height="103.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <attributedString key="attributedText">
@@ -153,7 +153,7 @@
                         <color key="backgroundColor" name="YP Black (iOS)"/>
                         <constraints>
                             <constraint firstItem="WvD-Yg-tYn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="FgW-fW-drO"/>
-                            <constraint firstAttribute="bottom" secondItem="WvD-Yg-tYn" secondAttribute="bottom" constant="34" id="XwJ-EN-Cc6"/>
+                            <constraint firstAttribute="bottom" secondItem="WvD-Yg-tYn" secondAttribute="bottom" constant="34" id="VJE-y3-2QS"/>
                             <constraint firstItem="WvD-Yg-tYn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="hXp-1D-dIx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WvD-Yg-tYn" secondAttribute="trailing" constant="20" id="prG-pd-hCl"/>
                         </constraints>
