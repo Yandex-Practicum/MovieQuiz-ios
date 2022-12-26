@@ -34,6 +34,7 @@
 		E036399C295873F0007F2B28 /* MovieQuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E036399B295873F0007F2B28 /* MovieQuizUITests.swift */; };
 		E04696AF291D67F300FA2582 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E04696AD291D67F300FA2582 /* YS Display-Bold.ttf */; };
 		E04696B0291D67F300FA2582 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E04696AE291D67F300FA2582 /* YS Display-Medium.ttf */; };
+		E0CFE78B295A14D2003C8238 /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFE78A295A14D2003C8238 /* MovieQuizPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		E036399B295873F0007F2B28 /* MovieQuizUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizUITests.swift; sourceTree = "<group>"; };
 		E04696AD291D67F300FA2582 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		E04696AE291D67F300FA2582 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		E0CFE78A295A14D2003C8238 /* MovieQuizPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				E036394D2933BB52007F2B28 /* AlertPresenter.swift */,
+				E0CFE78A295A14D2003C8238 /* MovieQuizPresenter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0CFE78B295A14D2003C8238 /* MovieQuizPresenter.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				E036391129320B73007F2B28 /* QuestionFactoryProtocol.swift in Sources */,
