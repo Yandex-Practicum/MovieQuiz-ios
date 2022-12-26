@@ -5,7 +5,7 @@
 //  Created by Viktoria Lobanova on 01.12.2022.
 //
 
-import Foundation
+
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {

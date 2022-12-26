@@ -9,7 +9,6 @@ import Foundation
 
 private enum Keys: String {
     case correct, total, bestGame, gamesCount
-    
 }
 
 struct GameRecord: Codable {
@@ -27,20 +26,6 @@ protocol StatisticServiceProtocol {
 
 final class StatisticServiceImplementation: StatisticServiceProtocol {
     
-    // сохраняет результаты игры
-    func store(correct count: Int, total amount: Int) {
-        self.correct = count + self.correct
-        self.total = amount + self.total
-        
-        if let bestGame = bestGame {
-            if Double(count) / Double(amount) >= Double(bestGame.correct) / Double(bestGame.total) {
-                self.bestGame = GameRecord(correct: count, total: amount, date: Date())
-            }
-        } else {
-            self.bestGame = GameRecord(correct: count, total: amount, date: Date())
-        }
-        self.gamesCount = gamesCount + 1
-    }
     private let userDefaults = UserDefaults.standard
     
     // всего вопросов отвечено
@@ -97,4 +82,18 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
         }
     }
     
+    // сохраняет результаты игры
+    func store(correct count: Int, total amount: Int) {
+        self.correct = count + self.correct
+        self.total = amount + self.total
+        
+        if let bestGame = bestGame {
+            if Double(count) / Double(amount) >= Double(bestGame.correct) / Double(bestGame.total) {
+                self.bestGame = GameRecord(correct: count, total: amount, date: Date())
+            }
+        } else {
+            self.bestGame = GameRecord(correct: count, total: amount, date: Date())
+        }
+        self.gamesCount = gamesCount + 1
+    }
 }

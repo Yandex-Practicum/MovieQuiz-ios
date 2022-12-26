@@ -1,11 +1,12 @@
 import UIKit
-import Foundation
+
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -19,29 +20,73 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(NSHomeDirectory())
-        
         imageView.layer.cornerRadius = 20
+        textLabel.textColor = .ypWhite
+        textLabel.font = .boldSystemFont(ofSize: 23)
+        
         
         alertPresenter = AlertPresenter()
         alertPresenter?.controller = self
         
-        questionFactory = QuestionFactory()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader())
         questionFactory?.delegate = self
         questionFactory?.requestNextQuestion()
         
         statisticService = StatisticServiceImplementation()
+        questionFactory?.loadData()
+        showLoadingIndicator()
         
     }
     
-    // MARK: - QuestionFactoryDelegate
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: "Невозможно загрузить данные")
+    }
+    
+    private func showNetworkError(message: String) { // функция которая покажет, что произошла ошибка
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        
+        let alertError = UIAlertController(    // создаем и показываем алерт
+            title: "Что-то пошло не так(",
+            message: message,
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "Попробовать еще раз?",
+                                   style: .default) { _ in
+    
+            
+            self.questionFactory = QuestionFactory(moviesLoader: MoviesLoader())
+            
+            self.questionFactory?.delegate = self
+
+            self.statisticService = StatisticServiceImplementation()
+
+            self.questionFactory?.loadData()
+          
+            self.showLoadingIndicator()
+           
+        }
+        alertError.addAction(action)
+        self.present(alertError, animated: true, completion: nil)
+    }
     
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
-        
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
@@ -67,7 +112,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
+            image: UIImage(data: model.image) ?? UIImage(), // распаковываем картинку
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")// высчитываем номер вопроса// берём текст вопроса
     }
@@ -78,12 +123,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            
             guard let statisticService = statisticService else {
                 print("Сервис статистики не создан")
                 return
             }
-            
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             let bestGame = statisticService.bestGame ?? GameRecord(correct: correctAnswers, total: questionsAmount, date: Date())
             // показать результат квиза
@@ -93,17 +136,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 text: text,
                 buttonText: "Сыграть еще раз")
             imageView.layer.borderWidth = 0
-            
             let action: (UIAlertAction) -> Void = { _ in
-                
                 self.currentQuestionIndex = 0
-                // скидываем счетчик правильных ответов
-                self.correctAnswers = 0
+                self.correctAnswers = 0  // скидываем счетчик правильных ответов
                 self.questionFactory?.requestNextQuestion()
             }
-            
             alertPresenter?.show(alert: convert(model: viewModel, action: action))
-            
         } else {
             imageView.layer.borderWidth = 0
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1, т.о. мы сможем получить следующий урок
@@ -123,7 +161,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.showNextQuestionOrResults()
         }
     }
-        
+    
     private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image = step.image
