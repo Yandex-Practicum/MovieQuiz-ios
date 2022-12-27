@@ -10,13 +10,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet weak private var noButton: UIButton!
 
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+   // private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private var correctAnswers = 0
     private let presenter = MovieQuizPresenter()
     private var statisticService: StatisticService = StaticticServiceImplementation()
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.viewController = self
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         showLoadingIndicator()
@@ -27,14 +28,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
    
     // MARK: - QuestionFactoryDelegate
     func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.async {[weak self] in
-        self?.show(quiz: viewModel)
-        }
+        presenter.didRecieveNextQuestion(question: question)
     }
     
     func didLoadDataFromServer() {
@@ -56,7 +50,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
-    private func show(quiz quizStepViewModel: QuizStepViewModel) {
+    func show(quiz quizStepViewModel: QuizStepViewModel) {
 
         imageView.image = quizStepViewModel.image
         imageView.layer.cornerRadius = 20
@@ -65,7 +59,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
     }
     
-    private func showAnswerResult(isCorrect: Bool){
+    func showAnswerResult(isCorrect: Bool){
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
@@ -86,32 +80,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self.noButton.isEnabled = true
             self.yesButton.isEnabled = true
             self.imageView.layer.borderWidth = 0
-            self.showNextQuestionOrResults()
+            self.presenter.correctAnswers = self.correctAnswers
+            self.presenter.questionFactory = self.questionFactory
+            self.presenter.statisticService = self.statisticService
+            self.presenter.alertPresenter = self.alertPresenter
+            self.presenter.showNextQuestionOrResults()
             
         })
 
     }
     
-    private func showNextQuestionOrResults() {
-        if presenter.isLastQuestion() {
-            statisticService.store(current: correctAnswers, total: presenter.questionAmount)
-            let alertModelResult = AlertModel(title: "Этот раунд окончен",
-                                              message: "Ваш результат: \(correctAnswers)/\(presenter.questionAmount)\n Количество сыгранных квизов: \(statisticService.gamesCount) \n Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))\n Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%",
-                                              buttonText: "Сыграть еще раз",
-                                              completion: { [weak self] _ in
-                                                            guard let self = self else {
-                                                                return
-                                                            }
-                                                            self.correctAnswers = 0
-                                                            self.presenter.resetQuestionIndex()
-                                                            self.questionFactory?.requestNextQuestion()
-                                            })
-            alertPresenter?.showResult(alertModel: alertModelResult)
-        } else {
-            presenter.switchToNextQuestion()
-            questionFactory?.requestNextQuestion()
-        }
-    }
     
     private func showLoadingIndicator() {
         activityIndicator.isHidden = false
@@ -140,24 +118,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
-        
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let correctAnswer = currentQuestion.correctAnswer
-        showAnswerResult(isCorrect: !correctAnswer)
-        
+        presenter.noButtonClicked()
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-         
-        let correctAnswer = currentQuestion.correctAnswer
-        showAnswerResult(isCorrect: correctAnswer)
-
+        presenter.yesButtonClicked()
     }
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
