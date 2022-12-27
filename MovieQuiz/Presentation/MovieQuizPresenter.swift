@@ -1,8 +1,34 @@
 
 import UIKit
-final class MovieQuizPresenter {
+final class MovieQuizPresenter: QuestionFactoryDelegate {
+
     let questionAmount = 10
+    
+    var correctAnswers = 0
+    private var questionFactory: QuestionFactoryProtocol?
+    var statisticService: StatisticService?
+    var alertPresenter: AlertPresenter?
+    var currentQuestion: QuizQuestion?
+    private weak var viewController: MovieQuizViewController?
     private var currentQuestionIndex = 0
+    
+    init( viewController: MovieQuizViewController) {
+        self.viewController = viewController
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+    }
+    
+    func didLoadDataFromServer() {
+        viewController?.hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        viewController?.showNetworkError(message: error.localizedDescription)
+    }
+    
+    
     func convert(model: QuizQuestion) -> QuizStepViewModel{
         return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
                                  question: model.text,
@@ -15,14 +41,14 @@ final class MovieQuizPresenter {
     
     func resetQuestionIndex() {
         currentQuestionIndex = 0
+        correctAnswers = 0
     }
     
     func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     // Button click
-    var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
+
     
     func yesButtonClicked() {
         didAnswer(isYes: true)
@@ -53,10 +79,7 @@ final class MovieQuizPresenter {
         self?.viewController?.show(quiz: viewModel)
         }
     }
-    var correctAnswers = 0
-    var questionFactory: QuestionFactoryProtocol?
-    var statisticService: StatisticService?
-    var alertPresenter: AlertPresenter?
+
     func showNextQuestionOrResults() {
         if self.isLastQuestion() {
             guard let statisticService = statisticService else {
@@ -79,5 +102,15 @@ final class MovieQuizPresenter {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
+    }
+    
+    func didAnswer(isCorrect: Bool) {
+        correctAnswers += 1
+    }
+    
+    func restartGame() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
     }
 }
