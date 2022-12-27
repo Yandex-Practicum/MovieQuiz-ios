@@ -7,6 +7,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -66,24 +68,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             preferredStyle: .alert)
         let action = UIAlertAction(title: "Попробовать еще раз?",
                                    style: .default) { _ in
-    
-            
             self.questionFactory = QuestionFactory(moviesLoader: MoviesLoader())
-            
             self.questionFactory?.delegate = self
-
             self.statisticService = StatisticServiceImplementation()
-
             self.questionFactory?.loadData()
-          
             self.showLoadingIndicator()
-           
         }
         alertError.addAction(action)
         self.present(alertError, animated: true, completion: nil)
     }
     
     func didRecieveNextQuestion(question: QuizQuestion?) {
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
         guard let question = question else {
             return
         }
@@ -98,6 +95,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
@@ -106,6 +105,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }

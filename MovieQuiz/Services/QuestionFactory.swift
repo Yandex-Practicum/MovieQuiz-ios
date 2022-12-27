@@ -39,22 +39,22 @@ class QuestionFactory: QuestionFactoryProtocol {
             var imageData = Data() // по умолчанию у нас будут просто пустые данные
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
+                let rating = Float(movie.rating) ?? 0 // превращаем строку в число
+                let text = "Рейтинг этого фильма больше, чем 7?"
+                let correctAnswer = rating > 7
+                let question = QuizQuestion(image: imageData,
+                                            text: text,
+                                            correctAnswer: correctAnswer)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.didRecieveNextQuestion(question: question)
+                }
             } catch {
                 print("Failed to load image")
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     self.delegate?.didFailToLoadData(with: error)
                 }
-            }
-            let rating = Float(movie.rating) ?? 0 // превращаем строку в число
-            let text = "Рейтинг этого фильма больше, чем 7?"
-            let correctAnswer = rating > 7
-            let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.didRecieveNextQuestion(question: question)
             }
         }
     }

@@ -41,6 +41,7 @@ struct MoviesLoader: MoviesLoading {
         
         var mostPopularMoviesData: Movies?
         var top250MoviesData: Movies?
+        var loadError: Error?
         
         let group = DispatchGroup()
         
@@ -54,11 +55,11 @@ struct MoviesLoader: MoviesLoading {
                     group.leave()
                     
                 } catch {
-                    handler(.failure(error))
+                    loadError = error
                     group.leave()
                 }
             case .failure(let error):
-                handler(.failure(error))
+                loadError = error
                 group.leave()
             }
         }
@@ -73,17 +74,19 @@ struct MoviesLoader: MoviesLoading {
                     group.leave()
                     
                 } catch {
-                    handler(.failure(error))
+                    loadError = error
                     group.leave()
                 }
             case .failure(let error):
-                handler(.failure(error))
+                loadError = error
                 group.leave()
             }
         }
         
         group.notify(queue: .main) {
-            if top250MoviesData?.items.count ?? 0 > 0 || mostPopularMoviesData?.items.count ?? 0 > 0 {
+            if let loadError = loadError {
+                handler(.failure(loadError))
+            } else {
                 let allMovies = (top250MoviesData?.items ?? [MovieData]()) + (mostPopularMoviesData?.items ?? [MovieData]())
                 handler(.success(Movies(errorMessage: "", items: allMovies)))
             }
