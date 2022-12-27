@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A0C009329585E580001EF2C /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C009229585E580001EF2C /* NetworkClient.swift */; };
 		8A3144F6293F7FDD00F2EA5C /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3144F5293F7FDD00F2EA5C /* QuestionFactory.swift */; };
 		8A3144F9293F8C9D00F2EA5C /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3144F8293F8C9D00F2EA5C /* QuizStepViewModel.swift */; };
 		8A3144FB293F8CBE00F2EA5C /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3144FA293F8CBE00F2EA5C /* QuizResultsViewModel.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8A0C009229585E580001EF2C /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		8A3144F5293F7FDD00F2EA5C /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		8A3144F8293F8C9D00F2EA5C /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
 		8A3144FA293F8CBE00F2EA5C /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				8A3145022940D38E00F2EA5C /* QuestionFactoryDelegate.swift */,
 				8A3145092940F2DA00F2EA5C /* AlertPresenterProtocol.swift */,
 				8A4C6A5C294A5BC3009C59D3 /* StatisticService.swift */,
+				8A0C009229585E580001EF2C /* NetworkClient.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0C009329585E580001EF2C /* NetworkClient.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				8A3145082940EDD200F2EA5C /* AlertPresenter.swift in Sources */,
 				8A3145052940EBAA00F2EA5C /* AlertModel.swift in Sources */,

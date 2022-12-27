@@ -7,6 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         yesButton.isEnabled = false
@@ -49,6 +50,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         case runtimeMinsFailure
     }
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError() {
+        hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: "",
+                               buttonText: "Попробовать еще раз") {}
+        
+        alert?.showAlert(model: model)
+    }
+
     
     // MARK: - Lifecycle
     
@@ -127,7 +147,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     self.correctAnswers = 0
                     self.questionFactory?.requestNextQuestion()
                 })
-            alert?.showAlert(result: alertModel)
+            alert?.showAlert(model: alertModel)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()

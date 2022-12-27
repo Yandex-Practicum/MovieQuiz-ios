@@ -26,14 +26,17 @@ final class StatisticServiceImplementation: StatisticService {
         case correct, total, bestGame, gamesCount
     }
     
+    // Получаем количество правильных ответов
     var correct: Int {
         return userDefaults.integer(forKey: Keys.correct.rawValue)
     }
     
+    // Получаем количество сыгранных игр
     var total: Int {
         return userDefaults.integer(forKey: Keys.total.rawValue)
     }
     
+    // Высчитываем процент точности
     var totalAccuracy: Double {
         get {
             let correctCount = Double(userDefaults.integer(forKey: Keys.correct.rawValue))

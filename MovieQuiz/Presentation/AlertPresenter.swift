@@ -15,17 +15,17 @@ final class AlertPresenter: AlertPresenterProtocol {
     }
     
     
-    func showAlert(result: AlertModel) {
+    func showAlert(model: AlertModel) {
         
         let alert = UIAlertController(
-            title: result.title,
-            message: result.message,
+            title: model.title,
+            message: model.message,
             preferredStyle: .alert)
         
         let action = UIAlertAction(
             title: "Сыграть еще раз",
             style: .default,
-            handler: { _ in result.completion() }
+            handler: { _ in model.completion() }
         )
         
         alert.addAction(action)
