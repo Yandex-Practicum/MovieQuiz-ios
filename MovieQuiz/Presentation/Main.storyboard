@@ -56,7 +56,7 @@
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhI-qY-anr" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="73.5"/>
+                                                <rect key="frame" x="42" y="0.0" width="290" height="99.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <nil key="highlightedColor"/>
@@ -64,9 +64,9 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="EhI-qY-anr" firstAttribute="leading" secondItem="i0T-Qw-7VI" secondAttribute="leading" constant="42" id="Boe-M9-yLs"/>
-                                            <constraint firstItem="EhI-qY-anr" firstAttribute="top" secondItem="i0T-Qw-7VI" secondAttribute="top" constant="13" id="Qay-jf-Jak"/>
+                                            <constraint firstItem="EhI-qY-anr" firstAttribute="top" secondItem="i0T-Qw-7VI" secondAttribute="top" id="Qay-jf-Jak"/>
                                             <constraint firstAttribute="trailing" secondItem="EhI-qY-anr" secondAttribute="trailing" constant="42" id="RMm-li-wnr"/>
-                                            <constraint firstAttribute="bottom" secondItem="EhI-qY-anr" secondAttribute="bottom" constant="13" id="yB7-1u-Dxx"/>
+                                            <constraint firstAttribute="bottom" secondItem="EhI-qY-anr" secondAttribute="bottom" id="yB7-1u-Dxx"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="G1Z-Zm-j0d" userLabel="Stack View Buttons">
@@ -121,7 +121,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black (iOS)"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6Yl-16-7rg" secondAttribute="bottom" id="2Rl-Iq-aoL"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6Yl-16-7rg" secondAttribute="trailing" constant="20" id="Tkb-UF-Qpp"/>

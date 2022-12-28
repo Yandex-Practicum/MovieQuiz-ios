@@ -1,6 +1,10 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     // для состояния "Вопрос задан"
     struct QuizStepViewModel {
         let image: UIImage
