@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol {
 
     // MARK: - Lifecycle
     @IBOutlet weak private var imageView: UIImageView!
@@ -9,10 +9,8 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     @IBOutlet weak private var yesButton: UIButton!
     @IBOutlet weak private var noButton: UIButton!
 
-    //private var questionFactory: QuestionFactoryProtocol?
-    private var alertPresenter: AlertPresenter?
+    var alertPresenter: AlertPresenter?
     private var presenter: MovieQuizPresenter!
-    private var statisticService: StatisticService = StaticticServiceImplementation()
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter = MovieQuizPresenter(viewController: self)
@@ -23,7 +21,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
    
     
     // MARK: - AlertPresenterDelegate
-    func didPresentAlert(alert: UIAlertController?) {
+   func didPresentAlert(alert: UIAlertController?) {
         guard let alert = alert else {
             return
         }
@@ -41,35 +39,28 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
         
     }
     
-    func showAnswerResult(isCorrect: Bool){
+
+    func highLightImageBorder (isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
-        if isCorrect {
+        if isCorrectAnswer {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
             presenter.didAnswer(isCorrect: true)
         } else{
             imageView.layer.borderColor = UIColor.ypRed.cgColor
             
         }
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.noButton.isEnabled = true
-            self.yesButton.isEnabled = true
-            self.imageView.layer.borderWidth = 0
-            self.presenter.statisticService = self.statisticService
-            self.presenter.alertPresenter = self.alertPresenter
-            self.presenter.showNextQuestionOrResults()
-            
-        })
-
     }
     
+    func hideBorder() {
+        imageView.layer.borderWidth = 0
+    }
+    
+    func buttonsEnable(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
+    }
     
     func showLoadingIndicator() {
         activityIndicator.isHidden = false
