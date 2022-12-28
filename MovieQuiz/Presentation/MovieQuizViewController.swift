@@ -31,7 +31,7 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers: Int = 0
     
     private var currentQuestionIndex: Int = 0
-    lazy var currentQuestion = questions[currentQuestionIndex]
+    private lazy var currentQuestion = questions[currentQuestionIndex]
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -79,9 +79,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
     
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +90,11 @@ final class MovieQuizViewController: UIViewController {
         let viewModel = convert(model: nextQuestion)
     
         show(quiz: viewModel)
+        
+        imageView.layer.cornerRadius = 6
+        imageView.layer.borderWidth = 6
+        imageView.layer.masksToBounds = true
+
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -110,9 +115,6 @@ final class MovieQuizViewController: UIViewController {
         }
         
         imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 6
-        imageView.layer.cornerRadius = 6
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.showNextQuestionOrResults()
