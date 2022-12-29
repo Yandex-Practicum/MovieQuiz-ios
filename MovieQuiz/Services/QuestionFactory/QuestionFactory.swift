@@ -7,7 +7,7 @@
 
 import Foundation
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
 
     
     private let questions: [QuizQuestion] = [
@@ -53,7 +53,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             correctAnswer: false)]
     // Состояние вопрос задан
     
-    weak var delegate: QuestionFactoryDelegate?
+    private weak var delegate: QuestionFactoryDelegate?
     
     init(delegate: QuestionFactoryDelegate? = nil) {
         self.delegate = delegate
