@@ -107,7 +107,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
 
             alertPresenter?.show(result: alert)
-
         } else {
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1
             questionFactory?.requestNextQuestion()
