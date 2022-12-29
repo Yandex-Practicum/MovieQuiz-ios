@@ -125,7 +125,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		ABA3F5EA295E295E007111AC /* Model */ = {
+		ABA3F5EA295E295E007111AC /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				ABCA7934295B86D200867AAB /* QuizStepViewModel.swift */,
@@ -134,7 +134,7 @@
 				ABCA793A295B86F500867AAB /* AlertModel.swift */,
 				AB4D866B295CBD8C006C2178 /* GameRecord.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		ABB9BC722941DF8A0078A912 /* MovieQuizFonts */ = {
@@ -165,7 +165,7 @@
 		AD1ABAB02831907B00B3E448 /* MovieQuiz */ = {
 			isa = PBXGroup;
 			children = (
-				ABA3F5EA295E295E007111AC /* Model */,
+				ABA3F5EA295E295E007111AC /* Models */,
 				AB4D8671295CC0EA006C2178 /* View */,
 				8F4738322848DE2A005DF65E /* Presentation */,
 				AB64BE572954A05100D6BE86 /* Services */,
