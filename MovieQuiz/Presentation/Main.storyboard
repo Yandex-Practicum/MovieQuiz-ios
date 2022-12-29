@@ -88,6 +88,11 @@
                                                     <color key="baseForegroundColor" name="YP Black (iOS)"/>
                                                     <color key="baseBackgroundColor" name="YP White (iOS)"/>
                                                 </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="I0U-YP-dZT"/>
                                                 </connections>
@@ -108,6 +113,11 @@
                                                     <color key="baseForegroundColor" name="YP Black (iOS)"/>
                                                     <color key="baseBackgroundColor" name="YP White (iOS)"/>
                                                 </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KRZ-Cm-MMb"/>
                                                 </connections>
