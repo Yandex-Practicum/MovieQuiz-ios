@@ -91,8 +91,8 @@ final class MovieQuizViewController: UIViewController {
     
         show(quiz: viewModel)
         
-        imageView.layer.cornerRadius = 6
-        imageView.layer.borderWidth = 6
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderWidth = 8
         imageView.layer.masksToBounds = true
 
     }
@@ -114,7 +114,7 @@ final class MovieQuizViewController: UIViewController {
             correctAnswers += 1
         }
         
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
+        imageView.layer.borderColor = isCorrect ? UIColor(red: 0.376, green: 0.761, blue: 0.557, alpha: 1).cgColor : UIColor(red: 0.961, green: 0.42, blue: 0.424, alpha: 1).cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.showNextQuestionOrResults()
