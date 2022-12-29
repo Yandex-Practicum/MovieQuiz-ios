@@ -125,16 +125,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		ABB9BC722941DF8A0078A912 /* MovieQuizFonts */ = {
-			isa = PBXGroup;
-			children = (
-				ABB9BC732941DF8A0078A912 /* YS Display-Bold.ttf */,
-				ABB9BC742941DF8A0078A912 /* YS Display-Medium.ttf */,
-			);
-			path = MovieQuizFonts;
-			sourceTree = "<group>";
-		};
-		ABCA7933295B86D200867AAB /* Models */ = {
+		ABA3F5EA295E295E007111AC /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				ABCA7934295B86D200867AAB /* QuizStepViewModel.swift */,
@@ -143,7 +134,16 @@
 				ABCA793A295B86F500867AAB /* AlertModel.swift */,
 				AB4D866B295CBD8C006C2178 /* GameRecord.swift */,
 			);
-			path = Models;
+			path = Model;
+			sourceTree = "<group>";
+		};
+		ABB9BC722941DF8A0078A912 /* MovieQuizFonts */ = {
+			isa = PBXGroup;
+			children = (
+				ABB9BC732941DF8A0078A912 /* YS Display-Bold.ttf */,
+				ABB9BC742941DF8A0078A912 /* YS Display-Medium.ttf */,
+			);
+			path = MovieQuizFonts;
 			sourceTree = "<group>";
 		};
 		AD1ABAA52831907B00B3E448 = {
@@ -165,7 +165,7 @@
 		AD1ABAB02831907B00B3E448 /* MovieQuiz */ = {
 			isa = PBXGroup;
 			children = (
-				ABCA7933295B86D200867AAB /* Models */,
+				ABA3F5EA295E295E007111AC /* Model */,
 				AB4D8671295CC0EA006C2178 /* View */,
 				8F4738322848DE2A005DF65E /* Presentation */,
 				AB64BE572954A05100D6BE86 /* Services */,
