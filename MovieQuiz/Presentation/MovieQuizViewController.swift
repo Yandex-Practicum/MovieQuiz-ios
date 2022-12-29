@@ -23,6 +23,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private weak var imageView: UIImageView!
     
+    
+    
     @IBOutlet private weak var textLabel: UILabel!
     
     @IBOutlet private weak var counterLabel: UILabel!
@@ -84,10 +86,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             countCorrectAnswer += 1
         }
         
+sprint_05
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
+
             
             
         }
@@ -106,6 +110,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                               buttonText: model.buttonText,
                               completion: completion)
         }
+ sprint_05
     private func showAlertResult() {
         guard let gameCount = statisticService?.gamesCount else {return}
         guard let accuracy = statisticService?.totalAccuracy else {return}
@@ -138,14 +143,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             if allStatisticsCollected != false {
                 showAlertResult()
             }
+=======
+
+    
+  
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
     }
     
+sprint_05
     func setStoreRecord(correct count: Int, total amount: Int) {
         statisticService?.storeRecord(correct: count, total: amount)
+
     }
     
     
