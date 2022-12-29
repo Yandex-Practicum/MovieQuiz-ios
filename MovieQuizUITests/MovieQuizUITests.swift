@@ -1,6 +1,7 @@
 import XCTest
+@testable import MovieQuiz
 
-final class MovieQuizUITests: XCTestCase {
+class MovieQuizUITests: XCTestCase {
 //swiftlint:disable:next implicity_unwrapped_optional
     var app: XCUIApplication!
 
@@ -22,6 +23,7 @@ final class MovieQuizUITests: XCTestCase {
       }
 
     //func testScreenCast() throws { }
+    
     func testYesButton() throws {
         let firstPoster = app.images["Poster"]
         
@@ -36,4 +38,53 @@ final class MovieQuizUITests: XCTestCase {
         XCTAssertFalse(firstPoster == secondPoster)
         
     }
+    
+    func testNoButton() throws {
+        let firstPoster = app.images["Poster"]
+        
+        app.buttons["No"].tap()
+        
+        let seconfPoster = app.images["Poster"]
+        let indexLabel = app.staticTexts["Index"]
+        
+        sleep(3)
+        
+        XCTAssertTrue(indexLabel.label == "2/10")
+        XCTAssertFalse(firstPoster == seconfPoster)
+    }
+    
+    func testGameFinish() {
+        for _ in 1...10 {
+            app.buttons["No"].tap()
+            sleep(2)
+        }
+        
+        sleep(3)
+        
+        let alert = app.alerts["Game results"]
+        
+        XCTAssertTrue(alert.exists)
+        XCTAssertTrue(alert.label == "Этот раунд окончен!")
+        XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть ещё раз")
+    }
+    
+    func testAlertDismiss() {
+        for _ in 1...10 {
+            app.buttons["No"].tap()
+            sleep(2)
+        }
+        
+        sleep(3)
+        
+        let alert = app.alerts["Game results"]
+        alert.buttons.firstMatch.tap()
+        
+        sleep(3)
+        
+        let indexLabel = app.staticTexts["Index"]
+        
+        XCTAssertFalse(alert.exists)
+        XCTAssertTrue(indexLabel.label == "1/10")
+    }
+   
 }

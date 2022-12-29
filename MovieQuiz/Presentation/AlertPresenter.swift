@@ -18,6 +18,7 @@ final class AlertPresenter: AlertPresenterProtocol {
             handler: { _ in result.completion()
             })
         
+        alert.view.accessibilityIdentifier = "Game results"
         alert.addAction(action)
         alertController?.present(alert, animated: true, completion: nil)
     }
