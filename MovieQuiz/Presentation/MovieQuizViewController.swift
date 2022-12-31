@@ -23,8 +23,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private weak var imageView: UIImageView!
     
-    
-    
     @IBOutlet private weak var textLabel: UILabel!
     
     @IBOutlet private weak var counterLabel: UILabel!
@@ -50,6 +48,38 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - funcs
     
+
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            self.viewDidLoad()
+        }
+        
+        alertPresenter?.show(quiz: model)
+    }
+    
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     private func disableMyButtons() {
         buttonNo.isEnabled = false
         buttonYes.isEnabled = false
@@ -63,7 +93,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel (image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel (image: UIImage(data: model.image) ?? UIImage(),
                                   question: model.text,
                                   questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         
@@ -86,14 +116,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             countCorrectAnswer += 1
         }
         
-sprint_05
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
-
-            
-            
         }
     }
     
@@ -110,12 +136,13 @@ sprint_05
                               buttonText: model.buttonText,
                               completion: completion)
         }
- sprint_05
+        
     private func showAlertResult() {
-        guard let gameCount = statisticService?.gamesCount else {return}
-        guard let accuracy = statisticService?.totalAccuracy else {return}
+        guard let gameCount = statisticService?.gamesCount,
+        let accuracy = statisticService?.totalAccuracy,
+        let bestGame = statisticService?.bestGame else {return}
+        
         let totalAccuracy = (String(format: "%.2f", accuracy))
-       guard let bestGame = statisticService?.bestGame else {return}
         let record = "\(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
         let alertModel = QuizResultsViewModel(title: "Этот раунд окончен!",
                                                       text: """
@@ -143,20 +170,15 @@ sprint_05
             if allStatisticsCollected != false {
                 showAlertResult()
             }
-=======
-
-    
-  
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
     }
     
-sprint_05
+
     func setStoreRecord(correct count: Int, total amount: Int) {
         statisticService?.storeRecord(correct: count, total: amount)
-
     }
     
     
@@ -171,8 +193,9 @@ sprint_05
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+        questionFactory?.loadData()
+        showLoadingIndicator()
         alertPresenter = AlertPresenter(controller: self)
         statisticService = StatisticServiceImplementation()
         
@@ -221,9 +244,11 @@ sprint_05
 
 
 
-struct Result {
-    let answer: Bool
-}
+
+//struct Result {
+//    let answer: Bool
+//}
+
 
 
 
