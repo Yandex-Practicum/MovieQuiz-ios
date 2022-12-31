@@ -76,7 +76,6 @@ class QuestionFactory: QuestionFactoryProtocol {
             }
         }
     }
-    
 }
 
 

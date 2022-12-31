@@ -48,6 +48,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - funcs
     
+
     private func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
@@ -119,8 +120,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
-            
-            
         }
     }
     
@@ -137,6 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                               buttonText: model.buttonText,
                               completion: completion)
         }
+        
     private func showAlertResult() {
         guard let gameCount = statisticService?.gamesCount else {return}
         guard let accuracy = statisticService?.totalAccuracy else {return}
@@ -175,6 +175,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+
     func setStoreRecord(correct count: Int, total amount: Int) {
         statisticService?.storeRecord(correct: count, total: amount)
     }
@@ -242,9 +243,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
 
 
+
 //struct Result {
 //    let answer: Bool
 //}
+
 
 
 
