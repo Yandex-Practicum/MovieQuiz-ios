@@ -57,17 +57,10 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bW2-mv-hAo">
                                         <rect key="frame" x="0.0" y="645.66666666666663" width="388" height="128"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zp-An-u1B" userLabel="Question Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zp-An-u1B" userLabel="Question Label">
                                                 <rect key="frame" x="42" y="13" width="304" height="102"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Рейтинг этого фильма меньше, чем 5?">
-                                                        <attributes>
-                                                            <color key="NSColor" name="white"/>
-                                                            <font key="NSFont" size="20" name="YSDisplay-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
+                                                <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
