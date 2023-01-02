@@ -33,6 +33,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter = AlertPresenter(alertController: self)
         statisticService = StatisticServiceImplementation()
         
+        presenter.viewController = self
         
     }
     // MARK: - QuestionFactoryDelegate
@@ -49,20 +50,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     // MARK: - Actions
     
-    @IBAction private func noButtonClicked(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked((Any).self)
+//        guard let currentQuestion = currentQuestion else {
+//            return
+//        }
+//        let givenAnswer = false
+//        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked((Any).self)
+//        guard let currentQuestion = currentQuestion else {
+//            return
+//        }
+//        let givenAnswer = true
+//        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     // MARK: - Private functions
@@ -80,7 +85,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 //            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
 //    }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
