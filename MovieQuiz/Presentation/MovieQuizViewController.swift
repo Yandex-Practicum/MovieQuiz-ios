@@ -52,7 +52,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         presenter.currentQuestion = currentQuestion
-        presenter.noButtonClicked((Any).self)
+        presenter.noButtonClicked()
 //        guard let currentQuestion = currentQuestion else {
 //            return
 //        }
@@ -62,7 +62,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.currentQuestion = currentQuestion
-        presenter.yesButtonClicked((Any).self)
+        presenter.yesButtonClicked()
 //        guard let currentQuestion = currentQuestion else {
 //            return
 //        }
