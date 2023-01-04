@@ -12,15 +12,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
     //private var currentQuestionIndex: Int = 0
-    private var correctAnswers: Int = 0
+    private var correctAnswers: Int = 0 //
     
     //private let questionsAmount: Int = 10
-    private var currentQuestion: QuizQuestion?
-    private var questionFactory: QuestionFactoryProtocol? = nil
+    //private var currentQuestion: QuizQuestion?
+    private var questionFactory: QuestionFactoryProtocol? = nil//
     
-    private var alertPresenter: AlertPresenterProtocol? = nil
+    private var alertPresenter: AlertPresenterProtocol? = nil//
     
-    private var statisticService: StatisticService?
+    private var statisticService: StatisticService? //
     
     private let presenter = MovieQuizPresenter()
     
@@ -74,6 +74,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Private functions
     
     func show(quiz step: QuizStepViewModel) {
+        
+        imageView.layer.borderColor = UIColor.clear.cgColor
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
+        
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -102,45 +107,46 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.showNextQuestionOrResults()
+            self.presenter.correctAnswers = self.correctAnswers
+            self.presenter.questionFactory = self.questionFactory
+            self.presenter.statisticService = self.statisticService
+            self.presenter.alertPresenter = self.alertPresenter
+            self.presenter.showNextQuestionOrResults()
         }
     }
     
-    private func showNextQuestionOrResults() {
+    //private func showNextQuestionOrResults() {
         
-        imageView.layer.borderColor = UIColor.clear.cgColor
+      
         
-        noButton.isEnabled = true
-        yesButton.isEnabled = true
-        
-        if presenter.isLastQuestion() {
-            statisticService?.store(correct: correctAnswers, total: presenter.questionsAmount)
-            guard
-                let bestGame = statisticService?.bestGame,
-                let gamesCount = statisticService?.gamesCount,
-                let totalAccuracy = statisticService?.totalAccuracy
-            else {
-                return
-            }
-            let alertModel = AlertModel(
-                title: "Этот раунд окончен!",
-                message: """
-                        Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
-                        Количество сыгранных квизов: \(gamesCount)
-                        Рекорд: \(bestGame.correct)/\(bestGame.total)/(\(bestGame.date.dateTimeString))
-                        Средняя точность: \(String(format: "%.2f", statisticService!.totalAccuracy))%
-                        """,
-                buttonText: "Сыграть ещё раз") {
-                    self.presenter.resetQuestionIndex()
-                    self.correctAnswers = 0
-                    self.questionFactory?.requestNextQuestion()
-                }
-            alertPresenter?.showAlert(result: alertModel)
-        } else {
-            presenter.switchToNextQuestion()
-            questionFactory?.requestNextQuestion()
-        }
-    }
+//        if presenter.isLastQuestion() {
+//            statisticService?.store(correct: correctAnswers, total: presenter.questionsAmount)
+//            guard
+//                let bestGame = statisticService?.bestGame,
+//                let gamesCount = statisticService?.gamesCount,
+//                let totalAccuracy = statisticService?.totalAccuracy
+//            else {
+//                return
+//            }
+//            let alertModel = AlertModel(
+//                title: "Этот раунд окончен!",
+//                message: """
+//                        Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
+//                        Количество сыгранных квизов: \(gamesCount)
+//                        Рекорд: \(bestGame.correct)/\(bestGame.total)/(\(bestGame.date.dateTimeString))
+//                        Средняя точность: \(String(format: "%.2f", statisticService!.totalAccuracy))%
+//                        """,
+//                buttonText: "Сыграть ещё раз") {
+//                    self.presenter.resetQuestionIndex()
+//                    self.correctAnswers = 0
+//                    self.questionFactory?.requestNextQuestion()
+//                }
+//            alertPresenter?.showAlert(result: alertModel)
+//        } else {
+//            presenter.switchToNextQuestion()
+//            questionFactory?.requestNextQuestion()
+//        }
+    //}
     
     private func showLoadingIndicator() {
         activityIndicator.isHidden = false

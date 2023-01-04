@@ -7,6 +7,11 @@ final class MovieQuizPresenter {
     var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
     
+    var correctAnswers: Int = 0 //
+    var questionFactory: QuestionFactoryProtocol? = nil//
+    var alertPresenter: AlertPresenterProtocol? = nil//
+    var statisticService: StatisticService? //
+    
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
@@ -65,4 +70,36 @@ final class MovieQuizPresenter {
             self?.viewController?.show(quiz: viewModel)
         }
     }
+    
+    func showNextQuestionOrResults() {
+        
+        if self.isLastQuestion() {
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
+            guard
+                let bestGame = statisticService?.bestGame,
+                let gamesCount = statisticService?.gamesCount,
+                let totalAccuracy = statisticService?.totalAccuracy
+            else {
+                return
+            }
+            let alertModel = AlertModel(
+                title: "Этот раунд окончен!",
+                message: """
+                        Ваш результат: \(self.correctAnswers)/\(questionsAmount)
+                        Количество сыгранных квизов: \(gamesCount)
+                        Рекорд: \(bestGame.correct)/\(bestGame.total)/(\(bestGame.date.dateTimeString))
+                        Средняя точность: \(String(format: "%.2f", statisticService!.totalAccuracy))%
+                        """,
+                buttonText: "Сыграть ещё раз") {
+                    self.resetQuestionIndex()
+                    self.correctAnswers = 0
+                    self.questionFactory?.requestNextQuestion()
+                }
+            alertPresenter?.showAlert(result: alertModel)
+        } else {
+            self.switchToNextQuestion()
+            questionFactory?.requestNextQuestion()
+        }
+    }
+    
 }
