@@ -20,7 +20,7 @@ final class MovieQuizViewController: UIViewController {
     
     private var alertPresenter: AlertPresenterProtocol? = nil//
     
-    private var statisticService: StatisticService? //
+    //private var statisticService: StatisticService? //
     
     private var presenter: MovieQuizPresenter!
     
@@ -31,7 +31,7 @@ final class MovieQuizViewController: UIViewController {
         //questionFactory?.loadData()
         showLoadingIndicator()
         alertPresenter = AlertPresenter(alertController: self)
-        statisticService = StatisticServiceImplementation()
+        //statisticService = StatisticServiceImplementation()
         
         presenter = MovieQuizPresenter(viewController: self)
         
@@ -106,7 +106,7 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             //self.presenter.questionFactory = self.questionFactory
-            self.presenter.statisticService = self.statisticService
+            //self.presenter.statisticService = self.statisticService
             self.presenter.alertPresenter = self.alertPresenter
             self.presenter.showNextQuestionOrResults()
         }

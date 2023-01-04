@@ -15,6 +15,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
         
+        statisticService = StatisticServiceImplementation()
+        
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
