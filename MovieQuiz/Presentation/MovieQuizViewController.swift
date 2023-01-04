@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController {
     //MARK: - Lifecycle
     
     @IBOutlet weak private var counterLabel: UILabel!
@@ -16,29 +16,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     //private let questionsAmount: Int = 10
     //private var currentQuestion: QuizQuestion?
-    private var questionFactory: QuestionFactoryProtocol? = nil//
+    //private var questionFactory: QuestionFactoryProtocol? = nil//
     
     private var alertPresenter: AlertPresenterProtocol? = nil//
     
     private var statisticService: StatisticService? //
     
-    private let presenter = MovieQuizPresenter()
+    private var presenter: MovieQuizPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        questionFactory?.loadData()
+        //questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        //questionFactory?.loadData()
         showLoadingIndicator()
         alertPresenter = AlertPresenter(alertController: self)
         statisticService = StatisticServiceImplementation()
         
-        presenter.viewController = self
+        presenter = MovieQuizPresenter(viewController: self)
         
     }
-    // MARK: - QuestionFactoryDelegate
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        presenter.didRecieveNextQuestion(question: question)
+    
+//    func didReceiveNextQuestion(question: QuizQuestion?) {
+//        presenter.didRecieveNextQuestion(question: question)
+    
 //        guard let question = question else {
 //            return
 //        }
@@ -48,7 +49,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 //        DispatchQueue.main.async { [weak self] in
 //            self?.show(quiz: viewModel)
 //        }
-   }
+ //  }
     // MARK: - Actions
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -104,7 +105,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.presenter.questionFactory = self.questionFactory
+            //self.presenter.questionFactory = self.questionFactory
             self.presenter.statisticService = self.statisticService
             self.presenter.alertPresenter = self.alertPresenter
             self.presenter.showNextQuestionOrResults()
@@ -144,15 +145,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 //        }
     //}
     
-    private func showLoadingIndicator() {
+    func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
-    private func hideLoadingIndicator() {
+    func hideLoadingIndicator() {
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
     }
-    private func showNetworkError(message: String) {
+    func showNetworkError(message: String) {
         hideLoadingIndicator()
         let alertModel = AlertModel(
             title: "Ошибка",
@@ -163,18 +164,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     return
                 }
                 self.presenter.restartGame()
-                self.questionFactory?.requestNextQuestion()
+                //self.questionFactory?.requestNextQuestion()
             })
         alertPresenter?.showAlert(result: alertModel)
     }
     
-    func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
-        questionFactory?.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
-    }
+//    func didLoadDataFromServer() {
+//        activityIndicator.isHidden = true
+//        questionFactory?.requestNextQuestion()
+//    }
+//
+//    func didFailToLoadData(with error: Error) {
+//        showNetworkError(message: error.localizedDescription)
+//    }
 }
 
