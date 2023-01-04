@@ -59,48 +59,63 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.isHidden = true
     }
     
-    private func showNetworkError() {
+    private func showNetworkError(message: String) {
         hideLoadingIndicator()
         
         let model = AlertModel(title: "Ошибка",
-                               message: "",
+                               message: message,
                                buttonText: "Попробовать еще раз") {}
         
         alert?.showAlert(model: model)
     }
+    
+    func didLoadDataFromServer() { // Экран в случае успешной загрузки данных из сети
+        activityIndicator.isHidden = true // Скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion() // Показываем первый вопрос
+    }
+    
+    func didFailToLoadData(with error: Error) { // Экран в случае ошибки загрузки данных из сети
+        showNetworkError(message: error.localizedDescription) // Возьмем в качестве сообщения на экране описание ошибки
+    }
+    
+    /* Структуры под top250.json. Если не будет надобности позже - удалить.
+     
+    struct Actor: Codable {
+        let id: String
+        let image: String
+        let name: String
+        let asCharacter: String
+    }
 
+    struct Movie: Codable {
+      let id: String
+      let rank: String
+      let title: String
+      let fullTitle: String
+      let year: String
+      let image: String
+      let crew: String
+      let imDbRating: String
+      let imDbRatingCount: String
+    }
+
+    struct Top: Decodable {
+        let items: [Movie]
+    }
+     
+     */
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileURL = documentDirectory.appendingPathComponent("top250MoviesIMDB.json")
-        var jsonString = ""
-        
-        do {
-            jsonString = try String(contentsOf: fileURL)
-        } catch FileManagerError.fileDoesntExist {
-            print("Файл по адресу \(fileURL) не существует")
-        } catch {
-            print("Неизвестная ошибка чтения из файла \(fileURL)")
-        }
-        
-        let data = jsonString.data(using: .utf8)!
-        
-        do {
-            let result = try JSONDecoder().decode(Top.self, from: data)
-        } catch {
-            print("Failed to parse \(jsonString)")
-        }
-        
-        
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        statisticService = StatisticServiceImplementation()
+        questionFactory?.loadData()
+        showLoadingIndicator()
         
         alert = AlertPresenter(controller: self)
-        statisticService = StatisticServiceImplementation()
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -156,7 +171,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1) / \(questionsAmount)")
     }
