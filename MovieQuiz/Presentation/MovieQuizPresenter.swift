@@ -16,12 +16,19 @@ final class MovieQuizPresenter {
         currentQuestionIndex == questionsAmount - 1
     }
     
-    func resetQuestionIndex() {
+    func restartGame() {
         currentQuestionIndex = 0
+        correctAnswers = 0
     }
     
     func switchToNextQuestion() {
         currentQuestionIndex += 1
+    }
+    
+    func didAnswer(isCorrectAnswer: Bool) {
+        if isCorrectAnswer {
+            correctAnswers += 1
+        }
     }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -91,8 +98,7 @@ final class MovieQuizPresenter {
                         Средняя точность: \(String(format: "%.2f", statisticService!.totalAccuracy))%
                         """,
                 buttonText: "Сыграть ещё раз") {
-                    self.resetQuestionIndex()
-                    self.correctAnswers = 0
+                    self.restartGame()
                     self.questionFactory?.requestNextQuestion()
                 }
             alertPresenter?.showAlert(result: alertModel)

@@ -12,7 +12,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
     //private var currentQuestionIndex: Int = 0
-    private var correctAnswers: Int = 0 //
+    //private var correctAnswers: Int = 0 //
     
     //private let questionsAmount: Int = 10
     //private var currentQuestion: QuizQuestion?
@@ -92,22 +92,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 //    }
     
     func showAnswerResult(isCorrect: Bool) {
+        presenter.didAnswer(isCorrectAnswer: isCorrect)
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.cornerRadius = 20
         
-        if isCorrect {
-            correctAnswers += 1
-        }
-        
         noButton.isEnabled = false
         yesButton.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.presenter.correctAnswers = self.correctAnswers
             self.presenter.questionFactory = self.questionFactory
             self.presenter.statisticService = self.statisticService
             self.presenter.alertPresenter = self.alertPresenter
@@ -166,8 +162,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 guard let self = self else {
                     return
                 }
-                self.correctAnswers = 0
-                self.presenter.resetQuestionIndex()
+                self.presenter.restartGame()
                 self.questionFactory?.requestNextQuestion()
             })
         alertPresenter?.showAlert(result: alertModel)
