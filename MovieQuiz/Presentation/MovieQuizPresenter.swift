@@ -5,14 +5,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0
     
     private var currentQuestion: QuizQuestion?
-    private weak var viewController: MovieQuizViewController?
+    private var viewController: MovieQuizViewControllerProtocol?
     
     private var correctAnswers: Int = 0 //
     private var questionFactory: QuestionFactoryProtocol? = nil//
     var alertPresenter: AlertPresenterProtocol? = nil//
     private let statisticService: StatisticService? //
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         statisticService = StatisticServiceImplementation()
@@ -71,20 +71,20 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
-//    func yesButtonClicked(_ sender: Any) {
-//        guard let currentQuestion = currentQuestion else {
-//            return
-//        }
-//        let givenAnswer = true
-//        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-//    }
-//    func noButtonClicked(_ sender: Any) {
-//        guard let currentQuestion = currentQuestion else {
-//            return
-//        }
-//        let givenAnswer = false
-//        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-//    }
+    //    func yesButtonClicked(_ sender: Any) {
+    //        guard let currentQuestion = currentQuestion else {
+    //            return
+    //        }
+    //        let givenAnswer = true
+    //        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    //    }
+    //    func noButtonClicked(_ sender: Any) {
+    //        guard let currentQuestion = currentQuestion else {
+    //            return
+    //        }
+    //        let givenAnswer = false
+    //        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    //    }
     
     func yesButtonClicked() {
         didAnswer(isYes: true)
@@ -131,15 +131,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func proceedWithAnswer(isCorrect: Bool) {
-            didAnswer(isCorrectAnswer: isCorrect)
-            
-            viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                guard let self = self else { return }
-                //self.alertPresenter = self.alertPresenter
-                self.proceedToNextQuestionOrResults()
-            }
+        didAnswer(isCorrectAnswer: isCorrect)
+        
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            //self.alertPresenter = self.alertPresenter
+            self.proceedToNextQuestionOrResults()
         }
-    
+    }
 }
