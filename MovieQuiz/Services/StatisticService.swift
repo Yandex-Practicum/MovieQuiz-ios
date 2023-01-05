@@ -14,23 +14,12 @@ protocol StatisticService {
     var bestGame: GameRecord { get }
 }
 
-
 final class StatisticServiceImplementation: StatisticService {
-    
-    private let userDefaults = UserDefaults.standard
-    
     private enum Keys: String {
         case correctKey, totalAccuracyKey, bestGameKey, gamesCountKey
     }
     
-    func store(correct count: Int, total amount: Int) {
-        bestGame = GameRecord(correct: count, total: amount, date: Date())
-        guard let oldAccuracy = totalAccuracy?.totalAccuracyOfGame else {
-            totalAccuracy = TotalAccuracy(totalAccuracyOfGame: Double(count) / Double(amount))
-            return
-        }
-        totalAccuracy = TotalAccuracy(totalAccuracyOfGame: (oldAccuracy + Double(count) / Double(amount)) / 2)
-    }
+    private let userDefaults = UserDefaults.standard
     
     private(set) var bestGame: GameRecord {
         get {
@@ -90,6 +79,15 @@ final class StatisticServiceImplementation: StatisticService {
             }
             userDefaults.set(data, forKey: Keys.gamesCountKey.rawValue)
         }
+    }
+    
+    func store(correct count: Int, total amount: Int) {
+        bestGame = GameRecord(correct: count, total: amount, date: Date())
+        guard let oldAccuracy = totalAccuracy?.totalAccuracyOfGame else {
+            totalAccuracy = TotalAccuracy(totalAccuracyOfGame: Double(count) / Double(amount))
+            return
+        }
+        totalAccuracy = TotalAccuracy(totalAccuracyOfGame: (oldAccuracy + Double(count) / Double(amount)) / 2)
     }
 }
 

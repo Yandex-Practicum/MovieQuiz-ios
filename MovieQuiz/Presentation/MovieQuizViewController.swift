@@ -1,9 +1,8 @@
 import UIKit
-//import CoreData
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+   
     // MARK: - Actions
-    
     @IBAction private func noButtonTapped(_ sender: UIButton) {
         let answer = false
         guard let currentQuestion = currentQuestion else {
@@ -11,6 +10,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
     }
+    
     @IBAction private func yesButtonTapped(_ sender: UIButton) {
         let answer = true
         guard let currentQuestion = currentQuestion else {
@@ -19,93 +19,52 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
     }
     
+    // MARK: - Outlets
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textlabel: UILabel!
-    private var currentQuestionIndex: Int = 0
-    
     @IBOutlet private var noButtonOutlet: UIButton!
-    
     @IBOutlet private var yesButtonOutlet: UIButton!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
+    // MARK: - Properties
+    private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol? = QuestionFactory(moviesLoader: MoviesLoader())
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter = AlertPresenter()
     private var statisticService: StatisticService = StatisticServiceImplementation()
-
+    private let moviesLoader = MoviesLoader()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        textlabel.textAlignment = .center
+        let noTitle = NSAttributedString(
+            string: "Нет",
+            attributes: [.font: UIFont(name: "YSDisplay-Medium", size: 20)!]
+        )
+        noButtonOutlet.setAttributedTitle(noTitle, for: .normal)
+        let yesTitle = NSAttributedString(
+            string: "Да",
+            attributes: [.font: UIFont(name: "YSDisplay-Medium", size: 20)!]
+        )
+        yesButtonOutlet.setAttributedTitle(yesTitle, for: .normal)
+        textlabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+    
         let gameCount: GameCount = GameCount(countOfGames: statisticService.gamesCount.countOfGames + 1)
         statisticService.gamesCount = gameCount
         imageView.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader())
+        showLoadingIndicator()
         questionFactory?.delegate = self
-        questionFactory?.requestNextQuestion()
-        
-        print("SANDBOX ADRESS")
-        print(NSHomeDirectory())
-        UserDefaults.standard.set(true, forKey: "viewDidLoad")
-        
-        print("______")
-        print("BUNDLE ADRESS")
-        print(Bundle.main.bundlePath)
-        
-        print("______")
-        print("АДРЕС ПАПКИ Documents В ПЕСОЧНИЦЕ")
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        print(documentsURL)
-        
-        let fileURL = documentsURL.appendingPathComponent("text.swift")
-        
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            let hello = "Hello world!"
-            let data = hello.data(using: .utf8)
-            FileManager.default.createFile(atPath: fileURL.path, contents: data)
-        }
-        
-        enum FileManagerError: Error {
-            case fileDoesntExist
-        }
-        
-        func string(from fileURL: URL) throws -> String {
-            if !FileManager.default.fileExists(atPath: fileURL.path) {
-                throw FileManagerError.fileDoesntExist
-            }
-            return try String(contentsOf: fileURL)
-        }
-        
-        let top250MoviesIMDBPath = documentsURL.appendingPathComponent("top250MoviesIMDB")
-        let jsonStringTop250MoviesIMDB = try? String(contentsOf: top250MoviesIMDBPath)
-        let dataTop250MoviesIMDB = jsonStringTop250MoviesIMDB?.data(using: .utf8)
-        guard let dataTop250MoviesIMDB = dataTop250MoviesIMDB else { return }
-        var returnedMovieTest: [Movie] = []
-        
-        do {
-            let jsonTop250Movies = try JSONSerialization.jsonObject(with: dataTop250MoviesIMDB, options: []) as? [String: Any]
-            guard let jsonTop250Movies = jsonTop250Movies,
-                  let items = jsonTop250Movies["items"] as? [[String: String]],
-                  let result = try? JSONDecoder().decode(Top.self, from: dataTop250MoviesIMDB) else {
-                return
-            }
-            
-            var movieTest: [Movie] = []
-            returnedMovieTest = movieTest
-            for item in result.items {
-                movieTest.append(item)
-            }
-            
-        } catch {
-            print("Failed to parse: \(jsonStringTop250MoviesIMDB)")
-        }
-        
-        
+        questionFactory?.loadData()
     }
-    // MARK: - QuestionFactoryDelegate
     
+    // MARK: - QuestionFactoryDelegate
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
         currentQuestion = question
@@ -115,23 +74,62 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(error: error)
+    }
+    
     // MARK: - Private functions
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
     
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
     
+    private func showNetworkError(error: Error) {
+        hideLoadingIndicator()
+        
+        let alertModel: AlertModel = AlertModel(title: "Ошибка!", message: "Картинка не загружена. \(error.localizedDescription)", buttonText: "Попробовать ещё раз", completion: { [weak self] in
+            guard let self = self else {return}
+            self.questionFactory?.loadData()
+        })
+        alertPresenter.present(alert: alertModel, presentingViewController: self)
+    }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+    }
+    
+   private func convert(model: MostPopularMovie) -> QuizStepViewModel {
+        return QuizStepViewModel(
+            image: UIImage(), // UIImage(named: model.imageURL) ?? UIImage(),
+            question: model.title,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         counterLabel.text = step.questionNumber
-        textlabel.text = step.question
+        let attributedText = NSAttributedString(
+            string: step.question,
+            attributes: [
+                .font: UIFont(name: "YSDisplay-Medium", size: 24)!,
+                .foregroundColor: UIColor.ypWhite
+            ]
+        )
+        textlabel.attributedText = attributedText
     }
-    
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect == true {
