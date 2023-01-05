@@ -3,11 +3,12 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - private Outlet Variables
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var yesButtonOutlet: UIButton!
     @IBOutlet private weak var noButtonOutlet: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - private Variables
     private let questionsAmount: Int = 10 //кол-во вопросов
@@ -16,18 +17,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion? //текущий вопрос
     private var currentQuestionIndex: Int = 0 //индекс текущего вопроса
     private var correctAnswers: Int = 0 // правильные ответы
-    private var alertPresent: AlertPresenterProtocol? //Иньектируем алерт через свойство
-    private var statisticService: StatisticService? //Иньектируем StaticticService через свойство
+    private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius  = 20
         imageView.layer.masksToBounds = true
-        questionFactory = QuestionFactory(delegate: self)
-        alertPresent = AlertPresenter(viewController: self)
-        questionFactory?.requestNextQuestion()
+
+        alertPresenter = AlertPresenter(viewController: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
+        questionFactory?.loadData()
+        showLoadingIndicator()
     }
     
     @IBAction private func noButtonAction(_ sender: Any) {
@@ -50,7 +53,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let question = question else {
                 return
             }
-            
             currentQuestion = question
             let viewModel = convert(model: question)
             DispatchQueue.main.async { [weak self] in
@@ -60,7 +62,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(), // распаковываем картинку
+            image: UIImage(data: model.image) ?? UIImage(), // распаковываем картинку
             question: model.text, // берём текст вопроса
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)") // высчитываем номер вопроса
     }
@@ -69,13 +71,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 8
         yesButtonOutlet.isUserInteractionEnabled = false
         noButtonOutlet.isUserInteractionEnabled = false
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         if isCorrect {
-            imageView.layer.borderColor = UIColor.ypGreen.cgColor
-            correctAnswers += 1
-        }
-        else {
-            imageView.layer.borderColor = UIColor.ypRed.cgColor
-            
+           correctAnswers += 1
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
@@ -101,15 +99,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                          statisticService?.store(correct: correctAnswers, total: questionsAmount)
 
                         guard let bestGame = statisticService?.bestGame else {
-                            print("a")
                             return
                         }
                         guard let gamesCount = statisticService?.gamesCount else {
-                            print("b")
                             return
                         }
                         guard let totalAccuracy = statisticService?.totalAccuracy else {
-                            print("c")
                             return
                         }
                          let title = "Этот раунд окончен!"
@@ -126,10 +121,44 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                  self.currentQuestionIndex = 0
                                  self.questionFactory?.requestNextQuestion()
                              })
-            alertPresent?.show(results: alertModel)
+            alertPresenter?.show(results: alertModel)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
     }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError(message: String) {
+             hideLoadingIndicator()
+
+             let alertModel = AlertModel(title: "Ошибка",
+                                         message: message,
+                                         buttonText: "Попробовать ещё раз") {
+                        [weak self] in
+                        guard let self = self else {return}
+                        self.questionFactory?.loadData()
+                        self.showLoadingIndicator()
+             }
+         alertPresenter?.show(results: alertModel)
+         }
+    
+    func didLoadDataFromServer() {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+    }
+    
+    
 }

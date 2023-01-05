@@ -4,12 +4,13 @@
 //
 //  Created by Арсений Убский on 22.11.2022.
 //
-
-import Foundation
 import UIKit
+protocol ViewControllerProtocol: class {
+    func present(alert: UIAlertController, animated: Bool, completion: ()->Void)
+}
 
 struct AlertPresenter: AlertPresenterProtocol {
-    weak var viewController: UIViewController?
+    weak private var viewController: UIViewController?
     //иньектируем viewController через инициализатор
     init(viewController: UIViewController?){
         self.viewController = viewController

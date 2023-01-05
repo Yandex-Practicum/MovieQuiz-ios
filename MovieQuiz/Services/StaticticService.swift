@@ -13,12 +13,7 @@ struct GameRecord: Codable {
     let date: Date
     //метод сравнения пройденного раунда с лучшим
     func compare (count: GameRecord) -> Bool {
-        if count.correct > self.correct {
-            return true
-        }
-        else {
-            return false
-        }
+        count.correct > self.correct
     }
 }
  // создаем класс для хранения данных о результатах игр, подписываем на протокол
