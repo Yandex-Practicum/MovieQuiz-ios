@@ -29,7 +29,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 20
         //questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         //questionFactory?.loadData()
-        showLoadingIndicator()
+        //showLoadingIndicator()
         alertPresenter = AlertPresenter(alertController: self)
         //statisticService = StatisticServiceImplementation()
         
@@ -92,26 +92,39 @@ final class MovieQuizViewController: UIViewController {
 //            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
 //    }
     
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-        
+//    func showAnswerResult(isCorrect: Bool) {
+//        presenter.didAnswer(isCorrectAnswer: isCorrect)
+//        
+//        imageView.layer.masksToBounds = true
+//        imageView.layer.borderWidth = 8
+//        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+//        imageView.layer.cornerRadius = 20
+//        
+//        noButton.isEnabled = false
+//        yesButton.isEnabled = false
+//        
+//        self.presenter.alertPresenter = self.alertPresenter
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+//            guard let self = self else { return }
+//            //self.presenter.questionFactory = self.questionFactory
+//            //self.presenter.statisticService = self.statisticService
+//           
+//            self.presenter.showNextQuestionOrResults()
+//        }
+//    }
+    func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.cornerRadius = 20
         
         noButton.isEnabled = false
         yesButton.isEnabled = false
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            //self.presenter.questionFactory = self.questionFactory
-            //self.presenter.statisticService = self.statisticService
-            self.presenter.alertPresenter = self.alertPresenter
-            self.presenter.showNextQuestionOrResults()
-        }
+        self.presenter.alertPresenter = self.alertPresenter
     }
-    
+
     //private func showNextQuestionOrResults() {
         
       
@@ -166,7 +179,7 @@ final class MovieQuizViewController: UIViewController {
                 self.presenter.restartGame()
                 //self.questionFactory?.requestNextQuestion()
             })
-        alertPresenter?.showAlert(result: alertModel)
+        presenter.alertPresenter?.showAlert(result: alertModel)
     }
     
 //    func didLoadDataFromServer() {
