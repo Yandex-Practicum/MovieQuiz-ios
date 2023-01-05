@@ -16,7 +16,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         self.viewController = viewController
         
         statisticService = StatisticServiceImplementation()
-        //alertPresenter = AlertPresenter()//
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
@@ -71,21 +70,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
-    //    func yesButtonClicked(_ sender: Any) {
-    //        guard let currentQuestion = currentQuestion else {
-    //            return
-    //        }
-    //        let givenAnswer = true
-    //        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    //    }
-    //    func noButtonClicked(_ sender: Any) {
-    //        guard let currentQuestion = currentQuestion else {
-    //            return
-    //        }
-    //        let givenAnswer = false
-    //        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    //    }
-    
     func yesButtonClicked() {
         didAnswer(isYes: true)
     }
@@ -137,7 +121,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            //self.alertPresenter = self.alertPresenter
             self.proceedToNextQuestionOrResults()
         }
     }

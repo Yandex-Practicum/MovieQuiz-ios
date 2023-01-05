@@ -2,7 +2,6 @@ import XCTest
 @testable import MovieQuiz
 
 class MovieQuizUITests: XCTestCase {
-//swiftlint:disable:next implicity_unwrapped_optional
     var app: XCUIApplication!
 
     override func setUpWithError() throws {
@@ -22,7 +21,6 @@ class MovieQuizUITests: XCTestCase {
         app = nil
       }
 
-    //func testScreenCast() throws { }
     
     func testYesButton() throws {
         let firstPoster = app.images["Poster"]
