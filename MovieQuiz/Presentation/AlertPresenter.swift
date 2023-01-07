@@ -5,10 +5,9 @@
 //  Created by Егор Свистушкин on 25.12.2022.
 //
 
-import Foundation
 import UIKit
 
-class AlertPresenter {
+final class AlertPresenter {
     
     weak var delegate: AlertPresenterDelegate?
     

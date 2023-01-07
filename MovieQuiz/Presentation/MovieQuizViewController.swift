@@ -8,7 +8,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         var documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let fileName = "top250MoviesIMDB.json"
         documentURL.appendPathComponent(fileName)
-        let jsonString = (try? String(contentsOf: documentURL))
         
         struct Top: Decodable {
             let items: [Movie]
@@ -82,13 +81,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var alertPresenter: AlertPresenter = AlertPresenter()
     
     
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var counterLabel: UILabel!
     
     
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
