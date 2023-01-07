@@ -49,7 +49,6 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
