@@ -45,6 +45,7 @@ final class MovieQuizViewController: UIViewController {
             preferredStyle: .alert)
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             self.currentQuestionIndex = 0
+            self.correctAnswers = 0
 
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
@@ -66,6 +67,7 @@ final class MovieQuizViewController: UIViewController {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.showNextQuestionOrResult()
+            self.imageView.layer.borderWidth = 0
         }
     }
 
@@ -83,7 +85,7 @@ final class MovieQuizViewController: UIViewController {
                 title: "Этот раунд окончен!",
                 text: "Ваш результат: \(correctAnswers) из \(questions.count)",
                 buttonText: "Сыграть ещё раз")
-//            show(quiz: )
+            show(quiz: resultsViewModel)
         } else {
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
