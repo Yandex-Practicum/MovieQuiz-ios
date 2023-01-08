@@ -12,6 +12,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 3
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenterProtocol?
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -19,6 +20,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter = AlertPresenter(viewController: self)
         
         questionFactory = QuestionFactory(delegate: self)
         
@@ -38,6 +40,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
+    
     // MARK: - Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         yesButton.isEnabled = false
@@ -59,31 +62,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
         
     }
+    
     // MARK: - Private functions
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         
-    }
-    
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert
-        )
-        
-        let action = UIAlertAction(
-            title: result.buttonText,
-            style: .cancel) { [self] _ in
-                currentQuestionIndex = 0
-                correctAnswers = 0
-                
-                questionFactory?.requestNextQuestion()
-            }
-        alert.addAction(action)
-        self.present(alert, animated: true)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -103,7 +88,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor :
         UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
             self.yesButton.isEnabled = true
             self.noButton.isEnabled = true
             self.imageView.layer.borderWidth = 0
@@ -113,19 +99,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let result = QuizResultsViewModel(
+            let result = AlertModel(
                 title: "Этот раунд окончен!",
-                text: "Ваш результат: \(correctAnswers) из 10",
-                buttonText: "Сыграть еще раз"
+                message: "Ваш результат: \(correctAnswers) из 10",
+                buttonText: "Сыграть еще раз",
+                completion: { [weak self] in
+                    guard let self = self else { return }
+                    self.currentQuestionIndex = 0
+                    self.correctAnswers = 0
+                    self.questionFactory?.requestNextQuestion()
+                }
             )
-            
-            show(quiz: result)
+            alertPresenter?.showAlert(result: result)
         } else {
-            
             currentQuestionIndex += 1
-            
             questionFactory?.requestNextQuestion()
-            
         }
     }
 }
