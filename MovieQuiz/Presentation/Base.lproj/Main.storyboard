@@ -16,11 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="onp-qv-CeC" userLabel="No button">
-                                <rect key="frame" x="20" y="437" width="158" height="60"/>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="onp-qv-CeC" userLabel="No button">
+                                <rect key="frame" x="20" y="425" width="177" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="Jzv-bb-6L5"/>
+                                    <constraint firstAttribute="height" constant="60" id="Hq0-Ce-Z3v"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,8 +34,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCO-QG-J5P" userLabel="Yes button">
-                                <rect key="frame" x="217" y="437" width="177" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCO-QG-J5P" userLabel="Yes button">
+                                <rect key="frame" x="217" y="425" width="177" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -49,17 +49,25 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pSU-8O-zCA" userLabel="Question">
+                                <rect key="frame" x="20" y="58" width="74" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="SCO-QG-J5P" secondAttribute="trailing" constant="20" id="6Nn-v7-GFh"/>
+                            <constraint firstItem="pSU-8O-zCA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="AOP-gB-ggw"/>
                             <constraint firstItem="SCO-QG-J5P" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="CgG-zs-vfz"/>
                             <constraint firstItem="onp-qv-CeC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="OCI-h9-afa"/>
                             <constraint firstItem="SCO-QG-J5P" firstAttribute="width" secondItem="onp-qv-CeC" secondAttribute="width" id="R5z-qZ-jPK"/>
                             <constraint firstItem="SCO-QG-J5P" firstAttribute="leading" secondItem="onp-qv-CeC" secondAttribute="trailing" constant="20" id="et7-nC-rdC"/>
                             <constraint firstItem="SCO-QG-J5P" firstAttribute="height" secondItem="onp-qv-CeC" secondAttribute="height" id="j8Z-Le-UYW"/>
                             <constraint firstItem="onp-qv-CeC" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="lUH-9R-jtQ"/>
+                            <constraint firstItem="pSU-8O-zCA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="zb2-8V-PhK"/>
                         </constraints>
                     </view>
                 </viewController>
