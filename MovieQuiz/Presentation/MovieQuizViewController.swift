@@ -13,6 +13,11 @@ final class MovieQuizViewController: UIViewController {
         showNewQuestion()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        imageView.layer.cornerRadius = 20
+    }
+    
     @IBAction func noButtonClicked(_ sender: UIButton) {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
