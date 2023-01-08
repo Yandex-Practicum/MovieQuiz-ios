@@ -5,7 +5,7 @@
 //  Created by Арсений Убский on 22.11.2022.
 //
 import UIKit
-protocol ViewControllerProtocol: class {
+protocol ViewControllerProtocol: AnyObject {
     func present(alert: UIAlertController, animated: Bool, completion: ()->Void)
 }
 

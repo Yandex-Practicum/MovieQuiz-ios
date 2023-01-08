@@ -31,7 +31,9 @@ struct NetworkClient {
             }
             
             // Возвращаем данные
-            guard let data = data else { return }
+            guard let data = data else {
+                handler(.failure(NetworkError.codeError)) // в случае отстутствия данных пробрасываем ошибку
+                return }
             handler(.success(data))
         }
         
