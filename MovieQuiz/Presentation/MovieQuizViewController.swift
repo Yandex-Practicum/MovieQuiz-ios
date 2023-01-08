@@ -30,7 +30,7 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestion:QuizQuestion {
         get {
-            return self.questions[self.currentQuestionIndex]
+            return questions[currentQuestionIndex]
         }
     }
     
