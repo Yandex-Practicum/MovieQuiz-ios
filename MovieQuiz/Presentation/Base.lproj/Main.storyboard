@@ -47,6 +47,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="4hl-24-pMf" secondAttribute="height" multiplier="2:3" id="uPV-EF-FoW"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eCK-pv-WmB">
                                         <rect key="frame" x="0.0" y="625" width="374" height="128"/>
@@ -82,6 +87,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="k1N-WO-Uni"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCO-QG-J5P" userLabel="Yes button">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
@@ -97,6 +105,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hrc-ks-qwH"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -114,6 +125,11 @@
                             <constraint firstItem="1Lr-OM-2C9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="iFW-ok-bAo"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="MVS-5j-vIg" id="d4G-Gp-qol"/>
+                        <outlet property="imageView" destination="4hl-24-pMf" id="M9E-Xg-A0a"/>
+                        <outlet property="textLabel" destination="FVg-sp-hOn" id="VJw-Fk-f32"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
