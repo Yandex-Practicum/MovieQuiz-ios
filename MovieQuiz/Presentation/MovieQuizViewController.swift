@@ -19,6 +19,14 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
 
     }
    
+    @IBAction private func noButtonClicked(_ sender: Any) {
+        presenter.noButtonClicked()
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+        presenter.yesButtonClicked()
+    }
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - AlertPresenterDelegate
    func didPresentAlert(alert: UIAlertController?) {
@@ -26,7 +34,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
             return
         }
         DispatchQueue.main.async {[weak self] in
-        self?.present(alert, animated: true, completion: nil)
+            self?.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -81,19 +89,12 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
                                                         guard let self = self else {
                                                             return
                                                         }
-                                           self.presenter.restartGame()
-                                        })
+                                                        self.presenter.restartGame()
+                                                    })
         alertPresenter?.showResult(alertModel: alertModelResult)
     }
     
-    @IBAction private func noButtonClicked(_ sender: Any) {
-        presenter.noButtonClicked()
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        presenter.yesButtonClicked()
-    }
-    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+
     
 }
 
