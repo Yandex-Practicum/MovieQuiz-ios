@@ -25,7 +25,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private var currentQuestion:QuizQuestion {
-        get { questions[currentQuestionIndex] }
+        questions[currentQuestionIndex]
     }
     
     private func showNewQuestion(){
