@@ -10,12 +10,8 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        showNewQuestion()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         imageView.layer.cornerRadius = 20
+        showNewQuestion()
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
@@ -29,9 +25,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private var currentQuestion:QuizQuestion {
-        get {
-            return questions[currentQuestionIndex]
-        }
+        get { questions[currentQuestionIndex] }
     }
     
     private func showNewQuestion(){
