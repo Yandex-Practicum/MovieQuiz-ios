@@ -1,10 +1,101 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol {
+
     // MARK: - Lifecycle
+    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet weak private var yesButton: UIButton!
+    @IBOutlet weak private var noButton: UIButton!
+
+    var alertPresenter: AlertPresenter?
+    private var presenter: MovieQuizPresenter!
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter = MovieQuizPresenter(viewController: self)
+        alertPresenter = AlertPresenter()
+        alertPresenter?.delegate = self
+
     }
+   
+    @IBAction private func noButtonClicked(_ sender: Any) {
+        presenter.noButtonClicked()
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+        presenter.yesButtonClicked()
+    }
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    
+    // MARK: - AlertPresenterDelegate
+   func didPresentAlert(alert: UIAlertController?) {
+        guard let alert = alert else {
+            return
+        }
+        DispatchQueue.main.async {[weak self] in
+            self?.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func show(quiz quizStepViewModel: QuizStepViewModel) {
+
+        imageView.image = quizStepViewModel.image
+        imageView.layer.cornerRadius = 20
+        textLabel.text = quizStepViewModel.question
+        counterLabel.text = quizStepViewModel.questionNumber
+        
+    }
+    
+
+    func highLightImageBorder (isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
+        if isCorrectAnswer {
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor
+            presenter.didAnswer(isCorrect: true)
+        } else{
+            imageView.layer.borderColor = UIColor.ypRed.cgColor
+            
+        }
+    }
+    
+    func hideBorder() {
+        imageView.layer.borderWidth = 0
+    }
+    
+    func buttonsEnable(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
+    }
+    
+    func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    func hideLoadingIndicator() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
+    func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let alertModelResult = AlertModel(title: "Ошибка",
+                                          message: message,
+                                          buttonText: "Попробовать еще раз",
+                                          completion: { [weak self] _ in
+                                                        guard let self = self else {
+                                                            return
+                                                        }
+                                                        self.presenter.restartGame()
+                                                    })
+        alertPresenter?.showResult(alertModel: alertModelResult)
+    }
+    
+
+    
 }
 
 /*
