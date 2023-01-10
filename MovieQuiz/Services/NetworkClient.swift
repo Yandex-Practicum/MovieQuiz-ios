@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct NetworkClient {
+protocol NetworkRounting { // Отдельный протокол для NetworkClient, для отдельной реализации этого протокола в тестах
+    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
+}
+
+struct NetworkClient: NetworkRounting {
     
     private enum NetworkError: Error {
         case codeError
@@ -26,7 +30,7 @@ struct NetworkClient {
             
             // Проверяем что нам пришел успешный код ответа (код ответа больше 199 и меньше 300)
             if let response = response as? HTTPURLResponse, // "превращаем" response: URLResponse в тип HTTPURLResponse для проверки кода ответа
-               response.statusCode < 200 || response.statusCode >= 300 {
+               response.statusCode < 200 && response.statusCode >= 300 {
                 handler(.failure(NetworkError.codeError))
                 return
             }
