@@ -7,6 +7,7 @@ final class MovieQuizViewController: UIViewController {
 
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+    private var isAnswerButtonPressed: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,12 +64,17 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func showAnswerResult(isCorrect: Bool) {
-        if isCorrect {
-            correctAnswers += 1
-        }
-        drawBorder(color: isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.showNextQuestionOrResults()
+        guard isAnswerButtonPressed else {
+            isAnswerButtonPressed = true
+            if isCorrect {
+                correctAnswers += 1
+            }
+            drawBorder(color: isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.showNextQuestionOrResults()
+                self.isAnswerButtonPressed = false
+            }
+            return
         }
     }
 
