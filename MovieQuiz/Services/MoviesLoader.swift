@@ -15,7 +15,11 @@ struct MoviesLoader: MoviesLoading {
     
     // MARK: - NetworkClient
     
-    let networkClient = NetworkClient()
+    let networkClient: NetworkRouting
+    
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+    }
     
     // MARK: - URL
     
@@ -43,5 +47,4 @@ struct MoviesLoader: MoviesLoading {
             }
         }
     }
-    
 }
