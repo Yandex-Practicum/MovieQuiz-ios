@@ -4,10 +4,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
 
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
-    private var isAnswerButtonPressed: Bool = false
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
@@ -31,6 +32,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion else {
             return
         }
+        configureButtons(isEnabled: false)
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
@@ -39,15 +41,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion else {
             return
         }
+        configureButtons(isEnabled: false)
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+
+    private func configureButtons(isEnabled: Bool) {
+        yesButton.isEnabled = isEnabled
+        noButton.isEnabled = isEnabled
     }
 
     private func showQuestion(question: QuizQuestion) {
         imageView.layer.borderWidth = 0
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
+            guard let self else {
+                return
+            }
+            self.show(quiz: viewModel)
+            self.configureButtons(isEnabled: true)
         }
     }
 
@@ -65,20 +77,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showAnswerResult(isCorrect: Bool) {
-        guard isAnswerButtonPressed else {
-            isAnswerButtonPressed = true
-            if isCorrect {
-                correctAnswers += 1
+        if isCorrect {
+            correctAnswers += 1
+        }
+        drawBorder(color: isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self else {
+                return
             }
-            drawBorder(color: isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                guard let self else {
-                    return
-                }
-                self.showNextQuestionOrResults()
-                self.isAnswerButtonPressed = false
-            }
-            return
+            self.showNextQuestionOrResults()
         }
     }
 
