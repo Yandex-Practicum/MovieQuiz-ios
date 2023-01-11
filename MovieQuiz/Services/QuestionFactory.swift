@@ -16,8 +16,8 @@ class QuestionFactory: QuestionFactoryProtocol {
     }
 
     func requestNextQuestion() {
-        let index = generateNext()
-        let question = questions[safe: index]
+        current = generateNext()
+        let question = questions[safe: current]
         delegate?.didReceiveNextQuestion(question: question)
     }
 
@@ -26,8 +26,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         repeat {
             index = (0..<questions.count).randomElement()
         } while (index == nil || index == current)
-        current = index!
-        return current
+        return index!
     }
 
     private let questions: [QuizQuestion] = [
