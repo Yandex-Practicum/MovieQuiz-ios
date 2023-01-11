@@ -25,7 +25,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         currentQuestion = question
-        showQuestion(question: question)
+        showCurrentQuestion()
     }
 
     @IBAction func noButtonClicked(_ sender: UIButton) {
@@ -51,13 +51,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled = isEnabled
     }
 
-    private func showQuestion(question: QuizQuestion) {
-        imageView.layer.borderWidth = 0
-        let viewModel = convert(model: question)
+    private func showCurrentQuestion() {
         DispatchQueue.main.async { [weak self] in
-            guard let self else {
+            guard let self, let question = self.currentQuestion else {
                 return
             }
+            self.imageView.layer.borderWidth = 0
+            let viewModel = self.convert(model: question)
             self.show(quiz: viewModel)
             self.configureButtons(isEnabled: true)
         }
