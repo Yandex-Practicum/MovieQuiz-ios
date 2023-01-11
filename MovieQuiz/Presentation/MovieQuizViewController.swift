@@ -123,9 +123,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func formatResultMessage() -> String {
         let bestGame = statisticService.bestGame
-        return "Ваш результат: \(correctAnswers) из \(questionsAmount)\n"
-                + "Количество сыгранных квизов: \(statisticService.gamesCount)\n"
-                + "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))\n"
-                + "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy * 100))%"
+        return """
+               Ваш результат: \(correctAnswers) из \(questionsAmount)
+               Количество сыгранных квизов: \(statisticService.gamesCount)
+               Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
+               Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy * 100))%
+               """
     }
 }
