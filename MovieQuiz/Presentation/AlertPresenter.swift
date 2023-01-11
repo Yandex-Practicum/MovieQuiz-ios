@@ -23,6 +23,7 @@ struct AlertPresenter: AlertPresenterProtocol {
         let action = UIAlertAction(title: results.buttonText, style: .default, handler: { _ in
             results.completion()
         })
+        alert.view.accessibilityIdentifier = "Game results"
         alert.addAction(action)
         viewController?.present(alert, animated: true, completion: nil)
     }
