@@ -56,7 +56,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self, let question = self.currentQuestion else {
                 return
             }
-            self.imageView.layer.borderWidth = 0
             let viewModel = self.convert(model: question)
             self.show(quiz: viewModel)
             self.configureButtons(isEnabled: true)
@@ -64,6 +63,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func show(quiz step: QuizStepViewModel) {
+        imageView.layer.borderWidth = 0
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
