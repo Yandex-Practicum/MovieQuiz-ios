@@ -13,12 +13,13 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0 //индекс текущего вопроса
     var currentQuestion: QuizQuestion? //текущий вопрос
     var correctAnswers: Int = 0
-    var questionFactory: QuestionFactoryProtocol?
-    weak var viewController: MovieQuizViewController?
-    var statisticService: StatisticService?
-    var alertPresenter: AlertPresenterProtocol?
+    private var questionFactory: QuestionFactoryProtocol?
+    weak var viewController: MovieQuizViewControllerProtocol?
+    private let statisticService: StatisticService!
+    private var alertPresenter: AlertPresenterProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
+            statisticService = StatisticServiceImplementation()
             self.viewController = viewController
             questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
             questionFactory?.loadData()
@@ -45,13 +46,43 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             currentQuestion = question
             let viewModel = convert(model: question)
             DispatchQueue.main.async { [weak self] in
-                self?.viewController?.show(quiz: viewModel)
+            self?.viewController?.show(quiz: viewModel)
             }
         }
     
     //MARK - functions
     
-    func showNextQuestionOrResults() { //метод показа следующего вопроса или алерта с результатами
+    func proceedWithAnswer(isCorrect: Bool) {
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        if isCorrect {
+            correctAnswers += 1
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else {return}
+            self.viewController?.interactionEnable()
+            self.proceedToNextQuestionOrResults()
+        }
+    }
+    
+    func makeResultsMessage() -> String {
+                 statisticService.store(correct: correctAnswers, total: questionsAmount)
+
+                 let bestGame = statisticService.bestGame
+
+                 let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+                 let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+                 let bestGameInfoLine = "Рекорд: \(bestGame.correct)/\(bestGame.total)"
+                 + " (\(bestGame.date.dateTimeString))"
+                 let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+
+                 let resultMessage = [
+                     currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine
+                 ].joined(separator: "\n")
+
+                 return resultMessage
+         }
+    
+    func proceedToNextQuestionOrResults() { //метод показа следующего вопроса или алерта с результатами
         if self.isLastQuestion() {
             // сохраняем значения правильных ответов за этот раунд и количества вопросов за этот раунд
             statisticService?.store(correct: correctAnswers, total: self.questionsAmount)
@@ -65,8 +96,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                         guard let totalAccuracy = statisticService?.totalAccuracy else {
                             return
                         }
-                         let title = "Этот раунд окончен!"
-                         let buttonText = "Сыграть еще раз"
+            let title = "Этот раунд окончен!"
+            let buttonText = "Сыграть еще раз"
             let text = "Ваш результат: \(correctAnswers)/\(self.questionsAmount)\n Количество сыграных квизов: \(gamesCount) \n Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString)) \n Средняя точность: \(String(format:"%.2f", totalAccuracy))%"
             
             let alertModel = AlertModel(
@@ -83,6 +114,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
+    }
+    func factoryLoadData() {
+        questionFactory?.loadData()
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -101,7 +135,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                 return
             }
             let givenAnswer = isYes
-            viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+            proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
             
         }
     
