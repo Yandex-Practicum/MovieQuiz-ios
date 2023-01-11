@@ -15,53 +15,43 @@ final class MovieQuizViewController: UIViewController {
 		QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)]
 	private var currentQuestionIndex: Int = 0
 	private var correctAnswers: Int = 0
-	private var countOfQuations: Int { questions.count }
+	private var countOfQuestions: Int = 10
 	
-	// MARK: Запуск экрана
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	@IBOutlet private var imageView: UIImageView!
+	@IBOutlet private var textLabel: UILabel!
+	@IBOutlet private var counterLabel: UILabel!
+	@IBOutlet private var noButton: UIButton!
+	@IBOutlet private var yesButton: UIButton!
+	
+	/// Запуск экрана
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		showQuiz(quiz: convert(model: questions[0]))
-//		imageView.layer.masksToBounds = true
-//		imageView.layer.borderWidth = 1
-//		imageView.layer.borderColor = UIColor.white.cgColor
-		imageView.layer.cornerRadius = 6
-    }
-	// MARK: View модели для состояний
-	
-	// Вью-модель для состояния "Вопрос задан"
-	private struct QuizStepViewModel {
-	  let image: UIImage
-	  let question: String
-	  let questionNumber: String
-	}
-	/// Вью-модель для состояния "Результат квиза"
-	private struct QuizResultsViewModel {
-	  let title: String
-	  let text: String
-	  let buttonText: String
-	}
-	/// структура вопроса
-	private struct QuizQuestion {
-	  let image: String
-	  let text: String
-	  let correctAnswer: Bool
+		imageView.layer.masksToBounds = true
+		imageView.layer.cornerRadius = 20
 	}
 	
+	/// Включение / выключение кнопок
+	private func toggleButtons () {
+		noButton.isEnabled.toggle()
+		yesButton.isEnabled.toggle()
+	}
+
 	/// функция конвертации вопроса в модель
 	private func convert(model: QuizQuestion) -> QuizStepViewModel {
 		return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
 								 question: model.text,
-								 questionNumber: "\(1)/\(10)")
+								 questionNumber: "1/10")
 	}
 	/// здесь мы заполняем нашу картинку, текст и счётчик данными
 	private func showQuiz(quiz step: QuizStepViewModel) {
 		imageView.image = step.image
 		textLabel.text = step.question
-		counterLabel.text = "\(currentQuestionIndex+1)/\(countOfQuations)"
+		counterLabel.text = "\(currentQuestionIndex+1)/\(countOfQuestions)"
 	}
 	/// Функция, показывающая реакцию квиза на правильный / неправильный ответ
 	private func showAnswerResult(isCorrect: Bool) {
-		imageView.layer.masksToBounds = true
+		currentQuestionIndex += 1
 		switch isCorrect {
 		case true:
 			correctAnswers += 1
@@ -73,19 +63,18 @@ final class MovieQuizViewController: UIViewController {
 		}
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0){
 			self.showNextQuestionOrResults()
+			self.toggleButtons()
 		}
-		
 	}
 	/// Функция для перехода к следующему вопросу или результату квиза
 	private func showNextQuestionOrResults() {
 		self.imageView.layer.borderWidth = 0
-		currentQuestionIndex += 1
-		if currentQuestionIndex == countOfQuations {
+		if currentQuestionIndex >= countOfQuestions {
 			// создаём объекты всплывающего окна
-			let alert = UIAlertController(title: "Сыграть ещё раз?",
-										  message: "Вы ответили верно на \(correctAnswers) из \(countOfQuations)",
+			let alert = UIAlertController(title: "Раунд окончен!",
+										  message: "",
 										  preferredStyle: .alert)
-			let action = UIAlertAction(title: "Ещё раз!", style: .default, handler: { _ in
+			let action = UIAlertAction(title: "Сыграть ещё раз", style: .default, handler: { _ in
 				self.currentQuestionIndex = 0
 				self.showQuiz(quiz: self.convert(model: self.questions[self.currentQuestionIndex]))
 				self.correctAnswers = 0
@@ -97,25 +86,39 @@ final class MovieQuizViewController: UIViewController {
 		}
 	}
 	
-	
-	
-	@IBOutlet private var imageView: UIImageView!
-	@IBOutlet private var textLabel: UILabel!
-	@IBOutlet private var counterLabel: UILabel!
-	
 	@IBAction private func noButtonClicked(_ sender: UIButton) {
 		let currentQuestion = questions[currentQuestionIndex]
-		let givenAnsver = false
-		showAnswerResult(isCorrect: givenAnsver == currentQuestion.correctAnswer)
+		let givenAnswer = false
+		showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+		toggleButtons()
 	}
-	
 	@IBAction private func yesButtonClicked(_ sender: UIButton) {
 		let currentQuestion = questions[currentQuestionIndex]
-		let givenAnsver = true
-		showAnswerResult(isCorrect: givenAnsver == currentQuestion.correctAnswer)
+		let givenAnswer = true
+		showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+		toggleButtons()
 	}
 }
 
-
-
-
+extension MovieQuizViewController {
+	// MARK: View модели для состояний
+	
+	/// Вью-модель для состояния "Вопрос задан"
+	private struct QuizStepViewModel {
+		let image: UIImage
+		let question: String
+		let questionNumber: String
+	}
+	/// Вью-модель для состояния "Результат квиза"
+	private struct QuizResultsViewModel {
+		let title: String
+		let text: String
+		let buttonText: String
+	}
+	/// структура вопроса
+	private struct QuizQuestion {
+		let image: String
+		let text: String
+		let correctAnswer: Bool
+	}
+}
