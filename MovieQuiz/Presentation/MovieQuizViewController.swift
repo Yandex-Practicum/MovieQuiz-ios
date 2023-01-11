@@ -20,8 +20,8 @@ final class MovieQuizViewController: UIViewController {
 	@IBOutlet private var imageView: UIImageView!
 	@IBOutlet private var textLabel: UILabel!
 	@IBOutlet private var counterLabel: UILabel!
-	@IBOutlet private var noButton: UIButton!
-	@IBOutlet private var yesButton: UIButton!
+	@IBOutlet private var noButton: UIButton! // тут оутлеты
+	@IBOutlet private var yesButton: UIButton! // на две кнопки
 	
 	/// Запуск экрана
 	override func viewDidLoad() {
@@ -29,6 +29,10 @@ final class MovieQuizViewController: UIViewController {
 		showQuiz(quiz: convert(model: questions[0]))
 		imageView.layer.masksToBounds = true
 		imageView.layer.cornerRadius = 20
+	}
+	
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
 	}
 	
 	/// Включение / выключение кнопок
@@ -63,7 +67,7 @@ final class MovieQuizViewController: UIViewController {
 		}
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0){
 			self.showNextQuestionOrResults()
-			self.toggleButtons()
+			self.toggleButtons() // а здесь разблокируем
 		}
 	}
 	/// Функция для перехода к следующему вопросу или результату квиза
@@ -87,16 +91,16 @@ final class MovieQuizViewController: UIViewController {
 	}
 	
 	@IBAction private func noButtonClicked(_ sender: UIButton) {
+		toggleButtons() // тут блокируем кнопки
 		let currentQuestion = questions[currentQuestionIndex]
 		let givenAnswer = false
 		showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-		toggleButtons()
 	}
 	@IBAction private func yesButtonClicked(_ sender: UIButton) {
+		toggleButtons() // и здесь тоже блокируем
 		let currentQuestion = questions[currentQuestionIndex]
 		let givenAnswer = true
 		showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-		toggleButtons()
 	}
 }
 

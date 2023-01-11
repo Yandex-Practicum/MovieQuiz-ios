@@ -29,6 +29,8 @@
 				</dict>
 			</array>
 		</dict>
+		<key>View controller-based status bar appearance</key>
+		<true/>
 	</dict>
 </dict>
 </plist>
