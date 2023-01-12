@@ -118,8 +118,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             (self.currentQuestionIndex, self.correctAnswers) = (0, 0)
             self.questionFactory.requestNextQuestion()
         }
-        let presenter = AlertPresenter(controller: self)
-        presenter.show(alertModel: model)
+        AlertPresenter().show(view: self, alertModel: model)
     }
 
     private func formatResultMessage() -> String {
