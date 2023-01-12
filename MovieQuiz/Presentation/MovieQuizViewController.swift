@@ -1,11 +1,17 @@
 import UIKit
 
-final private class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
-    @IBOutlet weak var counterLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    
+    @IBOutlet private var yesButton: UIButton!
+    
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
     
     struct QuizStepViewModel {
         let image: UIImage
@@ -24,8 +30,7 @@ final private class MovieQuizViewController: UIViewController {
         let text: String
         let correctAnswer: Bool
     }
-    
-    private var currentQuestionIndex: Int = 0
+
     
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -73,22 +78,49 @@ final private class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        show(quiz: QuizStepViewModel(image: UIImage(named: "The Godfather") ?? UIImage(), question: "Рейтинг этого фильма больше чем 6?", questionNumber: "0"))
+        show(quiz: QuizStepViewModel(image: UIImage(named: "The Godfather") ?? UIImage(),
+                                     question: "Рейтинг этого фильма больше чем 6?",
+                                     questionNumber: "0"))
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 6
+        imageView.layer.borderWidth = 8
     }
+    
+    private func toggleButton() {
+        yesButton.isEnabled.toggle()
+        noButton.isEnabled.toggle()
+    }
+    
     private func show(quiz step: QuizStepViewModel) {
-        
+        imageView.image = step.image
+        textLabel.text = step.question
+        counterLabel.text = step.questionNumber
     }
     
     private func show(quiz step: QuizQuestion) {
-        // здесь мы заполняем нашу картинку, текст и счётчик данными
-    }
-    
-    private func show(quiz result: QuizResultViewModel) {
         // здесь мы показываем результат прохождения квиза
     }
     
+    private func show(quiz result: QuizResultViewModel) {
+        let alert = UIAlertController(title: result.title,
+                                      message: result.text,
+                                      preferredStyle: .alert)
+        let action = UIAlertAction(title: result.buttonString,
+                                   style: .default) { _ in
+            self.currentQuestionIndex = 0
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+            self.correctAnswers = 0
+        }
+        
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel{
-        // конвертируем QuizQuestion в QuizStepViewModel
         let currentQuestion = questions[currentQuestionIndex]
         return QuizStepViewModel (
             image: UIImage(named: model.image) ?? UIImage(),
@@ -98,81 +130,45 @@ final private class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            correctAnswers += 1
+        }
+        imageView.layer.borderColor = isCorrect ? UIColor.CustomColors.ypGreen?.cgColor : UIColor.CustomColors.ypRed?.cgColor
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResult()
+            self.toggleButton()
+            self.imageView.layer.borderWidth = 0
+        }
     }
     
+    private func showNextQuestionOrResult() {
+        if currentQuestionIndex == questions.count - 1 {
+            let textResult = "Ваш результат: \(correctAnswers)/10"
+            let viewModel = QuizResultViewModel(title: "Этот раунд окончен",
+                                                text: textResult,
+                                                buttonString: "Сыграть еще раз")
+            show(quiz: viewModel)
+        } else {
+            currentQuestionIndex += 1
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            show(quiz: viewModel)
+        }
+    }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        toggleButton()
+        imageView.layer.borderWidth = 8
         let currentQuestion = questions[currentQuestionIndex]
             let givenAnswer = false
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        toggleButton()
+        imageView.layer.borderWidth = 8
         let currentQuestion = questions[currentQuestionIndex]
             let givenAnswer = true
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
