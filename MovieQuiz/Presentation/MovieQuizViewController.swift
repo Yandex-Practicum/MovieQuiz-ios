@@ -22,6 +22,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter = AlertPresenter()
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         statisticService = StatisticServiceImplementation()
+        loadData()
+    }
+
+    private func loadData() {
         showLoadingIndicator()
         questionFactory.loadData()
     }
@@ -85,7 +89,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self else {
                 return
             }
-            self.questionFactory.loadData()
+            self.loadData()
             self.startNewGame()
         }
         alertPresenter.show(view: self, model: model)
