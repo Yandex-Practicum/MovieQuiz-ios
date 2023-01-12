@@ -90,7 +90,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 return
             }
             self.loadData()
-            self.startNewGame()
         }
         alertPresenter.show(view: self, model: model)
     }
