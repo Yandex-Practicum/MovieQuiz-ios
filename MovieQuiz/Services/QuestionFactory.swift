@@ -9,15 +9,15 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     private weak var delegate: QuestionFactoryDelegate?
-    private var current = -1
+    private var currentIndex = -1
 
     init(delegate: QuestionFactoryDelegate) {
         self.delegate = delegate
     }
 
     func requestNextQuestion() {
-        current = generateNext()
-        let question = questions[safe: current]
+        currentIndex = generateNext()
+        let question = questions[safe: currentIndex]
         delegate?.didReceiveNextQuestion(question: question)
     }
 
@@ -25,7 +25,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         var index: Int?
         repeat {
             index = (0..<questions.count).randomElement()
-        } while (index == nil || index == current)
+        } while (index == nil || index == currentIndex)
         return index ?? 0
     }
 
