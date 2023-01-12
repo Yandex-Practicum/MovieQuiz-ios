@@ -104,19 +104,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 0
         
         if currentQuestionIndex == questionsAmount - 1 {
-            
-            guard let statisticService = statisticService else { return }
+            guard let statisticService = statisticService,
+                  let text = generateAlertText() else { return }
             
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-            
-            let currentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
-            let numberOfQuizzesPlayed = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-            let bestGame = statisticService.bestGame
-            let record = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
-            let accuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
-            
-            let text = "\(currentResult) \n \(numberOfQuizzesPlayed) \n \(record) \n \(accuracy)"
-            
             let alertModel = AlertModel(title: "Этот раунд окончен!",
                                         message: text,
                                         buttonText: "Сыграть ещё раз",
@@ -126,12 +117,22 @@ final class MovieQuizViewController: UIViewController {
                 self.correctAnswers = 0
                 self.questionFactory?.requestNextQuestion()
             })
-            
             alertPresenter?.show(result: alertModel)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
+    }
+    
+    private func generateAlertText() -> String? {
+        guard let statisticService = statisticService else { return nil }
+        let currentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
+        let numberOfQuizzesPlayed = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let bestGame = statisticService.bestGame
+        let record = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
+        let accuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        
+        return "\(currentResult) \n \(numberOfQuizzesPlayed) \n \(record) \n \(accuracy)"
     }
 }
 
