@@ -6,6 +6,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -13,10 +14,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol!
     private var statisticService: StatisticService!
+    private var alertPresenter: AlertPresenter!
+    private var startNewGameCallback: (() -> Void)!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        startNewGameCallback = { [weak self] in
+            guard let self else {
+                return
+            }
+            self.startNewGame()
+        }
         imageView.layer.cornerRadius = 20
+        alertPresenter = AlertPresenter()
         questionFactory = QuestionFactory(delegate: self)
         statisticService = StatisticServiceImplementation()
         questionFactory.requestNextQuestion()
@@ -51,6 +61,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func configureButtons(isEnabled: Bool) {
         yesButton.isEnabled = isEnabled
         noButton.isEnabled = isEnabled
+    }
+
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        let model = AlertModel(
+                title: "Ошибка",
+                message: message,
+                buttonText: "Попробовать еще раз",
+                completion: startNewGameCallback)
+        alertPresenter.show(view: self, model: model)
     }
 
     private func showCurrentQuestion() {
@@ -111,14 +141,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let model = AlertModel(
                 title: "Этот раунд окончен!",
                 message: formatResultMessage(),
-                buttonText: "Сыграть ещё раз") { [weak self] in
-            guard let self else {
-                return
-            }
-            (self.currentQuestionIndex, self.correctAnswers) = (0, 0)
-            self.questionFactory.requestNextQuestion()
-        }
-        AlertPresenter().show(view: self, alertModel: model)
+                buttonText: "Сыграть ещё раз",
+                completion: startNewGameCallback)
+        alertPresenter.show(view: self, model: model)
+    }
+
+    private func startNewGame() {
+        (currentQuestionIndex, correctAnswers) = (0, 0)
+        questionFactory.requestNextQuestion()
     }
 
     private func formatResultMessage() -> String {
@@ -130,4 +160,5 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy * 100))%
                """
     }
+
 }
