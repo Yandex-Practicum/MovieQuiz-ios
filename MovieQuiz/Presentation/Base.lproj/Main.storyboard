@@ -39,7 +39,7 @@ YP Black (iOS)</string>
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJF-tD-cIs" userLabel="No Button">
-                                <rect key="frame" x="32" y="766" width="164" height="60"/>
+                                <rect key="frame" x="32" y="774" width="164" height="60"/>
                                 <color key="backgroundColor" name="YP White (iOS)"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="164" id="KQh-vW-XpI"/>
