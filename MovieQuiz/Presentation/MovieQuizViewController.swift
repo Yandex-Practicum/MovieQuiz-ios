@@ -15,16 +15,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol!
     private var statisticService: StatisticService!
     private var alertPresenter: AlertPresenter!
-    private var startNewGameCallback: (() -> Void)!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        startNewGameCallback = { [weak self] in
-            guard let self else {
-                return
-            }
-            self.startNewGame()
-        }
         imageView.layer.cornerRadius = 20
         alertPresenter = AlertPresenter()
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
@@ -88,8 +81,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let model = AlertModel(
                 title: "Ошибка",
                 message: message,
-                buttonText: "Попробовать еще раз",
-                completion: startNewGameCallback)
+                buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self else {
+                return
+            }
+            self.questionFactory.loadData()
+            self.startNewGame()
+        }
         alertPresenter.show(view: self, model: model)
     }
 
@@ -151,8 +149,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let model = AlertModel(
                 title: "Этот раунд окончен!",
                 message: formatResultMessage(),
-                buttonText: "Сыграть ещё раз",
-                completion: startNewGameCallback)
+                buttonText: "Сыграть ещё раз") { [weak self] in
+            guard let self else {
+                return
+            }
+            self.startNewGame()
+        }
         alertPresenter.show(view: self, model: model)
     }
 
