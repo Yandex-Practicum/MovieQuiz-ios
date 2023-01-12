@@ -7,21 +7,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
-    private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
-    private let questionsAmount: Int = 10
+    var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+    
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticServiceProtocol?
+    private let presenter = MovieQuizPresenter()
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.viewController = self
+        
         imageView.layer.cornerRadius = 20
         textLabel.textColor = .ypWhite
         textLabel.font = .boldSystemFont(ofSize: 23)
@@ -84,38 +87,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let question = question else {
             return
         }
-        currentQuestion = question
-        let viewModel = convert(model: question)
+        presenter.currentQuestion = question
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        currentQuestion = presenter.currentQuestion
+        presenter.noButtonClicked()
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        currentQuestion = presenter.currentQuestion
+        presenter.yesButtonClicked()
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(), // распаковываем картинку
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")// высчитываем номер вопроса// берём текст вопроса
+    func buttonIsEnabledFalse() {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
     }
     
     private func convert(model: QuizResultsViewModel, action: @escaping (UIAlertAction) -> Void) -> AlertModel {
@@ -123,34 +114,35 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             guard let statisticService = statisticService else {
                 print("Сервис статистики не создан")
                 return
             }
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
-            let bestGame = statisticService.bestGame ?? GameRecord(correct: correctAnswers, total: questionsAmount, date: Date())
+            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
+            let bestGame = statisticService.bestGame ?? GameRecord(correct: correctAnswers, total: presenter.questionsAmount, date: Date())
             // показать результат квиза
-            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+            let text = "Ваш результат: \(correctAnswers) из \(presenter.questionsAmount)\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
-                buttonText: "Сыграть еще раз")
+                buttonText: "Сыграть ещё раз")
             imageView.layer.borderWidth = 0
             let action: (UIAlertAction) -> Void = { _ in
-                self.currentQuestionIndex = 0
+                self.presenter.resetQuestionIndex()
                 self.correctAnswers = 0  // скидываем счетчик правильных ответов
                 self.questionFactory?.requestNextQuestion()
             }
-            alertPresenter?.show(alert: convert(model: viewModel, action: action))
+            alertPresenter?.show(alert: convert(model: viewModel, action: action), identifier: "Final game")
         } else {
             imageView.layer.borderWidth = 0
-            currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1, т.о. мы сможем получить следующий урок
+            // увеличиваем индекс текущего урока на 1, т.о. мы сможем получить следующий урок
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         // здесь мы показываем верно или нет ответил пользователь
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8

@@ -9,10 +9,10 @@
 import UIKit
 
 final class AlertPresenter: AlertPresenterProtocol {
-    
+        
     weak var controller: UIViewController?
     
-    func show(alert model: AlertModel) {
+    func show(alert model: AlertModel, identifier: String) {
         // здесь мы показываем результат прохождения квиза
         let alert = UIAlertController(
             title: model.title,
@@ -24,6 +24,8 @@ final class AlertPresenter: AlertPresenterProtocol {
             handler: model.action)
         
         alert.addAction(action)
+        alert.view.accessibilityIdentifier = identifier
+        
         controller?.present(alert, animated: true, completion: nil)
     }
     

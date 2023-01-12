@@ -12,7 +12,7 @@ struct Movies: Codable {
     let items: [MovieData]
 }
 
-struct MovieData: Codable {
+struct MovieData: Codable, Hashable {
     let title: String
     let rating: String
     let imageURL: URL
