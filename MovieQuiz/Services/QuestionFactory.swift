@@ -26,7 +26,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         repeat {
             index = (0..<questions.count).randomElement()
         } while (index == nil || index == current)
-        return index!
+        return index ?? 0
     }
 
     private let questions: [QuizQuestion] = [
