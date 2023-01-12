@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AlertPresenterProtocol {
-    func show(result: AlertModel)
+    func show(model: AlertModel)
     var delegate: UIViewController? { get set }
 }
 
@@ -16,13 +16,13 @@ protocol AlertPresenterProtocol {
 
     weak var delegate: UIViewController?
 
-    func show(result: AlertModel) {
-        let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
-                                      message: result.message, // текст во всплывающем окне
+    func show(model: AlertModel) {
+        let alert = UIAlertController(title: model.title, // заголовок всплывающего окна
+                                      message: model.message, // текст во всплывающем окне
                                       preferredStyle: .alert)
 
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-            result.completion()
+        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
+            model.completion()
         }
 
         alert.addAction(action)
