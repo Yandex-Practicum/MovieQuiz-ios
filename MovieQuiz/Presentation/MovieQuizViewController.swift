@@ -27,9 +27,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         imageView.layer.cornerRadius = 20
         alertPresenter = AlertPresenter()
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         statisticService = StatisticServiceImplementation()
-        questionFactory.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory.loadData()
     }
 
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -38,6 +39,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         currentQuestion = question
         showCurrentQuestion()
+    }
+
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        hideLoadingIndicator()
+        showNetworkError(message: error.localizedDescription)
     }
 
     @IBAction func noButtonClicked(_ sender: UIButton) {
@@ -74,7 +85,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showNetworkError(message: String) {
-        hideLoadingIndicator()
         let model = AlertModel(
                 title: "Ошибка",
                 message: message,
@@ -103,7 +113,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
-                image: UIImage(named: model.image) ?? UIImage(),
+                image: UIImage(data: model.image) ?? UIImage(),
                 question: model.text,
                 questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
