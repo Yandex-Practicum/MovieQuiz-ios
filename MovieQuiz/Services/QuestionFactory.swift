@@ -8,7 +8,7 @@
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
-    weak var delegate: QuestionFactoryDelegate?
+    private weak var delegate: QuestionFactoryDelegate?
     private var current = -1
 
     init(delegate: QuestionFactoryDelegate) {
