@@ -17,12 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="vwd-lk-aop">
-                                <rect key="frame" x="-177" y="0.0" width="785" height="932"/>
-                                <color key="backgroundColor">
-                                    <string key="name">
-YP Black (iOS)</string>
-                                </color>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="oYU-vB-h92">
+                                <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -31,10 +27,10 @@ YP Black (iOS)</string>
 YP Black (iOS)</string>
                         </color>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="vwd-lk-aop" secondAttribute="top" constant="59" id="HdL-fY-TtW"/>
-                            <constraint firstItem="vwd-lk-aop" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="Ra9-0G-lDD"/>
-                            <constraint firstItem="vwd-lk-aop" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" constant="178" id="jzB-9i-yt8"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="leading" secondItem="vwd-lk-aop" secondAttribute="leading" constant="177" id="upc-Qc-6K2"/>
+                            <constraint firstAttribute="top" secondItem="oYU-vB-h92" secondAttribute="top" id="3Qg-Qd-QBk"/>
+                            <constraint firstItem="oYU-vB-h92" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="53N-ti-k2f"/>
+                            <constraint firstAttribute="trailing" secondItem="oYU-vB-h92" secondAttribute="trailing" id="9Xj-CM-Pg0"/>
+                            <constraint firstItem="oYU-vB-h92" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="r7e-fn-YIg"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -48,7 +44,7 @@ YP Black (iOS)</string>
         <namedColor>
             <string key="name">
 YP Black (iOS)</string>
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
