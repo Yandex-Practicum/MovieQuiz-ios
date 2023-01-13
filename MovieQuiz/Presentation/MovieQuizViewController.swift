@@ -86,12 +86,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 title: "Ошибка",
                 message: message,
                 buttonText: "Попробовать еще раз") { [weak self] in
-            guard let self else {
-                return
-            }
-            self.loadData()
+            self?.loadData()
         }
-        alertPresenter.show(view: self, model: model)
+        alertPresenter.show(with: model, in: self)
     }
 
     private func showCurrentQuestion() {
@@ -125,10 +122,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         drawBorder(color: isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self else {
-                return
-            }
-            self.showNextQuestionOrResult()
+            self?.showNextQuestionOrResult()
         }
     }
 
@@ -153,12 +147,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 title: "Этот раунд окончен!",
                 message: formatResultMessage(),
                 buttonText: "Сыграть ещё раз") { [weak self] in
-            guard let self else {
-                return
-            }
-            self.startNewGame()
+            self?.startNewGame()
         }
-        alertPresenter.show(view: self, model: model)
+        alertPresenter.show(with: model, in: self)
     }
 
     private func startNewGame() {

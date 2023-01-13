@@ -12,7 +12,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     private var currentIndex = -1
     private var movies: [MostPopularMovie] = []
-    private var totalQuestions: Int {
+    private var totalQuestionsCount: Int {
         movies.count
     }
 
@@ -72,7 +72,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     private func generateNext() -> Int {
         var index: Int?
         repeat {
-            index = (0..<totalQuestions).randomElement()
+            index = (0..<totalQuestionsCount).randomElement()
         } while (index == nil || index == currentIndex)
         return index ?? 0
     }
