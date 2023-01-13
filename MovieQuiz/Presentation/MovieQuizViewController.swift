@@ -80,10 +80,25 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         show(quiz: QuizStepViewModel(image: UIImage(named: "The Godfather") ?? UIImage(),
                                      question: "Рейтинг этого фильма больше чем 6?",
-                                     questionNumber: "0"))
+                                     questionNumber: "1/\(questions.count)"))
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 8
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        toggleButton()
+        imageView.layer.borderWidth = 8
+        let currentQuestion = questions[currentQuestionIndex]
+            let givenAnswer = false
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        toggleButton()
+        imageView.layer.borderWidth = 8
+        let currentQuestion = questions[currentQuestionIndex]
+            let givenAnswer = true
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     private func toggleButton() {
@@ -155,20 +170,5 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
         }
-    }
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        toggleButton()
-        imageView.layer.borderWidth = 8
-        let currentQuestion = questions[currentQuestionIndex]
-            let givenAnswer = false
-            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        toggleButton()
-        imageView.layer.borderWidth = 8
-        let currentQuestion = questions[currentQuestionIndex]
-            let givenAnswer = true
-            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }
