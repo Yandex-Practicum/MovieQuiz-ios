@@ -116,16 +116,22 @@
                                 </subviews>
                                 <color key="backgroundColor" name="YP Black"/>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ZGt-Id-mZN">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="1Lr-OM-2C9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="9Sa-bw-ZNo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1Lr-OM-2C9" secondAttribute="trailing" constant="20" id="CoW-uf-3ka"/>
+                            <constraint firstItem="ZGt-Id-mZN" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="I4b-2N-Zba"/>
                             <constraint firstItem="1Lr-OM-2C9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="iFW-ok-bAo"/>
+                            <constraint firstItem="ZGt-Id-mZN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="s05-Gn-9VR"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="ZGt-Id-mZN" id="oBX-ZA-NtF"/>
                         <outlet property="counterLabel" destination="MVS-5j-vIg" id="d4G-Gp-qol"/>
                         <outlet property="imageView" destination="4hl-24-pMf" id="M9E-Xg-A0a"/>
                         <outlet property="noButton" destination="onp-qv-CeC" id="vAj-2a-eGb"/>
