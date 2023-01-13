@@ -44,6 +44,7 @@
                                                         <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
                                                         <color key="backgroundColor" name="Black"/>
                                                         <color key="tintColor" name="White"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="Index"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="1/10">
                                                                 <attributes>
@@ -59,6 +60,7 @@
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5d5-pP-D2j" userLabel="Preview Image">
                                                 <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                                 <color key="backgroundColor" name="Background"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Poster"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="5d5-pP-D2j" secondAttribute="height" multiplier="2:3" id="x3o-E0-Qmw"/>
                                                 </constraints>
@@ -87,6 +89,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MOQ-sa-Eer" userLabel="No button">
                                                         <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
                                                         <color key="backgroundColor" name="White"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="No"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="GUK-MY-EID"/>
                                                         </constraints>
@@ -114,6 +117,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0vm-PD-Ht5" userLabel="Yes button">
                                                         <rect key="frame" x="197" y="0.0" width="177" height="60"/>
                                                         <color key="backgroundColor" name="White"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="Yes"/>
                                                         <color key="tintColor" name="Black"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal">
