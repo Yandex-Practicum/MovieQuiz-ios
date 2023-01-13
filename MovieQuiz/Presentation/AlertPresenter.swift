@@ -1,7 +1,7 @@
 import UIKit
 
 class AlertPresenter: AlertPresenterDelegate {
-    var delegate: UIViewController?
+    weak var delegate: UIViewController?
     func show(model: AlertModel) {
         let alert = UIAlertController(title: model.title,
                                       message: model.message,
