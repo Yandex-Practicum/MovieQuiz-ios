@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8AD6A807294B3FF500464937 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A805294B3FF500464937 /* YS Display-Bold.ttf */; };
+		8AD6A808294B3FF500464937 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A806294B3FF500464937 /* YS Display-Medium.ttf */; };
+		8AD6A80D294BF8F000464937 /* Rectangle 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A80B294BF8F000464937 /* Rectangle 8.png */; };
+		8AD6A80E294BF8F000464937 /* Rectangle 8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A80C294BF8F000464937 /* Rectangle 8@2x.png */; };
+		8AD6A813294BF9BD00464937 /* Action@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A811294BF9BD00464937 /* Action@2x.png */; };
+		8AD6A814294BF9BD00464937 /* Action.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A812294BF9BD00464937 /* Action.png */; };
+		8AD6A819294BF9CF00464937 /* Big.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A817294BF9CF00464937 /* Big.png */; };
+		8AD6A81A294BF9CF00464937 /* Big@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A818294BF9CF00464937 /* Big@2x.png */; };
+		8AD6A81F294BF9E200464937 /* Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A81D294BF9E200464937 /* Small@2x.png */; };
+		8AD6A820294BF9E200464937 /* Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AD6A81E294BF9E200464937 /* Small.png */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -19,6 +29,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8AD6A805294B3FF500464937 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		8AD6A806294B3FF500464937 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		8AD6A80B294BF8F000464937 /* Rectangle 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle 8.png"; sourceTree = "<group>"; };
+		8AD6A80C294BF8F000464937 /* Rectangle 8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Rectangle 8@2x.png"; sourceTree = "<group>"; };
+		8AD6A811294BF9BD00464937 /* Action@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Action@2x.png"; sourceTree = "<group>"; };
+		8AD6A812294BF9BD00464937 /* Action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Action.png; sourceTree = "<group>"; };
+		8AD6A817294BF9CF00464937 /* Big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Big.png; sourceTree = "<group>"; };
+		8AD6A818294BF9CF00464937 /* Big@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Big@2x.png"; sourceTree = "<group>"; };
+		8AD6A81D294BF9E200464937 /* Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Small@2x.png"; sourceTree = "<group>"; };
+		8AD6A81E294BF9E200464937 /* Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Small.png; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +63,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8AD6A804294B3FF500464937 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8AD6A805294B3FF500464937 /* YS Display-Bold.ttf */,
+				8AD6A806294B3FF500464937 /* YS Display-Medium.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8AD6A80A294BF8F000464937 /* YP Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				8AD6A80B294BF8F000464937 /* Rectangle 8.png */,
+				8AD6A80C294BF8F000464937 /* Rectangle 8@2x.png */,
+			);
+			path = "YP Quiz";
+			sourceTree = "<group>";
+		};
+		8AD6A80F294BF9BD00464937 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				8AD6A810294BF9BD00464937 /* Active */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		8AD6A810294BF9BD00464937 /* Active */ = {
+			isa = PBXGroup;
+			children = (
+				8AD6A81D294BF9E200464937 /* Small@2x.png */,
+				8AD6A81E294BF9E200464937 /* Small.png */,
+				8AD6A817294BF9CF00464937 /* Big.png */,
+				8AD6A818294BF9CF00464937 /* Big@2x.png */,
+				8AD6A811294BF9BD00464937 /* Action@2x.png */,
+				8AD6A812294BF9BD00464937 /* Action.png */,
+			);
+			path = Active;
+			sourceTree = "<group>";
+		};
 		8F4738322848DE2A005DF65E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -55,8 +114,11 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8AD6A804294B3FF500464937 /* Fonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
+				8AD6A80F294BF9BD00464937 /* Buttons */,
+				8AD6A80A294BF8F000464937 /* YP Quiz */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
 			);
 			path = Resources;
@@ -176,9 +238,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AD6A813294BF9BD00464937 /* Action@2x.png in Resources */,
+				8AD6A80E294BF8F000464937 /* Rectangle 8@2x.png in Resources */,
+				8AD6A81F294BF9E200464937 /* Small@2x.png in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
+				8AD6A819294BF9CF00464937 /* Big.png in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
+				8AD6A81A294BF9CF00464937 /* Big@2x.png in Resources */,
+				8AD6A80D294BF8F000464937 /* Rectangle 8.png in Resources */,
+				8AD6A807294B3FF500464937 /* YS Display-Bold.ttf in Resources */,
+				8AD6A814294BF9BD00464937 /* Action.png in Resources */,
+				8AD6A808294B3FF500464937 /* YS Display-Medium.ttf in Resources */,
+				8AD6A820294BF9E200464937 /* Small.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +259,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		AD77F5722857EDD20062FB14 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -360,6 +433,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME[sdk=*]" = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N29P9VDV4Y;
@@ -391,6 +465,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME[sdk=*]" = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N29P9VDV4Y;
