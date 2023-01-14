@@ -8,60 +8,17 @@
 import Foundation
 
 final class QuestionFactory: QuestionFactoryProtocol {
+    //MARK - lets and variables
     private let moviesLoader: MoviesLoading
+    private var movies: [MostPopularMovie] = []
     weak private var delegate: QuestionFactoryDelegate?
-    init(moviesLoader: MoviesLoading,delegate: QuestionFactoryDelegate?) {
+    
+    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.delegate = delegate
         self.moviesLoader = moviesLoader
     }
-    private var movies: [MostPopularMovie] = []
     
-    //Массив вопросов из мок данных
-    /*
-     private let questions: [QuizQuestion] = [
-            QuizQuestion(
-                image: "The Godfather",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Dark Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Kill Bill",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Avengers",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Deadpool",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Green Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Old",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "The Ice Age Adventures of Buck Wild",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "Tesla",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "Vivarium",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false)
-        ]
-     */
-    
+    //MARK - functions
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }

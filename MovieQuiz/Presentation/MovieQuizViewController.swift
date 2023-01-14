@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     private var presenter: MovieQuizPresenter!
     var alertPresenter: AlertPresenterProtocol?
     
-
+    // MARK: -  viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius  = 20
@@ -25,28 +25,32 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter.viewController = self
     }
     
+    // MARK: - IBAction private functions
     @IBAction private func noButtonAction(_ sender: Any) {
         presenter.noButtonAction()
     }
+    
     @IBAction private func yesButtonAction(_ sender: Any) {
         presenter.yesButtonAction()
     }
     
+    // MARK: - private functions
     func highlightImageBorder(isCorrectAnswer: Bool) {
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-            interactionDisable()
-        }
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        interactionDisable()
+    }
     
     func interactionEnable(){
         self.imageView.layer.borderWidth = 0
-        self.yesButtonOutlet.isUserInteractionEnabled = true
-        self.noButtonOutlet.isUserInteractionEnabled = true
+        self.yesButtonOutlet.isEnabled = true
+        self.noButtonOutlet.isEnabled = true
     }
+    
     func interactionDisable(){
-        self.yesButtonOutlet.isUserInteractionEnabled = false
-        self.noButtonOutlet.isUserInteractionEnabled = false
+        self.yesButtonOutlet.isEnabled = false
+        self.noButtonOutlet.isEnabled = false
     }
     
     func show(quiz step: QuizStepViewModel) { //метод показа вопроса
@@ -61,21 +65,22 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
+        activityIndicator.isHidden = true // говорим, что индикатор загрузки скрыт
+        activityIndicator.stopAnimating() //выключаем индикатор
     }
     
     func showNetworkError(message: String) {
-             hideLoadingIndicator()
-
-             let alertModel = AlertModel(title: "Ошибка",
-                                         message: message,
-                                         buttonText: "Попробовать ещё раз") {
-                        [weak self] in
-                        guard let self = self else {return}
-                        self.presenter.factoryLoadData()
-                        self.showLoadingIndicator()
-             }
-         self.presenter.restartGame()
-         alertPresenter?.show(results: alertModel)
-         }
+        hideLoadingIndicator()
+        
+        let alertModel = AlertModel(title: "Ошибка",
+                                    message: message,
+                                    buttonText: "Попробовать ещё раз") {
+            [weak self] in
+            guard let self = self else {return}
+            self.presenter.factoryLoadData()
+            self.showLoadingIndicator()
+        }
+        self.presenter.restartGame()
+        alertPresenter?.show(results: alertModel)
+    }
 }
