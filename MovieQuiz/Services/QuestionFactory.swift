@@ -8,12 +8,14 @@
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
+    
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
     private var movies: [MovieData] = []
     
-    init(moviesLoader: MoviesLoading) {
+    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
+        self.delegate = delegate
     }
     
     func loadData() {    // инициализирует загрузку данных
@@ -35,8 +37,11 @@ class QuestionFactory: QuestionFactoryProtocol {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
+            
             guard let movie = self.movies[safe: index] else { return }
+            
             var imageData = Data() // по умолчанию у нас будут просто пустые данные
+            
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
                 let rating = Float(movie.rating) ?? 0 // превращаем строку в число
