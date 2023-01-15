@@ -9,6 +9,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
+    private let questionsAmount: Int = 10
+    
+    private var questionFactory: QuestionFactoryProtocol?
+    private var currentQuestion: QuizQuestion?
+    private var alert: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         yesButton.isEnabled = false
         noButton.isEnabled = false
@@ -29,25 +38,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    
-    private var currentQuestionIndex: Int = 0
-    private var correctAnswers: Int = 0
-    private let questionsAmount: Int = 10
-    
-    private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
-    private var alert: AlertPresenterProtocol?
-    private var statisticService: StatisticService?
-    
-    private enum FileManagerError: Error {
-        case fileDoesntExist
-    }
-    
-    private enum ParseError: Error {
-        case yearFailure
-        case runtimeMinsFailure
     }
     
     private func showLoadingIndicator() {
@@ -77,33 +67,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     func didFailToLoadData(with error: Error) { // Экран в случае ошибки загрузки данных из сети
         showNetworkError(message: error.localizedDescription) // Возьмем в качестве сообщения на экране описание ошибки
     }
-    
-    /* Структуры под top250.json. Если не будет надобности позже - удалить.
-     
-    struct Actor: Codable {
-        let id: String
-        let image: String
-        let name: String
-        let asCharacter: String
-    }
-
-    struct Movie: Codable {
-      let id: String
-      let rank: String
-      let title: String
-      let fullTitle: String
-      let year: String
-      let image: String
-      let crew: String
-      let imDbRating: String
-      let imDbRatingCount: String
-    }
-
-    struct Top: Decodable {
-        let items: [Movie]
-    }
-     
-     */
     
     // MARK: - Lifecycle
     
@@ -173,7 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1) / \(questionsAmount)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     // MARK: - QuestionFactoryDelegate

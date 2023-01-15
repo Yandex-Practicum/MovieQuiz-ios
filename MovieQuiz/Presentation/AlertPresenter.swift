@@ -22,6 +22,8 @@ final class AlertPresenter: AlertPresenterProtocol {
             message: model.message,
             preferredStyle: .alert)
         
+        alert.view.accessibilityIdentifier = "Game results"
+        
         let action = UIAlertAction(
             title: "Сыграть еще раз",
             style: .default,
