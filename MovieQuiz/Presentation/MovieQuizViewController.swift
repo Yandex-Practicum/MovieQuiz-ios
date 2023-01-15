@@ -1,7 +1,7 @@
 import UIKit
 
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
@@ -62,6 +62,8 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
+        
+        alert.view.accessibilityIdentifier = "Final game"
     }
     
     func highlightImageBorder(isCorrect: Bool) {
@@ -93,7 +95,6 @@ final class MovieQuizViewController: UIViewController {
     
     func showNetworkError(message: String) { // функция которая покажет, что произошла ошибка
         hideLoadingIndicator() // скрываем индикатор загрузки
-        
         
         let alertError = UIAlertController(    // создаем и показываем алерт
             title: "Что-то пошло не так(",

@@ -10,7 +10,7 @@ import UIKit
 final class MovieQuizPresenter {
     
     private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private var currentQuestion: QuizQuestion?
     private let statisticService: StatisticServiceProtocol!
     
@@ -18,7 +18,7 @@ final class MovieQuizPresenter {
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         statisticService = StatisticServiceImplementation()
@@ -85,9 +85,9 @@ final class MovieQuizPresenter {
             let text = "Ваш результат: \(correctAnswers) из \(self.questionsAmount)\n"
             
             let viewModel = QuizResultsViewModel(
-                title: "Этот раунд окончен",
+                title: "Этот раунд окончен!",
                 text: text,
-                buttonText: "Сыграть еще раз")
+                buttonText: "Сыграть ещё раз")
             viewController?.showAlert(quiz: viewModel)
         }
         else {
