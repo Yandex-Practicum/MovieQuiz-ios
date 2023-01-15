@@ -9,10 +9,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet var noButton: UIButton!
     
     
-    private let questionsAmount: Int = 3
+    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -20,15 +21,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        statisticService = StatisticServiceImplementation()
+        
         alertPresenter = AlertPresenter(viewController: self)
         
         questionFactory = QuestionFactory(delegate: self)
         
         questionFactory?.requestNextQuestion()
-        
+  
     }
     // MARK: - QuestionFactoryDelegate
-    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -37,7 +39,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
+            guard let self = self else { return }
+            self.show(quiz: viewModel)
         }
     }
     
@@ -63,7 +66,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
     }
     
-    // MARK: - Private functions
+    // MARK: - Private methods
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -88,7 +91,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor :
         UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self = self else { return }
             self.yesButton.isEnabled = true
             self.noButton.isEnabled = true
@@ -99,9 +102,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
+               
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
+        
+            statisticService?.gamesCount += 1
+            
             let result = AlertModel(
                 title: "Этот раунд окончен!",
-                message: "Ваш результат: \(correctAnswers) из 10",
+                message:"""
+                 Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Количество сыгранных квизов: \(statisticService?.gamesCount ?? 0)
+             Рекорд: \(statisticService?.bestGame.correct ?? 0)/\(questionsAmount) (\(statisticService?.bestGame.date ?? "Ошибка"))
+              Средняя точность: \(String(format: "%.2f", statisticService?.totalAccuracy ?? 0))%
+           """,
                 buttonText: "Сыграть еще раз",
                 completion: { [weak self] in
                     guard let self = self else { return }

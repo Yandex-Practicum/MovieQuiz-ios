@@ -55,16 +55,26 @@ class QuestionFactory: QuestionFactoryProtocol {
         )
     ]
     
+    private lazy var unusedQuestion = Array(0..<questions.count)
+    
     init(delegate: QuestionFactoryDelegate) {
         self.delegate = delegate
     }
     
     func requestNextQuestion() {
-        guard let index = (0..<questions.count).randomElement()  else {
+        if unusedQuestion.isEmpty {
+            unusedQuestion = Array(0..<questions.count)
+        }
+        guard let element = unusedQuestion.randomElement()  else {
             delegate?.didReceiveNextQuestion(question: nil)
             return
         }
-       let question = questions[safe: index]
+        let indexOfElement = unusedQuestion.firstIndex(of: element) ?? 0
+        unusedQuestion.remove(at: indexOfElement)
+  
+        
+       let question = questions[safe: element]
         delegate?.didReceiveNextQuestion(question: question)
     }
 }
+
