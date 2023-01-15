@@ -9,9 +9,9 @@ import UIKit
 
 final class AlertPresenter {
     
-    weak var delegate: AlertPresenterDelegate?
+    weak var delegate: UIViewController?
     
-    init(delegate: AlertPresenterDelegate? = nil) {
+    init(delegate: UIViewController? = nil) {
         self.delegate = delegate
     }
     
@@ -21,7 +21,7 @@ final class AlertPresenter {
             result.completion()
         }
         alert.addAction(action)
-        delegate?.viewController.present(alert, animated: true, completion: nil)
+        delegate?.present(alert, animated: true, completion: nil)
     }
     
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate/*, AlertPresenterDelegate*/ {
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -65,30 +65,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
+        
         questionFactory.delegate = self
-        questionFactory.requestNextQuestion()
         alertPresenter.delegate = self
+
+        
+        showLoadingIndicator()
+        questionFactory.loadData()
     }
     
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private let questionsAmount: Int = 10
-    
-    private var questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     private var statisticService: StatisticService = StatisticServiceImplementation()
     private var alertPresenter: AlertPresenter = AlertPresenter()
+    private var questionFactory: QuestionFactoryProtocol = QuestionFactory(moviesLoader: MoviesLoader())
     
     
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var counterLabel: UILabel!
-    
-    
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
-    
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {return}
@@ -115,11 +116,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     // MARK: - AlertPresenterDelegate
     
-    var viewController: UIViewController {
-        self
-    }
+//    var viewController: UIViewController {
+//        self
+//    }
     
     // MARK: - Private functions
     
@@ -131,7 +141,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -148,6 +158,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             guard let self = self else {return}
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
+            //self.questionFactory.requestNextQuestion()
             self.yesButton.isEnabled = true
             self.noButton.isEnabled = true
         }
@@ -170,7 +181,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             
         } else {
             currentQuestionIndex += 1
-            self.questionFactory.requestNextQuestion()
+            self.questionFactory.loadData()
         }
+    }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let viewModel = AlertModel(title: "Ошибка!", message: message, buttonText: "Попробовать ещё раз") { [weak self] in
+            guard let self = self else { return }
+            self.showLoadingIndicator()
+            self.questionFactory.loadData()
+        }
+        alertPresenter.show(quiz: viewModel)
     }
 }
