@@ -61,7 +61,6 @@ final class StatisticServiceImplementation: StatisticService {
     
     // MARK: - метод сохранения рекорда(если он лучше), и сохранение(добавление) вопросов и правильных ответов
     func store(correct count: Int, total amount: Int) {
-        
         let gameRecordModel = GameRecord(correct: count, total: amount, date: Date().dateTimeString)
         
         if gameRecordModel.comparisonRecords(pastResults: bestGame, newResults: gameRecordModel) {
