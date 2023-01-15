@@ -63,10 +63,10 @@ final class StatisticServiceImplementation: StatisticService {
         userDefaults.set(self.total + amount, forKey: Keys.total.rawValue)
         userDefaults.set(self.correct + count, forKey: Keys.correct.rawValue)
         
-        if bestGame < GameRecord(correct: count, total: amount, date: date) {
-            self.bestGame = GameRecord(correct: count, total: amount, date: date)
-        } else {
-            self.bestGame = bestGame
+        let game = GameRecord(correct: count, total: amount, date: Date())
+        
+        if game.isBetterThan(bestGame) {
+            bestGame = game
         }
     }
     
