@@ -70,15 +70,6 @@ final class MovieQuizUITests: XCTestCase {
         XCTAssertTrue(app.alerts["GameResults"].exists)
         XCTAssertTrue(alert.label == "Этот раунд окончен!")
         XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть ещё раз")
-        
-        alert.buttons.firstMatch.tap()
-        
-        sleep(3)
-        
-        let indexLabel = app.staticTexts["Index"]
-        
-        XCTAssertFalse(app.alerts["GameResults"].exists)
-        XCTAssertTrue(indexLabel.label == "1/10")
     }
     
     func testAlertDismiss() {
@@ -90,23 +81,15 @@ final class MovieQuizUITests: XCTestCase {
         
         sleep(3)
         
-        let alert = app.alerts["Game results"]
+        let alert = app.alerts["GameResults"]
         alert.buttons.firstMatch.tap()
         
         sleep(3)
         
         let indexLabel = app.staticTexts["Index"]
         
-        XCTAssertFalse(app.alerts["Game results"].exists)
+        XCTAssertFalse(app.alerts["GameResults"].exists)
         XCTAssertTrue(indexLabel.label == "1/10")
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
 }
