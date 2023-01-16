@@ -70,40 +70,57 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func showNextQuestionOrResults() {
+    func proceedToNextQuestionOrResults() {
         guard let viewController else { return }
+        viewController.removeImageBorder()
         if self.isLastQuestion() {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-            let bestRecord = statisticService.bestGame
-            let totalCount = statisticService.gamesCount.countOfGames
-            let totalAccuracy = statisticService.totalAccuracy?.totalAccuracyOfGame
-            let totalAccuracyString: String
-            if let totalAccuracy = totalAccuracy {
-                totalAccuracyString = "Средняя точность: \(Int(totalAccuracy * 100))%"
-            } else {
-                totalAccuracyString = "Нет статистики"
-            }
-            
-            let text = """
-            Ваш результат: \(correctAnswers)/\(questionsAmount)\n
-            Количесчтво сыгранных квизов: \(totalCount)\n
-            Рекорд: \(bestRecord.correct)/\(bestRecord.total) \(bestRecord.date.dateTimeString)\n
-            \(totalAccuracyString)
-            """
-            viewController.imageView.layer.borderWidth = 0
+            let text = makeGameResultText()
             let alertModel: AlertModel = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть ещё раз", completion: { [weak self] in
                 guard let self = self else {return}
                 self.restartGame()
-                self.questionFactory?.requestNextQuestion()
             })
             alertPresenter.present(alert: alertModel, presentingViewController: viewController)
             
         } else {
             switchToNextQuestion()
             questionFactory?.requestNextQuestion()
-            viewController.imageView.layer.borderWidth = 0
             return
         }
+    }
+    
+    func proceedWithAnswer(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        guard let viewController else { return }
+        viewController.noButtonOutlet.isEnabled = false
+        viewController.yesButtonOutlet.isEnabled = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else {return}
+            self.proceedToNextQuestionOrResults()
+            self.viewController?.noButtonOutlet.isEnabled = true
+            self.viewController?.yesButtonOutlet.isEnabled = true
+        }
+    }
+    
+    func makeGameResultText() -> String {
+        let bestRecord = statisticService.bestGame
+        let totalCount = statisticService.gamesCount.countOfGames
+        let totalAccuracy = statisticService.totalAccuracy?.totalAccuracyOfGame
+        let totalAccuracyString: String
+        if let totalAccuracy = totalAccuracy {
+            totalAccuracyString = "Средняя точность: \(Int(totalAccuracy * 100))%"
+        } else {
+            totalAccuracyString = "Нет статистики"
+        }
+        
+        return """
+        Ваш результат: \(correctAnswers)/\(questionsAmount)\n
+        Количесчтво сыгранных квизов: \(totalCount)\n
+        Рекорд: \(bestRecord.correct)/\(bestRecord.total) \(bestRecord.date.dateTimeString)\n
+        \(totalAccuracyString)
+        """
     }
     
     func yesButtonTapped() {
@@ -119,7 +136,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             return
         }
         let givenAnswer = isYes
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }
 

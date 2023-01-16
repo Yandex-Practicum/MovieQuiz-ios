@@ -4,10 +4,10 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - Outlets
     @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet var imageView: UIImageView!
+    @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textlabel: UILabel!
-    @IBOutlet private var noButtonOutlet: UIButton!
-    @IBOutlet private var yesButtonOutlet: UIButton!
+    @IBOutlet var noButtonOutlet: UIButton!
+    @IBOutlet var yesButtonOutlet: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Properties
@@ -47,6 +47,16 @@ final class MovieQuizViewController: UIViewController {
         activityIndicator.stopAnimating()
     }
     
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
+    
+    func removeImageBorder() {
+        imageView.layer.borderWidth = 0
+    }
+    
     func showNetworkError(message: String, alertPresenter: AlertPresenter) {
         hideLoadingIndicator()
         
@@ -68,21 +78,6 @@ final class MovieQuizViewController: UIViewController {
             ]
         )
         textlabel.attributedText = attributedText
-    }
-    
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-        noButtonOutlet.isEnabled = false
-        yesButtonOutlet.isEnabled = false
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else {return}
-            self.presenter.showNextQuestionOrResults()
-            self.noButtonOutlet.isEnabled = true
-            self.yesButtonOutlet.isEnabled = true
-        }
     }
     
     // MARK: - Actions
