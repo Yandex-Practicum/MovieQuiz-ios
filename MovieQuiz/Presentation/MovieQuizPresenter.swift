@@ -80,6 +80,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                 guard let self = self else {return}
                 self.restartGame()
             })
+            
+            guard let viewController = self.viewController as? UIViewController else {
+                return
+            }
             alertPresenter.present(alert: alertModel, presentingViewController: viewController)
             
         } else {
@@ -93,14 +97,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         didAnswer(isCorrectAnswer: isCorrect)
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         guard let viewController else { return }
-        viewController.noButtonOutlet.isEnabled = false
-        viewController.yesButtonOutlet.isEnabled = false
-        
+        viewController.makeButtonsInactive()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
             self.proceedToNextQuestionOrResults()
-            self.viewController?.noButtonOutlet.isEnabled = true
-            self.viewController?.yesButtonOutlet.isEnabled = true
+            viewController.makeButtonsActive()
         }
     }
     

@@ -47,6 +47,16 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         activityIndicator.stopAnimating()
     }
     
+    func makeButtonsInactive() {
+        noButtonOutlet.isEnabled = false
+        yesButtonOutlet.isEnabled = false
+    }
+    
+    func makeButtonsActive() {
+        noButtonOutlet.isEnabled = true
+        yesButtonOutlet.isEnabled = true
+    }
+    
     func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
