@@ -7,14 +7,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - vars and buttons
     
-    
-    
-    private var currentQuestionIndex = 0
-    private var questionsAmount = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
+    private let presenter = MovieQuizPresenter()
     
     private var countCorrectAnswer = 0
     
@@ -32,18 +29,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var buttonNo: UIButton!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {return}
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
         disableMyButtons()
        
     }
     
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {return}
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
         disableMyButtons()
     }
     
@@ -93,13 +88,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel (image: UIImage(data: model.image) ?? UIImage(),
-                                  question: model.text,
-                                  questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        
-    }
-    
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -107,7 +95,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterLabel.text = step.questionNumber
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 8
@@ -127,7 +115,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func completion() {
         imageView.layer.cornerRadius = 20
-        currentQuestionIndex = 0
+        presenter.resetQuestionIndex()
         countCorrectAnswer = 0
         questionFactory?.requestNextQuestion()
     }
@@ -163,16 +151,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let totalQuestions = statisticService?.totalQuestions else {return}
 
         var allStatisticsCollected = false
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             setNewGameCount(with: GameCount + 1)
-            setStoreGameResult(correctAnswersNumber: Int(correctAnswer) + countCorrectAnswer, totalQuestionsNumber: Int(totalQuestions) + questionsAmount)
-            setStoreRecord(correct: countCorrectAnswer , total: questionsAmount)
+            setStoreGameResult(correctAnswersNumber: Int(correctAnswer) + countCorrectAnswer, totalQuestionsNumber: Int(totalQuestions) + presenter.questionsAmount)
+            setStoreRecord(correct: countCorrectAnswer , total: presenter.questionsAmount)
             allStatisticsCollected = true
             if allStatisticsCollected != false {
                 showAlertResult()
             }
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -199,6 +187,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showLoadingIndicator()
         alertPresenter = AlertPresenter(controller: self)
         statisticService = StatisticServiceImplementation()
+        presenter.viewController = self
         
 
         func string(from documentDirectory: URL) throws -> String {
@@ -232,7 +221,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -242,13 +231,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
 }
 
-
-
-
-
-//struct Result {
-//    let answer: Bool
-//}
 
 
 
