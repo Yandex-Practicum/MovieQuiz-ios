@@ -17,7 +17,7 @@ struct AlertPresenter: AlertPresenterProtocol{
         let alert = UIAlertController(title: results.title,
                                       message: results.message,
                                       preferredStyle: .alert)
-        
+        alert.view.accessibilityIdentifier = "AlertResult"
         let action = UIAlertAction(title: results.buttonText,
                                    style: .default)
         

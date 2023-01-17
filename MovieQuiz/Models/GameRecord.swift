@@ -8,7 +8,7 @@
 import Foundation
 
 struct GameRecord : Codable, Comparable {
-    
+    // Сравнение двух рекордов
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         return lhs.correct < rhs.correct
     }
