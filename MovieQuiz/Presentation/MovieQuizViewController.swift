@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  {
+final class MovieQuizViewController: UIViewController {
     
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var counterLabel: UILabel!
@@ -8,14 +8,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
-    private let presenter = MovieQuizPresenter()
+    private var presenter: MovieQuizPresenter!
     
-    // Показ первого вопроса
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        presenter.questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        presenter.questionFactory?.loadData()
+        presenter = MovieQuizPresenter(viewController: self)
         showLoadingIndicator()
         alertPresenter = AlertPresenter(viewController: self)
         statisticService = StatisticServiceImplementation()
@@ -30,16 +29,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         presenter.yesButtonClicked()
     }
     
-    private func showLoadingIndicator() {
+    func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
-    private func hideLoadingIndicator() {
+    func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
     
-    private func showNetworkError (message:String) {
+    func showNetworkError (message:String) {
         hideLoadingIndicator()
         let model = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз") {[weak self]_ in
             guard self != nil else {return}
@@ -58,8 +57,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     
     // Отоброжение результата прохождения квиза
     func show(quiz result: QuizResultsViewModel) {
-        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText){[weak self]_ in
+        let alertModel = AlertModel(title: result.title,
+                                    message: result.text,
+                                    buttonText: result.buttonText) {[weak self]_ in
             guard self != nil else {return}
+            self?.presenter.restartGame()
         }
         self.alertPresenter?.show(results: alertModel)
         self.counterLabel.text = "1/10"
@@ -94,19 +96,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     func showNextQuestionOrResults() {
         presenter.showNextQuestionOrResults()
     }
-    
-    func didLoadDataFromServer() {
-        activityIndicator.isHidden = true // скрываем индикатор загрузки
-        presenter.questionFactory?.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
-    }
-    // MARK: - QuestionFactoryDelegate
-    func didRecieveNextQuestion(question: QuizQuestion?) {
-        presenter.didRecieveNextQuestion(question: question)
-    }
+
 }
 
 
