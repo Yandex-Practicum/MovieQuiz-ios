@@ -14,15 +14,17 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0
     var correctAnswers: Int = 0
     var currentQuestion: QuizQuestion?
-    var statisticService: StatisticService?
+    var statisticService: StatisticService!
     var questionFactory: QuestionFactoryProtocol?
-    weak var viewController: MovieQuizViewController?
+    weak var viewController: MovieQuizViewControllerProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
+        statisticService = StatisticServiceImplementation()
+        
     }
     
     func yesButtonClicked() {
@@ -38,7 +40,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             return
         }
         let givenAnswer = isYes
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion!.correctAnswer)
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion!.correctAnswer)
     }
     
     
@@ -62,7 +64,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     
-    func showNextQuestionOrResults() {
+    func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
             statisticService?.store(correct: correctAnswers, total: questionsAmount)
             
@@ -90,6 +92,39 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     
+    func makeResultsMessage() -> String {
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        
+        let bestGame = statisticService.bestGame
+        
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
+        + " (\(bestGame.date.dateTimeString))"
+        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        
+        let resultMessage = [
+            currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine
+        ].joined(separator: "\n")
+        
+        return resultMessage
+    }
+
+    func proceedWithAnswer(isCorrect: Bool) {
+        if isCorrect {correctAnswers += 1
+        }
+        if isLastQuestion()  {
+            proceedToNextQuestionOrResults()
+            return
+        }
+        self.viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        self.switchToNextQuestion()
+        
+        // Показ следующего вопроса с задержкой в 1 секунду
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.questionFactory?.requestNextQuestion()
+        }
+    }
     // MARK: - QuestionFactoryDelegate
     
     func didLoadDataFromServer() {
