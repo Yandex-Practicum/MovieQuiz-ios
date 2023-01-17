@@ -17,16 +17,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Ldk-1I-0Aq">
-                                <rect key="frame" x="-36" y="0.0" width="502" height="932"/>
+                                <rect key="frame" x="-51" y="-6" width="533" height="938"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Ldk-1I-0Aq" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="b07-pp-Hjd"/>
-                            <constraint firstItem="Ldk-1I-0Aq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" symbolic="YES" id="o7g-oM-bk3"/>
-                            <constraint firstAttribute="trailing" secondItem="Ldk-1I-0Aq" secondAttribute="trailing" constant="20" symbolic="YES" id="qlO-QV-diy"/>
-                            <constraint firstAttribute="top" secondItem="Ldk-1I-0Aq" secondAttribute="top" constant="20" symbolic="YES" id="yKY-XW-drD"/>
+                            <constraint firstAttribute="top" secondItem="Ldk-1I-0Aq" secondAttribute="top" id="OxJ-1N-jeh"/>
+                            <constraint firstItem="Ldk-1I-0Aq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Uck-hb-3uz"/>
+                            <constraint firstAttribute="trailing" secondItem="Ldk-1I-0Aq" secondAttribute="trailing" id="WXv-ed-jH7"/>
+                            <constraint firstItem="Ldk-1I-0Aq" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" constant="20" symbolic="YES" id="clv-Pz-N25"/>
                         </constraints>
                     </view>
                 </viewController>
