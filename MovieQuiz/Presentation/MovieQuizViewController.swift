@@ -7,6 +7,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var filmPosterImageView: UIImageView!
     @IBOutlet private weak var questionTextLabel: UILabel!
     
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+    
     @IBAction private func noButtonPressed(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
@@ -131,39 +134,45 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
-
-private func convert(model: QuizQuestionModel) -> QuizStepViewModel {
-    return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
-}
-
-private func showAnswerResult(isAnswerCorrect: Bool) {
-    if isAnswerCorrect {
-        correctAnswers += 1
+    
+    private func convert(model: QuizQuestionModel) -> QuizStepViewModel {
+        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
-    filmPosterImageView.layer.masksToBounds = true
-    filmPosterImageView.layer.borderWidth = 8
-    filmPosterImageView.layer.borderColor = isAnswerCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    private func showAnswerResult(isAnswerCorrect: Bool) {
+        if isAnswerCorrect {
+            correctAnswers += 1
+        }
+        
+        filmPosterImageView.layer.masksToBounds = true
+        filmPosterImageView.layer.borderWidth = 8
+        filmPosterImageView.layer.borderColor = isAnswerCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.filmPosterImageView.layer.borderWidth = 0
+            self.showNextQuestionOrResults()
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+        }
+    }
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.filmPosterImageView.layer.borderWidth = 0
-        self.showNextQuestionOrResults()
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 {
+            let text = "Ваш результат: \(correctAnswers) из \(questions.count)"
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel)
+        } else {
+            currentQuestionIndex += 1
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            show(quiz: viewModel)
+        }
     }
-}
-
-private func showNextQuestionOrResults() {
-    if currentQuestionIndex == questions.count - 1 {
-        let text = "Ваш результат: \(correctAnswers) из \(questions.count)"
-        let viewModel = QuizResultsViewModel(
-            title: "Этот раунд окончен!",
-            text: text,
-            buttonText: "Сыграть ещё раз")
-        show(quiz: viewModel)
-    } else {
-        currentQuestionIndex += 1
-        let nextQuestion = questions[currentQuestionIndex]
-        let viewModel = convert(model: nextQuestion)
-        show(quiz: viewModel)
-    }
-}
 }
