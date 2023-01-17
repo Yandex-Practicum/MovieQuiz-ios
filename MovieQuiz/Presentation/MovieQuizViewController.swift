@@ -15,8 +15,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
     }
-
-// MARK: - Lifecycle
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
@@ -70,14 +70,17 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         }
         alertPresenter?.show(results: model)
     }
-
+    
     // Рамка и цвет в зависимости от правильности ответа
     func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
-    
+    func imageBorderOff() {
+        sleep(1)
+        imageView.layer.borderWidth = 0
+    }
 }
 
 

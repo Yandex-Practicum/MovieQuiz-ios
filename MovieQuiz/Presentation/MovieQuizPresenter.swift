@@ -5,7 +5,6 @@
 //  Created by Александр Ершов on 17.01.2023.
 //
 
-import Foundation
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
@@ -123,6 +122,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         // Показ следующего вопроса с задержкой в 1 секунду
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.questionFactory?.requestNextQuestion()
+            self.viewController?.imageBorderOff()
         }
     }
     // MARK: - QuestionFactoryDelegate
