@@ -16,13 +16,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Ldk-1I-0Aq">
-                                <rect key="frame" x="-92" y="0.0" width="614" height="927"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Ldk-1I-0Aq">
+                                <rect key="frame" x="-36" y="0.0" width="502" height="932"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Ldk-1I-0Aq" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="b07-pp-Hjd"/>
+                            <constraint firstItem="Ldk-1I-0Aq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" symbolic="YES" id="o7g-oM-bk3"/>
+                            <constraint firstAttribute="trailing" secondItem="Ldk-1I-0Aq" secondAttribute="trailing" constant="20" symbolic="YES" id="qlO-QV-diy"/>
+                            <constraint firstAttribute="top" secondItem="Ldk-1I-0Aq" secondAttribute="top" constant="20" symbolic="YES" id="yKY-XW-drD"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
