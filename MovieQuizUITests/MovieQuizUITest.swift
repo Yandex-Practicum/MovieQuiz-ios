@@ -32,7 +32,7 @@ final class MovieQuizUITest: XCTestCase {
 
         app.buttons["Yes"].tap() // Находим кнопку Да и нажимаем на нее
         
-        let secondPoster = app.images["Poster"] // Повтор постера
+                let secondPoster = app.images["Poster"] // Повтор постера
         sleep (3)
         XCTAssertFalse(firstPoster==secondPoster)
         sleep (3)
