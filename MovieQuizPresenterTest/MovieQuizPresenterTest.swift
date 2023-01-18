@@ -10,6 +10,10 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerProtocolMock: MovieQuizViewControllerProtocol {
+    func imageBorderOff() {
+        
+    }
+    
     func show(quiz step: QuizStepViewModel) {
     
     }

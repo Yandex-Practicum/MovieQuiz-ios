@@ -51,14 +51,16 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
     }
     
+    func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
     func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
-    func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
-    }
+
     
     // Ошибка
     func showNetworkError (message:String) {
