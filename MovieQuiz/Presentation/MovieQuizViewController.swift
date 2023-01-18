@@ -1,7 +1,8 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
-    
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
+   
+
     // MARK: - vars and buttons
 
     private var presenter:MovieQuizPresenter!
@@ -79,30 +80,13 @@ final class MovieQuizViewController: UIViewController {
            textLabel.text = step.question
            counterLabel.text = step.questionNumber
        }
-//    func show(quiz result: QuizResultsViewModel) {
-//        let message = presenter.makeResultsMessage()
-//
-//        let alert = UIAlertController(
-//            title: result.title,
-//            message: message,
-//            preferredStyle: .alert)
-//
-//            let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-//                guard let self = self else { return }
-//
-//                self.presenter.resetGame()
-//            }
-//
-//        alert.addAction(action)
-//
-//        self.present(alert, animated: true, completion: nil)
-//    }
+
     
-    func highlightImageBorder(isCorrect: Bool) {
+    func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
     
     

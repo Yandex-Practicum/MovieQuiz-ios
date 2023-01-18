@@ -20,12 +20,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     var countCorrectAnswer = 0
     var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private var statisticService: StatisticService?
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
@@ -93,7 +93,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private func showAnswerResult(isCorrect: Bool) {
         didAnswer(isCorrectAnswer: isCorrect)
         
-        viewController?.highlightImageBorder(isCorrect: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         print("bug")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
@@ -147,7 +147,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         var allStatisticsCollected = false
         
         if self.isLastQuestion() {
-            print("bug34")
             setNewGameCount(with: GameCount + 1)
             setStoreGameResult(correctAnswersNumber: Int(correctAnswer) + countCorrectAnswer, totalQuestionsNumber: Int(totalQuestions) + questionsAmount)
             setStoreRecord(correct: countCorrectAnswer , total: questionsAmount)
