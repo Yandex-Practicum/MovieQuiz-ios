@@ -1,18 +1,19 @@
 //
 //  AppDelegate.swift
-//  MovieQuiz
+//  111
 //
-//  Created by Constantine Nikolsky on 15.05.2022.
+//  Created by Игорь Полунин on 02.01.2023.
 //
 
 import UIKit
 
 @main
-final class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        sleep (3)
-        print("Hello world for branch to merge")
         return true
     }
 
@@ -29,6 +30,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-    
-    
+
+
 }
+
