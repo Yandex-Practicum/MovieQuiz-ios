@@ -90,8 +90,6 @@ class StatisticServiceImplementation: StatisticService {
         
         self.correctAnswer = Double(count)
         self.totalQuestions = Double(amount)
-        print(amount)
-        
         }
     
     
