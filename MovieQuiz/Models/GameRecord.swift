@@ -14,8 +14,8 @@ struct GameRecord: Codable, Comparable {
     
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         if lhs.total == 0 {
-         return true
-               }
+            return true
+        }
         return lhs.correct < rhs.correct && lhs.total < rhs.total
         
     }

@@ -10,7 +10,7 @@ import UIKit
 class AlertPresenter: AlertPresenterProtocol {
     
     weak var delegate: AlertPresenterDelegate?
-        init(delegate: AlertPresenterDelegate) {
+    init(delegate: AlertPresenterDelegate) {
         self.delegate = delegate
     }
     
@@ -20,7 +20,8 @@ class AlertPresenter: AlertPresenterProtocol {
             message: model.message,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in  model.completion()
+        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
+            model.completion()
             
         }
         alert.addAction(action)
@@ -29,4 +30,4 @@ class AlertPresenter: AlertPresenterProtocol {
     }
 }
 
-       
+
