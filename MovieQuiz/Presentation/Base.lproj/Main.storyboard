@@ -47,6 +47,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="m3D-hg-ZhT" secondAttribute="height" multiplier="2:3" id="uhD-YQ-hpQ"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ow8-rR-KBH">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="89.5"/>
