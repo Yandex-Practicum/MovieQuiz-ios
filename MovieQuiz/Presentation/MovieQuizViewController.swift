@@ -1,6 +1,10 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent}
+    
+    
     // MARK: - Lifecycle
     
     
@@ -44,8 +48,8 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green (iOS)")?.cgColor :
         UIColor(named: "YP Red (iOS)")?.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-        self?.showNextQuestionOrResults()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        self.showNextQuestionOrResults()
 
 }
     }
@@ -54,6 +58,7 @@ final class MovieQuizViewController: UIViewController {
         countLabel.text = step.questionNumber
         imageView.image = step.image
         questionLabel.text = step.question
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
     private func showNextQuestionOrResults() {
