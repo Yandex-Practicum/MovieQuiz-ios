@@ -44,32 +44,32 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-
+    
     struct QuizStepViewModel {
-      let image: UIImage
-      let question: String
-      let questionNumber: String
+        let image: UIImage
+        let question: String
+        let questionNumber: String
     }
     // для состояния "Результат квиза"
     struct QuizResultsViewModel {
-      let title: String
-      let text: String
-      let buttonText: String
+        let title: String
+        let text: String
+        let buttonText: String
     }
     struct QuizQuestion {
-      let image: String
-      let text: String
-      let correctAnswer: Bool
+        let image: String
+        let text: String
+        let correctAnswer: Bool
     }
-
+    
     private var currentQuestionIndex: Int = 0
     
     private var correctAnswers: Int = 0
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-            return .lightContent
+        return .lightContent
     }
-   
+    
     @IBOutlet private var imageView: UIImageView!
     
     @IBOutlet private var counterLabel: UILabel!
@@ -160,7 +160,6 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderWidth = 0
         }
     }
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
