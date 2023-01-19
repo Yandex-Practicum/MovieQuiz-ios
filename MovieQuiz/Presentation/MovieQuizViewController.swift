@@ -1,21 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet private var textLabel: UILabel!
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
     
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -79,6 +64,30 @@ final class MovieQuizViewController: UIViewController {
 
     private var currentQuestionIndex: Int = 0
     
+    private var correctAnswers: Int = 0
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent
+    }
+   
+    @IBOutlet private var imageView: UIImageView!
+    
+    @IBOutlet private var counterLabel: UILabel!
+    
+    @IBOutlet private var textLabel: UILabel!
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
     private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image = step.image
@@ -108,6 +117,8 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
+        
+        imageView.layer.borderWidth = 0
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -116,8 +127,6 @@ final class MovieQuizViewController: UIViewController {
             question: model.text, // берём текст вопроса
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // высчитываем номер вопроса
     }
-    
-    private var correctAnswers: Int = 0
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
@@ -147,12 +156,11 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             
             show(quiz: viewModel)
+            
+            imageView.layer.borderWidth = 0
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-            return .lightContent
-    }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
