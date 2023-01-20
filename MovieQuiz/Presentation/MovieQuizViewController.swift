@@ -9,7 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
 
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
-    private let questionsAmount: Int = 10
+    private let questionsAmount: Int = 3
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
@@ -90,15 +90,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             let text = """
             Ваш результат: \(correctAnswers) из \(questionsAmount)
             Количество сыгранных квизов:\(statisticService.gamesCount)
-            Рекорд: \(bestGameRes)/ \(statisticService.bestGame.date.dateTimeString)
+            Рекорд: \(bestGameRes) (\(statisticService.bestGame.date.dateTimeString))
             Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy) + "%")
             """
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
                 buttonText: "Сыграть ещё раз")
-                show(quiz: viewModel)
-                switchButton()
+            show(quiz: viewModel)
+            switchButton()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
