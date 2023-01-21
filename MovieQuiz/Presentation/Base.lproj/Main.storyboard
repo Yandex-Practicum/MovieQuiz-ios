@@ -94,6 +94,9 @@ YP Black (iOS)</string>
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aS9-DC-NGe"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pjz-C5-EGa" userLabel="Yes button">
                                                 <rect key="frame" x="205" y="0.0" width="185" height="60"/>
@@ -115,6 +118,9 @@ YP Black (iOS)</string>
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qHJ-uz-ocf"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -135,6 +141,11 @@ YP Black (iOS)</string>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="8Bq-Xy-d80" secondAttribute="trailing" constant="20" id="NNr-Cr-z6B"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="fgc-wQ-s5Z" id="t3H-zQ-bSn"/>
+                        <outlet property="imageView" destination="adx-85-04Q" id="FKn-sH-n0a"/>
+                        <outlet property="textLabel" destination="iSp-j0-uQs" id="xLu-bn-dWM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
