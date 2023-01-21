@@ -7,10 +7,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var viewController: MovieQuizViewControllerProtocol?
     
-    private var correctAnswers: Int = 0 //
-    private var questionFactory: QuestionFactoryProtocol? = nil//
-    var alertPresenter: AlertPresenterProtocol? = nil//
-    private let statisticService: StatisticService? //
+    private var correctAnswers: Int = 0
+    private var questionFactory: QuestionFactoryProtocol?
+    var alertPresenter: AlertPresenterProtocol? = nil
+    private let statisticService: StatisticService?
     
     init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
@@ -73,9 +73,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func yesButtonClicked() {
         didAnswer(isYes: true)
     }
+    
     func noButtonClicked() {
         didAnswer(isYes: false)
     }
+    
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
