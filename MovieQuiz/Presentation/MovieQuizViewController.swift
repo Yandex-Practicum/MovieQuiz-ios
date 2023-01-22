@@ -4,8 +4,6 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
     
-    
-    
     @IBOutlet private var imageView: UIImageView!
     
     @IBOutlet private var counetLabel: UILabel!
