@@ -8,19 +8,14 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     
-    
     @IBOutlet private var counetLabel: UILabel!
-    
-    
+
     @IBOutlet private var textLabel: UILabel!
-    
-    
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         
         let currentQuestion = questions [currentQuestionIndex]
         let givenAnswer = false
-        
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
@@ -31,17 +26,14 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
         
     }
     
     
-    private var correctAnswers: Int = 0
+    private var correctAnswers: Int = 0  // счетчик правильных ответов
     private  var currentQuestionIndex : Int = 0 // индекс текущего вопроса
-    
-    
     
     
     struct QuizStepViewModel {     //  view модель для состояния "Вопрос задан"
@@ -57,7 +49,6 @@ final class MovieQuizViewController: UIViewController {
         let buttonText: String
         
     }
-    
     
     
     struct QuizQuestion {
@@ -110,9 +101,6 @@ final class MovieQuizViewController: UIViewController {
     
     
     
-    
-    
-    
     private func convert(model : QuizQuestion) -> QuizStepViewModel {// конвертация из мок данных в модель которую надо //показать на экране
         
        
@@ -127,21 +115,11 @@ final class MovieQuizViewController: UIViewController {
     
     private func show(quiz step: QuizStepViewModel) {  // здесь мы заполняем нашу картинку, текст и счётчик данными
         
-        
-        
-        let currentQuestion = questions[currentQuestionIndex] //счетчик вопросов
-        let viewModel = convert(model: QuizQuestion)
-        show(quiz: viewModel)
-        
-        
-        
+        imageView.image = step.image
+        textLabel.text = step.question
+        counetLabel.text = "\(step.questionNumber)"
        
-        
-        
     }
-    
-    
-    
     
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -152,15 +130,13 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
+        imageView.layer.cornerRadius = 20
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { //задержка 1 сек перед показом след вопроса
+            self.imageView.layer.borderColor =  UIColor.ypWhite.cgColor
             self.showNextQuestionOrResults()
         }
         
     }
-    
-    
-    
     
     
     private func show(quiz result: QuizResultsViewModel ) {
@@ -205,27 +181,13 @@ final class MovieQuizViewController: UIViewController {
     
     
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-    
     override func viewDidLoad() {
         
         
-       
-        
-        
-        
         super.viewDidLoad()
+        let firstQuestion = self.questions[self.currentQuestionIndex]  //заново показываем первый вопрос
+        let viewModel = self.convert(model: firstQuestion)
+        self.show(quiz: viewModel)
         
     }
 }
