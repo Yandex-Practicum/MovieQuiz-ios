@@ -119,19 +119,17 @@ final class MovieQuizViewController: UIViewController,QuestionFactoryDelegate,Al
             
             let text = """
                     Ваш результат: \(correctAnswers)/\(questionsAmount)
-                    \n Кол-во сыгранных квизов: \(statisticService.gamesCount)
-                    \n Рекорд: \(bestGameStats) \(bestGame.date.dateTimeString)
-                    \n Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy) + "%")
+                    Кол-во сыгранных квизов: \(statisticService.gamesCount)
+                    Рекорд: \(bestGameStats) \(bestGame.date.dateTimeString)
+                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy) + "%")
             """
             
             let vieModel = QuizResultsViewModel(title: "Раунд окончен!", text: text, buttonText: "Cыграть ещё раз!")
             show(quiz: vieModel)
-            //switchButton()
         } else {
             imageView.layer.borderWidth = 0
             currentQuestionIndex += 1
             self.questionFactory?.requestNextQuestion()
-            //switchButton()
         }
     }
     
