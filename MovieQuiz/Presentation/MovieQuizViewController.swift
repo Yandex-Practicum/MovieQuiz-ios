@@ -128,9 +128,9 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 20
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { //задержка 1 сек перед показом след вопроса
-            self.imageView.layer.borderColor =  UIColor.ypWhite.cgColor
+            self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
         
