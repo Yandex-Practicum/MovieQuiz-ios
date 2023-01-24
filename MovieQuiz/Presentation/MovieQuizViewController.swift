@@ -10,6 +10,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     private var correctAnswers = 0
     private let questionsAmount = 10
@@ -22,10 +23,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        
         alertPresenter = AlertPresenter(delegate: self)
+        imageView.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
+        
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     // MARK: - QuestionFactoryDelegate
     
@@ -39,10 +44,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self?.show(quiz: viewModel)
         }
     }
-
+    
+    // MARK: - Actions
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+        let givenAnswer = true
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: Any) {
+        let givenAnswer = false
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
     //MARK: - Private functions
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
                                  question: model.text,
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -109,27 +131,40 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self.questionFactory?.requestNextQuestion()
         }
     }
-    
-    // MARK: - Actions
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        let givenAnswer = true
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func noButtonClicked(_ sender: Any) {
-        let givenAnswer = false
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
     // MARK: - Network Client
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
     
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
     
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать ещё раз") { [weak self] in
+            guard let self = self else {return}
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        alertPresenter?.showAlert(model: model)
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
 }
 
 

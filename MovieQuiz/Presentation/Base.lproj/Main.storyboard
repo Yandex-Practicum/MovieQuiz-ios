@@ -120,6 +120,10 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Ydv-FP-F3n">
+                                <rect key="frame" x="151" y="418" width="111.5" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="black"/>
@@ -130,6 +134,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Ydv-FP-F3n" id="Av9-QQ-3MH"/>
                         <outlet property="counterLabel" destination="KVJ-MQ-5Cq" id="Ec9-4i-1Ki"/>
                         <outlet property="imageView" destination="lA5-8l-5Oj" id="US2-Mc-MNo"/>
                         <outlet property="noButton" destination="Hqn-fE-1Qf" id="dKp-2e-vcj"/>
