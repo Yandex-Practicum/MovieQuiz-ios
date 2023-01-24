@@ -60,6 +60,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self.correctAnswers = 0
             // заново показываем первый вопрос
             self.questionFactory?.requestNextQuestion()
+            self.setEnabledButtons(isEnabled: true)
             
         })
         self.alertPresenter?.showAlert(model: alertModel)
@@ -70,7 +71,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         if isCorrect {
             correctAnswers += 1
         }
-        switchButton()
+        setEnabledButtons(isEnabled: false)
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -98,20 +99,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
-            switchButton()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
-            switchButton()
+            setEnabledButtons(isEnabled: true)
         }
     }
     
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     
-    private func switchButton()  {
-        noButton.isEnabled = !noButton.isEnabled
-        yesButton.isEnabled = !yesButton.isEnabled
+    private func setEnabledButtons(isEnabled: Bool)  {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {

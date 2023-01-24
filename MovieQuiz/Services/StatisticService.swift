@@ -26,7 +26,7 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
         }
         set {
             userDefaults.set(newValue, forKey: Keys.correct.rawValue)
-            //   userDefaults.removeObject(forKey: Keys.correct.rawValue)
+            // userDefaults.removeObject(forKey: Keys.correct.rawValue)
         }
     }
     
@@ -73,7 +73,7 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
             }
             
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
-            //  userDefaults.removeObject(forKey: Keys.bestGame.rawValue)
+            // userDefaults.removeObject(forKey: Keys.bestGame.rawValue)
         }
     }
     func store(correct count: Int, total amount: Int) {
@@ -81,10 +81,6 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
         let newGame = GameRecord(correct: count,
                                  total: amount,
                                  date: Date())
-        
-        if gamesCount == 0 {
-            bestGame = newGame
-        }
         
         if newGame > bestGame  {
             bestGame = newGame
