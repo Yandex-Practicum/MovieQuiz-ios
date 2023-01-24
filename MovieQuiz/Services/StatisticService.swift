@@ -66,7 +66,7 @@ final class StatisticServiceImplementation: StatisticService {
         if gamesCount == 0 {
             bestGame = newGame
         } else
-        if newGame > bestGame  {
+            if newGame > bestGame  {
             bestGame = newGame
         }
         gamesCount += 1
