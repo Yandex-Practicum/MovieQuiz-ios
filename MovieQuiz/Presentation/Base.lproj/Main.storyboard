@@ -125,16 +125,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="img-Q0-ang">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MsL-Te-S9x" secondAttribute="trailing" constant="20" id="48L-I1-45Z"/>
                             <constraint firstItem="MsL-Te-S9x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="67t-N2-lwX"/>
+                            <constraint firstItem="img-Q0-ang" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="cTR-zI-XQH"/>
+                            <constraint firstItem="img-Q0-ang" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cuq-kg-Jda"/>
                             <constraint firstItem="MsL-Te-S9x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="hfB-AL-VHs"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="img-Q0-ang" id="JI1-LG-6wJ"/>
                         <outlet property="counterLabel" destination="s38-B6-Qtq" id="gbR-ca-L9u"/>
                         <outlet property="imageView" destination="X0z-Bn-hcz" id="hfL-aO-XEX"/>
                         <outlet property="noButton" destination="K7k-Dv-A3u" id="1ti-cH-RhK"/>
