@@ -82,6 +82,10 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
                                  total: amount,
                                  date: Date())
         
+        if gamesCount == 0 {
+            bestGame = newGame
+        }
+        
         if newGame > bestGame  {
             bestGame = newGame
         }
