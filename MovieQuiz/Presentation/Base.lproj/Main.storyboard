@@ -142,7 +142,9 @@
                     <connections>
                         <outlet property="counetLabel" destination="Xb2-1Z-Wvt" id="XgH-JZ-Zqw"/>
                         <outlet property="imageView" destination="vm8-Xw-whv" id="cai-Gm-uRJ"/>
+                        <outlet property="noButtonClicked" destination="1O1-X6-0UK" id="wVS-2J-kTZ"/>
                         <outlet property="textLabel" destination="NBp-nT-UQJ" id="Kjh-4g-Cl1"/>
+                        <outlet property="yesButtonClicked" destination="rdx-nn-ObV" id="ILT-tX-WEr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -4,6 +4,15 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
     
+    @IBOutlet weak var noButtonClicked: UIButton!
+    
+    
+    
+    
+    
+    
+    @IBOutlet weak var yesButtonClicked: UIButton!
+    
     @IBOutlet private var imageView: UIImageView!
     
     @IBOutlet private var counetLabel: UILabel!
@@ -129,9 +138,14 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { //задержка 1 сек перед показом след вопроса
+        yesButtonClicked.isEnabled = false
+        noButtonClicked.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in //задержка 1 сек перед показом след вопроса
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
+            self.yesButtonClicked.isEnabled = true
+            noButtonClicked.isEnabled = true
+            
         }
         
     }
