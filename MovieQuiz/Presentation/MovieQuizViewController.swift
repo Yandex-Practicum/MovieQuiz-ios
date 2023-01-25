@@ -99,7 +99,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
-            switchButton()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
