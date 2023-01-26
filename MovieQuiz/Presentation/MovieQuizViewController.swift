@@ -41,7 +41,7 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
-                buttonText: "Сыграть еще раз?")
+                buttonText: "Сыграть еще раз")
             imageView.layer.borderWidth = 0
             show(quiz: viewModel)
         } else {
