@@ -17,7 +17,7 @@
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
 		DF3ED7A4296A64AD0004FFFB /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF3ED7A2296A64AD0004FFFB /* YS Display-Bold.ttf */; };
 		DF3ED7A5296A64AD0004FFFB /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF3ED7A3296A64AD0004FFFB /* YS Display-Medium.ttf */; };
-		DF3ED7A8296DF85F0004FFFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF3ED7AA296DF85F0004FFFB /* Main.storyboard */; };
+		DF3ED7AC29832A2A0004FFFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF3ED7AB29832A2A0004FFFB /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		DF3ED7A2296A64AD0004FFFB /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		DF3ED7A3296A64AD0004FFFB /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
-		DF3ED7A9296DF85F0004FFFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DF3ED7AB29832A2A0004FFFB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
-				DF3ED7AA296DF85F0004FFFB /* Main.storyboard */,
+				DF3ED7AB29832A2A0004FFFB /* Main.storyboard */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -193,7 +193,7 @@
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				DF3ED7A4296A64AD0004FFFB /* YS Display-Bold.ttf in Resources */,
-				DF3ED7A8296DF85F0004FFFB /* Main.storyboard in Resources */,
+				DF3ED7AC29832A2A0004FFFB /* Main.storyboard in Resources */,
 				DF3ED7A5296A64AD0004FFFB /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,14 +244,6 @@
 				AD1ABABD2831907F00B3E448 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		DF3ED7AA296DF85F0004FFFB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DF3ED7A9296DF85F0004FFFB /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
