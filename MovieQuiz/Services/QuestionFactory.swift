@@ -27,7 +27,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                     self.movies = mostPopularMovies.items
                     self.delegate?.didLoadDataFromServer()
                 case .failure(let error):
-                    self.delegate?.didFailToLoadData(with: error)
+                    self.delegate?.didFailToLoadData(with: Errors.errorDataLoad.errorText )
                 }
             }
         }
@@ -41,9 +41,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
-            
             guard let movie = self.movies[safe: index] else { return }
-            
             var imageData = Data()
             
             do {
@@ -52,7 +50,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                 print("Failed to load image")
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    self.delegate?.didFailToLoadData(with: error)
+                    self.delegate?.didFailToLoadData(with: Errors.errorDataLoad.errorText)
                 }
                 return
             }
