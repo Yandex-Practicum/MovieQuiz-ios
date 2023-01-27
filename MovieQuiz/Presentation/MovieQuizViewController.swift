@@ -160,7 +160,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     func didFailToLoadData(with error: String) {
         showNetworkError(message: Errors.errorDataLoad.errorText)
     }
-    //проверка гита СДЕЛАЮ КОММИТ
 }
 
 
