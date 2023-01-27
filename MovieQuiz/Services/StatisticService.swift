@@ -1,9 +1,4 @@
-//
-//  StaticService.swift
-//  MovieQuiz
-//
-//  Created by Келлер Дмитрий on 12.01.2023.
-//
+
 
 import Foundation
 
@@ -66,7 +61,7 @@ final class StatisticServiceImplementation: StatisticService {
         if gamesCount == 0 {
             bestGame = newGame
         } else
-        if newGame > bestGame  {
+            if newGame > bestGame  {
             bestGame = newGame
         }
         gamesCount += 1

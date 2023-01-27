@@ -1,15 +1,10 @@
-//
-//  AlertPresenter.swift
-//  MovieQuiz
-//
-//  Created by Келлер Дмитрий on 04.01.2023.
-//
+
 
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {
     
-    weak var delegate: AlertPresenterDelegate?
+    private weak var delegate: AlertPresenterDelegate?
     init(delegate: AlertPresenterDelegate) {
         self.delegate = delegate
     }

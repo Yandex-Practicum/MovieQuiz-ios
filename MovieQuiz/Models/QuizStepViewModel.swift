@@ -1,9 +1,4 @@
-//
-//  QuizStepViewModel.swift
-//  MovieQuiz
-//
-//  Created by Келлер Дмитрий on 26.12.2022.
-//
+
 
 import UIKit
 
@@ -12,3 +7,4 @@ struct QuizStepViewModel {
     let question: String
     let questionNumber: String
 }
+
