@@ -59,41 +59,9 @@ final class MovieQuizViewController: UIViewController {
         let nextQuestion = questions[currentQuestionIndex]
         let viewModel = convert(model: nextQuestion)
         show(quiz: viewModel)
-        
     }
     
-    // View собираются показать
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        /*
-         тут имеет смысл дополнительно настроить наши изображения, например задать цвет фона
-         */
-    }
-    
-    // View уже показали
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        /*
-         тут имеет смысл собирать аналитику когда экран показали
-         */
-    }
-    
-    // view собираются перестать показывать
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        /*
-         тут имеет смысл остановить все процессы происходившие на экране
-         */
-    }
-    
-    // view перестали показывать
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        /*
-         Тут имеет смысл оповестить систему аналитики, что экран перестал показываться и привести его в изначальное состояние.
-         */
-    }
-    
+      
     // для состояния "Вопрос задан"
     private struct QuizStepViewModel {
         let image: UIImage
@@ -182,7 +150,7 @@ final class MovieQuizViewController: UIViewController {
         //Рамки в зеленый
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         // Запуск следующего вопроса через 1 секунду
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -206,6 +174,5 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-    
 }
 

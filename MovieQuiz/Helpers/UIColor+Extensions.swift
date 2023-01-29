@@ -1,11 +1,12 @@
 import Foundation
 import UIKit
 
+//если в Assets есть цвет с нашим названием, то присваиваем его переменной. Если нет - устанавливаем цвет по умолчанию
 extension UIColor {
-    static var ypBlack: UIColor { UIColor(named: "black") ?? UIColor.black}
-    static var ypGreen: UIColor { UIColor(named: "green") ?? UIColor.green }
-    static var ypRed: UIColor { UIColor(named: "red") ?? UIColor.red }
-    static var ypBackground: UIColor { UIColor(named: "darkGray") ?? UIColor.darkGray }
-    static var ypGray: UIColor { UIColor(named: "gray") ?? UIColor.gray }
-    static var ypWhite: UIColor { UIColor(named: "white") ?? UIColor.white }
+    static var ypBlack: UIColor { UIColor(named: "YP Black") ?? UIColor.black}
+    static var ypGreen: UIColor { UIColor(named: "YP Green (iOS)") ?? UIColor.green }
+    static var ypRed: UIColor { UIColor(named: "YP Red") ?? UIColor.red }
+    static var ypBackground: UIColor { UIColor(named: "YP Gray") ?? UIColor.darkGray }
+    static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor.gray }
+    static var ypWhite: UIColor { UIColor(named: "YP White") ?? UIColor.white }
 }
