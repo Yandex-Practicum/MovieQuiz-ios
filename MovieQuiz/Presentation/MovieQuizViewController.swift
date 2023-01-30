@@ -16,8 +16,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let alertPresenter = AlertPresenter()
     private var statisticService: StatisticService?
     
-    private let questionsAmount = 10
     private var currentQuestionIndex = 0
+    private let questionsAmount = 10
     private var correctAnswers = 0
     
     // MARK: - Lifecycle
