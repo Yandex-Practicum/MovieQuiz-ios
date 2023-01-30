@@ -42,7 +42,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        blockedButton()
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
@@ -88,7 +87,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
-        if isCorrect == true {
+        if isCorrect {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
             correctAnswers += 1
         } else {
