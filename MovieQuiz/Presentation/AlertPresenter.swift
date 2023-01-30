@@ -19,7 +19,8 @@ class AlertPresenter: AlertPresenterProtocol {
                 model.completion()}
             
         alert.addAction(action)
-        
+        alert.preferredAction = action
+
         delegate?.present(alert, animated: true, completion: nil)
     }
 }

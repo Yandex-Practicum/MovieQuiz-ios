@@ -64,7 +64,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 }
                 
             }
-
     // MARK: - Private Functions
     
     private func unlockedButton() {
@@ -120,6 +119,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let bestGame = statisticService?.bestGame else { return }
             guard let totalAccuracy = statisticService?.totalAccuracy else { return }
             // QuizResultViewModel
+
             let finalScreen = AlertModel (title: "Этот раунд окончен!",
                                           message: """
 Ваш результат: \(correctAnswers)/\(questionsAmount)
