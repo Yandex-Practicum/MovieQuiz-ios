@@ -73,7 +73,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let currentCorrectRecord = statisticService.bestGame.correct
             let currentTotalRecord = statisticService.bestGame.total
             
-            let text = "Ваш результат: \(correctAnswers) из \(questionsAmount)\n Количество сыгранных квизов: \(totalGamesCount)\n Рекорд: \(currentCorrectRecord)/\(currentTotalRecord) (\(bestGameDate))\n Средняя точность: \(accurancyProcentage)"
+            let text = """
+                Ваш результат: \(correctAnswers)/\(questionsAmount)
+                Количество сыгранных квизов: \(totalGamesCount)
+                Рекорд: \(currentCorrectRecord)/\(currentTotalRecord) (\(bestGameDate))
+                Средняя точность: \(accurancyProcentage)
+                """
             
             let viewModel = AlertModel(
                 title: "Этот раунд окончен!",
