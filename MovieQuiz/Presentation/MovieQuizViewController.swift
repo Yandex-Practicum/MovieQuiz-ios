@@ -30,6 +30,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticService = StatisticServiceImplementation()
     }
     
+    //  MARK: - UIStatusBarStyle
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     //  MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
