@@ -14,14 +14,16 @@ class AlertPresenter: AlertPresenterProtocol {
             title: model.title,
             message: model.message,
             preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
+        let action = UIAlertAction(
+            title: model.buttonText,
+            style: .default) { _ in
             model.completion()
-            
-        }
+            }
         alert.addAction(action)
         
         delegate?.present(alert, animated: true, completion: nil)
+// Добавил нижнюю строчку
+        alert.view.accessibilityIdentifier = "alert"
     }
 }
 
