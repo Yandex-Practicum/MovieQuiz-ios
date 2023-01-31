@@ -5,3 +5,4 @@ struct QuizResultViewModel {
     let text: String
     let buttonText: String
 }
+

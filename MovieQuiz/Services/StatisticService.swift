@@ -78,3 +78,4 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
 }
+
