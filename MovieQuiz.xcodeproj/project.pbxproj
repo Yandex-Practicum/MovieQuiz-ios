@@ -67,11 +67,11 @@
 		CFAA0412298D23EE003CD51F /* MovieQuiz */ = {
 			isa = PBXGroup;
 			children = (
-				CFAA0413298D23EE003CD51F /* Resources */,
-				CFAA041A298D23EE003CD51F /* AppDelegate.swift */,
 				CFAA041B298D23EE003CD51F /* Presentation */,
 				CFAA041F298D23EE003CD51F /* Helpers */,
 				CFAA0423298D23EE003CD51F /* SceneDelegate.swift */,
+				CFAA041A298D23EE003CD51F /* AppDelegate.swift */,
+				CFAA0413298D23EE003CD51F /* Resources */,
 			);
 			name = MovieQuiz;
 			path = "../../Desktop/MovieQuiz-ios-43b3376a5afdf384f8d65bf68d0098aba7813dec/MovieQuiz";
