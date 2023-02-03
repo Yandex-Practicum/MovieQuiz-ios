@@ -1,35 +1,11 @@
-import UIKit
+//
+//  StubNetworkClient.swift
+//  ArrayTests
+//
+//  Created by User on 29.01.2023.
+//
 
-protocol NetworkClientRouting {
-    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
-}
-
-struct NetworkClient: NetworkClientRouting {
-    
-    private enum NetworkError: Error {
-        case codeError
-    }
-    
-    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
-        let request = URLRequest(url: url)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                handler(.failure(error))
-                return
-            }
-            
-            if let response = response as? HTTPURLResponse,
-               response.statusCode < 200 || response.statusCode >= 300 {
-                handler(.failure(NetworkError.codeError))
-                return
-            }
-            guard let data = data else {return}
-            handler(.success(data))
-        }
-        task.resume()
-    }
-}
+import Foundation
 
 struct StubNetworkClient: NetworkClientRouting {
     
