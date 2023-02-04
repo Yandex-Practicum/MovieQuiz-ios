@@ -189,13 +189,14 @@ final class MovieQuizViewController: UIViewController {
             
         }else{
             currentQuestionIndex += 1
-            // покащзыввем вопрос
+            // показываем вопрос
             imageView.layer.masksToBounds = true
             imageView.layer.borderWidth = 0
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             
             show(quiz: viewModel)
+        
         }
     }
     
