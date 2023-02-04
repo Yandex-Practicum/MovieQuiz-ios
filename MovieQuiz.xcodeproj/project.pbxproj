@@ -17,7 +17,6 @@
 		931FBA1C297B81BB00803EB0 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931FBA1B297B81BB00803EB0 /* AlertModel.swift */; };
 		931FBA1E297B824C00803EB0 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931FBA1D297B824C00803EB0 /* AlertPresenter.swift */; };
 		931FBA20297B895A00803EB0 /* AlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931FBA1F297B895A00803EB0 /* AlertPresenterProtocol.swift */; };
-		931FBA22297B897000803EB0 /* AlertPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931FBA21297B897000803EB0 /* AlertPresenterDelegate.swift */; };
 		93311CD82983793800168151 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93311CD72983793800168151 /* StatisticService.swift */; };
 		93311CDA29872AE500168151 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93311CD929872AE500168151 /* GameRecord.swift */; };
 		935335122943F41D004B0EF8 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 935335112943F41D004B0EF8 /* YS Display-Bold.ttf */; };
@@ -43,7 +42,6 @@
 		931FBA1B297B81BB00803EB0 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		931FBA1D297B824C00803EB0 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		931FBA1F297B895A00803EB0 /* AlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterProtocol.swift; sourceTree = "<group>"; };
-		931FBA21297B897000803EB0 /* AlertPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterDelegate.swift; sourceTree = "<group>"; };
 		93311CD72983793800168151 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		93311CD929872AE500168151 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
 		935335112943F41D004B0EF8 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
@@ -99,7 +97,6 @@
 				931FBA172978783900803EB0 /* QuestionFactoryProtocol.swift */,
 				931FBA19297B606E00803EB0 /* QuestionFactoryDelegate.swift */,
 				931FBA1F297B895A00803EB0 /* AlertPresenterProtocol.swift */,
-				931FBA21297B897000803EB0 /* AlertPresenterDelegate.swift */,
 				93311CD72983793800168151 /* StatisticService.swift */,
 			);
 			path = Services;
@@ -264,7 +261,6 @@
 			files = (
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				931FBA1E297B824C00803EB0 /* AlertPresenter.swift in Sources */,
-				931FBA22297B897000803EB0 /* AlertPresenterDelegate.swift in Sources */,
 				931FBA1C297B81BB00803EB0 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				931FBA20297B895A00803EB0 /* AlertPresenterProtocol.swift in Sources */,

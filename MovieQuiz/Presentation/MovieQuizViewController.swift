@@ -1,9 +1,9 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-
+    
     // MARK: - Properties
-
+    
     private var questionFactory: QuestionFactory?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
@@ -31,9 +31,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         statisticService = StatisticServiceImplementation()
-        }
-        
-      
+    }
+    
+    
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -49,7 +49,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        blockedButton()
+        blockButton()
     }
     // MARK: - QuestionFactoryDelegate
     func didRecieveNextQuestion(question: QuizQuestion?) {
@@ -59,18 +59,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
-                    
-                }
-                
-            }
+            
+        }
+        
+    }
     // MARK: - Private Functions
     
-    private func unlockedButton() {
+    private func unlockButton() {
         noButton.isEnabled = true
         yesButton.isEnabled = true
     }
     
-    private func blockedButton() {
+    private func blockButton() {
         noButton.isEnabled = false
         yesButton.isEnabled = false
     }
@@ -97,18 +97,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else { return } // optional weak link is commonly deployed
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
-            self.unlockedButton()
+            self.unlockButton()
         }
     }
-
-
+    
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+                                 question: model.text,
+                                 questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
-  // MARK: showNextQuestionOrResults
+    // MARK: showNextQuestionOrResults
     private func showNextQuestionOrResults() {
         imageView.layer.borderWidth = 0
         if currentQuestionIndex == questionsAmount - 1 {
@@ -118,7 +118,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let bestGame = statisticService?.bestGame else { return }
             guard let totalAccuracy = statisticService?.totalAccuracy else { return }
             // QuizResultViewModel
-
+            
             let finalScreen = AlertModel (title: "Этот раунд окончен!",
                                           message: """
 Ваш результат: \(correctAnswers)/\(questionsAmount)
@@ -126,28 +126,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
 Средняя точность: \(String(format: "%.2f", totalAccuracy))%
 """ ,
-                buttonText: "Сыграть еще раз",
-                completion: { [weak self] in
-                    guard let self = self else { return }
-                    self.imageView.layer.borderWidth = 0
-                    self.currentQuestionIndex = 0
-                    self.correctAnswers = 0
-                    self.questionFactory?.requestNextQuestion()
-                })
+                                          buttonText: "Сыграть еще раз",
+                                          completion: { [weak self] in
+                guard let self = self else { return }
+                self.imageView.layer.borderWidth = 0
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                self.questionFactory?.requestNextQuestion()
+            })
             alertPresenter?.showQuizResult(model: finalScreen)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
-            }
-           
         }
         
     }
     
-    
-
-        
-    
+}
 
 
-   
+
+
+
+
+
+
