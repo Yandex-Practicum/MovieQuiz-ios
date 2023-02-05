@@ -4,8 +4,6 @@
 //
 //  Created by Alexey on 11.01.2023.
 //
-
-import Foundation
 import UIKit
 
 protocol AlertPresenterProtocol {
@@ -13,8 +11,7 @@ protocol AlertPresenterProtocol {
     var delegate: UIViewController? { get set }
 }
 
-
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter: AlertPresenterProtocol {
     weak var delegate: UIViewController?
     
     func show(result: AlertModel) {
@@ -29,8 +26,7 @@ class AlertPresenter: AlertPresenterProtocol {
         alert.addAction(action)
         showAlert(alert)
     }
-    
-    
+        
     func showAlert(_ alert: UIAlertController) {
         delegate?.present(alert, animated: true)
     }

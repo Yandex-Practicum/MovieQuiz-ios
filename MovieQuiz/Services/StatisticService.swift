@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct GameRecord: Codable {
     
     let correct: Int
@@ -29,7 +28,6 @@ extension GameRecord: Comparable {
     }
 }
 
-
 protocol StatisticService {
     func store(correct count: Int, total amount: Int)
     var totalAccuracy: Double { get }
@@ -37,14 +35,24 @@ protocol StatisticService {
     var bestGame: GameRecord { get }
 }
 
+private enum Keys: String {
+    case  total, bestGame, gamesCount
+}
+
+@propertyWrapper struct UserDefaultsBacked<Value> {
+    fileprivate let key: Keys
+    let `default`: Value
+    var storage: UserDefaults = .standard
+
+    var wrappedValue: Value {
+        get { (storage.value(forKey: key.rawValue) as? Value) ?? `default` }
+        set { storage.setValue(newValue, forKey: key.rawValue) }
+    }
+}
 
 final class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
-    
-    private enum Keys: String {
-        case correct, total, bestGame, gamesCount
-    }
     
     func store(correct count: Int, total amount: Int) {
         let newGame = GameRecord(correct: count, total: amount, date: Date())
@@ -60,25 +68,10 @@ final class StatisticServiceImplementation: StatisticService {
         gamesCount += 1
     }
     
-    
-    var totalAccuracy: Double {
-        get {
-            return userDefaults.double(forKey: Keys.total.rawValue)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Keys.total.rawValue)
-        }
-    }
-    
-    var gamesCount: Int {
-        get {
-            return userDefaults.integer(forKey: Keys.gamesCount.rawValue)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
-        }
-    }
-    
+    @UserDefaultsBacked(key: .total, default: 0) var totalAccuracy:Double
+
+    @UserDefaultsBacked(key: .gamesCount, default: 0) var gamesCount: Int
+
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -88,13 +81,11 @@ final class StatisticServiceImplementation: StatisticService {
             
             return record
         }
-        
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
                 print("Невозможно сохранить результат")
                 return
             }
-            
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }

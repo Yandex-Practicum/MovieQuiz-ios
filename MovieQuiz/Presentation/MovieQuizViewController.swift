@@ -5,7 +5,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
-   
+  
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     private var correctAnswers: Int = 0     //счетчик правильных ответов
     private var currentQuestionIndex = 0    //индекс текущего вопроса
     private let questionsAmount: Int = 10
@@ -32,18 +34,46 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         waitShowNextQuestion(button: sender)
     }
-        
-    // MARK: - Lifecycle
 
+    
+    // MARK: - Lifecycle
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
+       
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
-        questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter()
         alertPresenter?.delegate = self
+        showLoadingIndicator()
+        questionFactory?.loadData()
+    }
+       
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true // говорим, что индикатор загрузки скрыт
+        activityIndicator.stopAnimating() // выключаем анимацию
+    }
 
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+
+    func showNetworkError(message: String) {
+        hideLoadingIndicator()
         
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        alertPresenter?.show(result: model)
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -59,17 +89,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
-//    MARK - Private functions
     
-    //преобразуем данные, которые есть в модели вопроса в те данные,
-    //которые необходимо показать
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let image = UIImage(named: model.imageName) ?? UIImage()
-        let questionNumber = "\(currentQuestionIndex + 1)/\(questionsAmount)"
-        let question = model.text
-        return QuizStepViewModel(image: image, question: question, questionNumber: questionNumber)
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
     }
-        
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+//    MARK - Private functions
+      
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+    } 
+    
     //Заполняем счетчик, картинку, текст вопроса данными. Рамку убираем
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
@@ -77,8 +115,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.text = step.question
         imageView.layer.borderWidth = 0
     }
-    
-    
+        
     //функция показывающая правильный/неправильный результат
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.cornerRadius = 20
@@ -101,7 +138,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             button.isEnabled = true
         }
     }
-    
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == self.questionsAmount - 1 {
@@ -136,7 +172,5 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     }
-
-    
 }
 
