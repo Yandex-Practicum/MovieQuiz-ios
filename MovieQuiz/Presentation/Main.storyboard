@@ -35,13 +35,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPg-Bv-Sh0" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="338" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2oD-s1-7YI" userLabel="Index Label">
-                                                <rect key="frame" x="338" y="0.0" width="36" height="23.5"/>
+                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -127,21 +127,27 @@
                                     <constraint firstAttribute="bottom" secondItem="3mV-n6-5eI" secondAttribute="bottom" constant="13" id="xlQ-Rj-Pj8"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="fLV-mH-hDp">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="R2P-nf-X3s" firstAttribute="top" secondItem="Glz-ol-Rjq" secondAttribute="bottom" constant="10" id="0Os-ZL-kju"/>
                             <constraint firstItem="mIY-wx-bTg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="0xX-nD-6D3"/>
+                            <constraint firstItem="fLV-mH-hDp" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="FvF-6v-nWA"/>
                             <constraint firstItem="Y3b-5m-eQ6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="GeX-rK-n0I"/>
                             <constraint firstAttribute="trailing" secondItem="mIY-wx-bTg" secondAttribute="trailing" constant="20" id="ITF-EU-2F0"/>
                             <constraint firstItem="R2P-nf-X3s" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Ug8-vp-kwP"/>
                             <constraint firstAttribute="trailing" secondItem="Y3b-5m-eQ6" secondAttribute="trailing" constant="20" id="ZgF-vA-yeg"/>
                             <constraint firstItem="Y3b-5m-eQ6" firstAttribute="top" secondItem="mIY-wx-bTg" secondAttribute="bottom" constant="20" id="aen-Vx-L7h"/>
                             <constraint firstAttribute="trailing" secondItem="R2P-nf-X3s" secondAttribute="trailing" constant="20" id="aoK-c9-TDD"/>
+                            <constraint firstItem="fLV-mH-hDp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qo0-Lj-brG"/>
                             <constraint firstItem="mIY-wx-bTg" firstAttribute="top" secondItem="R2P-nf-X3s" secondAttribute="bottom" constant="20" id="xZL-Uq-QfI"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="fLV-mH-hDp" id="4Qs-ZK-aOo"/>
                         <outlet property="counterLabel" destination="2oD-s1-7YI" id="Ew2-5S-MaY"/>
                         <outlet property="imageView" destination="rtk-jC-R3N" id="jmp-WC-OH6"/>
                         <outlet property="noButton" destination="Boh-M3-yly" id="rJu-h0-jSb"/>
