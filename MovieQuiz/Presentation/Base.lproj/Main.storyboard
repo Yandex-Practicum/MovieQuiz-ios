@@ -73,6 +73,7 @@
                                                 <rect key="frame" x="42" y="13" width="290" height="54"/>
                                                 <color key="backgroundColor" name="black"/>
                                                 <color key="tintColor" name="white"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Question Text"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>

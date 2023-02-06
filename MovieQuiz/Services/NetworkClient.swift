@@ -6,8 +6,10 @@ protocol NetworkClientRouting {
 
 struct NetworkClient: NetworkClientRouting {
     
-    private enum NetworkError: Error {
-        case codeError
+    private enum NetworkError: String, Error {
+        case codeError = "Failed to process request. Try again"
+        case errorLoadImage = "Failed to load image. Try again."
+        case errorDataLoad = "No internet connection. Try again"
     }
     
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
@@ -33,11 +35,11 @@ struct NetworkClient: NetworkClientRouting {
 
 struct StubNetworkClient: NetworkClientRouting {
     
-    enum TestError: Error { // тестовая ошибка
+    enum TestError: Error {
     case test
     }
     
-    let emulateError: Bool // этот параметр нужен, чтобы заглушка эмулировала либо ошибку сети, либо успешный ответ
+    let emulateError: Bool
     
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         if emulateError {

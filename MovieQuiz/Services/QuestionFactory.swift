@@ -40,7 +40,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                 print("Failed to load image")
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    self.delegate?.showNetworkError(message: "Failed to load image")
+                    self.delegate?.didFailToLoadData(with: "Failed to load image" as! Error)
                 }
             }
             
