@@ -26,6 +26,7 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
         }
         set {
             userDefaults.set(newValue, forKey: Keys.correct.rawValue)
+            // userDefaults.removeObject(forKey: Keys.correct.rawValue)
         }
     }
     
@@ -35,6 +36,7 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
         }
         set {
             userDefaults.set(newValue, forKey: Keys.total.rawValue)
+            // userDefaults.removeObject(forKey: Keys.total.rawValue)
         }
     }
     
@@ -50,6 +52,7 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
         }
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
+            // userDefaults.removeObject(forKey: Keys.gamesCount.rawValue)
         }
     }
     
@@ -70,10 +73,11 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
             }
             
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
+            // userDefaults.removeObject(forKey: Keys.bestGame.rawValue)
         }
     }
     func store(correct count: Int, total amount: Int) {
-        gamesCount += 1
+        
         let newGame = GameRecord(correct: count,
                                  total: amount,
                                  date: Date())
@@ -81,8 +85,9 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
         if newGame > bestGame  {
             bestGame = newGame
         }
-            correct += newGame.correct  // сохранить корректные ответы за все время
-            total += newGame.total  // сохранить количество вопросов за все время
-        }
+        correct += newGame.correct  // сохранить корректные ответы за все время
+        total += newGame.total  // сохранить количество вопросов за все время
+        gamesCount += 1
     }
+}
 

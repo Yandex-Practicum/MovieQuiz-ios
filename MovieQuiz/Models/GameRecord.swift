@@ -12,6 +12,6 @@ struct GameRecord: Codable, Comparable {
     let total: Int
     let date: Date
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        return (Double(lhs.correct) / Double(lhs.total)) <= (Double(rhs.correct) / Double(rhs.total))
+        return Double(lhs.correct) <= Double(rhs.correct)
     }
 }
