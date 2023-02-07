@@ -1,7 +1,6 @@
 import UIKit
 
-protocol MovieQuizViewControllerProtocol: AnyObject {
-    var activityIndicator: UIActivityIndicatorView! {get set}
+protocol MovieQuizViewProtocol: AnyObject {
     func show(quiz: QuizStepViewModel)
     func highLightImageBorder(isCorrect: Bool)
     func setupActivityIndicator()
@@ -11,7 +10,7 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     func blockingButton()
 }
 
-final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
+final class MovieQuizViewController: UIViewController, MovieQuizViewProtocol {
     // MARK: - Outlets
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
@@ -26,9 +25,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet weak private var counterLabel: UILabel!
     @IBOutlet weak private var noButton: UIButton!
     @IBOutlet weak private var yesButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     
-    private var alertPresenter: AlertPresenterDelegate!
+    private var alertPresenter: AlertPresenterDelegate?
     private var presenter: MovieQuizPresenter!
     
     func setupActivityIndicator() {

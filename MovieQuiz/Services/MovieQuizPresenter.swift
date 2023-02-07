@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-    private weak var viewController: MovieQuizViewControllerProtocol?
+    private var viewController: MovieQuizViewProtocol
     private var questionFactory: QuestionFactoryProtocol?
     private let statisticService: StatisticService!
     private var currentQuestion: QuizQuestion?
@@ -9,7 +9,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var correctAnswers: Int = 0
     private let questionsAmount: Int = 10
     
-    init(viewController: MovieQuizViewControllerProtocol) {
+    init(viewController: MovieQuizViewProtocol) {
         self.viewController = viewController
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -18,13 +18,13 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func didLoadDataFromServer() {
-        viewController?.hideLoadingIndicator()
+        viewController.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
     
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
-        viewController?.showNetworkError(message: message )
+        viewController.showNetworkError(message: message )
     }
     
     func isLastQuestion() -> Bool {
@@ -72,8 +72,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.viewController?.hideLoadingIndicator()
-            self.viewController?.show(quiz: viewModel)
+            self.viewController.hideLoadingIndicator()
+            self.viewController.show(quiz: viewModel)
         }
     }
     func makeResultMessage() -> String {
@@ -91,18 +91,18 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func proceedWithAnswer(isCorrect: Bool) {
-        viewController?.highLightImageBorder(isCorrect: isCorrect)
-        viewController?.blockingButton()
+        viewController.highLightImageBorder(isCorrect: isCorrect)
+        viewController.blockingButton()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.viewController?.blockingButton()
+            self.viewController.blockingButton()
             self.proceedToNextQuestionOrResults()
             
         }
     }
     func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
-            viewController?.finishAlert()
+            viewController.finishAlert()
         } else {
             switchNextQuestion()
             questionFactory?.requestNextQuestion()

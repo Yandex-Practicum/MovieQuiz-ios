@@ -8,8 +8,10 @@
 import XCTest
 @testable import MovieQuiz
 
-final class MovieQuizViewControllerProtocolMock: MovieQuizViewControllerProtocol {
-    var activityIndicator: UIActivityIndicatorView!
+final class MovieQuizViewControllerProtocolMock: MovieQuizViewProtocol {
+    func finishAlert() {
+        
+    }
     
     func highLightImageBorder(isCorrect: Bool) {
         
@@ -19,16 +21,12 @@ final class MovieQuizViewControllerProtocolMock: MovieQuizViewControllerProtocol
         
     }
     
-    func showAndGameAlert() {
-        
-    }
-    
     func blockingButton() {
         
     }
     
     func show(quiz step: QuizStepViewModel) {
-    
+        
     }
     
     func show(quiz result: QuizResultsViewModel) {
@@ -65,5 +63,9 @@ final class MovieQuizControllerTests: XCTestCase {
         XCTAssertNotNil(viewModel.image)
         XCTAssertEqual(viewModel.question, "Question Text")
         XCTAssertEqual(viewModel.questionNumber, "1/10")
+    }
+    
+    func testDidReceiveNextQuestion() throws {
+        
     }
 }

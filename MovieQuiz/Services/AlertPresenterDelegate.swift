@@ -7,10 +7,10 @@ protocol AlertPresenterDelegate: AnyObject {
 
 class AlertPresenter: AlertPresenterDelegate {
     
-    weak var delegate: UIViewController?
+    weak private var viewController: UIViewController?
     
     func didLoad(_ vc: UIViewController) {
-        self.delegate = vc
+        self.viewController = vc
     }
     func show(model: AlertModel) {
         let alert = UIAlertController(title: model.title,
@@ -26,7 +26,7 @@ class AlertPresenter: AlertPresenterDelegate {
         showAlert(alert: alert)
     }
     func showAlert(alert: UIAlertController) {
-        delegate?.present(alert, animated: true)
+        viewController?.present(alert, animated: true)
     }
 }
 
