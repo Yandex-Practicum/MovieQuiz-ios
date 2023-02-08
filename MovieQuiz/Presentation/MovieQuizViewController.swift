@@ -6,7 +6,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -20,7 +20,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-//        questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(delegate: self)
         
         statisticService = StatisticServiceImplementation()
