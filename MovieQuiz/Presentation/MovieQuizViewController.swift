@@ -4,10 +4,10 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        counterLabel.font = UIFont(name:"YS Display-Bold",size:17)
-        textLabel.font = UIFont(name:"YS Display-Medium",size:17)
-        label.font = UIFont(name:"YS Display-Medium",size:17)
-        var quiz1: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
+        questionLabel.font = UIFont(name:"YS Display-Bold",size:23)
+        titleCounterLabel.font = UIFont(name:"YS Display-Medium",size:20)
+        voprosTitleLabel.font = UIFont(name:"YS Display-Medium",size:20)
+        let quiz1: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
         show(quiz: quiz1)
     }
     
@@ -16,8 +16,8 @@ final class MovieQuizViewController: UIViewController {
     private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image = step.image
-        textLabel.text = step.question
-        counterLabel.text = step.questionNumber
+        questionLabel.text = step.question
+        titleCounterLabel.text = step.questionNumber
         
     }
     private var allAmountOfCorrectAnswers: Int = 0
@@ -29,10 +29,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8 // толщина рамки
         if isCorrect {
             allAmountOfCorrectAnswers += 1
-            imageView.layer.borderColor = UIColor.ypGreen.cgColor
+            imageView.layer.borderColor = UIColor.green.cgColor
         } else
         {
-            imageView.layer.borderColor = UIColor.ypRed.cgColor}
+            imageView.layer.borderColor = UIColor.red.cgColor}
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
@@ -59,7 +59,7 @@ final class MovieQuizViewController: UIViewController {
           let action = UIAlertAction(title: "Сыграть еще раз", style: .default) { _ in
               self.allAmountOfCorrectAnswers = 0
               currentQuestionIndex = 0
-              var quiz3: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
+              let quiz3: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
               self.show(quiz: quiz3)
           }
 
@@ -70,7 +70,7 @@ final class MovieQuizViewController: UIViewController {
           self.present(alert, animated: true, completion: nil)
       } else {
           currentQuestionIndex += 1
-          var quiz2: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
+          let quiz2: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
           show(quiz: quiz2)
           // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
         // показать следующий вопрос
@@ -80,26 +80,27 @@ final class MovieQuizViewController: UIViewController {
     
     
     
-    private var isCorrect1: Bool = true
+    private var isCorrect: Bool = true
     
     //Нажатие на кнопку "да"
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        if questions[currentQuestionIndex].correctAnswer == true {isCorrect1 = true} else {isCorrect1 = false}
-        showAnswerResult(isCorrect: isCorrect1)
+        if questions[currentQuestionIndex].correctAnswer == true {isCorrect = true} else {isCorrect = false}
+        showAnswerResult(isCorrect: isCorrect)
     }
     
     //Нажатие на кнопку "нет"
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        if questions[currentQuestionIndex].correctAnswer == false {isCorrect1 = true} else {isCorrect1 = false}
-        showAnswerResult(isCorrect: isCorrect1)
+        if questions[currentQuestionIndex].correctAnswer == false {isCorrect = true} else {isCorrect = false}
+        showAnswerResult(isCorrect: isCorrect)
     }
     
-    @IBOutlet private var label: UILabel!
     @IBOutlet private var imageView: UIImageView!
     
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var titleCounterLabel: UILabel!
     
+    @IBOutlet weak var voprosTitleLabel: UILabel!
+    
+    @IBOutlet weak var questionLabel: UILabel!
 }
 
 

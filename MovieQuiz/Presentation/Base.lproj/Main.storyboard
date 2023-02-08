@@ -25,7 +25,7 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m1q-qE-OMf" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="319.66666666666669" height="20.333333333333332"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -43,6 +43,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="AwE-oK-YQh" secondAttribute="height" multiplier="2:3" id="dRN-bq-TNF"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BAx-2b-pDo" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="590" width="353" height="20.333333333333371"/>
@@ -106,10 +111,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLabel" destination="BEN-9h-a5e" id="HE4-ae-XCB"/>
                         <outlet property="imageView" destination="AwE-oK-YQh" id="KLx-Ww-V3c"/>
-                        <outlet property="label" destination="m1q-qE-OMf" id="vZ8-Rb-2q2"/>
-                        <outlet property="textLabel" destination="BAx-2b-pDo" id="fwd-O8-g6k"/>
+                        <outlet property="questionLabel" destination="BAx-2b-pDo" id="qFD-hv-ZvG"/>
+                        <outlet property="titleCounterLabel" destination="BEN-9h-a5e" id="o3g-uE-gLE"/>
+                        <outlet property="voprosTitleLabel" destination="m1q-qE-OMf" id="6DV-N0-nCT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
