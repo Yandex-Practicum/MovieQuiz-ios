@@ -4,9 +4,11 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionLabel.font = UIFont(name:"YS Display-Bold",size:23)
-        titleCounterLabel.font = UIFont(name:"YS Display-Medium",size:20)
-        voprosTitleLabel.font = UIFont(name:"YS Display-Medium",size:20)
+        questionLabel.font = UIFont(name:"YSDisplay-Bold",size:23)
+        titleCounterLabel.font = UIFont(name:"YSDisplay-Medium",size:20)
+        voprosTitleLabel.font = UIFont(name:"YSDisplay-Medium",size:20)
+        yesButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium",size:20)
+        noButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium",size:20)
         let quiz1: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
         show(quiz: quiz1)
     }
@@ -29,10 +31,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8 // толщина рамки
         if isCorrect {
             allAmountOfCorrectAnswers += 1
-            imageView.layer.borderColor = UIColor.green.cgColor
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor
         } else
         {
-            imageView.layer.borderColor = UIColor.red.cgColor}
+            imageView.layer.borderColor = UIColor.ypRed.cgColor}
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
@@ -40,15 +42,11 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    /*private func show(quiz result: QuizResultsViewModel) {
-        // здесь мы показываем результат прохождения квиза
-    }*/
+
     
     private func showNextQuestionOrResults() {
       if currentQuestionIndex == questions.count - 1 {
-          //if allAmountOfCorrectAnswers > 5 {
               resultText = "Ваш результат: \(allAmountOfCorrectAnswers)/\(questions.count)\n" + "Подздравляем! Больше половины правильных ответов!"
-          //} else {resultText = "You loose"}
           
           // создаём объекты всплывающего окна
           let alert = UIAlertController(title: "Этот раунд окончен!", // заголовок всплывающего окна
@@ -78,7 +76,9 @@ final class MovieQuizViewController: UIViewController {
     }
     
     
+    @IBOutlet weak var noButton: UIButton!
     
+    @IBOutlet weak var yesButton: UIButton!
     
     private var isCorrect: Bool = true
     

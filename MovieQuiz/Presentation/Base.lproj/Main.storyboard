@@ -112,9 +112,11 @@
                     </view>
                     <connections>
                         <outlet property="imageView" destination="AwE-oK-YQh" id="KLx-Ww-V3c"/>
+                        <outlet property="noButton" destination="dVJ-l6-0ng" id="CKb-mQ-v8X"/>
                         <outlet property="questionLabel" destination="BAx-2b-pDo" id="qFD-hv-ZvG"/>
                         <outlet property="titleCounterLabel" destination="BEN-9h-a5e" id="o3g-uE-gLE"/>
                         <outlet property="voprosTitleLabel" destination="m1q-qE-OMf" id="6DV-N0-nCT"/>
+                        <outlet property="yesButton" destination="RV5-kl-KPk" id="3XH-ho-KQT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
