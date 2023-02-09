@@ -1,6 +1,4 @@
-
-
-import Foundation
+import UIKit
 
 protocol StatisticService {
     func store(correct count: Int, total amount: Int)
@@ -9,25 +7,38 @@ protocol StatisticService {
     var bestGame: GameRecord { get }
 }
 
+
 final class StatisticServiceImplementation: StatisticService {
     private let userDefaults = UserDefaults.standard
     private enum Keys: String {
-        case bestGame
-        case gamesCount
+        case correct, total, bestGame, gamesCount
     }
     
-    private var correct = 0
-    private var total = 0
+    func store(correct count: Int, total amount: Int) {
+        let newGame = GameRecord(correct: count, total: amount, date: Date())
+        if bestGame < newGame {
+            bestGame = newGame
+        }
+        if gamesCount != 0 {
+            totalAccuracy = (Double(totalAccuracy) * Double(gamesCount) + (Double(newGame.correct) / Double(newGame.total))) / Double(gamesCount + 1)
+        } else {
+            totalAccuracy = (Double(newGame.correct) / Double(newGame.total))
+        }
+        gamesCount += 1
+    }
+    
     
     var totalAccuracy: Double {
         get {
-            (Double(correct) / Double(total)) * 100
+            return userDefaults.double(forKey: Keys.total.rawValue)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Keys.total.rawValue)
         }
     }
-    
     var gamesCount: Int {
         get {
-            userDefaults.integer(forKey: Keys.gamesCount.rawValue)
+            return userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
@@ -41,29 +52,13 @@ final class StatisticServiceImplementation: StatisticService {
             }
             return record
         }
+        
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат")
+                print("Невозможно получить результат")
                 return
             }
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
-    }
-    
-    func store(correct count: Int, total amount: Int) {
-        let newGame = GameRecord (correct: count,
-                                  total: amount,
-                                  date: Date())
-        
-        correct = newGame.correct
-        total = newGame.total
-        
-        if gamesCount == 0 {
-            bestGame = newGame
-        } else
-            if newGame > bestGame  {
-            bestGame = newGame
-        }
-        gamesCount += 1
     }
 }

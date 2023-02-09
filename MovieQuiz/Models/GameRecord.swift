@@ -1,15 +1,22 @@
+import UIKit
 
-
-import Foundation
-
-struct GameRecord: Codable, Comparable {
+struct GameRecord: Codable {
     let correct: Int
     let total: Int
     let date: Date
-    
+}
+
+extension GameRecord: Comparable {
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        let lhsAccuracy = Double(lhs.correct / lhs.total)
-        let rhsAccuracy = Double(rhs.correct / rhs.total)
-        return lhsAccuracy < rhsAccuracy
+        if lhs.total == 0 {
+            return true
+        } else if rhs.total == 0 {
+            return true
+        } else {
+            let lhsRatio: Double = Double(lhs.correct) / Double(lhs.total)
+            let rhsRatio: Double = Double(rhs.correct) / Double(rhs.total)
+            
+            return lhsRatio < rhsRatio
+        }
     }
 }
