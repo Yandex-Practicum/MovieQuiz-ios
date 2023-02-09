@@ -5,9 +5,9 @@
 //  Created by Алексей on 29.01.2023.
 //
 
+import Foundation
 import XCTest
-
-@testable import MovieQuiz // импортируем приложение для тестирования
+@testable import MovieQuiz
 
 class MoviesLoaderTests: XCTestCase {
     func testSuccessLoading() throws {
@@ -32,7 +32,33 @@ class MoviesLoaderTests: XCTestCase {
         
         waitForExpectations(timeout: 1)
     }
+    
+    func testFailureLoading() throws {
+        // Given
+        let stubNetworkClient = StubNetworkClient(emulateError: true) // говорим, что хотим эмулировать ошибку
+        let loader = MoviesLoader(networkClient: stubNetworkClient)
+        
+        // When
+        let expectation = expectation(description: "Loading expectation")
+        
+        loader.loadMovies { result in
+            // Then
+            switch result {
+            case .failure(let error):
+                XCTAssertNotNil(error)
+                expectation.fulfill()
+            case .success(_):
+                XCTFail("Unexpected failure")
+            }
+        }
+        
+        waitForExpectations(timeout: 1)
+    }
+    
+    
+    
 }
+
 
 struct StubNetworkClient: NetworkRouting {
     
@@ -84,4 +110,3 @@ struct StubNetworkClient: NetworkRouting {
         """.data(using: .utf8) ?? Data()
     }
 }
-

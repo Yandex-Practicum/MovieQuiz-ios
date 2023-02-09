@@ -2,29 +2,27 @@
 
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
-    
-    private weak var delegate: AlertPresenterDelegate?
-    init(delegate: AlertPresenterDelegate) {
-        self.delegate = delegate
-    }
-    
-    func showAlert(model: AlertModel) {
-        let alert = UIAlertController(
-            title: model.title,
-            message: model.message,
-            preferredStyle: .alert)
-        let action = UIAlertAction(
-            title: model.buttonText,
-            style: .default) { _ in
-            model.completion()
-            }
-        alert.addAction(action)
-        
-        delegate?.present(alert, animated: true, completion: nil)
-// Добавил нижнюю строчку
+struct AlertPresenter: AlertPresenterProtocol {
+    weak var viewController: UIViewController?
+    mutating func show(results: AlertModel) {
+        let alert = UIAlertController(title: results.title, message: results.message,                                preferredStyle: .alert)
         alert.view.accessibilityIdentifier = "alert"
+        let action = UIAlertAction(title: results.buttonText, style: .default, handler: results.completion)
+        alert.addAction(action)
+        viewController?.present(alert, animated: true, completion: nil)
+        alert.view.accessibilityIdentifier = "alert"
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 

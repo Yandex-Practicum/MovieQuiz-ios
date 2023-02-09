@@ -1,7 +1,8 @@
 
-
 import Foundation
 
+
 protocol AlertPresenterProtocol {
-    func showAlert(model: AlertModel)
+    
+    mutating func show(results: AlertModel)
 }
