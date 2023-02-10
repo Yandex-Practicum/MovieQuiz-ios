@@ -7,8 +7,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
-    @IBOutlet var noButton: UIButton!
-    @IBOutlet var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         toggleButtons()
@@ -26,6 +26,7 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+    private var feedback = UINotificationFeedbackGenerator()
     
     struct QuizStepViewModel {
         let image: UIImage
@@ -41,50 +42,40 @@ final class MovieQuizViewController: UIViewController {
     
     struct QuizQuestion {
         let image: String
-        let text: String
+        let text = "Рейтинг этого фильма больше чем 6?"
         let correctAnswer: Bool
     }
     
     private let questions: [QuizQuestion] = [
-        QuizQuestion( // 1
+        QuizQuestion(
             image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
-        QuizQuestion( // 2
+        QuizQuestion(
             image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
-        QuizQuestion( // 3
+        QuizQuestion(
             image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
-        QuizQuestion( // 4
+        QuizQuestion(
             image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
-        QuizQuestion( // 5
+        QuizQuestion(
             image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
-        QuizQuestion( // 6
+        QuizQuestion(
             image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true),
-        QuizQuestion( // 7
+        QuizQuestion(
             image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false),
-        QuizQuestion( // 8
+        QuizQuestion(
             image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false),
-        QuizQuestion( // 9
+        QuizQuestion(
             image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false),
-        QuizQuestion( // 10
+        QuizQuestion(
             image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
     
@@ -138,21 +129,25 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        feedback.prepare()
+        feedback.notificationOccurred(isCorrect ? .success : .error)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.imageView.layer.borderColor = UIColor.clear.cgColor
-            self.showNextQuestionOrResults()
-            self.toggleButtons()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.imageView.layer.borderColor = UIColor.clear.cgColor
+            self?.showNextQuestionOrResults()
+            self?.toggleButtons()
         }
     }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
+            let title = "Этот раунд окончен!"
             let text = "Ваш результат: \(correctAnswers) из 10"
+            let buttonText = "Сыграть ещё раз"
             let viewModel = QuizResultsViewModel(
-                title: "Этот раунд окончен!",
+                title: title,
                 text: text,
-                buttonText: "Сыграть ещё раз")
+                buttonText: buttonText)
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
