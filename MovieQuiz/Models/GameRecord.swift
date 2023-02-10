@@ -8,9 +8,7 @@ struct GameRecord: Codable {
 
 extension GameRecord: Comparable {
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
-        if lhs.total == 0 {
-            return true
-        } else if rhs.total == 0 {
+        if lhs.total == 0 || rhs.total == 0 {
             return true
         } else {
             let lhsRatio: Double = Double(lhs.correct) / Double(lhs.total)

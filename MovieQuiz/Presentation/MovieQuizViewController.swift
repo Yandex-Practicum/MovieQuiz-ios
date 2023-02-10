@@ -27,7 +27,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewProtocol {
     @IBOutlet weak private var yesButton: UIButton!
     @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     
-    private var alertPresenter: AlertPresenterDelegate?
+    private var alertPresenter: AlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
     
     func setupActivityIndicator() {
@@ -88,7 +88,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewProtocol {
         alertPresenter?.show(model: alert)
     }
     
-            
+    
     func highLightImageBorder(isCorrect: Bool){
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
@@ -105,12 +105,11 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewProtocol {
         }
         alertPresenter?.show(model: alert)
     }
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter = MovieQuizPresenter(viewController: self)
-        alertPresenter = AlertPresenter()
+        alertPresenter = AlertPresenterDelegate()
         alertPresenter?.didLoad(self)
     }
 }

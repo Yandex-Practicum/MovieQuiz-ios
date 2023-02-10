@@ -1,11 +1,11 @@
 import UIKit
 
-protocol AlertPresenterDelegate: AnyObject {
+protocol AlertPresenterProtocol: AnyObject {
     func show(model: AlertModel)
     func didLoad(_ vc: UIViewController)
 }
 
-class AlertPresenter: AlertPresenterDelegate {
+class AlertPresenterDelegate: AlertPresenterProtocol {
     
     weak private var viewController: UIViewController?
     
