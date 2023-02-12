@@ -156,7 +156,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             Средняя точность: \(totalAccuracyPercentage)
             """
 
-            let alert = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть еще раз") { [weak self] in
+            let resultModel = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть еще раз") { [weak self] in
                 guard let self = self else { return }
 
                 self.currentQuestionIndex = 0 // сброс счета
@@ -166,7 +166,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
 
 
-            alertPresenter?.show(result: alert)
+            alertPresenter?.show(result: resultModel)
         } else {
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1
             questionFactory?.requestNextQuestion()
