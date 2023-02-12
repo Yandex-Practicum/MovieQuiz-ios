@@ -19,6 +19,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter = AlertPresenter()
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         statisticService = StatisticServiceImplementation()
@@ -70,10 +71,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-    }
-    
-    private func show(quiz step: QuizQuestion) {
-        // здесь мы показываем результат прохождения квиза
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel{

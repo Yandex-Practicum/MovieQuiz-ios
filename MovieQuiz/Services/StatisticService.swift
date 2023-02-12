@@ -3,11 +3,11 @@ import Foundation
 protocol StatisticService {
     func store(correct count: Int, total amount: Int)
     var totalAccuracy: Double { get }
-    var gamesCount: Int { get }
+    var gamesCount: Int { get set }
     var bestGame: GameRecord { get set }
 }
 
-final class StatisticServiceImplementation: StatisticService {
+class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
     
@@ -33,7 +33,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    private(set) var gamesCount: Int {
+    internal var gamesCount: Int {
         get {
             let count = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
             return count
