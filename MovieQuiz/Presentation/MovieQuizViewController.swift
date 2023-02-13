@@ -4,15 +4,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
    
     
     
-    func didRecieveAlertModel(alertModel: AlertModel?) {
-        guard let alertModel = alertModel else {
-            return}
-        alertmodel.self.present(alert, animated: true, completion: nil)
+ private   func didRecieveAlertModel(alertModel: AlertModel) {
         
+        
+        alertPresenter?.makeAlertController(alertModel: alertModel)
+      
 
           }
     
-   
+    func present(_ alertController: UIAlertController) {
+        present(alertController, animated: true)
+    }
   
 
 
@@ -74,7 +76,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
     private var currentQuestion: QuizQuestion?
     
     private var alertPresenter: AlertPresenter?
-    
     
     
     
@@ -152,16 +153,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
             "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuizResultsViewModel (
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть еще раз")
+//            let viewModel = QuizResultsViewModel (
+//                title: "Этот раунд окончен!",
+//                text: text,
+//                buttonText: "Сыграть еще раз")
+//            
             
-            show(quiz: viewModel)
-            
+            didRecieveAlertModel(alertModel: AlertModel(title: "Этот раунд окончен!",
+                                                        message: text,
+                                                        buttonText: "Сыграть еще раз",
+                                                        completion: {[weak self] in
+                
+                guard let self = self else {return}
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0 //Обнуляем счетчик правильных ответов
+                self.didReceiveNextQuestion(question:
+                self.questionFactory?.requestNextQuestion())
+            }))
         } else{
             currentQuestionIndex += 1
-            self.questionFactory?.requestNextQuestion()
+            didReceiveNextQuestion(question:self.questionFactory?.requestNextQuestion())
         }
     }
     

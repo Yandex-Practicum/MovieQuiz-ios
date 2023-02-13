@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+
 protocol AlertPresenterDelegate: AnyObject{
-    func didRecieveAlertModel (alertModel:AlertModel?)
+    func present(_ alertController: UIAlertController) 
 }

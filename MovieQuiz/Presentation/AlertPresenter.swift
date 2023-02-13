@@ -12,9 +12,7 @@ class AlertPresenter: AlertPresenterprotocol {
     
     private weak var delegate: AlertPresenterDelegate?
     
-    private var currentQuestionIndex : Int = 0 // индекс текущего вопроса
-    private var correctAnswers: Int = 0
-    private var questionFactory: QuestionFactoryProtocol?
+
     
     init(delegate: AlertPresenterDelegate) {
         self.delegate = delegate
@@ -28,18 +26,18 @@ class AlertPresenter: AlertPresenterprotocol {
             message: alertModel.message,
             preferredStyle: .alert)
         
-           let completion = UIAlertAction(title : alertModel.buttonText, style: .default) { [weak self] _ in
+           let completion = UIAlertAction(title : alertModel.buttonText, style: .default) {  _ in
+               alertModel.completion()
             
-            guard let self = self else { return }
             
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0 //Обнуляем счетчик правильных ответов
-            
-            self.questionFactory?.requestNextQuestion()
+//            self.currentQuestionIndex = 0
+//            self.correctAnswers = 0 //Обнуляем счетчик правильных ответов
+//            
+//            self.questionFactory?.requestNextQuestion()
         }
         
         alert.addAction(completion)
-        delegate?.didRecieveAlertModel(alertModel: alertModel)
+        delegate?.present(alert)
         
     }
     
