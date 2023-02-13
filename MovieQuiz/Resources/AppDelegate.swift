@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  MovieQuiz
 //
-//  Created by Constantine Nikolsky on 15.05.2022.
+//  Created by Алексей on 15.05.2022.
 //
 
 import UIKit
