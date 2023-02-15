@@ -32,13 +32,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAf-bu-NRh" userLabel="Question title label">
-                                                <rect key="frame" x="0.0" y="0.0" width="338" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TK2-KL-nz4" userLabel="Index Label">
-                                                <rect key="frame" x="338" y="0.0" width="36" height="23.5"/>
+                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
@@ -120,16 +120,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="OTr-ps-dkD">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="black"/>
                         <constraints>
                             <constraint firstItem="OOE-X6-8WM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="0UM-Hj-Uuc"/>
+                            <constraint firstItem="OTr-ps-dkD" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="5Y5-E9-sy0"/>
+                            <constraint firstItem="OTr-ps-dkD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="M6f-y5-x7q"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OOE-X6-8WM" secondAttribute="trailing" constant="20" id="k6z-8W-SS2"/>
                             <constraint firstItem="OOE-X6-8WM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="vJD-bX-Q6I"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="OTr-ps-dkD" id="ulj-N0-dBW"/>
                         <outlet property="counterLabel" destination="TK2-KL-nz4" id="HsG-ig-qWq"/>
                         <outlet property="imageView" destination="zGE-rg-1rd" id="RCq-s8-2UX"/>
                         <outlet property="noButton" destination="RZy-X4-Mzv" id="kYQ-4h-hnE"/>

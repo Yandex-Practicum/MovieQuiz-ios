@@ -1,10 +1,3 @@
-//
-//  StatisticService.swift
-//  MovieQuiz
-//
-//  Created by Баир Шаралдаев on 05.02.2023.
-//
-
 import Foundation
 
 protocol StatisticService {
@@ -31,7 +24,7 @@ final class StatisticServiceImplementation: StatisticService {
         get {
             userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
-
+        
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
@@ -55,8 +48,8 @@ final class StatisticServiceImplementation: StatisticService {
     
     func store(correct count: Int, total amount: Int) {
         let currentGameResult = GameRecord(correct: count, total: amount, date: Date())
-        if bestGame.isNotRecordAnymore(for: currentGameResult) {
-            bestGame = currentGameResult
+        if self.bestGame < currentGameResult {
+            self.bestGame = currentGameResult
         }
         gamesCount += 1
         

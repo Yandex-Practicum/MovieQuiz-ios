@@ -4,9 +4,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private var statisticService: StatisticService = StatisticServiceImplementation()
     private var alertPresenter: AlertPresenter?
-    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
@@ -19,6 +19,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    
     // MARK: - Private functions
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -49,10 +51,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(quiz result: QuizResultsViewModel) {
         statisticService.store(correct: correctAnswers, total: questionsAmount)
         let bestGame = statisticService.bestGame
-        let countText = "\nКоличество сыгранных квизов: \(statisticService.gamesCount)"
-        let recordText = "\nРекорд: \(bestGame.correct)/\(questionsAmount) (\(bestGame.date.dateTimeString))"
-        let accuracyText = "\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
-        
+        let countText = """
+Количество сыгранных квизов: \(statisticService.gamesCount)
+"""
+        let recordText = """
+Рекорд: \(bestGame.correct)/\(questionsAmount) (\(bestGame.date.dateTimeString))
+"""
+        let accuracyText = """
+Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+"""
         let alertModel = AlertModel(
             title: result.title,
             message: result.text + countText + recordText + accuracyText,
@@ -72,7 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -114,12 +121,53 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled.toggle()
         yesButton.isEnabled.toggle()
     }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        alertPresenter?.showAlert(with: model)
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        
+        imageView.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        statisticService = StatisticServiceImplementation()
+        
+        showLoadingIndicator()
+        questionFactory?.loadData()
+        
         alertPresenter = AlertPresenter(alertPresenterDelegate: self)
     }
     // MARK: - QuestionFactoryDelegate

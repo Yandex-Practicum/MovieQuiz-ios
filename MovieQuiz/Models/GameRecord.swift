@@ -1,18 +1,11 @@
-//
-//  GameRecord.swift
-//  MovieQuiz
-//
-//  Created by Баир Шаралдаев on 05.02.2023.
-//
-
 import Foundation
 
-struct GameRecord: Codable {
+struct GameRecord: Comparable, Codable {
     let correct: Int
     let total: Int
     let date: Date
-
-    func isNotRecordAnymore(for gameRecord: GameRecord) -> Bool {
-        correct < gameRecord.correct
+    
+    static func < (lsh: GameRecord, rsh: GameRecord) -> Bool {
+        return lsh.correct < rsh.correct
     }
 }
