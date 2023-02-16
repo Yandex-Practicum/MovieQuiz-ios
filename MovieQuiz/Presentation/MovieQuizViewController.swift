@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let currentQuestionViewModel = convert(model: currentQuestion)
         show(quiz: currentQuestionViewModel)
-        noButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
+        noButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20) //добавила
         yesButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
