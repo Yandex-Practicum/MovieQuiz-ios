@@ -52,10 +52,7 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
         imageView.image = step.image
         counterLabel.text = step.questionNumber
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.cornerRadius = 20
+
                     
     }
    
@@ -72,6 +69,7 @@ final class MovieQuizViewController: UIViewController {
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
+            imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
     private func show(quiz result: QuizResultsViewModel) {
