@@ -136,6 +136,7 @@
                         <outlet property="counterLabel" destination="Rpf-43-j4E" id="2cD-NA-cqv"/>
                         <outlet property="imageView" destination="6Uq-OS-lZM" id="YNZ-MR-EuY"/>
                         <outlet property="noButton" destination="rGx-vM-sl1" id="kSf-dl-DnJ"/>
+                        <outlet property="questionTitleLabel" destination="b7B-G1-EOg" id="t1h-L2-cG1"/>
                         <outlet property="textLabel" destination="AZT-uT-MKO" id="ZZH-vn-2Yb"/>
                         <outlet property="yesButton" destination="Zwe-Np-A8m" id="JT4-Nb-Cux"/>
                     </connections>
