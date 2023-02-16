@@ -128,7 +128,8 @@ final class MovieQuizViewController: UIViewController {
             preferredStyle: .alert)
         
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
             self.currentQuestionIndex = 0
             
             //скидывем счетчик правильных ответов
@@ -167,7 +168,9 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // если правильно рисуем рамку зеленой, если нет красной
         imageView.layer.cornerRadius = 20 // скругление углов
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self = self else { return }
+            
             self.showNextQuestionOrResult()
             self.switchOnOffButton()
         }
