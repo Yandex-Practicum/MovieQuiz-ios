@@ -11,49 +11,53 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex: Int = 0 // переменная отвечающая за индекс текущего вопроса
     private var correctAnswer: Int = 0 // перемення отвечающая за количество правильных ответов
     
+    private let questionAmount: Int = 10
+    private var questionFactory: QuestionFactory = QuestionFactory()
+    private var currentQestion: QuizQuestion?
+    
     //создаем массив с данными
-    private let questions: [QuizQuestion] = [
-        QuizQuestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше, чем 6?",
-            correctAnswer: false)
-    ]
+//    private let questions: [QuizQuestion] = [
+//        QuizQuestion(
+//            image: "The Godfather",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: true),
+//        QuizQuestion(
+//            image: "The Dark Knight",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: true),
+//        QuizQuestion(
+//            image: "Kill Bill",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: true),
+//        QuizQuestion(
+//            image: "The Avengers",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: true),
+//        QuizQuestion(
+//            image: "Deadpool",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: true),
+//        QuizQuestion(
+//            image: "The Green Knight",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: true),
+//        QuizQuestion(
+//            image: "Old",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: false),
+//        QuizQuestion(
+//            image: "The Ice Age Adventures of Buck Wild",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: false),
+//        QuizQuestion(
+//            image: "Tesla",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: false),
+//        QuizQuestion(
+//            image: "Vivarium",
+//            text: "Рейтинг этого фильма больше, чем 6?",
+//            correctAnswer: false)
+//    ]
     //создаем структуры
     
     // для состояния "Вопрос задан"
@@ -83,7 +87,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
     
-    //нажатие на кнопку "ДА"
+    //нажатие на кнопку "НЕТ"
     @IBAction private func noButtonClicked(_ sender: Any) {
         switchOnOffButton()
         let currentQuestion = questions[currentQuestionIndex]
@@ -91,7 +95,7 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    //нажатие на кнопку "НЕТ"
+    //нажатие на кнопку "ДА"
     @IBAction private func yesButtonClicked(_ sender: Any) {
         switchOnOffButton()
         let currentQuestion = questions[currentQuestionIndex]
