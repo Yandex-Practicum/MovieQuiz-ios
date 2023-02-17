@@ -18,6 +18,7 @@
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
 		CE19C6E02980137F003D227D /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE19C6DF2980137F003D227D /* YS Display-Bold.ttf */; };
 		CE19C6E22980138F003D227D /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE19C6E12980138F003D227D /* YS Display-Medium.ttf */; };
+		CE27C295299E169E004CDE29 /* inception.json in Resources */ = {isa = PBXBuildFile; fileRef = CE27C294299E169E004CDE29 /* inception.json */; };
 		CE28E7B1298E619700D2B237 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE28E7B0298E619700D2B237 /* QuestionFactoryDelegate.swift */; };
 		CE2FE2D52993E00E00BB3388 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FE2D42993E00E00BB3388 /* AlertModel.swift */; };
 		CE2FE2D72993E15400BB3388 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FE2D62993E15400BB3388 /* AlertPresenter.swift */; };
@@ -45,6 +46,7 @@
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CE19C6DF2980137F003D227D /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		CE19C6E12980138F003D227D /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		CE27C294299E169E004CDE29 /* inception.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = inception.json; sourceTree = "<group>"; };
 		CE28E7B0298E619700D2B237 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		CE2FE2D42993E00E00BB3388 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		CE2FE2D62993E15400BB3388 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 		AD1ABAB02831907B00B3E448 /* MovieQuiz */ = {
 			isa = PBXGroup;
 			children = (
+				CE27C293299E1663004CDE29 /* Documents */,
 				CE873B5A298A77FA0090011D /* Models */,
 				CE873B57298A71C60090011D /* Services */,
 				8F4738322848DE2A005DF65E /* Presentation */,
@@ -146,6 +149,14 @@
 				AD77F5732857F8810062FB14 /* Date+Extensions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		CE27C293299E1663004CDE29 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				CE27C294299E169E004CDE29 /* inception.json */,
+			);
+			path = Documents;
 			sourceTree = "<group>";
 		};
 		CE873B57298A71C60090011D /* Services */ = {
@@ -231,6 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE27C295299E169E004CDE29 /* inception.json in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				CE19C6E22980138F003D227D /* YS Display-Medium.ttf in Resources */,
 				CE334FE72962C022001BD585 /* Fonts in Resources */,

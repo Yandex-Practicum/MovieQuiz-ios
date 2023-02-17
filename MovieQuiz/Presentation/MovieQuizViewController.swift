@@ -167,12 +167,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
                 guard let self = self else {return}
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0 //Обнуляем счетчик правильных ответов
-                self.didReceiveNextQuestion(question:
-                self.questionFactory?.requestNextQuestion())
+//                self.didReceiveNextQuestion(question: QuizQuestion?)
+                self.questionFactory?.requestNextQuestion()
             }))
         } else{
             currentQuestionIndex += 1
-            didReceiveNextQuestion(question:self.questionFactory?.requestNextQuestion())
+//            didReceiveNextQuestion(question:QuizQuestion)
+            self.questionFactory?.requestNextQuestion()
         }
     }
     
@@ -185,6 +186,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        
+        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileName = "inception.json"
+        documentsURL.appendPathComponent(fileName)
+        let jsonString = try? String(contentsOf: documentsURL)
+        print(jsonString)
+        
     }
     
 }
