@@ -89,7 +89,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
+    // функции
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
