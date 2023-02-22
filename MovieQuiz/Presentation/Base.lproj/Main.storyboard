@@ -60,7 +60,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IXa-uG-spK">
                                         <rect key="frame" x="0.0" y="645.66666666666663" width="388" height="128"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1I-Ta-h9z" userLabel="Question Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1I-Ta-h9z" userLabel="Question Label">
                                                 <rect key="frame" x="42" y="13" width="304" height="102"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
@@ -121,6 +121,10 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="TNf-RK-8Z0">
+                                <rect key="frame" x="20" y="453" width="388" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="black"/>
@@ -131,6 +135,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="TNf-RK-8Z0" id="J9f-j6-pbL"/>
                         <outlet property="counterLabel" destination="z3L-65-lHq" id="fLt-gM-dg6"/>
                         <outlet property="imageView" destination="lNk-bt-ZjH" id="nJG-b1-Yyy"/>
                         <outlet property="noButton" destination="5Rg-Rm-m85" id="YXF-MG-mIe"/>

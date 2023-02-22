@@ -5,6 +5,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBAction private func noButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {
             return
@@ -31,8 +32,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var statisticService = StatisticServiceImplementation()
         
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let image = UIImage(data: model.image)
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: image ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -104,10 +106,42 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
       }
     }
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        //hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] _ in
+            guard let self = self else { return }
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        let alert = AlertPresenter()
+        alert.present(view: self, alert: model)
+    }
+    
+    internal func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+
+    internal func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
  
     // MARK: - QuestionFactoryDelegate
