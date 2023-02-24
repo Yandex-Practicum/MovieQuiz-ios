@@ -43,12 +43,12 @@ class ViewController: UIViewController {
         let fileName = "top250MoviesIMDB.json"
         documentsURL.appendPathComponent(fileName)
         print(documentsURL)
-        let jsonString = try? String(contentsOf: documentsURL)
+        let jsonString = try? String(contentsOf:URL(fileURLWithPath: "top250MoviesIMDB.json",relativeTo: documentsURL))
         let data = jsonString?.data(using: .utf8)!
 
         do {
-            let list = try JSONDecoder().decode(Top.self, from:data?.data)
-            print(list)
+            let list = try JSONDecoder().decode(Top.self, from:data!)
+            print(list.id)
         } catch {
             print(error)
         }

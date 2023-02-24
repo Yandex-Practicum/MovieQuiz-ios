@@ -12,6 +12,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
 
           }
     
+    
+    
     func present(_ alertController: UIAlertController) {
         present(alertController, animated: true)
     }
@@ -78,7 +80,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
     private var alertPresenter: AlertPresenter?
     
     
-    
+    private var statisticService: StatisticServiceImplementation
     
     
     
@@ -147,17 +149,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
 //
 //    }
     
+    
+    
+    
+    
     private func showNextQuestionOrResults() {
         
         if currentQuestionIndex == questionsAmount-1 {
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
             "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-//            let viewModel = QuizResultsViewModel (
-//                title: "Этот раунд окончен!",
-//                text: text,
-//                buttonText: "Сыграть еще раз")
-//            
+            
+            
+            
+
+/*
+  сравнивать рез-т текущей игры с рекордом из UserDefaults
+ обновить рекорд если лучше
+ */
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
             
             didRecieveAlertModel(alertModel: AlertModel(title: "Этот раунд окончен!",
                                                         message: text,
@@ -187,11 +197,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
         
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileName = "inception.json"
-        documentsURL.appendPathComponent(fileName)
-        let jsonString = try? String(contentsOf: documentsURL)
-        print(jsonString)
+        
         
     }
     
