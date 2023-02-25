@@ -160,7 +160,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
             "Поздравляем, Вы ответили на 10 из 10!" :
             
             "Ваш результат:\(correctAnswers)/10 \n "
-            "Количесство сыгранных квизов:\(statisticService.gamesCount) \n"
+            "Количество сыгранных квизов:\(statisticService.gamesCount) \n"
             "Рекорд: \(statisticService.bestGame) \n"
             "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             
