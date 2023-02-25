@@ -158,8 +158,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
         if currentQuestionIndex == questionsAmount-1 {
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             
+            "Ваш результат:\(correctAnswers)/10 \n "
+            "Количесство сыгранных квизов:\(statisticService.gamesCount) \n"
+            "Рекорд: \(statisticService.bestGame) \n"
+            "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             
             
 
@@ -196,8 +199,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
-        
-        
+        statisticService = StatisticServiceImplementation(totalAccuracy: <#T##Double#>, gamesCount: <#T##Int#>)
         
     }
     
