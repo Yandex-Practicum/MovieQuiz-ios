@@ -9,8 +9,8 @@ import Foundation
 
 protocol StatisticService {
     func store(correct count: Int, total amount: Int)
-    var totalAccuracy: Double { get }
-    var gamesCount: Int { get }
+    var totalAccuracy: Double { get set }
+    var gamesCount: Int { get set }
     var bestGame: GameRecord { get set }
 }
 
@@ -48,19 +48,46 @@ final class StatisticServiceImplementation: StatisticService {
             
             let gameRecord = GameRecord(correct: count, total: amount, date: Date())
             
-            
             bestGame = gameRecord
-            
         }
         
         
+      
+        gamesCount = gamesCount + 1
+        totalAccuracy = Double (count / gamesCount)
+    }
+    
+    var totalAccuracy: Double {
+        get { guard let totalAccuracy = userDefaults.double(forKey:  Keys.total.rawValue) else {  print ("Ноль игр сыграно") }
+            
         
+            return totalAccuracy
+        }
+        set {
+          userDefaults.set(newValue, forKey: Keys.total.rawValue)
+            
+            }
         
     }
     
-    var totalAccuracy: Double
+    var gamesCount: Int {
+        
+        get { guard let gamesCount = userDefaults.integer(forKey:  Keys.gamesCount.rawValue) else {  print ("Ноль игр сыграно")}
+            
+        
+            return  gamesCount
+        }
+        set {
+          userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
+            
+            }
+    }
     
-    var gamesCount: Int
+    
+    
+    
+    
+    
     
     var bestGame: GameRecord{
         get {guard let data = userDefaults.data(forKey:  Keys.bestGame.rawValue), // запрошиваем лучший рекорд
