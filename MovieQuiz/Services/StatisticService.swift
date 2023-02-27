@@ -15,7 +15,7 @@ protocol StatisticService {
 }
 
 private enum Keys: String {
-    case correct, total, bestGame, gamesCount
+    case correct, total, bestGame, gamesCount, totalAccuracy
 }
 
 
@@ -37,54 +37,60 @@ struct GameRecord: Codable,Comparable {
 
 final class StatisticServiceImplementation: StatisticService {
     private let userDefaults = UserDefaults.standard
-    
-   
+   var overAllQuestions = 0
+   var totalCorrectAnswers = 0
+    var itotalAccuracy:Double = 0
     func store(correct count: Int, total amount: Int) {
+        
         
         
         
         if (count > bestGame.correct) {
             
-            
             let gameRecord = GameRecord(correct: count, total: amount, date: Date())
             
             bestGame = gameRecord
         }
-        
-        
-      
-        gamesCount = gamesCount + 1
-        totalAccuracy = Double (count / gamesCount)
+       
+        overAllQuestions += amount
+        totalCorrectAnswers += count
+        gamesCount += 1
+        itotalAccuracy = Double(totalCorrectAnswers / overAllQuestions)
+        totalAccuracy = itotalAccuracy
     }
     
+
+    
     var totalAccuracy: Double {
-        get { guard let totalAccuracy = userDefaults.double(forKey:  Keys.total.rawValue) else {  print ("Ноль игр сыграно") }
+        get { //let totalCorrectAnswers = Double(userDefaults.integer(forKey:  Keys.correct.rawValue))
+            //let overAllQuestions = Double(userDefaults.integer(forKey:  Keys.total.rawValue))
+            let tac = userDefaults.double(forKey: Keys.totalAccuracy.rawValue)
+            return tac * itotalAccuracy
             
-        
-            return totalAccuracy
+            
         }
-        set {
-          userDefaults.set(newValue, forKey: Keys.total.rawValue)
-            
-            }
-        
-    }
+  
+          set {
+              userDefaults.set(newValue, forKey: Keys.totalAccuracy.rawValue) }
+  
+      }
     
     var gamesCount: Int {
         
-        get { guard let gamesCount = userDefaults.integer(forKey:  Keys.gamesCount.rawValue) else {  print ("Ноль игр сыграно")}
+        get { return userDefaults.integer(forKey:  Keys.gamesCount.rawValue) }
             
-        
-            return  gamesCount
-        }
-        set {
-          userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
-            
-            }
-    }
-    
-    
-    
+        set { userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue) }
+                        }
+//
+//    var overAllQuestions: Int {
+//        get { userDefaults.integer(forKey: Keys.total.rawValue) }
+//        set { userDefaults.set(newValue, forKey: Keys.total.rawValue)}
+//    }
+//
+//    var totalCorrectAnswers: Int {
+//        get { userDefaults.integer(forKey: Keys.correct.rawValue) }
+//        set { userDefaults.set(newValue, forKey: Keys.correct.rawValue)}
+//    }
     
     
     
