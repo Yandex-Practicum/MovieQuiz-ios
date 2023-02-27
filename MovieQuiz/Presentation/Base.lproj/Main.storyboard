@@ -120,16 +120,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="xUM-AZ-egb">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="xUM-AZ-egb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5wP-ss-PpM"/>
                             <constraint firstItem="dqA-nW-6da" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Kh9-V3-TJe"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dqA-nW-6da" secondAttribute="trailing" constant="20" id="Mou-zy-iPh"/>
+                            <constraint firstItem="xUM-AZ-egb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="a4E-wR-73Q"/>
                             <constraint firstItem="dqA-nW-6da" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="cKh-J4-vTB"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="xUM-AZ-egb" id="JtY-W9-aUz"/>
                         <outlet property="counterLabel" destination="Eu5-tZ-ztw" id="ujQ-mt-6hl"/>
                         <outlet property="imageView" destination="U8l-O8-xJR" id="C5i-hU-dNc"/>
                         <outlet property="noButton" destination="oAF-Ja-Qhk" id="ggW-ce-u6B"/>

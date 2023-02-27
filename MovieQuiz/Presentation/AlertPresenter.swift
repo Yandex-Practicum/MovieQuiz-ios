@@ -6,8 +6,8 @@ class AlertPresenter {
 
         let action = UIAlertAction(title: alert.buttonText, style: .default, handler: { _ in alert.completion() })
 
-       alertController.addAction(action)
+        alertController.addAction(action)
         alertController.preferredAction = action
-       presentingViewController.present(alertController, animated: true, completion: nil)
+        presentingViewController.present(alertController, animated: true, completion: nil)
    }
 }
