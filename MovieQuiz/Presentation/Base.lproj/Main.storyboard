@@ -61,7 +61,7 @@
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="102.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZT-uT-MKO" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="76.5"/>
+                                                <rect key="frame" x="42" y="13" width="290" height="54"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -69,9 +69,8 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="AZT-uT-MKO" firstAttribute="leading" secondItem="blx-1n-LDs" secondAttribute="leading" constant="42" id="11c-mB-YGd"/>
-                                            <constraint firstAttribute="bottom" secondItem="AZT-uT-MKO" secondAttribute="bottom" constant="13" id="2Im-8O-wFE"/>
-                                            <constraint firstItem="AZT-uT-MKO" firstAttribute="top" secondItem="blx-1n-LDs" secondAttribute="top" constant="13" id="2c6-c6-VEe"/>
-                                            <constraint firstAttribute="trailing" secondItem="AZT-uT-MKO" secondAttribute="trailing" constant="42" id="4iX-4T-V4D"/>
+                                            <constraint firstAttribute="trailing" secondItem="AZT-uT-MKO" secondAttribute="trailing" priority="999" constant="42" id="4iX-4T-V4D"/>
+                                            <constraint firstItem="AZT-uT-MKO" firstAttribute="top" secondItem="blx-1n-LDs" secondAttribute="top" constant="13" id="7v2-c7-aQK"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="N0V-JB-ye6">
