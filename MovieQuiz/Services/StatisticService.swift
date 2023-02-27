@@ -57,6 +57,9 @@ final class StatisticServiceImplementation: StatisticService {
         gamesCount += 1
         itotalAccuracy = Double(totalCorrectAnswers / overAllQuestions)
         totalAccuracy = itotalAccuracy
+        
+        
+        
     }
     
 
