@@ -73,7 +73,7 @@ final class StatisticServiceImplementation: StatisticService {
             //let overAllQuestions = Double(userDefaults.integer(forKey:  Keys.total.rawValue))
             
             
-            
+          //  fffff
             
             let tac = userDefaults.double(forKey: Keys.totalAccuracy.rawValue)
             return tac * itotalAccuracy
