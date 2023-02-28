@@ -6,7 +6,6 @@ protocol StatisticService {
     var gamesCount: Int { get set}
     var bestGame: GameRecord { get }
     func store(correct count: Int, total amount: Int)
-    
 }
 
 struct GameRecord: Codable {
@@ -31,8 +30,6 @@ final class StatisticServiceImplementation: StatisticService {
         let keyCorrect = Keys.correct.rawValue
         let keyTotal = Keys.total.rawValue
         let keyBestGame = Keys.bestGame.rawValue
-        //let keyGamesCount = Keys.gamesCount.rawValue
-        
         let correctAnswers = userDefaults.integer(forKey: keyCorrect)
         let newCorrectAnswers = correctAnswers + count
         userDefaults.set(newCorrectAnswers, forKey: keyCorrect)
@@ -40,22 +37,12 @@ final class StatisticServiceImplementation: StatisticService {
         let totalQuestions = userDefaults.integer(forKey: keyTotal)
         let newTotalQuestions = totalQuestions + amount
         userDefaults.set(newTotalQuestions, forKey: keyTotal)
-        
         let gamesCount = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         let newGamesCount = gamesCount + 1
         userDefaults.set(newGamesCount, forKey: Keys.gamesCount.rawValue)
-        
-        
-        if let bestGame = userDefaults.object(forKey: keyBestGame) as? Data,
-           let record = try? JSONDecoder().decode(GameRecord.self, from: bestGame),
-           record.gameСomparison(currentCorrect: count, recordCorrect: record.correct) {
-            let newRecord = GameRecord(correct: count, total: amount, date: Date())
-            let data = try? JSONEncoder().encode(newRecord)
-            userDefaults.set(data, forKey: keyBestGame)
-        } else {
-            let firstRecord = GameRecord(correct: count, total: amount, date: Date())
-            let data = try? JSONEncoder().encode(firstRecord)
-            userDefaults.set(data, forKey: keyBestGame)
+    
+        if count > bestGame.correct {
+        bestGame = GameRecord(correct: count, total: amount, date: Date())
         }
     }
     
