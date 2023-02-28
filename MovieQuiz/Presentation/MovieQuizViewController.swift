@@ -135,7 +135,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
     private func showNextQuestionOrResults() {
         guard let statisticService = statisticService else {return}
         if currentQuestionIndex == questionsAmount-1 {
-         
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!":
             
@@ -150,7 +150,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
   сравнивать рез-т текущей игры с рекордом из UserDefaults
  обновить рекорд если лучше
  */
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
           
             didRecieveAlertModel(alertModel: AlertModel(title: "Этот раунд окончен!",
                                                         message: text,
@@ -181,7 +181,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
-        statisticService = StatisticServiceImplementation(totalAccuracy: 100, gamesCount: 1)
+        statisticService = StatisticServiceImplementation(totalAccuracy: 0, gamesCount: 0)
         
     }
     

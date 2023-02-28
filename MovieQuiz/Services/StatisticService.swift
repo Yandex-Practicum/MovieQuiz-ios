@@ -27,19 +27,14 @@ struct GameRecord: Codable,Comparable {
     let total: Int
     let date: Date
 
-//struct CurrentGame: Codable {
-//        let correct : Int
-//        let total: Int
-//        let date: Date
-//    }
     
     }
 
 final class StatisticServiceImplementation: StatisticService {
     private let userDefaults = UserDefaults.standard
-   var overAllQuestions = 0
-   var totalCorrectAnswers = 0
-    var itotalAccuracy:Double = 0
+    var overAllQuestions:Double = 0
+    var totalCorrectAnswers:Double = 0
+    
     func store(correct count: Int, total amount: Int) {
         
         
@@ -52,33 +47,21 @@ final class StatisticServiceImplementation: StatisticService {
             bestGame = gameRecord
         }
        
-        overAllQuestions += amount
+        overAllQuestions = overAllQuestions + Double(amount)
         
-        totalCorrectAnswers += count
+        totalCorrectAnswers = totalCorrectAnswers + Double(count)
         
         gamesCount += 1
         
-        itotalAccuracy = Double(totalCorrectAnswers / overAllQuestions)
-        
-        totalAccuracy = itotalAccuracy
-        
-        
+        totalAccuracy = (totalCorrectAnswers / overAllQuestions)
         
     }
     
-
-    
     var totalAccuracy: Double {
-        get { //let totalCorrectAnswers = Double(userDefaults.integer(forKey:  Keys.correct.rawValue))
-            //let overAllQuestions = Double(userDefaults.integer(forKey:  Keys.total.rawValue))
-            
-            
-          //  fffff
-            
-            let tac = userDefaults.double(forKey: Keys.totalAccuracy.rawValue)
-            return tac * itotalAccuracy
-            
-            
+        get {
+            let totalAccuracyValue = userDefaults.double(forKey: Keys.totalAccuracy.rawValue)
+           
+            return 100 * totalAccuracyValue
         }
   
           set {
@@ -92,18 +75,7 @@ final class StatisticServiceImplementation: StatisticService {
             
         set { userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue) }
                         }
-//
-//    var overAllQuestions: Int {
-//        get { userDefaults.integer(forKey: Keys.total.rawValue) }
-//        set { userDefaults.set(newValue, forKey: Keys.total.rawValue)}
-//    }
-//
-//    var totalCorrectAnswers: Int {
-//        get { userDefaults.integer(forKey: Keys.correct.rawValue) }
-//        set { userDefaults.set(newValue, forKey: Keys.correct.rawValue)}
-//    }
-    
-    
+
     
     
     var bestGame: GameRecord{
