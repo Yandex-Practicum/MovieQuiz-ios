@@ -8,7 +8,14 @@
 import Foundation
 /*
  
- */
+ /*
+   сравнивать рез-т текущей игры с рекордом из UserDefaults
+  обновить рекорд если лучше
+  
+  
+  
+  
+  */ */
 protocol StatisticService {
     func store(correct count: Int, total amount: Int)
     var totalAccuracy: Double { get set }
