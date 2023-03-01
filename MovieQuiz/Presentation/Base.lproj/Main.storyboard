@@ -25,7 +25,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="LFm-lf-hBm">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="LFm-lf-hBm">
                                 <rect key="frame" x="20" y="52" width="374" height="811.66666666666663"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zv8-w7-rUG">
@@ -46,25 +46,29 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IFU-hD-seG" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="54.666666666666686" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="43.666666666666686" width="374" height="561"/>
                                         <color key="backgroundColor" name="white"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="IFU-hD-seG" secondAttribute="height" multiplier="2:3" id="lqb-tb-EnZ"/>
                                         </constraints>
                                     </imageView>
-                                    <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="MnH-dS-7Kb">
-                                        <rect key="frame" x="0.0" y="646.66666666666663" width="374" height="74"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MnH-dS-7Kb">
+                                        <rect key="frame" x="0.0" y="624.66666666666663" width="374" height="107"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="clip" numberOfLines="2" baselineAdjustment="none" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Quo-Tz-k2n" userLabel="Question Label">
-                                                <rect key="frame" x="62" y="0.0" width="251" height="66"/>
-                                                <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Quo-Tz-k2n" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="13" width="290" height="67"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Quo-Tz-k2n" secondAttribute="bottom" constant="13" id="0Ap-Ef-Bhh" userLabel="bottom = Question Label.bottom + 13"/>
+                                            <constraint firstItem="Quo-Tz-k2n" firstAttribute="leading" secondItem="MnH-dS-7Kb" secondAttribute="leading" constant="42" id="XTx-yJ-aT3"/>
+                                            <constraint firstAttribute="trailing" secondItem="Quo-Tz-k2n" secondAttribute="trailing" constant="42" id="laN-df-NfD"/>
+                                            <constraint firstItem="Quo-Tz-k2n" firstAttribute="top" secondItem="MnH-dS-7Kb" secondAttribute="top" constant="13" id="nZF-n0-12G"/>
+                                        </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ghh-2Z-SPG">
                                         <rect key="frame" x="0.0" y="751.66666666666663" width="374" height="60"/>
@@ -121,7 +125,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="aDA-T0-OBa" id="3yK-1X-aV6"/>
                         <outlet property="imageView" destination="IFU-hD-seG" id="zyF-7S-au8"/>
+                        <outlet property="noButton" destination="qPN-WH-491" id="vnk-WV-mOz"/>
                         <outlet property="textLabel" destination="Quo-Tz-k2n" id="tXv-AP-4F5"/>
+                        <outlet property="yesButton" destination="JIp-bB-rUW" id="GV3-Qs-JXm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
