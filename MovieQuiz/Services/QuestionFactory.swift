@@ -9,7 +9,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
-    
+
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {

@@ -122,6 +122,7 @@
                             </stackView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="xUM-AZ-egb">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <color key="color" name="YP White (iOS)"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

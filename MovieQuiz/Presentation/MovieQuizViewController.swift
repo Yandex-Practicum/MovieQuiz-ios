@@ -20,17 +20,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        alertPresenter = AlertPresenter()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        statisticService = StatisticServiceImplementation()
-        questionFactory?.requestNextQuestion()
-        showLoadingIndicator()
         questionFactory?.loadData()
-
+        alertPresenter = AlertPresenter()
+        statisticService = StatisticServiceImplementation()
+        showLoadingIndicator()
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
-        imageView.layer.borderWidth = 8
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -57,6 +54,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         toggleButton()
+        showLoadingIndicator()
         imageView.layer.borderWidth = 8
         guard let currentQuestion = currentQuestion else {
             return
@@ -66,6 +64,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         toggleButton()
+        showLoadingIndicator()
         imageView.layer.borderWidth = 8
         guard let currentQuestion = currentQuestion else {
             return
@@ -104,6 +103,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.showNextQuestionOrResult()
             self.toggleButton()
             self.imageView.layer.borderWidth = 0
+            self.activityIndicator.isHidden = true
         }
     }
     
