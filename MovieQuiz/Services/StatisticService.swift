@@ -6,7 +6,9 @@
 //
 
 import Foundation
-
+/*
+ 
+ */
 protocol StatisticService {
     func store(correct count: Int, total amount: Int)
     var totalAccuracy: Double { get set }
@@ -36,8 +38,6 @@ final class StatisticServiceImplementation: StatisticService {
     var totalCorrectAnswers:Double = 0
     
     func store(correct count: Int, total amount: Int) {
-        
-        
         
         
         if (count > bestGame.correct) {

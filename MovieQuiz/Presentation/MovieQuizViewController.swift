@@ -127,10 +127,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
         
     }
     
-
-    
-    
-    
     
     private func showNextQuestionOrResults() {
         guard let statisticService = statisticService else {return}
@@ -142,6 +138,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
             "Ваш результат:\(correctAnswers)/10 \n " +
             "Количество сыгранных квизов:\(statisticService.gamesCount) \n" +
             "Рекорд: \(statisticService.bestGame.correct)/ \(statisticService.bestGame.total) ( \(statisticService.bestGame.date.dateTimeString))\n" +
+          
             "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             
             
@@ -153,6 +150,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
  
  изменения для комита
  
+ 
+ 
+ 
+ изменения для комита
  
  */
             
