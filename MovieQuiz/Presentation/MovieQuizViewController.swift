@@ -149,6 +149,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate,A
 /*
   сравнивать рез-т текущей игры с рекордом из UserDefaults
  обновить рекорд если лучше
+ 
+ 
+ изменения для комита
+ 
+ 
  */
             
           
