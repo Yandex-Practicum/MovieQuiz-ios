@@ -16,14 +16,14 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
+		CE1C19D529AFA9F400BB762C /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE1C19D329AFA9F400BB762C /* YS Display-Bold.ttf */; };
+		CE1C19D629AFA9F400BB762C /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE1C19D429AFA9F400BB762C /* YS Display-Medium.ttf */; };
 		CE28E7B1298E619700D2B237 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE28E7B0298E619700D2B237 /* QuestionFactoryDelegate.swift */; };
 		CE2FE2D52993E00E00BB3388 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FE2D42993E00E00BB3388 /* AlertModel.swift */; };
 		CE2FE2D72993E15400BB3388 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FE2D62993E15400BB3388 /* AlertPresenter.swift */; };
 		CE2FE2D92993E97700BB3388 /* AlertPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FE2D82993E97700BB3388 /* AlertPresenterDelegate.swift */; };
 		CE3378C429951E0700F3DEC7 /* AlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3378C329951E0700F3DEC7 /* AlertPresenterProtocol.swift */; };
 		CE3779BE29A0D2310029EAD8 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3779BD29A0D2310029EAD8 /* StatisticService.swift */; };
-		CE7CD1E029AF8F2D00B29860 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE7CD1DE29AF8F2D00B29860 /* YS Display-Bold.ttf */; };
-		CE7CD1E129AF8F2D00B29860 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE7CD1DF29AF8F2D00B29860 /* YS Display-Medium.ttf */; };
 		CE873B59298A72B50090011D /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE873B58298A72B50090011D /* QuestionFactory.swift */; };
 		CE873B5C298A78330090011D /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE873B5B298A78330090011D /* QuizStepViewModel.swift */; };
 		CE873B5E298A78F30090011D /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE873B5D298A78F30090011D /* QuizResultsViewModel.swift */; };
@@ -43,14 +43,14 @@
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		CE1C19D329AFA9F400BB762C /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Bold.ttf"; path = "../../../../Desktop/YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		CE1C19D429AFA9F400BB762C /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Medium.ttf"; path = "../../../../Desktop/YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		CE28E7B0298E619700D2B237 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		CE2FE2D42993E00E00BB3388 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		CE2FE2D62993E15400BB3388 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		CE2FE2D82993E97700BB3388 /* AlertPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterDelegate.swift; sourceTree = "<group>"; };
 		CE3378C329951E0700F3DEC7 /* AlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterProtocol.swift; sourceTree = "<group>"; };
 		CE3779BD29A0D2310029EAD8 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
-		CE7CD1DE29AF8F2D00B29860 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Bold.ttf"; path = "../../../../.Trash/YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		CE7CD1DF29AF8F2D00B29860 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Medium.ttf"; path = "../../../../.Trash/YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		CE873B58298A72B50090011D /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		CE873B5B298A78330090011D /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
 		CE873B5D298A78F30090011D /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
@@ -82,8 +82,8 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CE7CD1DE29AF8F2D00B29860 /* YS Display-Bold.ttf */,
-				CE7CD1DF29AF8F2D00B29860 /* YS Display-Medium.ttf */,
+				CE1C19D329AFA9F400BB762C /* YS Display-Bold.ttf */,
+				CE1C19D429AFA9F400BB762C /* YS Display-Medium.ttf */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
@@ -242,8 +242,8 @@
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
-				CE7CD1E029AF8F2D00B29860 /* YS Display-Bold.ttf in Resources */,
-				CE7CD1E129AF8F2D00B29860 /* YS Display-Medium.ttf in Resources */,
+				CE1C19D529AFA9F400BB762C /* YS Display-Bold.ttf in Resources */,
+				CE1C19D629AFA9F400BB762C /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
