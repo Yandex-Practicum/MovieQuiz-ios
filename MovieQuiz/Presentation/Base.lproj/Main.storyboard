@@ -55,8 +55,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MnH-dS-7Kb">
                                         <rect key="frame" x="0.0" y="624.66666666666663" width="374" height="107"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Quo-Tz-k2n" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="67"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Quo-Tz-k2n" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="5" width="290" height="97"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
@@ -64,10 +64,10 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="Quo-Tz-k2n" secondAttribute="bottom" constant="13" id="0Ap-Ef-Bhh" userLabel="bottom = Question Label.bottom + 13"/>
                                             <constraint firstItem="Quo-Tz-k2n" firstAttribute="leading" secondItem="MnH-dS-7Kb" secondAttribute="leading" constant="42" id="XTx-yJ-aT3"/>
+                                            <constraint firstAttribute="bottom" secondItem="Quo-Tz-k2n" secondAttribute="bottom" constant="5" id="ahN-v1-PHc"/>
                                             <constraint firstAttribute="trailing" secondItem="Quo-Tz-k2n" secondAttribute="trailing" constant="42" id="laN-df-NfD"/>
-                                            <constraint firstItem="Quo-Tz-k2n" firstAttribute="top" secondItem="MnH-dS-7Kb" secondAttribute="top" constant="13" id="nZF-n0-12G"/>
+                                            <constraint firstItem="Quo-Tz-k2n" firstAttribute="top" secondItem="MnH-dS-7Kb" secondAttribute="top" constant="5" id="nZF-n0-12G"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ghh-2Z-SPG">
