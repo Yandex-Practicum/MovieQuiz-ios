@@ -1,6 +1,6 @@
-import Foundation
+import UIKit
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
     private var movies: [MostPopularMovie] = []
     private let moviesLoader: MoviesLoading
     private weak var delegate: QuestionFactoryDelegate?

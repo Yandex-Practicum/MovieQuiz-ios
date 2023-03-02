@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertPresenter {
+final class AlertPresenter {
     private weak var alertPresenterDelegate: MovieQuizViewController?
     init(alertPresenterDelegate: MovieQuizViewController) {
         self.alertPresenterDelegate = alertPresenterDelegate
