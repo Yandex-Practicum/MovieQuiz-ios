@@ -66,9 +66,6 @@ final class StatisticServiceImplementation: StatisticService {
             let questions = (userDefaults.value(forKey: Keys.total.rawValue) as? Double) ?? 0
             return сorrect / questions * 100
         }
-        set {
-            
-        }
     }
     
     

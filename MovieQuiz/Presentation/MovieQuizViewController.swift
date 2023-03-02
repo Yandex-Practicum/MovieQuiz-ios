@@ -20,7 +20,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
@@ -118,9 +117,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let statisticService = statisticService else {
                 return
             }
+            
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-            
-            
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!\n" :
             "Ваш результат \(correctAnswers) из 10\n" +
