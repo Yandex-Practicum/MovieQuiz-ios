@@ -2,24 +2,25 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
-    private var presenter: MovieQuizPresenter!
-    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
-    // MARK: - Actions
     
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        presenter.noButtonClicked()
-        toggleButtons()
+    private var presenter: MovieQuizPresenter!
+    // MARK: - Lifecycle
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        presenter.yesButtonClicked()
-        toggleButtons()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        imageView.layer.cornerRadius = 20
+        presenter = MovieQuizPresenter(viewController: self)
     }
     // MARK: - Functions
     
@@ -87,16 +88,15 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         alert.addAction(action)
     }
-    // MARK: - Lifecycle
+    // MARK: - Actions
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        presenter.noButtonClicked()
+        toggleButtons()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        imageView.layer.cornerRadius = 20
-        presenter = MovieQuizPresenter(viewController: self)
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        presenter.yesButtonClicked()
+        toggleButtons()
     }
 }
