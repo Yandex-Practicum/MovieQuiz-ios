@@ -8,7 +8,7 @@
 import Foundation
 
 struct GameRecord: Codable, Comparable {
-    let correct: Int
+    var correct: Int
     var total: Int
     let date: Date
     
