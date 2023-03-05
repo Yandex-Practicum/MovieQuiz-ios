@@ -33,15 +33,17 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhx-7m-L1o" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
+                                                <color key="tintColor" name="YP White (iOS)"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
+                                                <color key="textColor" name="YP White (iOS)"/>
+                                                <color key="highlightedColor" name="YP White (iOS)"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpl-p6-wQa" userLabel="Index Label">
                                                 <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
+                                                <color key="tintColor" name="YP White (iOS)"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
+                                                <color key="textColor" name="YP White (iOS)"/>
+                                                <color key="highlightedColor" name="YP White (iOS)"/>
                                             </label>
                                         </subviews>
                                     </stackView>
@@ -90,6 +92,10 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="NoButtonPushed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iSU-d4-vfa"/>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Llr-rp-uVP"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rob-vc-qm2" userLabel="Yes Button">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
@@ -105,6 +111,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nww-Gh-OFu"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -119,6 +128,11 @@
                             <constraint firstItem="Bg0-ms-851" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="m9P-jb-qap"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="bpl-p6-wQa" id="Uku-FH-3Co"/>
+                        <outlet property="imageView" destination="Rxr-DU-rn8" id="FsK-On-H0H"/>
+                        <outlet property="textLabel" destination="jTS-jl-Jaf" id="Z8P-gV-OxO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
