@@ -8,12 +8,32 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var statisticService: StatisticService?
+    private var alertPresenter: AlertPresenter?
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        showLoadingIndicator()
+        alertPresenter = AlertPresenter()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        noButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
+        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        statisticService = StatisticServiceImplementation()
+        
+    }
+    
     @IBAction private func noButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {
             return
@@ -31,26 +51,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
     }
    
-    override func viewDidLoad() {
-        
-        super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion(by: currentQuestionIndex)
-        noButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
-        yesButton.titleLabel?.font =  UIFont(name: "YSDisplay-Medium", size: 20)
-        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
-        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        statisticService = StatisticServiceImplementation()
-        
-    }
-    
+
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+        QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -61,13 +67,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderColor = UIColor.clear.cgColor
         
     }
+  
 
     private func show(quiz result: QuizResultsViewModel) {
         let alertViewModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText, completion: { [weak self] _ in
             guard let self = self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion(by: self.currentQuestionIndex)
+            self.questionFactory?.requestNextQuestion()
         }
         )
         
@@ -134,7 +141,40 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             imageView.layer.borderColor = UIColor.clear.cgColor
             currentQuestionIndex += 1
-            questionFactory.requestNextQuestion(by: currentQuestionIndex)
+            questionFactory.requestNextQuestion()
         }
     }
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideLoadingIndicator() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+
+        let alertModel = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз") { [weak self] _ in
+            guard let self = self else { return }
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.showLoadingIndicator()
+            self.questionFactory?.loadData()
+        }
+
+        alertPresenter?.present(view: self, alert: alertModel)
+    }
+    
+    func didLoadDataFromServer(data: [MostPopularMovie]) {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+    }
+        
 }

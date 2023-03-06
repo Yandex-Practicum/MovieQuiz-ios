@@ -29,7 +29,7 @@ final class StatisticServiceImplementation: StatisticService {
     func store(correct count: Int, total amount: Int) {
         let keyCorrect = Keys.correct.rawValue
         let keyTotal = Keys.total.rawValue
-        let keyBestGame = Keys.bestGame.rawValue
+        //let keyBestGame = Keys.bestGame.rawValue
         let correctAnswers = userDefaults.integer(forKey: keyCorrect)
         let newCorrectAnswers = correctAnswers + count
         userDefaults.set(newCorrectAnswers, forKey: keyCorrect)
