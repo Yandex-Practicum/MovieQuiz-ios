@@ -5,10 +5,13 @@ final class MovieQuizViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
+    // MARK: - IBAOutlets
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     private struct QuizQuestion {
         let image: String
@@ -35,11 +38,12 @@ final class MovieQuizViewController: UIViewController {
         var result: Bool
     }
     
+    // MARK: - private vars
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     static private let description = "Рейтинг этого фильма больше чем 6?"
     
-    
+    // MARK: - mocks
     // моки:
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -84,29 +88,42 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false)
     ]
     
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         show(quiz: QuizStepViewModel(image: UIImage(), question: String(), questionNumber: String()))
-        
     }
     
+    // MARK: - IBActions
     @IBAction private func noButtonClick(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        freezeButton()
     }
     
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        freezeButton()
     }
     
+    // MARK: - func freezeButton
+    // функция заморозки кнопок (added)
+    private func freezeButton(){
+        if yesButton.isEnabled == true && noButton.isEnabled == true {
+            yesButton.isEnabled = false
+            noButton.isEnabled = false
+        } else
+        if yesButton.isEnabled == false && noButton.isEnabled == false {
+            yesButton.isEnabled = true
+            noButton.isEnabled = true
+        }
+    }
     
-    
+    // MARK: - funcs show
     // функции показа View-модели на экране:
    private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
@@ -122,7 +139,6 @@ final class MovieQuizViewController: UIViewController {
             title: result.title, // заголовок всплывающего окна
             message: result.text, // текст во всплыв окне
             preferredStyle: .alert) // preferredStyle может быть .alert или  .actionSheet
-        
         // создаем для него кнопки с действиями
         let action = UIAlertAction (title: result.buttonText,
                                     style: .default) { _ in
@@ -139,7 +155,7 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)  // показываем всплывающее окно
     }
     
-    
+    // MARK: - convert
     // функция конвертации параметра image из String в UIImage
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -148,6 +164,7 @@ final class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1) /\(questions.count)") // счет номера вопроса
     }
     
+    // MARK: - funcs showAnswer & DispatchQueue
     // функция ответа на вопрос
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
@@ -162,10 +179,13 @@ final class MovieQuizViewController: UIViewController {
             // код, который вы хотите вызвать через 1 секунду:
             self.showNextQuestionOrResults()
             self.imageView.layer.borderColor = UIColor.ypBlack.cgColor
-            
+            self.imageView.layer.borderWidth = 0
+            self.freezeButton()
+                       
         }
     }
     
+    // MARK: - funcs nexQuestion
     // фунцкия показа след шага-вопроса
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 { // -1 потому что индекс начинается с 0, а длина массива - с 1
@@ -184,27 +204,23 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             
             show(quiz: viewModel)
-            
         }
     }
 }
    
-      
+    
     /*
      Mock-данные
-     
-     
+          
      Картинка: The Godfather
      Настоящий рейтинг: 9,2
      Вопрос: Рейтинг этого фильма больше чем 6?
      Ответ: ДА
      
-     
      Картинка: The Dark Knight
      Настоящий рейтинг: 9
      Вопрос: Рейтинг этого фильма больше чем 6?
      Ответ: ДА
-     
      
      Картинка: Kill Bill
      Настоящий рейтинг: 8,1
