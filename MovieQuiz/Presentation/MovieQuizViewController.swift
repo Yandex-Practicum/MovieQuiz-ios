@@ -3,29 +3,23 @@ import UIKit
 final class MovieQuizViewController:
     UIViewController {
     
-    
+    // Функции кнопок
+    // Нет
     @IBAction private func noButtonClicked(_ sender: Any) {
-   //     switchOfButton()
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
+    // Да
     @IBAction private func yesButtonClicked(_ sender: Any) {
-  //      switchOfButton()
         let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
+        let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
-    
-    //   private func switchOfButton() {
-    //     noButtonClicked.isEnabled.toggle()
-    //   yesButtonClicked.isEnabled.toggle()
-//   }
     
     
     // для состояния "Вопрос задан"
@@ -132,6 +126,8 @@ final class MovieQuizViewController:
     
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+    private var answer: Bool = true
+    private lazy var currentQuestion = questions[currentQuestionIndex]
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -142,19 +138,20 @@ final class MovieQuizViewController:
 
     //Создаем рамку картинки красной или зеленой в зависимости от ответа
     private func showAnswerResult(isCorrect: Bool) {
-        if isCorrect == true {
+        // Счетчик правильных ответов
+        if isCorrect {
             correctAnswers += 1
         }
         
         imageView.layer.masksToBounds = true // отрисовка рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.cornerRadius = 20 // Скругление углов
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor //проверка правильности ответа
+        imageView.layer.borderColor = isCorrect ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor //проверка правильности ответа
         
         //запуск задачи через 1 секунду
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
             self.showNextQuestionOrResults()
-            self.switchOnOfButton()
         }
     }
     
@@ -162,7 +159,7 @@ final class MovieQuizViewController:
       if currentQuestionIndex == questions.count - 1 { // - 1 потому что индекс начинается с 0, а длинна массива — с 1
         // показать результат квиза
         let text = "Ваш результат: \(correctAnswers) из \(questions.count)"
-          let text1 = "Количество сыгранных квизов: "
+          _ = "Количество сыгранных квизов: "
         let viewModel = QuizResultsViewModel(
                    title: "Этот раунд окончен!",
                    text: text,

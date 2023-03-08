@@ -26,19 +26,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="nwn-l3-98v">
-                                <rect key="frame" x="20" y="57" width="335" height="731"/>
+                                <rect key="frame" x="20" y="57" width="335" height="730.66666666666663"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7pA-Mn-kKC">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="28.333333333333332"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="28"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xsS-bh-L0j" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="292" height="28.333333333333332"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="286.66666666666669" height="28"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dbd-pC-z4V" userLabel="Index Label">
-                                                <rect key="frame" x="292" y="0.0" width="43" height="28.333333333333332"/>
+                                                <rect key="frame" x="286.66666666666669" y="0.0" width="48.333333333333314" height="28"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="24"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <nil key="highlightedColor"/>
@@ -46,24 +46,24 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lyd-vj-8yJ" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="48.333333333333343" width="335" height="502.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="48.000000000000028" width="335" height="502.66666666666674"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="lyd-vj-8yJ" secondAttribute="height" multiplier="2:3" id="PlM-ij-jRj"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLP-Zn-l7Y">
-                                        <rect key="frame" x="0.0" y="571" width="335" height="80"/>
+                                        <rect key="frame" x="0.0" y="570.66666666666663" width="335" height="80"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3X5-fp-XiP" userLabel="Question Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 6?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3X5-fp-XiP" userLabel="Question Label">
                                                 <rect key="frame" x="42" y="13" width="251" height="54"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
-                                                <color key="textColor" name="YP Gray (iOS)"/>
+                                                <color key="textColor" name="YP White "/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" name="YP Black "/>
+                                        <color key="tintColor" name="YP Black "/>
                                         <constraints>
                                             <constraint firstItem="3X5-fp-XiP" firstAttribute="leading" secondItem="iLP-Zn-l7Y" secondAttribute="leading" constant="42" id="R6z-Hf-dF5"/>
                                             <constraint firstAttribute="bottom" secondItem="3X5-fp-XiP" secondAttribute="bottom" constant="13" id="Tjg-Kk-NdD"/>
@@ -72,16 +72,16 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="bI9-h4-rys">
-                                        <rect key="frame" x="0.0" y="671" width="335" height="60"/>
+                                        <rect key="frame" x="0.0" y="670.66666666666663" width="335" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ja3-1E-HcM" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="157.66666666666666" height="60"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" name="YP White "/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет">
-                                                    <color key="titleColor" name="YP Black (iOS)"/>
+                                                    <color key="titleColor" name="YP Black "/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -94,12 +94,12 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DPP-yB-f0L" userLabel="Yes button">
                                                 <rect key="frame" x="177.66666666666663" y="0.0" width="157.33333333333337" height="60"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" name="YP White "/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да">
-                                                    <color key="titleColor" name="YP Black (iOS)"/>
+                                                    <color key="titleColor" name="YP Black "/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -119,7 +119,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="qAq-bb-ibo"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black "/>
                         <constraints>
                             <constraint firstItem="nwn-l3-98v" firstAttribute="leading" secondItem="qAq-bb-ibo" secondAttribute="leading" constant="20" id="KkD-Dg-Vvt"/>
                             <constraint firstItem="nwn-l3-98v" firstAttribute="top" secondItem="qAq-bb-ibo" secondAttribute="top" constant="10" id="UXX-Ih-OnJ"/>
@@ -138,11 +138,11 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="YP Black (iOS)">
+        <namedColor name="YP Black ">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="YP Gray (iOS)">
-            <color red="0.90200001001358032" green="0.9100000262260437" blue="0.92199999094009399" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="YP White ">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White (iOS)">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
