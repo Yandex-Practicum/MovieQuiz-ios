@@ -183,5 +183,8 @@ final class MovieQuizViewController:
           show(quiz: convert(model: currentQuestion))
           self.imageView.layer.cornerRadius = 20
       }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
   }
