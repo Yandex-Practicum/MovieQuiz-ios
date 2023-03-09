@@ -181,6 +181,7 @@ final class MovieQuizViewController:
           super.viewDidLoad()
           let currentQuestion = questions[currentQuestionIndex]
           show(quiz: convert(model: currentQuestion))
+          self.imageView.layer.cornerRadius = 20
       }
     
   }
