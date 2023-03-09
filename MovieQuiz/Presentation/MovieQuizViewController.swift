@@ -14,6 +14,7 @@ final class MovieQuizViewController: UIViewController {
       let questionNumber: String
     }
 
+    
     struct QuizResultsViewModel {
       let title: String
       let text: String
