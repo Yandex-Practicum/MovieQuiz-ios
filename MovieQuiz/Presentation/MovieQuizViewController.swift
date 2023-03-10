@@ -7,6 +7,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
@@ -66,7 +69,7 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         show(quiz: convert(model: questions[currentQuestionIndex]))
-        
+        imageView.layer.cornerRadius = 20
     }
     
     private func show(quiz step: QuizStepViewModel) { // Наполнение данными странички
@@ -104,9 +107,11 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) { // показ результата ответа
         
         imageView.layer.masksToBounds = true // разрешение на рамку
-        imageView.layer.borderWidth = 6 // толщина
-        imageView.layer.cornerRadius = 6 // радиус скругления углов
+        imageView.layer.borderWidth = 8 // толщина
+        imageView.layer.cornerRadius = 20 // радиус скругления углов
         imageView.layer.borderColor = UIColor.white.cgColor
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         
         if isCorrect == true {
             correctAnswers += 1
@@ -116,7 +121,11 @@ final class MovieQuizViewController: UIViewController {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
+
         }
     }
     
