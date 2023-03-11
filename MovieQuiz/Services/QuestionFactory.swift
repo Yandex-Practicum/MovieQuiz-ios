@@ -60,6 +60,11 @@ final class QuestionFactory: QuestionFactoryProtocol {
     private let moreOrLess = ["больше", "меньше"]
     private let scoreRange = Range(70...95)
     
+    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
+        self.moviesLoader = moviesLoader
+        self.delegate = delegate
+    }
+    
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
@@ -112,11 +117,6 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 }
             }
         }
-    }
-    
-    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
-        self.moviesLoader = moviesLoader
-        self.delegate = delegate
     }
 }
 
