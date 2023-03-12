@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter: AlertPresenterProtocol {
     private weak var viewController: UIViewController?
     
     init(viewController: UIViewController) {
@@ -20,6 +20,8 @@ class AlertPresenter: AlertPresenterProtocol {
                 model.completion()
             }
         )
+        
+        alert.view.accessibilityIdentifier = "QuizResults"
         
         alert.addAction(action)
         

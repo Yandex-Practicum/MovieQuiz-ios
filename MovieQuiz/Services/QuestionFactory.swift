@@ -1,6 +1,6 @@
 import Foundation
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
     
     private enum Compare: String, CaseIterable {
         case more = "больше"
@@ -44,6 +44,13 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
+            } catch {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    imageData = Data()
+                    self.delegate?.didFailToLoadData(with: error.localizedDescription as! Error)
+                }
+            }
                 
                 let rating = Float(movie.rating) ?? 0 // превращаем строку в число
                 let textNumber = Float.random(in: 8.0...9.2)
@@ -70,16 +77,9 @@ class QuestionFactory: QuestionFactoryProtocol {
                     guard let self = self else { return }
                     self.delegate?.didReceiveNextQuestion(question: question)
                 }
-            } catch {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    
-                    self.delegate?.didFailToLoadData(with: error)
-                }
             }
         }
     }
-}
 
 /*
  private let questions: [QuizQuestion] = [
