@@ -14,6 +14,7 @@
 		272FE97029BC6B090097DFAC /* MoviesLoaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272FE96F29BC6B090097DFAC /* MoviesLoaderProtocol.swift */; };
 		272FE97229BC70030097DFAC /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272FE97129BC70030097DFAC /* MovieQuizPresenter.swift */; };
 		275BB26029BFB2F8009BBA2E /* MovieQuizPresenterTests_swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275BB25F29BFB2F8009BBA2E /* MovieQuizPresenterTests_swift.swift */; };
+		27B8DEA929BFB7F50071C148 /* MovieQuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272FE9A029BC927C0097DFAC /* MovieQuizUITests.swift */; };
 		59018DB9295F980F0042AE2E /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59018DB7295F980F0042AE2E /* YS Display-Bold.ttf */; };
 		59018DBA295F980F0042AE2E /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59018DB8295F980F0042AE2E /* YS Display-Medium.ttf */; };
 		5931C8AA2999732400E0EAA9 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C8A92999732400E0EAA9 /* NetworkClient.swift */; };
@@ -468,6 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B8DEA929BFB7F50071C148 /* MovieQuizUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -26,7 +26,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
                     self.movies = mostPopularMovies.items // сохраняем фильм в нашу новую переменную
                     self.delegate?.didLoadDataFromServer() // сообщаем, что данные загрузились
                 case .failure(let error):
-                    self.delegate?.didFailToLoadData(with: error.localizedDescription) // сообщаем об ошибке нашему MovieQuizViewController
+                    self.delegate?.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
                 }
             }
         }
@@ -48,7 +48,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     imageData = Data()
-                    self.delegate?.didFailToLoadData(with: error.localizedDescription)
+                    self.delegate?.didFailToLoadData(with: error)
                 }
             }
                 

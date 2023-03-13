@@ -7,7 +7,7 @@ struct MoviesLoader: MoviesLoading {
     private let networkClient: NetworkRouting
     private let decoder = JSONDecoder()
     
-    init(networkClient: NetworkRouting = NetworkClient()) {
+    init(networkClient: NetworkRouting = NetworkClient() as NetworkRouting) {
         self.networkClient = networkClient
     }
     
