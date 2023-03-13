@@ -16,17 +16,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="yu5-zy-lPk">
-                                <rect key="frame" x="-38" y="0.0" width="489" height="896"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="1Et-a7-bcf">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="yu5-zy-lPk" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" constant="37" id="Abb-4B-NsB"/>
-                            <constraint firstAttribute="leading" secondItem="yu5-zy-lPk" secondAttribute="leading" constant="38" id="gIu-Yz-T7D"/>
-                            <constraint firstItem="yu5-zy-lPk" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="wtb-tC-nw6"/>
-                            <constraint firstAttribute="top" secondItem="yu5-zy-lPk" secondAttribute="top" id="y4C-n9-G4X"/>
+                            <constraint firstAttribute="bottom" secondItem="1Et-a7-bcf" secondAttribute="bottom" id="03q-uG-4wz"/>
+                            <constraint firstItem="1Et-a7-bcf" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="0zc-Gp-gP5"/>
+                            <constraint firstAttribute="trailing" secondItem="1Et-a7-bcf" secondAttribute="trailing" id="qme-Rv-rzu"/>
+                            <constraint firstItem="1Et-a7-bcf" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="u3x-LS-72z"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -36,6 +36,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Background" width="375" height="812"/>
+        <image name="LaunchScreen" width="1125" height="2436"/>
     </resources>
 </document>
