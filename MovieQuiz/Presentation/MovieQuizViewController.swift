@@ -14,19 +14,21 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: convert(model: currentQuestion))
     }
     
+    // для состояния "Вопрос задан"
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
     
-    
+    // для состояния "Результат квиза"
     struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
     
+    // для состояния "Результат ответа"
     struct QuizQuestion {
         let image: String
         let text: String
