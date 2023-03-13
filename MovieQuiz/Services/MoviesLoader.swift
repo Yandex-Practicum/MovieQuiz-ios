@@ -7,7 +7,7 @@ struct MoviesLoader: MoviesLoading {
     private let networkClient: NetworkRouting
     private let decoder = JSONDecoder()
     
-    init(networkClient: NetworkRouting = NetworkClient() as! NetworkRouting) {
+    init(networkClient: NetworkRouting = NetworkClient()) {
         self.networkClient = networkClient
     }
     
@@ -28,7 +28,7 @@ struct MoviesLoader: MoviesLoading {
             switch result {
             case .success(let data):
                 do {
-                    let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
+                    let mostPopularMovies = try decoder.decode(MostPopularMovies.self, from: data)
                     handler(.success(mostPopularMovies))
                 } catch {
                     handler(.failure(error))
