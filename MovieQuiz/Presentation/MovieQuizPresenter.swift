@@ -145,7 +145,7 @@ extension MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion() // показываем первый вопрос
     }
     
-    func didFailToLoadData(with error: String) {
+    func didFailToLoadData(with error: Error) {
         viewController?.showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
     }
 }
