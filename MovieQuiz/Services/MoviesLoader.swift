@@ -1,14 +1,15 @@
 import Foundation
 
-protocol MoviesLoading {
-    func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
-}
-
 struct MoviesLoader: MoviesLoading {
     
     // MARK: - NetworkClient
     
-    private let networkClient = NetworkClient()
+    private let networkClient: NetworkRouting
+    private let decoder = JSONDecoder()
+    
+    init(networkClient: NetworkRouting = NetworkClient() as NetworkRouting) {
+        self.networkClient = networkClient
+    }
     
     // MARK: - URL
     
@@ -27,7 +28,7 @@ struct MoviesLoader: MoviesLoading {
             switch result {
             case .success(let data):
                 do {
-                    let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
+                    let mostPopularMovies = try decoder.decode(MostPopularMovies.self, from: data)
                     handler(.success(mostPopularMovies))
                 } catch {
                     handler(.failure(error))
