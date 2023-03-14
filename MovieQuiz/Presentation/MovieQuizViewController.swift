@@ -5,17 +5,25 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
 
+    @IBOutlet private var noButton: UIButton!
+    
+    @IBOutlet private var yesButton: UIButton!
+    
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
@@ -36,6 +44,8 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
         imageView.layer.borderColor = UIColor.white.cgColor
         imageView.layer.borderWidth = 1
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     private func show(quiz result: QuizResultsViewModel) {
