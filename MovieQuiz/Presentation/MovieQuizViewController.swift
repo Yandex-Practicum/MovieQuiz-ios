@@ -1,45 +1,51 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    lazy var yesButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("Да", for: .normal)
-        $0.addTarget(self, action: #selector(yesButtonClicked), for: .touchUpInside)
-        $0.layer.cornerRadius = 15
-        $0.backgroundColor = .ypWhite
-        $0.setTitleColor(.ypBlack, for: .normal)
-        return $0
-    }(UIButton(type: .system))
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     
-    lazy var noButton: UIButton = {
+    private lazy var noButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("Нет", for: .normal)
         $0.addTarget(self, action: #selector(noButtonClicked), for: .touchUpInside)
         $0.layer.cornerRadius = 15
         $0.backgroundColor = .ypWhite
-        $0.setTitleColor(.ypBlack, for: .normal)
+        $0.setAttributedTitle(NSAttributedString(string: "Нет", attributes: [
+            .font: UIFont(name: "YSDisplay-Medium", size: 20)!,
+            .foregroundColor: UIColor.ypBlack]), for: .normal)
         return $0
     }(UIButton(type: .system))
     
-    let questionLabel: UILabel = {
+    private lazy var yesButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.addTarget(self, action: #selector(yesButtonClicked), for: .touchUpInside)
+        $0.setAttributedTitle(NSAttributedString(string: "Да", attributes: [
+            .font: UIFont(name: "YSDisplay-Medium", size: 20)!,
+            .foregroundColor: UIColor.ypBlack]), for: .normal)
+        $0.layer.cornerRadius = 15
+        $0.backgroundColor = .ypWhite
+        return $0
+    }(UIButton(type: .system))
+    
+    private let questionLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Вопрос:"
-        $0.font = UIFont(name: "YS Display-Medium", size: 20)
+        $0.font = UIFont(name: "YSDisplay-Medium", size: 20)
         //        $0.font = .preferredFont(forTextStyle: .headline)
         $0.textColor = .ypWhite
         return $0
     }(UILabel(frame: .zero))
     
-    let indexLabel: UILabel = {
+    private let indexLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "1/10"
-        $0.font = UIFont(name: "YS Display-Medium", size: 20)
+        $0.font = UIFont(name: "YSDisplay-Medium", size: 20)
         //        $0.font = .preferredFont(forTextStyle: .headline)
         $0.textColor = .ypWhite
         return $0
     }(UILabel(frame: .zero))
     
-    let previewImageView: UIImageView = {
+    private let previewImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
@@ -48,20 +54,21 @@ final class MovieQuizViewController: UIViewController {
         $0.layer.cornerCurve = .continuous
         $0.layer.allowsEdgeAntialiasing = true // сглаживанием краёв, они будут еще более четкими особенно ,если зазумить скриншот, без этого свойства если приблизить будут видны "пиксели" :)
         return $0
-    }(UIImageView(image: UIImage(named: "preview")))
+    }(UIImageView(image: UIImage(named: "preview")!)) // гарантия того, что это должно работать априори, если не работает, значит это моя ошибка, которая явно должна быть. Тип как Assert.
     
-    let ratingLabel: UILabel = {
+    private let ratingLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = "Рейтинг этого фильма меньше чем 5?"
-        $0.font = .preferredFont(forTextStyle: .title1) // ПРОШУ УЧЕСТЬ, ниже я указал font, как в макете, но он сильно отличается от того, что получилось в макете, а .preferredFont(forTextStyle: .title1) - сделал тоже самое что и
-        //        $0.font = UIFont(name: "YS Display-Bold", size: 23)
+        $0.text = "Рейтинг этого фильма меньше\u{00a0}чем 5?"
+        //        $0.font = .preferredFont(forTextStyle: .title1) // ПРОШУ УЧЕСТЬ, ниже я указал font, как в макете, но он сильно отличается от того, что получилось в макете, а .preferredFont(forTextStyle: .title1) - сделал тоже самое что и
+        $0.font = UIFont.init(name: "YSDisplay-Bold", size: 23)!
         $0.numberOfLines = 2
         $0.textAlignment = .center
+        $0.lineBreakStrategy = .init()
         $0.textColor = .ypWhite
         return $0
     }(UILabel(frame: .zero))
     
-    let buttonStackView: UIStackView = {
+    private let buttonStackView: UIStackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .horizontal
         $0.spacing = 20
@@ -70,15 +77,16 @@ final class MovieQuizViewController: UIViewController {
         return $0
     }(UIStackView(frame: .zero))
     
-    let labelStackView: UIStackView = {
+    private let labelStackView: UIStackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .horizontal
         $0.isLayoutMarginsRelativeArrangement = true
         $0.layoutMargins = .init(top: 5, left: 0, bottom: 5, right: 0)
+        
         return $0
     }(UIStackView(frame: .zero))
     
-    let mainStackView: UIStackView = {
+    private let mainStackView: UIStackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         return $0
@@ -139,8 +147,7 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupContraints()
-        //        let currentQuestion = questions[currentQuestionIndex]
-        //        show(quiz: convert(model: currentQuestion))
+        view.backgroundColor = UIColor.ypBlack
     }
     
     // здесь мы заполняем нашу картинку, текст и счётчик данными
@@ -222,8 +229,8 @@ extension MovieQuizViewController {
     private func setupContraints() {
         view.addSubview(mainStackView)
         
-        buttonStackView.addArrangedSubview(yesButton)
         buttonStackView.addArrangedSubview(noButton)
+        buttonStackView.addArrangedSubview(yesButton)
         
         labelStackView.addArrangedSubview(questionLabel)
         labelStackView.addArrangedSubview(indexLabel)
@@ -249,18 +256,21 @@ extension MovieQuizViewController {
         // отступ 20 от слова вопрос до картинки ,как указано в макете
         mainStackView.setCustomSpacing(20, after: labelStackView)
         questionLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        indexLabel.setContentHuggingPriority(.required, for: .horizontal)
         previewImageView.setContentHuggingPriority(.fittingSizeLevel, for: .vertical) // Сопротивление расширения, пригодится тогда когда картинка маленькая и тогда это свойство сможет расширить нашу картинку
         
         previewImageView.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical) // Сопротивление сжатию, когда картинка большая он сможет её сжать
     }
     
-     @objc func yesButtonClicked(_ sender: UIButton) {
+    @objc
+    private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-     @objc func noButtonClicked(_ sender: UIButton) {
+    @objc
+    private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
