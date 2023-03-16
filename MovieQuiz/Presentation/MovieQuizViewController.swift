@@ -9,6 +9,7 @@ final class MovieQuizViewController: UIViewController {
         yesButton.isEnabled = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
@@ -42,8 +43,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.image = step.image
         counterLabel.text = step.questionNumber
         textLabel.text = step.question
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0
         yesButton.isEnabled = true
         noButton.isEnabled = true
     }
@@ -102,9 +102,8 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.cornerRadius = 6
+        imageView.layer.borderWidth = 0
+        imageView.layer.cornerRadius = 20
         
         show(quiz: convert(model: questions[0]))
     }
