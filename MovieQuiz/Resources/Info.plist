@@ -8,6 +8,10 @@
 		<string>YS Display-Bold</string>
 		<string>YS Display-Medium</string>
 	</array>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+        <false/>
+        <key>UIStatusBarStyle</key>
+        <string>UIStatusBarStyleDefault</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
