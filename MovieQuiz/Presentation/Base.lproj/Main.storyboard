@@ -25,20 +25,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Cpf-Ur-vqm">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Cpf-Ur-vqm">
                                 <rect key="frame" x="20" y="58" width="374" height="794"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="257" translatesAutoresizingMaskIntoConstraints="NO" id="DRJ-Dl-Wah" userLabel="Stack View Question Title">
-                                        <rect key="frame" x="0.0" y="0.0" width="369" height="23.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="DRJ-Dl-Wah" userLabel="Stack View Question Title">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDy-M5-wOI" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="76" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="318" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXm-dL-C4v" userLabel="Index Label">
-                                                <rect key="frame" x="333" y="0.0" width="36" height="23.5"/>
+                                                <rect key="frame" x="338" y="0.0" width="36" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="white"/>
                                                 <nil key="highlightedColor"/>
@@ -46,14 +46,14 @@
                                         </subviews>
                                     </stackView>
                                     <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KtO-AB-SvM" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="85.5" height="128.5"/>
+                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="white"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="KtO-AB-SvM" secondAttribute="height" multiplier="2:3" id="euu-qL-Ax8" userLabel="aspect = 2:3"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YT1-H1-D6U" userLabel="Question Label">
-                                        <rect key="frame" x="0.0" y="192" width="374" height="522"/>
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="89.5"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="white"/>
                                         <nil key="highlightedColor"/>
@@ -66,7 +66,6 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="2St-6M-iKu" userLabel="height = 60"/>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="177" id="et3-b8-tnJ" userLabel="width = 177"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
