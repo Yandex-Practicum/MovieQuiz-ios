@@ -52,12 +52,23 @@
                                             <constraint firstAttribute="width" secondItem="KtO-AB-SvM" secondAttribute="height" multiplier="2:3" id="euu-qL-Ax8" userLabel="aspect = 2:3"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YT1-H1-D6U" userLabel="Question Label">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ugk-aH-71o">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="89.5"/>
-                                        <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
-                                        <color key="textColor" name="white"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YT1-H1-D6U" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="13" width="290" height="63.5"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
+                                                <color key="textColor" name="white"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="YT1-H1-D6U" secondAttribute="bottom" constant="13" id="3YP-HI-EM2" userLabel="bottom = Question Label.bottom + 13"/>
+                                            <constraint firstAttribute="trailing" secondItem="YT1-H1-D6U" secondAttribute="trailing" constant="42" id="UH6-Rg-iqq"/>
+                                            <constraint firstItem="YT1-H1-D6U" firstAttribute="top" secondItem="Ugk-aH-71o" secondAttribute="top" constant="13" id="rPQ-UQ-RqM" userLabel="Question Label.top = top + 13"/>
+                                            <constraint firstItem="YT1-H1-D6U" firstAttribute="leading" secondItem="Ugk-aH-71o" secondAttribute="leading" constant="42" id="vyr-BY-H6Q" userLabel="Question Label.leading = leading - 42"/>
+                                        </constraints>
+                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mhl-pb-JhK" userLabel="Stack View Yes No">
                                         <rect key="frame" x="0.0" y="734" width="374" height="60"/>
                                         <subviews>
@@ -103,9 +114,6 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="YT1-H1-D6U" firstAttribute="centerX" secondItem="Cpf-Ur-vqm" secondAttribute="centerX" id="L10-TX-hDT"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
