@@ -71,12 +71,12 @@ final class MovieQuizViewController: UIViewController {
       let buttonText: String
     }
 
-    var currentQuestionIndex: Int = 0
-    var correctAnswers: Int = 0
-    var gamesPlayed: Int = 0
-    var record: Int = 0
-    var avgPerformance: Float = 0.0
-    var allTimeCorrectAnswers: Int = 0
+    private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
+    private var gamesPlayed: Int = 0
+    private var record: Int = 0
+    private var avgPerformance: Float = 0.0
+    private var allTimeCorrectAnswers: Int = 0
     
     private func convertQuestion(model: QuizQuestion) -> QuizStepViewModel {
         
@@ -159,7 +159,7 @@ final class MovieQuizViewController: UIViewController {
         avgPerformance = Float(allTimeCorrectAnswers / gamesPlayed * 10)
         
         return QuizResultsViewModel(title: "Этот раунд окончен!",
-                                    text: "Ваш результат: \(correctAnswers)/10 \n Кол-во сыгранных квизов: \(gamesPlayed) \n Рекорд: \(record) \n средняя точность: \(avgPerformance)%",
+                                    text: "Ваш результат: \(correctAnswers)/10 \n Кол-во сыгранных квизов: \(gamesPlayed) \n Рекорд: \(record) \n Средняя точность: \(avgPerformance)%",
                                     buttonText: "Сыграть еще раз")
     }
     
