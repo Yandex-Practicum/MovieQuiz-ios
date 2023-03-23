@@ -12,7 +12,7 @@ final class MovieQuizViewController: UIViewController {
         label.text = "Hi there"
         label.backgroundColor = .green
         label.textColor = .black
-        label.font = UIFont(name: "YSDisplay-Medium", size: 100)
+        label.font = UIFont(name: "YSDisplay-Bold", size: 80)
         view.addSubview(label)
     }
 }
