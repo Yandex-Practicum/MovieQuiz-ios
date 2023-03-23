@@ -2,8 +2,18 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
+    let label = UILabel()
+  
     override func viewDidLoad() {
         super.viewDidLoad()
+        label.frame = CGRect(x: 100, y: 100, width: 300, height: 200)
+        view.center = label.center
+        
+        label.text = "Hi there"
+        label.backgroundColor = .green
+        label.textColor = .black
+        label.font = UIFont(name: "YSDisplay-Medium", size: 100)
+        view.addSubview(label)
     }
 }
 
