@@ -26,8 +26,9 @@ MovieQuiz - это приложение с квизами о фильмах из
 - Пользователь может запустить новый раунд, нажав в алерте на кнопку "Сыграть еще раз";
 - При невозможности загрузить данные пользователь видит алерт с сообщением о том, что что-то пошло не так, а также кнопкой, по нажатию на которую можно повторить сетевой запрос.
 
-## **Технические требования**
+______________________________________
 
-- Приложение должно поддерживать устройства iPhone с iOS 13, предусмотрен только портретный режим;
-- Элементы интерфейса адаптируются под разрешения экранов iPhone, начиная с X — вёрстка под SE и iPad не предусмотрена;
-- Экраны соответствует макету — использованы верные шрифты нужных размеров, все надписи находятся на нужном месте, расположение всех элементов, размеры кнопок и отступы — точно такие же, как в макете.
+## **Technical Requirement**
+- The application must support iPhone devices with iOS 13, only portrait mode is provided;
+- Interface elements adapt to iPhone screen resolutions, starting with X - layout for SE and iPad is not provided;
+- The screens correspond to the layout - the correct fonts of the right sizes are used, all the inscriptions are in the right place, the location of all elements, button sizes and indents are exactly the same as in the layout.
