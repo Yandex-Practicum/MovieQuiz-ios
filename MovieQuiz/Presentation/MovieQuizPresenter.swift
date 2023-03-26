@@ -5,7 +5,6 @@
 //  Created by Артур Коробейников on 09.03.2023.
 //
 
-import Foundation
 import UIKit
 
 protocol MovieQuizViewControllerProtocol: AnyObject {
@@ -75,7 +74,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             return
         }
         let givenAnswer = true
-        //viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         self.proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
@@ -132,7 +130,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func proceedWithAnswer(isCorrect: Bool) {
-        //didAnswer(isYes: isCorrect)
         if isCorrect {
             correctAnswers += 1
         }

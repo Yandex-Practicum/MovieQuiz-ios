@@ -7,7 +7,7 @@
 
 import XCTest
 
-class MovieQuizUITests: XCTestCase {
+final class MovieQuizUITests: XCTestCase {
     
     var app: XCUIApplication!
     
@@ -32,7 +32,6 @@ class MovieQuizUITests: XCTestCase {
     }
 
     func testYesButton() {
-        sleep(3)
         
         let firstPoster = app.images["Poster"]
         let firstPosterData = firstPoster.screenshot().pngRepresentation
@@ -56,7 +55,6 @@ class MovieQuizUITests: XCTestCase {
         let firstPosterData = firstPoster.screenshot().pngRepresentation
         
         app.buttons["No"].tap()
-        sleep(3)
         
         let secondPoster = app.images["Poster"]
         let secondPosterData = secondPoster.screenshot().pngRepresentation
@@ -68,7 +66,6 @@ class MovieQuizUITests: XCTestCase {
     }
     
     func testGameFinish() {
-        sleep(2)
         
         for _ in 1...10 {
             app.buttons["Yes"].tap()
@@ -92,7 +89,6 @@ class MovieQuizUITests: XCTestCase {
         let alert = app.alerts["Game results"]
         alert.buttons.firstMatch.tap()
         
-        sleep(2)
         
         let indexLabel = app.staticTexts["Index"]
         
