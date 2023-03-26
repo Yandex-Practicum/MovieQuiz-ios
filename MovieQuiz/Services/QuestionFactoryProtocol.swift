@@ -5,8 +5,8 @@
 //  Created by Mir on 19.03.2023.
 //
 
-import Foundation
+import UIKit
 
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion() -> QuizQuestion?
+    func requestNextQuestion()
 }
