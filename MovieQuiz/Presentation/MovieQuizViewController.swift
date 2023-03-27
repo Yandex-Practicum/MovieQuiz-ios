@@ -1,7 +1,8 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
+    // MARK: - Structures
+    
     struct QuizQuestion {
         let image: String
         let text: String
@@ -12,12 +13,12 @@ final class MovieQuizViewController: UIViewController {
         let question: String
         let questionNumber: String
     }
-    
     struct QuizResultsViewModel {
-      let title: String
-      let text: String
-      let buttonText: String
+        let title: String
+        let text: String
+        let buttonText: String
     }
+    //MARK: Array with data
     
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -61,6 +62,7 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
+    //MARK: Properties
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -68,26 +70,14 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    //MARK: ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let currentQuestion = questions[currentQuestionIndex]
         show(quiz:convert(model: currentQuestion))
-        
     }
-    
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-    }
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-    }
+    //MARK: Functions
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -96,7 +86,6 @@ final class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return questionStep
     }
-    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -116,9 +105,7 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
         }
-        
         alert.addAction(action)
-        
         self.present(alert, animated: true, completion: nil)
     }
     private func showAnswerResult(isCorrect: Bool) {
@@ -132,7 +119,6 @@ final class MovieQuizViewController: UIViewController {
             self.showNextQuestionOrResults()
         }
     }
-
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
@@ -141,15 +127,25 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
-            //my changes
             imageView.layer.borderWidth = 0
         } else {
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
-            //my changes
             imageView.layer.borderWidth = 0
         }
+    }
+    //MARK: IBAction functions
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }
