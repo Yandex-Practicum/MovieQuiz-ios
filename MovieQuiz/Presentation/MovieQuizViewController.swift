@@ -69,6 +69,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
+    
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     //MARK: ViewDidLoad
@@ -143,9 +146,6 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     //MARK: IBAction functions
-    
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
