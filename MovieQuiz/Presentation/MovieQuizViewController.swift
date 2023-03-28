@@ -117,8 +117,13 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
             self.showNextQuestionOrResults()
         }
+        self.yesButton.isEnabled = false
+        self.noButton.isEnabled = false
     }
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
@@ -138,6 +143,9 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     //MARK: IBAction functions
+    
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
