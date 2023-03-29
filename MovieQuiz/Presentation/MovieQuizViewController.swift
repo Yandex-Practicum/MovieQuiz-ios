@@ -72,9 +72,13 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    //MARK: ViewDidLoad
+    //MARK: Override functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,14 +140,13 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
-            imageView.layer.borderWidth = 0
         } else {
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
-            imageView.layer.borderWidth = 0
         }
+        imageView.layer.borderWidth = 0
     }
     //MARK: IBAction functions
     
