@@ -69,8 +69,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak private var yesButton: UIButton!
+    @IBOutlet weak private var noButton: UIButton!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -129,8 +129,8 @@ final class MovieQuizViewController: UIViewController {
             self.noButton.isEnabled = true
             self.showNextQuestionOrResults()
         }
-        self.yesButton.isEnabled = false
-        self.noButton.isEnabled = false
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
     }
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
