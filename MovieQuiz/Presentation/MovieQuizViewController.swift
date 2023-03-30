@@ -54,7 +54,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
         
     private func show(quiz result: QuizResultsViewModel) { // Результат квиза
-        let action = {
+        let action = { [ weak self ] in
+            guard let self = self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.questionFactory?.requestNextQuestion()
@@ -105,15 +106,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             statisticService!.store(correct: correctAnswers, total: questionsAmount)
-                
-            let text = "Ваш результат: \(correctAnswers)/\(questionsAmount)\nКоличество сыгранных квизов: \(statisticService!.gamesCount)\nРекорд: \(statisticService!.bestGame.correct)/\(statisticService!.bestGame.total) (\(statisticService!.bestGame.date.dateTimeString))\nСредняя точность: \(String(format: "%.2f", 100 * statisticService!.totalAccuracy))%"
-                let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
-                                                     text: text,
-                                                     buttonText: "Сыграть еще раз")
-            show(quiz: viewModel)
-        } else {
-            currentQuestionIndex += 1
-            self.questionFactory?.requestNextQuestion()
+            
+        let text = """
+        Ваш результат: \(correctAnswers)/\(questionsAmount)\nКоличество сыгранных квизов: \(statisticService!.gamesCount)\nРекорд: \(statisticService!.bestGame.correct)/\(statisticService!.bestGame.total) (\(statisticService!.bestGame.date.dateTimeString))\nСредняя точность: \(String(format: "%.2f", 100 * statisticService!.totalAccuracy))%
+        """
+            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
+                                                 text: text,
+                                                 buttonText: "Сыграть еще раз")
+        show(quiz: viewModel)
+    } else {
+        currentQuestionIndex += 1
+        self.questionFactory?.requestNextQuestion()
         }
     }
         

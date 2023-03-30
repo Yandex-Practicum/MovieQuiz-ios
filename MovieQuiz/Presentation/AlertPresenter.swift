@@ -27,7 +27,8 @@ final class AlertPresenter {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: self.alert.buttonText,
-                                   style: .default) { _ in
+                                   style: .default) { [ weak self ] _ in
+            guard let self = self else { return }
             self.alert.completion()
         }
         

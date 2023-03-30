@@ -64,7 +64,7 @@
                                         </subviews>
                                         <color key="backgroundColor" name="ypBlack"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="Pvw-4X-Fca" secondAttribute="trailing" constant="42" id="Hhe-iu-KY2"/>
+                                            <constraint firstAttribute="trailing" secondItem="Pvw-4X-Fca" secondAttribute="trailing" priority="999" constant="42" id="Hhe-iu-KY2"/>
                                             <constraint firstAttribute="bottom" secondItem="Pvw-4X-Fca" secondAttribute="bottom" constant="13" id="lxD-x2-dxT"/>
                                             <constraint firstItem="Pvw-4X-Fca" firstAttribute="leading" secondItem="D2J-Fw-Ohs" secondAttribute="leading" constant="42" id="qVo-0A-Vuf"/>
                                             <constraint firstItem="Pvw-4X-Fca" firstAttribute="top" secondItem="D2J-Fw-Ohs" secondAttribute="top" constant="13" id="sMI-z1-SOF"/>
@@ -76,7 +76,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Grx-10-EYl" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="ypWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="ypBlack"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет">
@@ -94,7 +94,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mPq-ed-9Fd" userLabel="Yes button">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="ypWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="ypBlack"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да">
