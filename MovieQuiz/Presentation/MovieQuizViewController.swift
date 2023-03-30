@@ -4,6 +4,9 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    
+    // MARK: - mock data
+    
     private let questions: [QuizQuestion] = [
         QuizQuestion(image: "The Godfather", text: "Рейтинг этого фильма больше чем 6?", currentAnswer: true),
         QuizQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", currentAnswer: true),
@@ -28,33 +31,49 @@ final class MovieQuizViewController: UIViewController {
         preparation()
     }
     
-    @IBAction func noButtonAction(_ sender: UIButton) {
+    // MARK: - yes/no button action
+    
+    @IBAction private func noButtonAction(_ sender: UIButton) {
+        noButtonTapped()
+    }
+    
+    @IBAction private func yesButtonAction(_ sender: UIButton) {
+        yesButtonTapped()
+    }
+    
+    // MARK: - yes/no button logic
+    
+    private func noButtonTapped() {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         
-        sender.isEnabled = false
+        noButton.isEnabled = false
         yesButton.isEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            sender.isEnabled = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.noButton.isEnabled = true
             self.yesButton.isEnabled = true
         }
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.currentAnswer)
-    }
+       }
     
-    @IBAction private func yesButtonAction(_ sender: UIButton) {
+    private func yesButtonTapped() {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         
-        sender.isEnabled = false
         noButton.isEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            sender.isEnabled = true
+        yesButton.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
             self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
         }
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.currentAnswer)
-    }
+       }
+    
+    // MARK: - initial setup
     
     private func preparation() {
         imageView.layer.cornerRadius = 20
@@ -73,6 +92,8 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: convert)
         }
     }
+    
+    // MARK: - The logic of choosing an action
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
@@ -116,6 +137,8 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
 }
+
+// MARK: - structures
 
 private struct QuizQuestion {
     fileprivate let image: String
