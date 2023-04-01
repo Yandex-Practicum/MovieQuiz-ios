@@ -8,24 +8,18 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers: Int = 0
     
     
-    
+    //вывод картинки
     @IBOutlet weak private var imageView: UIImageView!
+    //вывод текста
     @IBOutlet weak private var textLabel: UILabel!
+    //вывод текущего номера вопроса
     @IBOutlet weak private var counterLabel: UILabel!
 
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
-        func show(quiz step: QuizStepViewModel) {
-          // попробуйте написать код показа на экран самостоятельно
-            textLabel.text = step.question
-            imageView.image = step.image
-            counterLabel.text = step.questionNumber
-            
-        }
+     
     }
     
     
@@ -41,27 +35,40 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
+    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+    func show(quiz step: QuizStepViewModel) {
+        textLabel.text = step.question
+        imageView.image = step.image
+        counterLabel.text = step.questionNumber
+        
+    }
     
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
        // метод красит рамку
-        if isCorrect{
-            imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-            imageView.layer.borderWidth = 8 // толщина рамки
-            imageView.layer.borderColor = UIColor.ypGreen.cgColor //цвет рамки
-           }
-        else{
-            imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-            imageView.layer.borderWidth = 8 // толщина рамки
-            imageView.layer.borderColor = UIColor.ypRed.cgColor //цвет рамки
-        }
-        
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.showNextQuestionOrResults()
+            }
     }
     
-    
-    
+    // приватный метод, который содержит логику перехода в один из сценариев
+    // метод ничего не принимает и ничего не возвращает
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 { // 1
+            // идём в состояние "Результат квиза"
+        } else { // 2
+            currentQuestionIndex += 1
+            // идём в состояние "Вопрос показан"
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            show(quiz: viewModel)
+        }
+    }
+        
     // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
       // Попробуйте написать код конвертации самостоятельно
@@ -71,8 +78,6 @@ final class MovieQuizViewController: UIViewController {
                 questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // 4
             return questionStep
     }
-    
-    
     
     // вью модель для состояния "Вопрос показан"
     struct QuizStepViewModel {
@@ -107,7 +112,6 @@ final class MovieQuizViewController: UIViewController {
             QuizQuestion(image: "Tesla", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
             QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
         ]
-    
     
 }
 
