@@ -17,9 +17,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // берём текущий вопрос из массива вопросов по индексу текущего вопроса
-        let currentQuestion = questions[currentQuestionIndex]
-        
+       
         // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
         func show(quiz step: QuizStepViewModel) {
           // попробуйте написать код показа на экран самостоятельно
@@ -32,9 +30,34 @@ final class MovieQuizViewController: UIViewController {
     
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
+        // берём текущий вопрос из массива вопросов по индексу текущего вопроса
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    
+    // приватный метод, который меняет цвет рамки
+    // принимает на вход булевое значение и ничего не возвращает
+    private func showAnswerResult(isCorrect: Bool) {
+       // метод красит рамку
+        if isCorrect{
+            imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+            imageView.layer.borderWidth = 8 // толщина рамки
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor //цвет рамки
+           }
+        else{
+            imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+            imageView.layer.borderWidth = 8 // толщина рамки
+            imageView.layer.borderColor = UIColor.ypRed.cgColor //цвет рамки
+        }
+        
     }
     
     
