@@ -5,11 +5,15 @@
 //  Created by Mir on 18.03.2023.
 //
 
-import Foundation
+import UIKit
 
 final class QuestionFactory: QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
+    
+    init(delegate: QuestionFactoryDelegate) {
+        self.delegate = delegate
+    }
     
     private let questions: [QuizQuestion] = [
         QuizQuestion(image: "The Godfather",
@@ -34,24 +38,28 @@ final class QuestionFactory: QuestionFactoryProtocol {
                      correctAnswer: false)
     ]
     
-    private var usedIndexes: Set<Int> = []
-       
-       func requestNextQuestion() {
-           var index = Int.random(in: 0..<questions.count)
-           
-           // Если индекс использовали - выбираем другой
-           while usedIndexes.contains(index) {
-               index = Int.random(in: 0..<questions.count)
-           }
-           
-           usedIndexes.insert(index)
-           
-           let question = questions[safe: index]
-           delegate?.didRecieveNextQuestion(question: question)
-       }
-       
-       init(delegate: QuestionFactoryDelegate) {
-           self.delegate = delegate
-       }
-   }
-
+    // никак не получается реализовать функцию случайного выбора из оставшихся вопросов - кнопка сыграть еще раз на алерте ломается, приложение не перезапускается - никак не могу понять в чем дело
+    /* private var usedIndexes: [Int] = []
+    
+    func requestNextQuestion() {
+        
+        var index = Int.random(in: 0..<questions.count)
+        
+        while usedIndexes.contains(index) {
+            index = Int.random(in: 0..<questions.count)
+        }
+        
+        usedIndexes.append(index)
+        
+        let question = questions[index]
+        delegate?.didRecieveNextQuestion(question: question)
+    } */
+    
+    func requestNextQuestion() {
+        guard let index = (0..<questions.count).randomElement() else {
+            return
+        }
+        let question = questions[safe: index]
+        delegate?.didRecieveNextQuestion(question: question)
+    }
+}

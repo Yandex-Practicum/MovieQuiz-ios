@@ -11,14 +11,10 @@ struct GameRecord: Codable {
     let correct: Int
     let total: Int
     let date: Date
-    
-    func compareRecords(correct: Int, total: Int, date: Date) -> GameRecord {
-        let newResult = GameRecord(correct: correct, total: total, date: date)
-        
-        if (self.correct < newResult.correct) {
-            return newResult
-        } else {
-            return self
-        }
+}
+
+extension GameRecord: Comparable {
+    static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
+        lhs.correct < rhs.correct
     }
 }
