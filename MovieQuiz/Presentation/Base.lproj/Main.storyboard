@@ -25,8 +25,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Bg0-ms-851">
-                                <rect key="frame" x="20" y="58" width="374" height="832.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Bg0-ms-851">
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o7C-Jb-k2M">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -48,17 +48,17 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default" translatesAutoresizingMaskIntoConstraints="NO" id="Rxr-DU-rn8" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="23.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP Background (iOS)"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Rxr-DU-rn8" secondAttribute="height" multiplier="2:3" id="cFy-tR-k73"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TXM-mS-KXc">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="128"/>
+                                        <rect key="frame" x="0.0" y="584.5" width="374" height="159.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма больше чем 6?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTS-jl-Jaf" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="102"/>
+                                                <rect key="frame" x="42" y="13" width="290" height="133.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <color key="highlightedColor" name="YP White (iOS)"/>
@@ -73,7 +73,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="7bd-Sd-0zP">
-                                        <rect key="frame" x="0.0" y="772.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hhp-oR-Otc" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -124,6 +124,7 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Bg0-ms-851" secondAttribute="trailing" constant="20" id="7Xs-QJ-qXW"/>
                             <constraint firstItem="Bg0-ms-851" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="QUs-ld-nQW"/>
+                            <constraint firstItem="Bg0-ms-851" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="R0z-Ds-1fS"/>
                             <constraint firstItem="Bg0-ms-851" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="m9P-jb-qap"/>
                         </constraints>
                     </view>
