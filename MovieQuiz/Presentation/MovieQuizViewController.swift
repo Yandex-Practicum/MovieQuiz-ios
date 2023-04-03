@@ -65,26 +65,24 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        previewImage.layer.cornerRadius = 20
+        
         let question = questions[currentQuestionIndex]
         let viewModel = convert(model: question)
         show(quiz: viewModel)
     }
 
     @IBAction private func noButtonPress(_ sender: Any) {
-        let isAnswerCorrect = questions[currentQuestionIndex].correctAnswer
-            ? false
-            : true
+        let isAnswerCorrect = !questions[currentQuestionIndex].correctAnswer
         
-        buttons(enabled: false)
+        setButtons(enabled: false)
         showAnswerResult(isCorrect: isAnswerCorrect)
     }
 
     @IBAction private func yesButtonPress(_ sender: Any) {
         let isAnswerCorrect = questions[currentQuestionIndex].correctAnswer
-            ? true
-            : false
         
-        buttons(enabled: false)
+        setButtons(enabled: false)
         showAnswerResult(isCorrect: isAnswerCorrect)
     }
     
@@ -136,13 +134,12 @@ final class MovieQuizViewController: UIViewController {
             : UIColor.ypRed.cgColor
         
         previewImage.layer.masksToBounds = true
-        previewImage.layer.borderWidth = 6
-        previewImage.layer.cornerRadius = 6
+        previewImage.layer.borderWidth = 8
         previewImage.layer.borderColor = borderColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
-            self.buttons(enabled: true)
+            self.setButtons(enabled: true)
             self.previewImage.layer.borderWidth = 0
         }
     }
@@ -166,7 +163,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    private func buttons(enabled: Bool) {
+    private func setButtons(enabled: Bool) {
         for button in buttons {
             button.isEnabled = enabled
         }
