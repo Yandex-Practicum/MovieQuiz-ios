@@ -10,7 +10,7 @@ final class MovieQuizViewController: UIViewController {
         let firtstQuestion = convert(model: currentQuestion)
         
         show(quiz: firtstQuestion)
-        
+       
         
         
         
@@ -19,10 +19,13 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
     
     private var currentQuestionIndex = 0
     
     private var correctAnswers = 0
+    
     
     
     
@@ -80,27 +83,29 @@ final class MovieQuizViewController: UIViewController {
                      correctAnswer: false),
         
     ]
-    
+    // Функция конпки Нет
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        yesButton.isEnabled = false
     }
-    
+    // Функция конпки Нет
     @IBAction private func noBottonClicked(_ sender:
                                            UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
+        noButton.isEnabled = false
     }
     
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 20
+        
         if isCorrect == true {
             correctAnswers += 1
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
@@ -146,6 +151,9 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             
             show(quiz: viewModel)
+//            imageView.layer.cornerRadius = 20
+            yesButton.isEnabled = true
+            noButton.isEnabled = true
         }
         
    
