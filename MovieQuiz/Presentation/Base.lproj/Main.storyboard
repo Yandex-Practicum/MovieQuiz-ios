@@ -52,6 +52,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="tGA-vf-Qol" secondAttribute="height" multiplier="2:3" id="VcQ-Au-EmV"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gmg-WV-bbk" userLabel="Question View">
                                         <rect key="frame" x="0.0" y="645.66666666666663" width="388" height="119.33333333333337"/>
@@ -73,10 +78,10 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="OsM-Yb-rao">
                                         <rect key="frame" x="0.0" y="785" width="388" height="60"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPh-GE-Hej" userLabel="No button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPh-GE-Hej" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="184" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="YP Black"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет">
@@ -94,7 +99,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bmd-0R-4PG" userLabel="Yes button">
                                                 <rect key="frame" x="204" y="0.0" width="184" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="tintColor" name="YP Black"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да">
@@ -123,7 +128,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gmg-WV-bbk" secondAttribute="trailing" constant="20" id="LmE-Sr-oxC"/>
                             <constraint firstItem="ZbU-du-Vnw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="SXy-DQ-Mt2"/>
