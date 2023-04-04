@@ -5,6 +5,7 @@ private let dateTimeDefaultFormatter: DateFormatter = {
     dateFormatter.dateFormat = "dd.MM.YY hh:mm"
     return dateFormatter
 }()
+
 extension Date {
     var dateTimeString: String { dateTimeDefaultFormatter.string(from: self) }
 }

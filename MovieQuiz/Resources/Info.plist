@@ -7,11 +7,7 @@
 		<key>UIAppFonts</key>
 		<array>
 			<string>YS Display-Bold.ttf</string>
-			<string>YS Display-Heavy.ttf</string>
-			<string>YS Display-Light.ttf</string>
 			<string>YS Display-Medium.ttf</string>
-			<string>YS Display-Regular.ttf</string>
-			<string>YS Display-Thin.ttf</string>
 		</array>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
