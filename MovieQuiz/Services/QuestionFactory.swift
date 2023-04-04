@@ -38,8 +38,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
                      correctAnswer: false)
     ]
     
-    // никак не получается реализовать функцию случайного выбора из оставшихся вопросов - кнопка сыграть еще раз на алерте ломается, приложение не перезапускается - никак не могу понять в чем дело
-    /* private var usedIndexes: [Int] = []
+    private var usedIndexes: [Int] = []
     
     func requestNextQuestion() {
         
@@ -51,15 +50,11 @@ final class QuestionFactory: QuestionFactoryProtocol {
         
         usedIndexes.append(index)
         
-        let question = questions[index]
-        delegate?.didRecieveNextQuestion(question: question)
-    } */
-    
-    func requestNextQuestion() {
-        guard let index = (0..<questions.count).randomElement() else {
-            return
+        if usedIndexes.count >= 10 {
+            usedIndexes.removeAll()
         }
-        let question = questions[safe: index]
+        
+        let question = questions[index]
         delegate?.didRecieveNextQuestion(question: question)
     }
 }
