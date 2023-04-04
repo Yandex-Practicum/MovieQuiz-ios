@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -14,20 +13,20 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="T0f-J6-Dyx">
-                                <rect key="frame" x="0.0" y="-11" width="414" height="907"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Wuv-gl-WGw">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="YP Black (iOS)"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="T0f-J6-Dyx" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="34" id="DLT-Fu-UCM"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="T0f-J6-Dyx" secondAttribute="top" constant="59" id="Fzw-f8-sI9"/>
-                            <constraint firstItem="T0f-J6-Dyx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dLW-D9-9uW"/>
-                            <constraint firstAttribute="trailing" secondItem="T0f-J6-Dyx" secondAttribute="trailing" id="eJ5-fP-n4C"/>
+                            <constraint firstAttribute="trailing" secondItem="Wuv-gl-WGw" secondAttribute="trailing" id="33e-YJ-JKV"/>
+                            <constraint firstItem="Wuv-gl-WGw" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="HAb-8K-L6Y"/>
+                            <constraint firstItem="Wuv-gl-WGw" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="MpZ-1Y-dEV"/>
+                            <constraint firstAttribute="top" secondItem="Wuv-gl-WGw" secondAttribute="top" id="sdV-kB-XG9"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -38,8 +37,5 @@
     </scenes>
     <resources>
         <image name="LaunchScreen" width="1125" height="2436"/>
-        <namedColor name="YP Black (iOS)">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
     </resources>
 </document>
