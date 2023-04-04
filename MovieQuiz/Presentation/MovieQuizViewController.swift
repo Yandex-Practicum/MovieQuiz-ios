@@ -8,7 +8,13 @@ final class MovieQuizViewController: UIViewController {
         let firstQuestion = self.questions [self.currentQuestionIndex]
         let viewModel = self.convert(model: firstQuestion)
         self.show(quiz: viewModel)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        if let superview = imageView.superview {
+            imageView.frame.size = superview.frame.size
+        } 
     }
+    
     
     @IBAction private func YesButton(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
@@ -41,6 +47,7 @@ final class MovieQuizViewController: UIViewController {
         let text: String
         let correctAnswer: Bool
     }
+    
     
     
     private let questions: [QuizQuestion] = [
@@ -161,6 +168,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
+    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
@@ -172,9 +180,11 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
             self.showNextQuestionOrResults()
+            
             // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
             // в нашем случае это просто функция showNextQuestionOrResults()
         }
     }
+    
 }
