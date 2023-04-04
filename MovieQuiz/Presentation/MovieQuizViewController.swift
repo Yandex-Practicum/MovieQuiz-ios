@@ -12,9 +12,13 @@ final class MovieQuizViewController: UIViewController {
         imageView.clipsToBounds = true
         if let superview = imageView.superview {
             imageView.frame.size = superview.frame.size
-        } 
+        }
+        
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     
     @IBAction private func YesButton(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
