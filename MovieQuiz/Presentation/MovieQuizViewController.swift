@@ -13,11 +13,15 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
             let givenAnswer = false
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        YesButton.isEnabled = false
+        NoButton.isEnabled = false
     }
     @IBAction private func yesButtonClicked(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        YesButton.isEnabled = false
+        NoButton.isEnabled = false
     }
     
     // MARK: - Lifecycle
@@ -34,6 +38,7 @@ final class MovieQuizViewController: UIViewController {
     let currentQuestion = questions[currentQuestionIndex]
     let currentQuestionViewModel = convert(model: currentQuestion)
     show(quiz: currentQuestionViewModel)
+       
     }
 
 
@@ -100,11 +105,15 @@ private func showNextQuestionOrResults() {
        let resultViewModel = QuizResultsViewModel(
           title: "Этот раунд окончен!", text: text, buttonText: "Сыграть еще раз")
       show(quiz: resultViewModel)
+      YesButton.isEnabled = true
+      NoButton.isEnabled = true
       } else {
         currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий урок
           let nextQuestion = questions[currentQuestionIndex]
           let nextQuestionViewModel = convert(model: nextQuestion)
           show(quiz: nextQuestionViewModel)
+          YesButton.isEnabled = true
+          NoButton.isEnabled = true
       }
 }
     
