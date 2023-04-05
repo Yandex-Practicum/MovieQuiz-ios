@@ -9,7 +9,7 @@ import Foundation
     
 protocol StatisticService {
     var totalAccuracy: Double { get }
-    var gamesCount: Double { get }
+    var gamesCount: Int { get }
     var bestGame: GameRecord { get }
     var total: Int { get set }
     
@@ -58,9 +58,9 @@ extension StatisticServiceImplementation: StatisticService {
         }
     }
     
-    var gamesCount: Double {
+    var gamesCount: Int {
         get {
-            Double(userDefaults.integer(forKey: Keys.gamesCount.rawValue))
+            Int(userDefaults.integer(forKey: Keys.gamesCount.rawValue))
         }
         set {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)

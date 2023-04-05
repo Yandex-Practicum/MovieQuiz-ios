@@ -130,8 +130,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, вы ответили на все вопросы!" :
             """
+            Ваш результат: \(correctAnswers)/10
             Всего сыграно раундов: \(statisticService.gamesCount)
             Правильных ответов: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total)
+            (\(statisticService.bestGame.date.dateTimeString))
             Статистика побед: \(String(format: "%.2f", statisticService.totalAccuracy))%
             """
             let viewModel = QuizResultsViewModel(
