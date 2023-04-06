@@ -41,19 +41,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: 3 - func show quiz results
-    private func show (quiz result: QuizResultsViewModel) {              // здесь мы показываем результат прохождения квиза
+    private func show (quiz result: QuizResultsViewModel) { // здесь мы показываем результат прохождения квиза
         let alertViewModel = AlertModel(title: result.title,
                                         message: result.text,
                                         buttontext: result.buttonText,
                                         completion: { [weak self] _ in
             guard let self = self else { return }
             self.currentQuestionIndex = 0
-            self.correctAnswers = 0                           // скидываем счётчик правильных ответов
+            self.correctAnswers = 0 // скидываем счётчик правильных ответов
             self.questionFactory?.requestNextQuestion()
         })
         
-        let alert = AlertPresenter()                      // добавляем в алерт кнопки
-        alert.present(view: self, alert: alertViewModel) // показываем всплывающее окно
+        let alert = AlertPresenter() // добавляем в алерт кнопки
+        AlertPresenter.present(view: self, alert: alertViewModel) // показываем всплывающее окно
     }
     
     // MARK: 4 - yes n no buttons
@@ -90,8 +90,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: 6 - convert // функция конвертации параметра image из String в UIImage
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),                     // распаковка картинки
-            question: model.text,                                               // текст вопроса
+            image: UIImage(named: model.image) ?? UIImage(), // распаковка картинки
+            question: model.text,// текст вопроса
             questionNumber: "\(currentQuestionIndex + 1) /\(questionsAmount)") // счет номера вопроса
     }
     
@@ -116,7 +116,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: 8 - func show quiz step // функции показа View-модели на экране
-    private func show(quiz step: QuizStepViewModel) {  // здесь мы заполняем нашу картинку, текст и счётчик данными
+    private func show(quiz step: QuizStepViewModel) { // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -131,10 +131,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             "Поздравляем, вы ответили на все вопросы!" :
             """
             Ваш результат: \(correctAnswers)/10
-            Всего сыграно раундов: \(statisticService.gamesCount)
-            Правильных ответов: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total)
             (\(statisticService.bestGame.date.dateTimeString))
-            Статистика побед: \(String(format: "%.2f", statisticService.totalAccuracy))%
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
             """
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
