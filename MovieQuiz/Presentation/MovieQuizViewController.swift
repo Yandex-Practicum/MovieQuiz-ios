@@ -64,9 +64,9 @@ private func show(quiz result: QuizResultsViewModel) {
         statisticService?.store(correct: 1, total: 1)
         
         let alertModel = AlertModel(
-            title: "Игра окончена",
-            message: "ankl",
-            buttonText: "bhcd",
+            title: "",
+            message: "",
+            buttonText: "",
             completion: { [weak self] in
                 self?.currentQuestionIndex = 0
                 self?.correctAnswear = 0
@@ -108,17 +108,6 @@ private func show(quiz result: QuizResultsViewModel) {
         noButton.isEnabled = true
         if currentQuestionIndex == questionsAmount - 1 {
             showFinalResult()
-            // показать результат квиза
-            /*            let text = correctAnswear == questionsAmount ?
-             "Поздравляем, Вы ответили на 10 из 10!" :
-             "Вы ответили на \(correctAnswear) из 10, попробуйте еще раз!"
-             
-             let viewModel = QuizResultsViewModel(
-             title: "Этот раунд окончен",
-             text: text,
-             buttonText: "OK")
-             show(quiz: viewModel)
-             */
         } else {
             currentQuestionIndex += 1 // увеличиваем индекс текущего урока на 1; таким образом мы сможем получить следующий
             // показать следующий вопрос
@@ -132,7 +121,7 @@ private func show(quiz result: QuizResultsViewModel) {
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
             message: makeResultMessage(),
-            buttonText: "OK",
+            buttonText: "Сыграть еще раз",
             completion: { [weak self] in
                 self?.currentQuestionIndex = 0
                 self?.correctAnswear = 0
@@ -150,9 +139,12 @@ private func show(quiz result: QuizResultsViewModel) {
         }
         
         let accuracy = String(format: "%.2f" , statisticService.totalAccuracy)
-        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-        let currentGameResult = "Ваш результат: \(correctAnswear)\\\(questionsAmount)"
-        
+        let totalPlaysCountLine = """
+        Количество сыгранных квизов: \(statisticService.gamesCount)
+        """
+        let currentGameResult = """
+        Ваш результат: \(correctAnswear)\\\(questionsAmount)
+        """
         var bestGameInfoLine = ""
         if let gameRecord = statisticService.gameRecord {
             bestGameInfoLine = "Рекорд: \(gameRecord.correct)\\\(gameRecord.total)"
@@ -165,9 +157,6 @@ private func show(quiz result: QuizResultsViewModel) {
         
        return resultMessage
     }
-
-    
-       
         
         @IBAction private func yesButtonClicked(_ sender: UIButton) {
             guard let currentQuestion = currentQuestion else {
