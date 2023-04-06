@@ -51,6 +51,7 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     // MARK: - Methods
+    
     func store(correct count: Int, total amount: Int) {
         let newGame = GameRecord(correct: count, total: amount, date: Date())
         if newGame.isBetter(than: bestGame) {

@@ -60,8 +60,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blx-1n-LDs">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="102.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZT-uT-MKO" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="290" height="54"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZT-uT-MKO" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="13" width="290" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -137,6 +137,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="UIStackView" destination="8eO-w8-E0q" id="4Hu-ZV-g0x"/>
                         <outlet property="activityIndicator" destination="UBV-ex-7QU" id="4XA-Hm-SQw"/>
                         <outlet property="counterLabel" destination="Rpf-43-j4E" id="2cD-NA-cqv"/>
                         <outlet property="imageView" destination="6Uq-OS-lZM" id="YNZ-MR-EuY"/>

@@ -17,38 +17,44 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     // MARK: - Public functions
     
-    func requestNextQuestion() -> QuizQuestion? {
-        
-        var quizQuestion: QuizQuestion?
+    func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let index = (0..<self.movies.count).randomElement() ?? 0
             
             guard let movie = self.movies[safe: index] else { return }
             
-            var imageData = Data()
-            
             do {
-                imageData = try Data(contentsOf: movie.resizedImageURL)
-                //            imageData = try Data(contentsOf: movie.imageURL)
+                let imageData = try Data(contentsOf: movie.resizedImageURL)
+                let rating = Float(movie.rating) ?? 0
+                
+                let comparisons = ["больше", "меньше"]
+                let comparison = comparisons.randomElement() ?? "больше"
+                let greaterThan = comparison == "больше"
+                
+                let minValue: Float = 4.3
+                let maxValue: Float = 9.8
+                let comparisonValue = Float.random(in: minValue...maxValue)
+                let roundedValue = round(comparisonValue * 10) / 10
+                
+                let text = "Рейтинг этого фильма \(comparison) чем \(roundedValue)?"
+                let correctAnswer = greaterThan ? (rating > comparisonValue) : (rating < comparisonValue)
+                
+                let quizQuestion = QuizQuestion(image: imageData,
+                                                text: text,
+                                                correctAnswer: correctAnswer)
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.didReceiveNextQuestion(question: quizQuestion)
+                }
             } catch {
-                print("Failed to load image")
-            }
-            
-            let rating = Float(movie.rating) ?? 0
-            let text = "Рейтинг этого фильма больше чем 7?"
-            let correctAnswer = rating > 7
-            
-            quizQuestion = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.didReceiveNextQuestion(question: quizQuestion)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.didFailToLoadData(with: NSError(domain: "Failed to load image", code: -1, userInfo: nil))
+                }
             }
         }
-        return quizQuestion
     }
     
     // MARK: - Internal functions
