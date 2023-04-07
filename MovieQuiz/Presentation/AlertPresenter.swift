@@ -8,7 +8,6 @@
 import UIKit
 
 final class AlertPresenter: AlertPresenterProtocol {
-    
     weak var delegate: AlertPresenterDelegate?
     
     init(delegate: AlertPresenterDelegate?) {
@@ -30,4 +29,3 @@ final class AlertPresenter: AlertPresenterProtocol {
         delegate?.present(alert, animated: true, completion: nil)
     }
 }
-

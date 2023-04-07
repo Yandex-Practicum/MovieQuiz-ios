@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -116,16 +116,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="f0T-me-zoR">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="ypBlack"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MBa-hU-58y" secondAttribute="trailing" constant="20" id="UVW-th-Jtj"/>
+                            <constraint firstItem="f0T-me-zoR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="by5-fl-Hrn"/>
+                            <constraint firstItem="f0T-me-zoR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="hiu-PL-FZT"/>
                             <constraint firstItem="MBa-hU-58y" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="lEq-W3-5vh"/>
                             <constraint firstItem="MBa-hU-58y" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="osP-Mn-8f5"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="f0T-me-zoR" id="0uo-8U-Esw"/>
                         <outlet property="counterLabel" destination="iTs-aT-K1D" id="02c-s2-tdj"/>
                         <outlet property="imageView" destination="a0O-oN-Jgc" id="kOX-MF-PVk"/>
                         <outlet property="noButton" destination="Grx-10-EYl" id="vHe-C6-aZT"/>
