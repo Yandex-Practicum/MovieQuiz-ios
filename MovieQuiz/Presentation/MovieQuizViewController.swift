@@ -10,9 +10,9 @@
     //вывод картинки
     @IBOutlet weak private var imageView: UIImageView!
     //вывод текста
-    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet private weak var textLabel: UILabel!
     //вывод текущего номера вопроса
-    @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
     
     //свойства кнопоки да
     @IBOutlet weak private var yesButtonOutlet: UIButton!
@@ -60,7 +60,7 @@
        // метод красит рамку
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor: UIColor.ypRed.cgColor
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.showNextQuestionOrResults()
@@ -72,7 +72,7 @@
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        imageView.layer.borderColor = UIColor.white.cgColor //перекрасили рамку в белый
+        imageView.layer.borderColor = UIColor.clear.cgColor //перекрасили рамку в белый
         // идём в состояние "Результат квиза"
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
