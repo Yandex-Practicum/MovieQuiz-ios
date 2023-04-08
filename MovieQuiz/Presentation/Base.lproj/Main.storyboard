@@ -120,16 +120,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="u6K-Do-Y5M">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="black"/>
                         <constraints>
+                            <constraint firstItem="u6K-Do-Y5M" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0Ym-3K-ImJ"/>
+                            <constraint firstItem="u6K-Do-Y5M" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="68X-SU-SHG"/>
                             <constraint firstItem="OUf-7Q-XtX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="94B-au-RnC"/>
                             <constraint firstItem="OUf-7Q-XtX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="rEo-4C-UAz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OUf-7Q-XtX" secondAttribute="trailing" constant="20" id="wz9-Hs-XOo"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="u6K-Do-Y5M" id="VUl-6C-WA1"/>
                         <outlet property="counterLabel" destination="BR7-wE-7mx" id="Zl2-b3-V0d"/>
                         <outlet property="imageView" destination="Ygf-5I-50J" id="g0Q-z6-ANF"/>
                         <outlet property="noButton" destination="rYC-OE-fWx" id="nGc-uc-0TW"/>
