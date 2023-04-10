@@ -4,6 +4,11 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
+    //Do statusBar white
+       override var preferredStatusBarStyle: UIStatusBarStyle {
+           return .lightContent
+       }
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
