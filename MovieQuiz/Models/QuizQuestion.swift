@@ -8,7 +8,7 @@
 import UIKit
 
 struct QuizQuestion {
-    let image: String
-    let text = "Рейтинг этого фильма больше чем 6?"
+    let image: Data
+    let text: String
     let correctAnswer: Bool
 }

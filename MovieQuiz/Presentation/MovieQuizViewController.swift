@@ -29,9 +29,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         imageView.layer.cornerRadius = 20
         
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         
-        questionFactory?.requestNextQuestion()
+        questionFactory?.loadData()
+        
+        showLoadingIndicator()
         
         statisticService = StatisticServiceImplementation(userDefaults: UserDefaults(),
                                                           decoder: JSONDecoder(),
@@ -73,7 +75,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
