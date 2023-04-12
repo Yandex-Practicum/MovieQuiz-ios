@@ -8,6 +8,7 @@
 import Foundation
 
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion() 
+    func requestNextQuestion()
+    func loadData()
     
 } 
