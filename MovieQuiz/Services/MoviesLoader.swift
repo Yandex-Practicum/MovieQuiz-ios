@@ -32,13 +32,31 @@ struct MoviesLoader: MoviesLoading {
             case .success(let data):
                 do {
                     let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
-                    handler(.success(mostPopularMovies))
+                    if mostPopularMovies.errorMessage.isEmpty {
+                        handler(.success(mostPopularMovies))
+                    } else {
+                        let error = CustomError.custom(message: mostPopularMovies.errorMessage)
+                        handler(.failure(error))
+                    }
                 } catch {
                     handler(.failure(error))
                 }
-                
             case .failure(let error):
                 handler(.failure(error))
+            }
+        }
+        
+        enum CustomError: Error, LocalizedError {
+            case wrongApiKey
+            case custom(message: String)
+            
+            public var errorDescription: String? {
+                switch self {
+                case .wrongApiKey:
+                    return "Wrong API-key"
+                case .custom(let message):
+                    return message
+                }
             }
         }
     }

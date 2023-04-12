@@ -65,9 +65,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         showNetworkError(message: error.localizedDescription)
     }
     
+    func didFailToLoadImage() {
+        let alert = AlertModel(title: "Ошибка", message: "Изображение не загрузилось", buttonText: "Попробуйте еще раз") { [ weak self ] in
+            self?.questionFactory?.requestNextQuestion()
+        }
+        alertPresenter?.showAlert(model: alert)
+    }
+    
     // MARK: - Quiz Steps
         
-    private func show(quiz step: QuizStepViewModel) { 
+    private func show(quiz step: QuizStepViewModel) {
+        hideLoadingIndicator()
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -99,6 +107,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
+            showLoadingIndicator()
             self.showNextQuestionOrResults()
         }
     }
@@ -174,7 +183,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            self.questionFactory?.requestNextQuestion()
+            self.questionFactory?.loadData()
         }
         
         alertPresenter?.showAlert(model: model)
