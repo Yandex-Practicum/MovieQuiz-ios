@@ -13,8 +13,8 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
     private let networkClient = NetworkClient()
+    
     private var mostPopularMoviesUrl: URL {
-        // Если мы не смогли преобразовать строку в URL, то приложение упадёт с ошибкой
         guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_6c8of7kj") else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }

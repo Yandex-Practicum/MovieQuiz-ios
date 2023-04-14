@@ -26,7 +26,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
                         self.movies = mostPopularMovies.items
                         self.delegate?.didLoadDataFromServer()
                     case .failure(let error):
-                        self.delegate?.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
+                        self.delegate?.didFailToLoadData(with: error)
             }
         }
     }
@@ -83,15 +83,17 @@ final class QuestionFactory: QuestionFactoryProtocol {
             guard let movie = self.movies [safe: index] else { return }
            
             var imageData = Data()
-            do {
+                do {
                        imageData = try Data(contentsOf: movie.resizedImageURL)
                    } catch {
                        print("Failed to load image")
                    }
                    
-                   let rating = Float(movie.rating) ?? 0
-                   let text = "Рейтинг этого фильма больше чем 7?"
-                   let correctAnswer = rating > 7
+            let rating = Float(movie.rating) ?? 0
+            let randomNumber = Int.random(in: 5...9)
+            
+            let text = "Рейтинг этого фильма больше чем \(randomNumber)?"
+                   let correctAnswer = rating > Float(randomNumber)
                    let question = QuizQuestion(image: imageData,
                                                 text: text,
                                                 correctAnswer: correctAnswer)

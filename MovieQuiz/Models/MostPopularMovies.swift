@@ -24,7 +24,6 @@ struct MostPopularMovie: Codable{
         guard let newURL = URL(string: imageUrlString) else {
             return imageURL
         }
-        
         return newURL
     }
     
