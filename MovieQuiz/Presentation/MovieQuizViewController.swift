@@ -2,6 +2,7 @@ import UIKit
 import AudioToolbox
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    
     //MARK: Properties
     
     @IBOutlet private var imageView: UIImageView!
@@ -15,20 +16,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return .lightContent
     }
     
-    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    
+    private var showingAlert: AlertPresenter?
+
+    private let questionsAmount = 10
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    
     //MARK: Override functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        showingAlert = AlertPresenter(alertDelegate: self)
     }
+    
     // MARK: - QuestionFactoryDelegate
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -39,6 +45,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self?.show(quiz: viewModel)
             }
     }
+    
     //MARK: Functions
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -52,22 +59,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-    }
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) {[weak self] _ in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            questionFactory?.requestNextQuestion()
-        }
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
     }
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
@@ -90,17 +81,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let text = correctAnswers == questionsAmount ?
                     "Поздравляем, Вы ответили на 10 из 10!" :
                     "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuizResultsViewModel(
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel)
+            let viewModel = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть ещё раз", completion: { [weak self] _ in 
+                guard let self = self else { return }
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                self.questionFactory?.requestNextQuestion()
+            })
+            showingAlert?.showAlert(viewModel)
         } else {
             currentQuestionIndex += 1
-            questionFactory?.requestNextQuestion() 
+            questionFactory?.requestNextQuestion()
         }
         imageView.layer.borderWidth = 0
     }
+    
     //MARK: IBAction functions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -111,6 +105,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate), {})
     }
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {
             return
