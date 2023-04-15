@@ -6,7 +6,7 @@
 //
 
 import Foundation
-// результат ответа:
+
 struct QuizAnswerResultViewModel {
     var result: Bool
 }

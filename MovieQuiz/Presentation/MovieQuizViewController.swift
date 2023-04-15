@@ -19,13 +19,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: 1 - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        statisticService = StatisticServiceImplementation()
         
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     
     // MARK: 2 - QuestionFactoryDelegate
@@ -41,19 +45,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: 3 - func show quiz results
-    private func show (quiz result: QuizResultsViewModel) { // здесь мы показываем результат прохождения квиза
+    private func show (quiz result: QuizResultsViewModel) {
         let alertViewModel = AlertModel(title: result.title,
                                         message: result.text,
                                         buttontext: result.buttonText,
                                         completion: { [weak self] _ in
             guard let self = self else { return }
             self.currentQuestionIndex = 0
-            self.correctAnswers = 0 // скидываем счётчик правильных ответов
+            self.correctAnswers = 0
             self.questionFactory?.requestNextQuestion()
         })
         
-        let alert = AlertPresenter() // добавляем в алерт кнопки
-        AlertPresenter.present(view: self, alert: alertViewModel) // показываем всплывающее окно
+        let alert = AlertPresenter()
+        AlertPresenter.present(view: self, alert: alertViewModel)
     }
     
     // MARK: 4 - yes n no buttons
@@ -75,7 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         freezeButton()
     }
     
-    // MARK: 5 - func freezeButton // функция заморозки кнопок (added)
+    // MARK: 5 - func freezeButton // функция заморозки кнопок
     private func freezeButton(){
         if yesButton.isEnabled == true && noButton.isEnabled == true {
             yesButton.isEnabled = false
@@ -90,12 +94,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: 6 - convert // функция конвертации параметра image из String в UIImage
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(), // распаковка картинки
-            question: model.text,// текст вопроса
-            questionNumber: "\(currentQuestionIndex + 1) /\(questionsAmount)") // счет номера вопроса
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1) /\(questionsAmount)")
     }
     
-    // MARK: 7 - funcs showAnswerResult & DispatchQueue // функция ответа на вопрос
+    // MARK: 7 - funcs showAnswerResult & DispatchQueue
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
@@ -107,7 +111,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
-            // код, который вы хотите вызвать через 1 секунду:
+
             self.showNextQuestionOrResults()
             self.imageView.layer.borderColor = UIColor.ypBlack.cgColor
             self.imageView.layer.borderWidth = 0
@@ -115,16 +119,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    // MARK: 8 - func show quiz step // функции показа View-модели на экране
-    private func show(quiz step: QuizStepViewModel) { // здесь мы заполняем нашу картинку, текст и счётчик данными
+    // MARK: 8 - func show quiz step
+    private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     
-    // MARK: 9 - func showNexQuestionOrResults // фунцкия показа след шага-вопроса
+    // MARK: 9 - func showNexQuestionOrResults
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {// -1 потому что индекс начинается с 0, а длина массива - с 1
+        if currentQuestionIndex == questionsAmount - 1 {
             statisticService.store(correct: correctAnswers, count: currentQuestionIndex, total: questionsAmount)
             statisticService.gamesCount+=1
             let text = correctAnswers == questionsAmount ?
@@ -142,9 +146,47 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
         } else {
-            currentQuestionIndex += 1 // увеличиваем показатель вопроса
-            questionFactory?.requestNextQuestion() // показать следующий вопрос
+            currentQuestionIndex += 1
+            questionFactory?.requestNextQuestion()
         }
+    }
+    
+    // MARK: 10 - loading Indicator
+    private func showLoadingIndicator(){
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideLoadingIndicator(){
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
+    
+    // MARK: 11 - show network error
+    private func showNetworkError(message: String){
+        hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttontext: "Попробовать ещё раз") { [weak self] _ in
+            guard let self = self else { return }
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        AlertPresenter.present(view: self, alert: model)
+    }
+    
+    // MARK: 12 - load/fail load data from server
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
     }
     
     /*
