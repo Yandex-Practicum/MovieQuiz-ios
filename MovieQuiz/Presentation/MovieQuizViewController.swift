@@ -56,14 +56,10 @@ final class MovieQuizViewController: UIViewController {
     //MARK: Переменные
     
     // Переменная с индексом текущего вопроса, начальное значение 0
-    // По индексу будем искать вопрос в массиве, поэтому 0
     private var currentQuestionIndex = 0
     
     // Переменная со счётчиком правильных ответов
     private var correctAnswers = 0
-    
-    // Берем текущий вопрос из массива вопросов по индексу текущего вопроса
-//    private let currentQuestion = questions[currentQuestionIndex]
     
     //MARK: Массив с моковыми данными
     
@@ -151,6 +147,7 @@ final class MovieQuizViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.imageView.layer.borderWidth = 0
         }
     }
     
@@ -214,14 +211,6 @@ final class MovieQuizViewController: UIViewController {
     
     
 }
-
-/*
- На данный момент у нас начал вырисовываться алгоритм, подходящий для написания кода любого экрана:
- 1. Получить макеты экрана и краткое описание того, что должно происходить.
- 2. Описать конечный автомат, который будет иллюстрировать все состояния экрана.
- 3. Продумать вью модели, которые будут описывать каждое из этих состояний.
- 4. Написать логику перехода между этими состояниями и показать данные в каждом из них исходя из описания задачи.
- */
 
 /*
  Mock-данные
