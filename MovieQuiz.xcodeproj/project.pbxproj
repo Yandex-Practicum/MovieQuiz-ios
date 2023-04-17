@@ -18,7 +18,6 @@
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
 		BE77CEB329ED3A2C008731F1 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE77CEB129ED3A2C008731F1 /* YS Display-Bold.ttf */; };
 		BE77CEB429ED3A2C008731F1 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE77CEB229ED3A2C008731F1 /* YS Display-Medium.ttf */; };
-		BE77CEB529ED3AD2008731F1 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AD1ABABF2831907F00B3E448 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -177,7 +176,6 @@
 			files = (
 				BE77CEB329ED3A2C008731F1 /* YS Display-Bold.ttf in Resources */,
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
-				BE77CEB529ED3AD2008731F1 /* Info.plist in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
 				BE77CEB429ED3A2C008731F1 /* YS Display-Medium.ttf in Resources */,
