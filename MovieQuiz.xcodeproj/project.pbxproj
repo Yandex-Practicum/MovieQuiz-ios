@@ -16,8 +16,8 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
-		BE77CEC529EE9AFB008731F1 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE77CEC329EE9AFB008731F1 /* YS Display-Bold.ttf */; };
-		BE77CEC629EE9AFB008731F1 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE77CEC429EE9AFB008731F1 /* YS Display-Medium.ttf */; };
+		BE77CECC29EE9E81008731F1 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE77CECA29EE9E81008731F1 /* YS Display-Bold.ttf */; };
+		BE77CECD29EE9E81008731F1 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE77CECB29EE9E81008731F1 /* YS Display-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +32,8 @@
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
-		BE77CEC329EE9AFB008731F1 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		BE77CEC429EE9AFB008731F1 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		BE77CECA29EE9E81008731F1 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		BE77CECB29EE9E81008731F1 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +59,7 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BE77CEC229EE9AFB008731F1 /* Fonts */,
+				BE77CEC929EE9E81008731F1 /* MovieQuizFonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
@@ -105,22 +105,13 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		BE77CEC229EE9AFB008731F1 /* Fonts */ = {
+		BE77CEC929EE9E81008731F1 /* MovieQuizFonts */ = {
 			isa = PBXGroup;
 			children = (
-				BE77CEC829EE9C07008731F1 /* YS Display */,
+				BE77CECA29EE9E81008731F1 /* YS Display-Bold.ttf */,
+				BE77CECB29EE9E81008731F1 /* YS Display-Medium.ttf */,
 			);
-			name = Fonts;
-			path = ../../../Fonts;
-			sourceTree = "<group>";
-		};
-		BE77CEC829EE9C07008731F1 /* YS Display */ = {
-			isa = PBXGroup;
-			children = (
-				BE77CEC429EE9AFB008731F1 /* YS Display-Medium.ttf */,
-				BE77CEC329EE9AFB008731F1 /* YS Display-Bold.ttf */,
-			);
-			path = "YS Display";
+			path = MovieQuizFonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,8 +176,8 @@
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
-				BE77CEC529EE9AFB008731F1 /* YS Display-Bold.ttf in Resources */,
-				BE77CEC629EE9AFB008731F1 /* YS Display-Medium.ttf in Resources */,
+				BE77CECC29EE9E81008731F1 /* YS Display-Bold.ttf in Resources */,
+				BE77CECD29EE9E81008731F1 /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
