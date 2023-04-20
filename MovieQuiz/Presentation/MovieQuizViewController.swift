@@ -19,6 +19,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var showingAlert: AlertPresenter?
+    private var statisticService: StatisticService?
 
     private let questionsAmount = 10
     private var currentQuestionIndex = 0
@@ -29,8 +30,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
         showingAlert = AlertPresenter(alertDelegate: self)
+        statisticService = StatisticServiceImplementation()
+        questionFactory?.requestNextQuestion()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -78,9 +80,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-                    "Поздравляем, Вы ответили на 10 из 10!" :
-                    "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            var text = "Ваш результат \(correctAnswers)/\(questionsAmount)"
+            if let statisticService = statisticService {
+                statisticService.store(correct: correctAnswers, total: questionsAmount)
+                text += """
+                \nКоличество сыгранных квизов: \(statisticService.gamesCount)
+                Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+                Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                """
+            }
             let viewModel = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть ещё раз", completion: { [weak self] _ in 
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0

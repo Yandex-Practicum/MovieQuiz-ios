@@ -1,6 +1,8 @@
 import UIKit
-
-class AlertPresenter {
+protocol ShowAlertProtocol {
+    func showAlert(_ alertModel: AlertModel)
+}
+class AlertPresenter: ShowAlertProtocol {
     
     weak var alertDelegate: UIViewController?
     
@@ -20,7 +22,7 @@ class AlertPresenter {
             handler: alertModel.completion)
         
         alert.addAction(action)
-    alertDelegate?.present(alert, animated: true, completion: nil)
+        alertDelegate?.present(alert, animated: true, completion: nil)
     }
 }
 

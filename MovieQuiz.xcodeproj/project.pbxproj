@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13A5A2E629EEF2F00065F099 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A5A2E529EEF2F00065F099 /* StatisticService.swift */; };
 		13B05EC029E573630002339D /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B05EBF29E573630002339D /* QuestionFactory.swift */; };
 		13B05EC329E5A72E0002339D /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B05EC229E5A72D0002339D /* QuizStepViewModel.swift */; };
 		13B05EC729E5A7640002339D /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B05EC629E5A7640002339D /* QuizQuestion.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13A5A2E529EEF2F00065F099 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		13B05EBF29E573630002339D /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		13B05EC229E5A72D0002339D /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
 		13B05EC629E5A7640002339D /* QuizQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				13B05EBF29E573630002339D /* QuestionFactory.swift */,
 				13B05EC929E5D7730002339D /* QuestionFactoryProtocol.swift */,
 				13BC82D429E85A7900504CA1 /* QuestionFactoryDelegate.swift */,
+				13A5A2E529EEF2F00065F099 /* StatisticService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				13B05EC329E5A72E0002339D /* QuizStepViewModel.swift in Sources */,
 				13B05EC729E5A7640002339D /* QuizQuestion.swift in Sources */,
+				13A5A2E629EEF2F00065F099 /* StatisticService.swift in Sources */,
 				13BC82D729E8884B00504CA1 /* AlertPresenter.swift in Sources */,
 				13B05EC029E573630002339D /* QuestionFactory.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
