@@ -2,11 +2,11 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var noButton: UIButton!
-    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet weak private var textLabel: UILabel!
+    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak private var noButton: UIButton!
+    @IBOutlet weak private var yesButton: UIButton!
     
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
@@ -80,15 +80,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled = true
         yesButton.isEnabled = true
         if currentQuestionIndex == questionsAmount - 1 {
-            statisticService?.store(correct: correctAnswers, total: questionsAmount)
-            let message = "Ваш результат: \(correctAnswers)/10\nКоличество сыгранных квизов: \(statisticService?.gamesCount ?? 0)\nРекорд: \(statisticService?.bestGame.correct ?? 0)/\(statisticService?.bestGame.total ?? 0) \(statisticService?.bestGame.date.dateTimeString ?? "")\nСредняя точность: \(String(format: "%.2f", statisticService?.totalAccuracy ?? 0.00))%"
+            guard let statisticService = statisticService else {
+                return
+            }
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let message = "Ваш результат: \(correctAnswers)/10\nКоличество сыгранных квизов: \(statisticService.gamesCount)\nРекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) \(statisticService.bestGame.date.dateTimeString)\nСредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             let viewModel: AlertModel = AlertModel(title: "Этот раунд окончен!",
                                                    message: message,
                                                    buttonText: "Сыграть еще раз") { [weak self] in
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
-                questionFactory?.requestNextQuestion()
+                self.questionFactory?.requestNextQuestion()
             }
             alertPresenter?.showAlert(alertFinish: viewModel)
         }
