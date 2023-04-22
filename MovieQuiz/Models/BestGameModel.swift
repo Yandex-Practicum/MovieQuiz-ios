@@ -17,6 +17,4 @@ extension BestGame: Comparable {
     static func < (lhs: BestGame, rhs: BestGame) -> Bool {
         lhs.correct < rhs.correct
     }
-    
-    
 }

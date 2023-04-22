@@ -9,6 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
@@ -24,47 +25,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        showLoadingIndicator()
+        questionFactory?.loadData()
         alertPresenter = AlertPresenterImpl(viewController: self)
+        
         statisticService = StatisticServiceImplementation(
             userDefaults: UserDefaults(),
             decoder: JSONDecoder(),
             encoder: JSONEncoder()
         )
-        
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileName = "top250MoviesIMDB.json"
-        documentsURL.appendPathComponent(fileName)
-        let jsonString = try? String(contentsOf: documentsURL)
-       
-        let data = jsonString?.data(using: .utf8)!
-        guard let data = data else {
-            return
-        }
-        
-        struct Actor: Codable {
-            let id: String
-            let image: String
-            let name: String
-            let asCharacter: String
-        }
-        struct Movie: Codable {
-          let id: String
-          let rank: String
-          let title: String
-          let fullTitle: String
-          let year: String
-          let image: String
-          let crew: String
-          let imDbRating: String
-          let imDbRatingCount: String
-        }
-
-        struct Top: Decodable {
-            let items: [Movie]
-        }
-
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -91,20 +61,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
+    
+    
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
             imageView.layer.masksToBounds = true
             imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypGreen.cgColor}
+            imageView.layer.borderColor = UIColor.ypGreen?.cgColor}
         else {
             imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypRed.cgColor
+            imageView.layer.borderColor = UIColor.ypRed?.cgColor
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
@@ -159,6 +131,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - QuestionFactoryDelegate
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError(alertModel: AlertModel)  {
+        hideLoadingIndicator()
+        let alert = AlertModel(title: "Ошибка",
+                                  message: "",
+                                  buttonText: "Попробовать еще раз") { [weak self] in
+               guard let self = self else { return }
+               
+               self.currentQuestionIndex = 0
+               self.correctAnswers = 0
+               
+               self.questionFactory?.requestNextQuestion()
+           }
+           
+        self.alertPresenter?.show(alertModel: alert)
+    }
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -170,4 +167,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(alertModel: AlertModel(
+            title: "Error",
+            message: "",
+            buttonText: "Try again",
+            completion: { [weak self] in
+                self?.questionFactory?.requestNextQuestion()
+            }
+        ))
+    }
 }
