@@ -6,7 +6,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        print ("Hello everybody! I'm disco dancer.")
+        print ("Hello everybody! I'm disco dancer. I like dogs.")
         return true
     }
 
