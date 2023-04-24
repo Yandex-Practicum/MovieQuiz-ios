@@ -6,7 +6,7 @@
 //
 
 import Foundation
-    
+
 protocol StatisticService {
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
@@ -40,9 +40,9 @@ extension StatisticServiceImplementation: StatisticService {
     var bestGame: GameRecord {
         get {
             if let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
-                let bestGame = try? decoder.decode(GameRecord.self, from: data) {
-                    return bestGame
-                }
+               let bestGame = try? decoder.decode(GameRecord.self, from: data) {
+                return bestGame
+            }
             else {
                 return GameRecord(correct: 0, total: 0, date: Date())
             }
@@ -95,9 +95,9 @@ extension StatisticServiceImplementation: StatisticService {
         self.gamesCount += 1
         
         let currentGameRecord = GameRecord (correct: correct, total: total, date: Date())
-            
+        
         if currentGameRecord > bestGame {
-                bestGame = currentGameRecord
+            bestGame = currentGameRecord
         }
     }
 }

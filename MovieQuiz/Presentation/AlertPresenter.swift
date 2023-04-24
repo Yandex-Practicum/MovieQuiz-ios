@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 final class AlertPresenter {
     static func present(view controller: UIViewController, alert model: AlertModel) {
         let alert = UIAlertController(
@@ -17,6 +18,10 @@ final class AlertPresenter {
             title: model.buttontext,
             style: .default,
             handler: model.completion)
+       
+        //alert.view.accessibilityIdentifier = alertModel.title
+        alert.view.accessibilityIdentifier = "Game results"
+        
         alert.addAction(action)
         controller.present(alert, animated: true, completion: nil)
     }
