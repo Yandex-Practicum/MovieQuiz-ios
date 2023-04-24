@@ -117,16 +117,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Cby-iE-jiz">
+                                <rect key="frame" x="186.66666666666666" y="416" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="ypBlack"/>
                         <constraints>
                             <constraint firstItem="xwU-06-Qub" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="2Dd-je-KC7"/>
+                            <constraint firstItem="Cby-iE-jiz" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="2Lb-KX-JUA"/>
+                            <constraint firstItem="Cby-iE-jiz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="A5J-0D-c9M"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xwU-06-Qub" secondAttribute="trailing" constant="20" id="NQQ-yg-qJA"/>
                             <constraint firstItem="xwU-06-Qub" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="zay-Ly-eJr"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Cby-iE-jiz" id="gym-Aa-xlD"/>
                         <outlet property="counterLabel" destination="a9I-Uh-Xrn" id="s46-gP-4MP"/>
                         <outlet property="imageView" destination="lTu-kA-rca" id="La7-ez-8Rp"/>
                         <outlet property="noButton" destination="97i-m3-0qM" id="RqH-3t-vTF"/>
