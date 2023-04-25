@@ -1,4 +1,5 @@
 import UIKit
+
 protocol ShowAlertProtocol {
     func showAlert(_ alertModel: AlertModel)
 }
