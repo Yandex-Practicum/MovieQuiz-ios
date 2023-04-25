@@ -47,17 +47,17 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Deadpool" translatesAutoresizingMaskIntoConstraints="NO" id="GXY-gf-8wj" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="44.666666666666657" width="335" height="502.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="45.333333333333343" width="335" height="502.33333333333326"/>
                                         <color key="backgroundColor" name="YP White (iOS)"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="GXY-gf-8wj" secondAttribute="height" multiplier="2:3" id="D0p-RP-w1x"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="0Tn-pN-Mg3">
-                                        <rect key="frame" x="0.0" y="568" width="335" height="82.333333333333371"/>
+                                        <rect key="frame" x="0.0" y="569.33333333333337" width="335" height="80"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUy-xF-hTk" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13.000000000000004" width="251" height="56.333333333333343"/>
+                                                <rect key="frame" x="42" y="13" width="251" height="54"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <nil key="highlightedColor"/>
@@ -116,6 +116,11 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" id="jfS-G9-KGA">
+                                <rect key="frame" x="20" y="406" width="335" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" name="YP White (iOS)"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
@@ -127,6 +132,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="jfS-G9-KGA" id="uX2-Lo-i19"/>
                         <outlet property="counterLabel" destination="zdR-aD-AOh" id="YtJ-Yf-AKq"/>
                         <outlet property="imageView" destination="GXY-gf-8wj" id="1GR-jk-3Tt"/>
                         <outlet property="noButton" destination="l6c-8n-YLA" id="MhG-fD-0km"/>

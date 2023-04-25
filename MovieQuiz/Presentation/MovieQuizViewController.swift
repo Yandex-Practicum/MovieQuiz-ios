@@ -1,20 +1,23 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    
+
     @IBOutlet private weak var imageView: UIImageView!
     
     @IBOutlet private weak var counterLabel: UILabel!
     
     @IBOutlet private weak var textLabel: UILabel!
     
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+    
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var questionAlert: AlertProtocol?
     private var statisticService: StatisticService?
+    private var moviesLoader: MoviesLoading = MoviesLoader()
     
     private var correctAnswers: Int = 0
     private let questionsAmount: Int = 10
@@ -27,11 +30,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         imageView.layer.cornerRadius = 20
         
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: moviesLoader)
         questionAlert = AlertPresenter(controller: self)
         statisticService = StatisticServiceImplementation()
         
-        questionFactory?.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -46,7 +50,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
     
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
+    //MARK: - Работа с кнопками
     @IBAction private func noButtonClicked(_ sender: Any) {
         checkAnswer(buttonValue: false)
         buttonState(isEnable: false)
@@ -62,6 +75,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         yesButton.isEnabled = state
     }
     
+    //MARK: - Логика индикатора загрузки
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    //MARK: - Вывод сообщения пользователю
     private func show(quiz step: QuizStepViewModel) {
         
         imageView.layer.borderColor = UIColor.clear.cgColor
@@ -72,23 +97,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         buttonState(isEnable: true)
     }
-    
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let viewModel: QuizStepViewModel = QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(questionNumber)/\(questionsAmount)"
-            )
-        
-        return viewModel
-    }
-    
-    private func checkAnswer(buttonValue: Bool) {
-        guard let currentQuestion = currentQuestion else {return}
-        
-        showAnswerResult(isCorrect: (buttonValue == currentQuestion.correctAnswer))
-    }
-    
+
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
@@ -105,19 +114,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else {return}
             self.showNextQuestion()
             }
-    }
-    
-    
-    // Выводим вопрос на экран
-    private func showNextQuestion(){
-        
-        if !checkQuestion() {
-            showResults()
-        }
-        else {
-            questionNumber += 1
-            questionFactory?.requestNextQuestion()
-        }
     }
     
     private func showResults(){
@@ -153,6 +149,48 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return resultMessage
     }
     
+    func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let viewModel = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать ещё раз",
+            action: { [weak self]  in
+                guard let self = self else {return}
+                self.questionFactory?.requestNextQuestion()
+            })
+        
+        questionAlert?.showAlert(alertModel: viewModel)
+    }
+    
+    //MARK: - Работа с вопросами
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let viewModel: QuizStepViewModel = QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(questionNumber)/\(questionsAmount)"
+            )
+        
+        return viewModel
+    }
+    
+    private func checkAnswer(buttonValue: Bool) {
+        guard let currentQuestion = currentQuestion else {return}
+        
+        showAnswerResult(isCorrect: (buttonValue == currentQuestion.correctAnswer))
+    }
+    
+    private func showNextQuestion(){
+        
+        if !checkQuestion() {
+            showResults()
+        }
+        else {
+            questionNumber += 1
+            questionFactory?.requestNextQuestion()
+        }
+    }
     
     private func checkQuestion() -> Bool {
         if questionNumber + 1 > questionsAmount {
