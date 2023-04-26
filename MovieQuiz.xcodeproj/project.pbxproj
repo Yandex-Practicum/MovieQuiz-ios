@@ -12,6 +12,7 @@
 		554B693829F724F600451E94 /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554B693729F724F600451E94 /* MostPopularMovies.swift */; };
 		554B693A29F7258900451E94 /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554B693929F7258900451E94 /* MoviesLoader.swift */; };
 		555E9A0129F9BCC90019883F /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555E9A0029F9BCC90019883F /* ArrayTests.swift */; };
+		555E9A0329F9BFDA0019883F /* MoviesLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555E9A0229F9BFD90019883F /* MoviesLoaderTests.swift */; };
 		556617EB29F1DFD300E5CC75 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556617EA29F1DFD300E5CC75 /* StatisticService.swift */; };
 		55871D1629AE97B4009A8122 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55871D1429AE96C6009A8122 /* YS Display-Bold.ttf */; };
 		55871D1729AE97B8009A8122 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55871D1529AE96C6009A8122 /* YS Display-Medium.ttf */; };
@@ -50,6 +51,7 @@
 		554B693929F7258900451E94 /* MoviesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoader.swift; sourceTree = "<group>"; };
 		555E99F729F9BAD70019883F /* MovieQuizTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieQuizTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		555E9A0029F9BCC90019883F /* ArrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
+		555E9A0229F9BFD90019883F /* MoviesLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoaderTests.swift; sourceTree = "<group>"; };
 		556617EA29F1DFD300E5CC75 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		55871D1429AE96C6009A8122 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		55871D1529AE96C6009A8122 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				555E9A0029F9BCC90019883F /* ArrayTests.swift */,
+				555E9A0229F9BFD90019883F /* MoviesLoaderTests.swift */,
 			);
 			path = MovieQuizTests;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				555E9A0129F9BCC90019883F /* ArrayTests.swift in Sources */,
+				555E9A0329F9BFDA0019883F /* MoviesLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
