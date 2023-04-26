@@ -23,7 +23,6 @@
 		C672A07529C8FB53006B400F /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672A07429C8FB53006B400F /* NetworkClient.swift */; };
 		C672A07729D4D4D0006B400F /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672A07629D4D4D0006B400F /* MostPopularMovies.swift */; };
 		C672A07929D4D80B006B400F /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672A07829D4D80B006B400F /* MoviesLoader.swift */; };
-		C69A24F129F1D2A600FEEE05 /* MoviesLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69A24F029F1D2A600FEEE05 /* MoviesLoaderTests.swift */; };
 		C69A250029F1D3EC00FEEE05 /* MovieQuizPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69A24FF29F1D3EC00FEEE05 /* MovieQuizPresenterTests.swift */; };
 		C6B253F72990217A00D8066E /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6B253F62990217A00D8066E /* YS Display-Bold.ttf */; };
 		C6B253F92990218900D8066E /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6B253F82990218900D8066E /* YS Display-Medium.ttf */; };
@@ -310,7 +309,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C6E6137B29EC1796007C1C35 /* Build configuration list for PBXNativeTarget "MovieQuizTests" */;
 			buildPhases = (
-				C6E6136F29EC1796007C1C35 /* Sources */,
 				C6E6137029EC1796007C1C35 /* Frameworks */,
 				C6E6137129EC1796007C1C35 /* Resources */,
 			);
@@ -511,14 +509,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C69A250029F1D3EC00FEEE05 /* MovieQuizPresenterTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C6E6136F29EC1796007C1C35 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C69A24F129F1D2A600FEEE05 /* MoviesLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
