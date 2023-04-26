@@ -7,18 +7,23 @@
 
 import Foundation
 
-class QuestionFactory: QuestionFactoryProtocol{
-    
+
+class QuestionFactory: QuestionFactoryProtocol {
     private weak var delegate: QuestionFactoryDelegate?
     private let moviesLoader: MoviesLoading
-    
+
     private var movies: [MostPopularMovie] = []
-    
-    init(delegate: QuestionFactoryDelegate, moviesLoader: MoviesLoading){
+
+    private enum OperationTypes: String, CaseIterable {
+        case more = "больше"
+        case less = "меньше"
+    }
+
+    init(delegate: QuestionFactoryDelegate, moviesLoader: MoviesLoading) {
         self.delegate = delegate
         self.moviesLoader = moviesLoader
     }
-    
+
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
@@ -33,38 +38,71 @@ class QuestionFactory: QuestionFactoryProtocol{
             }
         }
     }
-    
+
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
 
+            let index = (0..<self.movies.count).randomElement() ?? 0
             guard let movie = self.movies[safe: index] else { return }
 
             var imageData = Data()
-           
             do {
-               imageData = try Data(contentsOf: movie.resizedImageURL)
+                imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
-                print("Failed to load image")
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    imageData = Data()
+                    self.delegate?.didFailToLoadData(with: error)
+                }
             }
-            
-            let rating = Float(movie.rating) ?? 0
-            
-            let text = "Рейтинг этого фильма больше чем 7?"
-            let correctAnswer = rating > 7
-            
-            let question = QuizQuestion(image: imageData,
-                                         text: text,
-                                         correctAnswer: correctAnswer)
-            
+
+            let ratingIMDb = Float(movie.rating) ?? 0
+
+            let roundRating = round(ratingIMDb)                         // округляем рейтинг для упрощения расчетов
+            let rating = self.randomRating(rating: roundRating)
+            guard let operationType = OperationTypes.allCases.randomElement() else { return }
+
+            var correctAnswer: Bool {
+                switch operationType {
+                case .more:
+                    return roundRating > Float(rating)
+                case .less:
+                    return roundRating < Float(rating)
+                }
+            }
+
+            let text = "Рейтинг этого фильма \(operationType.rawValue) чем \(rating)?"
+
+            let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
+
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
     }
-    
+
+    private func randomRating(rating: Float) -> Int {
+        var randomRating: Int
+        switch rating {
+        case 10.0:
+            randomRating = (1...9).randomElement() ?? 0
+        case 0.0, 1.0:
+            randomRating = (2...10).randomElement() ?? 0
+        default:
+            if Bool.random() {
+                randomRating = Int(rating) + 1
+            } else {
+                randomRating = Int(rating) - 1
+            }
+            if randomRating >= 10 || randomRating <= 1 {
+                randomRating = Int(rating)
+            }
+        }
+        return randomRating
+    }
+
 //    func requestNextQuestion() {
 //        guard let index = (0..<questions.count).randomElement() else {
 //            delegate?.didReceiveNextQuestion(question: nil)
