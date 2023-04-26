@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13951B6029F96C9D0054E483 /* MS.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 13951B5F29F96C9D0054E483 /* MS.mp3 */; };
 		13A5A2E629EEF2F00065F099 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A5A2E529EEF2F00065F099 /* StatisticService.swift */; };
 		13B05EC029E573630002339D /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B05EBF29E573630002339D /* QuestionFactory.swift */; };
 		13B05EC329E5A72E0002339D /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B05EC229E5A72D0002339D /* QuizStepViewModel.swift */; };
@@ -32,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13951B5F29F96C9D0054E483 /* MS.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MS.mp3; sourceTree = SOURCE_ROOT; };
+		13951B6229F9712E0054E483 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		13A5A2E529EEF2F00065F099 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		13B05EBF29E573630002339D /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		13B05EC229E5A72D0002339D /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
@@ -69,6 +72,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		13951B6129F9712E0054E483 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				13951B6229F9712E0054E483 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		13B05EBE29E572F80002339D /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +139,7 @@
 			children = (
 				AD1ABAB02831907B00B3E448 /* MovieQuiz */,
 				AD1ABAAF2831907B00B3E448 /* Products */,
+				13951B6129F9712E0054E483 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -149,6 +161,7 @@
 				8F4738332848DE46005DF65E /* Resources */,
 				AD1ABAB12831907B00B3E448 /* AppDelegate.swift */,
 				AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */,
+				13951B5F29F96C9D0054E483 /* MS.mp3 */,
 			);
 			path = MovieQuiz;
 			sourceTree = "<group>";
@@ -226,6 +239,7 @@
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
 				13BE0FC129CF7E7600BF678A /* YS Display-Bold.ttf in Resources */,
+				13951B6029F96C9D0054E483 /* MS.mp3 in Resources */,
 				13BE0FC229CF7E7600BF678A /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

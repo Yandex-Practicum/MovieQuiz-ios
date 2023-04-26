@@ -1,4 +1,5 @@
 import UIKit
+import AVFAudio
 import AudioToolbox
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
@@ -26,6 +27,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
+    private var music = AVAudioPlayer()
     //MARK: Override functions
     
     override func viewDidLoad() {
@@ -38,6 +40,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.loadData()
         
         showingAlert = AlertPresenter(alertDelegate: self)
+        
+        audioPlayer(music)
     } 
     
     // MARK: - QuestionFactoryDelegate
@@ -139,7 +143,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         showingAlert?.showAlert(model)
     }
+    //MARK: Music function
     
+    func audioPlayer(_ music: AVAudioPlayer) {
+        do {
+            if let audioPath = Bundle.main.path(forResource: "MS", ofType: "mp3") {
+                try self.music = AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioPath))
+                self.music.play()
+            }
+        } catch {
+            print("Error")
+        }
+    }
     //MARK: IBAction functions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
