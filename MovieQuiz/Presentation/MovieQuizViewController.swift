@@ -1,23 +1,40 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
 // MARK: - Аутлеты и действия
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var counterLabel: UILabel!
-
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
          let givenAnswer = true
          showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
            let givenAnswer = false
            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
+
+//MARK: - Свойства
+    // переменная с индексом текущего вопроса, начальное значение 0
+    // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
+    private var currentQuestionIndex = 0
+
+    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
+    private var correctAnswers = 0
+    private let questionsAmount: Int = 10
+    private var questionFactory: QuestionFactoryProtocol? = nil
+    private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
+
 
 // MARK: - Жизненный цикл
     override func viewDidLoad() {
@@ -29,61 +46,25 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = UIColor.ypWhite.cgColor // делаем рамку белой
         imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
 
-        // берём текущий вопрос из массива вопросов по индексу текущего вопроса
-        let currentQuestion = questions[currentQuestionIndex]
-        let quizStep = convert(model: currentQuestion)
-        show(quiz: quizStep)
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+        alertPresenter = AlertPresenter(delegate: self)
+        statisticService = StatisticServiceImplemintation()
     }
 
-// переменная с индексом текущего вопроса, начальное значение 0
-// (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
-private var currentQuestionIndex = 0
+// MARK: - QuestionFactoryDelegate
 
-// переменная со счётчиком правильных ответов, начальное значение закономерно 0
-private var correctAnswers = 0
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
 
-// массив вопросов
-private let questions: [QuizQuestion] = [
-    QuizQuestion (
-        image: "The Godfather",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion (
-        image: "The Dark Knight",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion (
-        image: "Kill Bill",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion (
-        image: "The Avengers",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion (
-        image: "Deadpool",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion (
-        image: "The Green Knight",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion (
-        image: "Old",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion (
-        image: "The Ice Age Adventures of Buck Wild",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion (
-        image: "Tesla",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion (
-        image: "Vivarium",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false)]
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
 
 // MARK: - Логика
 
@@ -93,7 +74,7 @@ private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     return questionStep
 }
 
@@ -109,7 +90,7 @@ private func show(quiz step: QuizStepViewModel) {
 
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
-    private func showAnswerResult(isCorrect: Bool) {
+private func showAnswerResult(isCorrect: Bool) {
 
         if isCorrect {
             correctAnswers += 1
@@ -125,7 +106,8 @@ private func show(quiz step: QuizStepViewModel) {
 
 
         view.isUserInteractionEnabled = false // выключает интерактивность
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                    guard let self = self else { return }
                     self.view.isUserInteractionEnabled = true  // включаем интерактивность
                     self.showNextQuestionOrResults()
                 }
@@ -136,81 +118,38 @@ private func show(quiz step: QuizStepViewModel) {
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 {
+        if currentQuestionIndex == questionsAmount - 1 {
           // идём в состояние "Результат квиза"
-            let text = "Ваш результат: \(correctAnswers)/10"
-            let viewModel = QuizResultsViewModel(
+            guard let statisticService = statisticService else {
+                return
+            }
+
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+
+            let text = """
+                       Ваш результат: \(correctAnswers)/\(questionsAmount)
+                       Количество сыгранных квизов: \(statisticService.gamesCount)
+                       Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+                       Cредняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                       """
+            /* переделать так, чтоб содержала данные из гейм рекорд */
+            let viewModel = AlertModel (
                        title: "Этот раунд окончен!",
-                       text: text,
-                       buttonText: "Сыграть ещё раз")
-                   show(quiz: viewModel) 
+                       message: text,
+                       buttonText: "Сыграть ещё раз") { [weak self] _ in
+                           
+                           guard let self = self else { return }
+                           self.currentQuestionIndex = 0
+                           //сбрасываем переменную с количеством правильных ответов
+                           self.correctAnswers = 0
+                           self.questionFactory?.requestNextQuestion()
+                       }
+            alertPresenter?.show(viewModel)
 
         } else {
             currentQuestionIndex += 1
-
-            let nextQuestion = questions[currentQuestionIndex]
-            let viewModel = convert(model: nextQuestion)
-
-            show(quiz: viewModel)
+            questionFactory?.requestNextQuestion()
         }
     }
+} //КОНЕЦ КЛАССА MovieQuizViewController
 
-// MARK: - Alert
-    // приватный метод для показа результатов раунда квиза
-    // принимает вью модель QuizResultsViewModel и ничего не возвращает
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title, //заголовок алерта
-            message: result.text, //текст в сплывающем окне
-            preferredStyle: .alert) //preferedStyle может быть .alert или .actionSheet
-
-        //в замыкании пишем, что должно происходить при нажатии на кнопку
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-            self.currentQuestionIndex = 0
-
-            //сбрасываем переменную с количеством правильных ответов
-            self.correctAnswers = 0
-
-            //заново показываем первый вопрос
-            let firstQuestion = self.questions[self.currentQuestionIndex]
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel) //код, который сбрасывает игру и показывает первый вопрос
-        }
-
-        //добавляем в алерт кнопку
-        alert.addAction(action)
-
-        //показываем всплывающее окно
-        self.present(alert, animated: true, completion: nil)
-    }
-
-} //КОНЕЦ КЛАССА
-
-
-// MARK: - Структуры и переменные
-
-struct QuizQuestion {
-  // строка с названием фильма, совпадает с названием картинки афиши фильма в Assets
-  let image: String
-  // строка с вопросом о рейтинге фильма
-  let text: String
-  // булевое значение (true, false), правильный ответ на вопрос
-  let correctAnswer: Bool
-}
-
-// вью модель для состояния "Вопрос показан"
-struct QuizStepViewModel {
-  // картинка с афишей фильма с типом UIImage
-  let image: UIImage
-  // вопрос о рейтинге квиза
-  let question: String
-  // строка с порядковым номером этого вопроса (ex. "1/10")
-  let questionNumber: String
-}
-
-// для состояния "Результат квиза"
-struct QuizResultsViewModel {
-  let title: String
-  let text: String
-  let buttonText: String
-}
