@@ -7,6 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
             return
         }
         let givenAnswer = false
+        let presenter = MovieQuizPresenter()
        // noButton.isEnabled = false
         //yesButton.isEnabled = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
