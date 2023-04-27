@@ -7,19 +7,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
             return
         }
         let givenAnswer = false
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
+       // noButton.isEnabled = false
+        //yesButton.isEnabled = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+       // guard let currentQuestion = currentQuestion else {
+          //  return
+      //  }
+      //  let givenAnswer = true
+        //yesButton.isEnabled = false
+        //noButton.isEnabled = false
+      //  showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+                presenter.yesButtonClicked()
     }
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
@@ -46,8 +48,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         counterLabel.text = step.questionNumber
         textLabel.text = step.question
         imageView.layer.borderWidth = 0
-        yesButton.isEnabled = true
-        noButton.isEnabled = true
+        //yesButton.isEnabled = true
+       // noButton.isEnabled = true
     }
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -64,7 +66,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         )
         alertPresenterImpl?.show(alertModel: alertModel)
     }
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -124,6 +126,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
 
            showLoadingIndicator()
            questionFactory?.loadData()
+        presenter.viewController = self
     }
     private func showLoadingIndicator() {
         activityIndicator.isHidden = false
