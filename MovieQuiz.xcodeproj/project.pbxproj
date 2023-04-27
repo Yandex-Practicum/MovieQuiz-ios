@@ -23,12 +23,8 @@
 		C672A07529C8FB53006B400F /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672A07429C8FB53006B400F /* NetworkClient.swift */; };
 		C672A07729D4D4D0006B400F /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672A07629D4D4D0006B400F /* MostPopularMovies.swift */; };
 		C672A07929D4D80B006B400F /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672A07829D4D80B006B400F /* MoviesLoader.swift */; };
-		C69A250029F1D3EC00FEEE05 /* MovieQuizPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69A24FF29F1D3EC00FEEE05 /* MovieQuizPresenterTests.swift */; };
 		C6B253F72990217A00D8066E /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6B253F62990217A00D8066E /* YS Display-Bold.ttf */; };
 		C6B253F92990218900D8066E /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6B253F82990218900D8066E /* YS Display-Medium.ttf */; };
-		C6E6138A29EC35CF007C1C35 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6138929EC35CF007C1C35 /* ArrayTests.swift */; };
-		C6E6139229EDF056007C1C35 /* MovieQuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6139129EDF056007C1C35 /* MovieQuizUITests.swift */; };
-		C6E6139429EDF056007C1C35 /* MovieQuizUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6139329EDF056007C1C35 /* MovieQuizUITestsLaunchTests.swift */; };
 		C6E6139B29F07FBE007C1C35 /* MovieQuizPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6139A29F07FBE007C1C35 /* MovieQuizPresenterDelegate.swift */; };
 		C6E6139D29F080C1007C1C35 /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E6139C29F080C1007C1C35 /* MovieQuizPresenter.swift */; };
 		C6EBD9F929B1483D007B6F53 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EBD9F829B1483D007B6F53 /* QuestionFactoryDelegate.swift */; };
@@ -291,7 +287,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C69A24FC29F1D37900FEEE05 /* Build configuration list for PBXNativeTarget "MovieQuizPresenterTests" */;
 			buildPhases = (
-				C69A24F229F1D37900FEEE05 /* Sources */,
 				C69A24F329F1D37900FEEE05 /* Frameworks */,
 				C69A24F429F1D37900FEEE05 /* Resources */,
 			);
@@ -326,7 +321,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C6E6138829EC22CC007C1C35 /* Build configuration list for PBXNativeTarget "MoviesQuizTests" */;
 			buildPhases = (
-				C6E6137C29EC22CC007C1C35 /* Sources */,
 				C6E6137D29EC22CC007C1C35 /* Frameworks */,
 				C6E6137E29EC22CC007C1C35 /* Resources */,
 			);
@@ -344,7 +338,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C6E6139729EDF056007C1C35 /* Build configuration list for PBXNativeTarget "MovieQuizUITests" */;
 			buildPhases = (
-				C6E6138B29EDF056007C1C35 /* Sources */,
 				C6E6138C29EDF056007C1C35 /* Frameworks */,
 				C6E6138D29EDF056007C1C35 /* Resources */,
 			);
@@ -501,31 +494,6 @@
 				C6EBDA0129B1587A007B6F53 /* AlertModel.swift in Sources */,
 				C6113E03299EC0BC00F5A442 /* QuizResultViewModel.swift in Sources */,
 				C672A07929D4D80B006B400F /* MoviesLoader.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C69A24F229F1D37900FEEE05 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C69A250029F1D3EC00FEEE05 /* MovieQuizPresenterTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C6E6137C29EC22CC007C1C35 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C6E6138A29EC35CF007C1C35 /* ArrayTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C6E6138B29EDF056007C1C35 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C6E6139429EDF056007C1C35 /* MovieQuizUITestsLaunchTests.swift in Sources */,
-				C6E6139229EDF056007C1C35 /* MovieQuizUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
