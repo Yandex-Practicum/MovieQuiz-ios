@@ -66,9 +66,9 @@ class QuestionFactory: QuestionFactoryProtocol {
             var correctAnswer: Bool {
                 switch operationType {
                 case .more:
-                    return roundRating > Float(rating)
+                    return ratingIMDb > Float(rating)
                 case .less:
-                    return roundRating < Float(rating)
+                    return ratingIMDb < Float(rating)
                 }
             }
 
