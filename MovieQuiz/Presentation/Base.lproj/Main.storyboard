@@ -133,8 +133,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLabel" destination="1au-R5-P4y" id="qUZ-7T-SYG"/>
-                        <outlet property="imageView" destination="cbE-G5-OwO" id="MTr-J0-mze"/>
+                        <outlet property="counterLabel" destination="1au-R5-P4y" id="9ky-c4-Tp1"/>
+                        <outlet property="imageView" destination="cbE-G5-OwO" id="dnH-47-fug"/>
                         <outlet property="textLabel" destination="Cv9-hO-CKg" id="zFC-jr-ud4"/>
                     </connections>
                 </viewController>
