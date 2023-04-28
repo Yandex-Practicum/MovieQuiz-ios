@@ -31,17 +31,19 @@ final class MovieQuizViewController: UIViewController {
         if let superview = imageView.superview {
             imageView.frame.size = superview.frame.size
         }
-        //let totalAccuracy = statisticService?.totalAccuracy
-        // let gamesCount = statisticService?.gamesCount
-        //let bestGame = statisticService?.bestGame
-        
-    }
+}
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     //MARK: - Actions
     
     @IBAction private func YesButton(_ sender: UIButton) {
+        
+        sender.isEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                sender.isEnabled = true
+            }
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -50,6 +52,10 @@ final class MovieQuizViewController: UIViewController {
     }
     
     @IBAction private func NoButton(_ sender: UIButton) {
+        sender.isEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                sender.isEnabled = true
+            }
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -58,7 +64,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // MARK: - QuestionFactoryDelegate
-    //check
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -66,7 +72,7 @@ final class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsCount)"
         )
     }
-    //check
+
     private func show(quiz viewModel: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.image = viewModel.image
@@ -125,11 +131,7 @@ final class MovieQuizViewController: UIViewController {
         let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsCount)"
         let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
         + " (\(bestGame.date.dateTimeString))"
-        /*var bestGameInfoLine = ""
-        if let bestGame = statisticService.bestGame {
-             let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total) (\(bestGame.date.dateTimeString))"
-        }
-         */
+       
         let averageAccuracyLine = "Средняя точность: \(accuracy)%"
         
         let components: [String] = [
