@@ -5,6 +5,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
     
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -77,6 +79,8 @@ final class MovieQuizViewController: UIViewController {
             // код, который мы хотим вызвать через 1 секунду
             self.showNextQuestionOrResults()
             self.imageView.layer.borderColor = UIColor.clear.cgColor
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
         
     }
@@ -143,7 +147,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true
         
         showAnswerResult(isCorrect: givenAnswer == answer.correctAnswer)
-        
+        yesButton.isEnabled = false
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
@@ -151,6 +155,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == answer.correctAnswer)
+        noButton.isEnabled = false
     }
 }
 

@@ -115,7 +115,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="eP3-Ib-mjJ" id="unw-4U-Nds"/>
                         <outlet property="imageView" destination="YYn-Yd-3aU" id="2el-QK-8j1"/>
+                        <outlet property="noButton" destination="vRC-7p-ZG6" id="YZ9-kH-Wiw"/>
                         <outlet property="textLabel" destination="c4V-w5-iWG" id="Xna-u9-ghw"/>
+                        <outlet property="yesButton" destination="PGP-ed-WqD" id="48X-i6-gDz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -125,7 +127,7 @@
     </scenes>
     <resources>
         <namedColor name="YP Black">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
