@@ -7,9 +7,10 @@
 
 import Foundation
 
-
+/*
 protocol AlertProtocol {
     
     func showAlert(alertModel: AlertModel)
     
 }
+*/

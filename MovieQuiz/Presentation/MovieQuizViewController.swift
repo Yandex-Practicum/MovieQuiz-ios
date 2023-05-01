@@ -61,7 +61,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers: Int = 0
     private let questionsCount: Int = 10
     
-    private var questionAlert: AlertProtocol?
+    //private var questionAlert: AlertProtocol?
     
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
