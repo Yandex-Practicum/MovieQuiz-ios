@@ -52,7 +52,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticService = StatisticServiceImplemintation()
         showLoadingIndicator()
         questionFactory?.loadData()
-       // alertPresenter = AlertPresenter(delegate: self)
+        alertPresenter = AlertPresenter(delegate: self)
     }
 
 // MARK: - Логика
