@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 class AlertPresenter {
@@ -7,7 +6,6 @@ class AlertPresenter {
     init(delegate: UIViewController) {
         self.delegate = delegate
     }
-
 
     func show(_ alertModel: AlertModel) {
         let alert = UIAlertController(
@@ -19,9 +17,6 @@ class AlertPresenter {
         alert.addAction(action)
         delegate?.present(alert, animated: true, completion: nil)
     }
-
-
-    
 }
 
 

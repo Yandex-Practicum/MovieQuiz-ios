@@ -10,9 +10,6 @@ protocol StatisticService {
 
 }
 
-
-
-
 final class StatisticServiceImplemintation: StatisticService {
     private enum Keys: String {
         case correct, total, bestGame, gamesCount

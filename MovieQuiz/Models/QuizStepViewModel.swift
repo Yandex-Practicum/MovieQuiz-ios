@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 // вью модель для состояния "Вопрос показан"

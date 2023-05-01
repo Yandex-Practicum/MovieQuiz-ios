@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 struct Actor: Codable {
@@ -23,4 +22,3 @@ struct Top: Decodable {
     let items: [Movie]
 }
 
-// let result = try? JSONDecoder().decode(Top.self, from: data)
