@@ -13,6 +13,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
+    private var isWaitingForNextQuestion = false
     
     
     //MARK: - Lifecycle
@@ -39,26 +40,19 @@ final class MovieQuizViewController: UIViewController {
     //MARK: - Actions
     
     @IBAction private func YesButton(_ sender: UIButton) {
-        
-        sender.isEnabled = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                sender.isEnabled = true
-            }
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = true
+        isWaitingForNextQuestion = true
+               let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func NoButton(_ sender: UIButton) {
-        sender.isEnabled = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                sender.isEnabled = true
-            }
         guard let currentQuestion = currentQuestion else {
             return
         }
+        isWaitingForNextQuestion = true
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
@@ -98,7 +92,8 @@ final class MovieQuizViewController: UIViewController {
             showFinalResults()
         } else {
             currentQuestionIndex += 1
-            questionFactory?.requestNextQuestion()
+                        isWaitingForNextQuestion = false // Разблокируем UI
+                        questionFactory?.requestNextQuestion()
         }
     }
     
@@ -117,7 +112,6 @@ final class MovieQuizViewController: UIViewController {
                 self?.questionFactory?.requestNextQuestion()
             }
         )
-        statisticService.store(correct: correctAnswers, total: questionsCount)
         alertPresenter?.show(alertModel: alertModel)
     }
     
