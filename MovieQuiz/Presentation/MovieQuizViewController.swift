@@ -92,7 +92,7 @@ final class MovieQuizViewController: UIViewController {
             showFinalResults()
         } else {
             currentQuestionIndex += 1
-                        isWaitingForNextQuestion = false // Разблокируем UI
+                        isWaitingForNextQuestion = false 
                         questionFactory?.requestNextQuestion()
         }
     }
