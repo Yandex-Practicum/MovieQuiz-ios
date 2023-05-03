@@ -43,7 +43,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            .lightContent
+        }
 
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
