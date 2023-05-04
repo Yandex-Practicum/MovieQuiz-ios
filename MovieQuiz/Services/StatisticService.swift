@@ -55,9 +55,9 @@ final class StatisticServiceImplementation: StatisticService {
     
     var totalAccuracy: Double {
         get {
-            return userDefaults.double(forKey: Keys.total.rawValue)
-            }
+            return (userDefaults.double(forKey: Keys.correct.rawValue) * 100) / Double(total)
         }
+    }
     
     var gamesCount: Int {
         get {

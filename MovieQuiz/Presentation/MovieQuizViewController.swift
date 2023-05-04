@@ -6,6 +6,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     
+    @IBOutlet var yesButton: UIButton!
+    @IBOutlet var noButton: UIButton!
     //MARK: Переменные
     
     // Переменная с индексом текущего вопроса, начальное значение 0
@@ -72,6 +74,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // Приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
+        imageView.layer.cornerRadius = 15
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
@@ -90,6 +93,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
+            
         }
     }
     
@@ -112,7 +116,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                         Ваш результат: \(correctAnswers)/\(questionsAmount)
                         Количество сыгранных квизов: \(gamesCount)
                         Рекорд: \(bestGame.correct)/\(questionsAmount) (\(date))
-                        Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))
+                        Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
                         """
             let viewModel = AlertModel(
                 title: "Этот раунд окончен",
@@ -139,6 +143,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = true
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+        }
+
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -146,8 +158,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         let givenAnswer = false
-        
+
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
+        }
     }
     
     
