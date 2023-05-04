@@ -97,7 +97,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="NoButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qH4-1e-AbO"/>
+                                                    <action selector="NoButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Rn7-pc-BFU"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-3V-OUk" userLabel="YesButton">
@@ -133,6 +133,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="NoButton" destination="n54-sJ-Fb2" id="34n-Co-0lX"/>
+                        <outlet property="YesButton" destination="cPD-3V-OUk" id="lKS-5Z-fnd"/>
                         <outlet property="counterLabel" destination="1au-R5-P4y" id="9ky-c4-Tp1"/>
                         <outlet property="imageView" destination="cbE-G5-OwO" id="dnH-47-fug"/>
                         <outlet property="textLabel" destination="Cv9-hO-CKg" id="zFC-jr-ud4"/>

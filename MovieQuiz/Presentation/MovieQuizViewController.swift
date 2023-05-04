@@ -4,7 +4,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    
+
+    @IBOutlet weak var NoButton: UIButton!
+    @IBOutlet weak var YesButton: UIButton!
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private let questionsCount: Int = 10
@@ -13,7 +15,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
-    private var isWaitingForNextQuestion = false
+    
     
     
     //MARK: - Lifecycle
@@ -43,7 +45,6 @@ final class MovieQuizViewController: UIViewController {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        isWaitingForNextQuestion = true
                let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
@@ -52,13 +53,17 @@ final class MovieQuizViewController: UIViewController {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        isWaitingForNextQuestion = true
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     // MARK: - QuestionFactoryDelegate
     
+    private func toggleButtonsInteraction(_ enabled: Bool) {
+        YesButton.isUserInteractionEnabled = enabled
+        NoButton.isUserInteractionEnabled = enabled
+    }
+
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -78,7 +83,7 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        
+        toggleButtonsInteraction(false)
         imageView.layer.masksToBounds = true
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.borderWidth = 8
@@ -88,11 +93,11 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     private func showNextQuestionOrResults () {
+        toggleButtonsInteraction(true)
         if currentQuestionIndex == questionsCount - 1 {
             showFinalResults()
         } else {
             currentQuestionIndex += 1
-                        isWaitingForNextQuestion = false 
                         questionFactory?.requestNextQuestion()
         }
     }
