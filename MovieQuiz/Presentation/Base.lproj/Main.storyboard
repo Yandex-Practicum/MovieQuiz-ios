@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="YS Display-Bold.ttf">
+            <string>YSDisplay-Bold</string>
+        </array>
         <array key="YS Display-Medium.ttf">
             <string>YSDisplay-Medium</string>
         </array>
@@ -22,47 +25,88 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Я иду гулять и пить пивко." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Le-Xh-NLu">
-                                <rect key="frame" x="60" y="208" width="294" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="25"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fzt-vQ-G1E">
-                                <rect key="frame" x="197" y="766" width="158" height="60"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="nFF-Ir-XTN">
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p3M-jK-ZfM">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnN-JT-fLm">
+                                                <rect key="frame" x="0.0" y="0.0" width="326" height="23.5"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gs2-nJ-xLn">
+                                                <rect key="frame" x="326" y="0.0" width="48" height="23.5"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kod-2E-GAB">
+                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="kod-2E-GAB" secondAttribute="height" multiplier="2:3" id="yfZ-HA-GJp"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="text" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Le-Xh-NLu">
+                                        <rect key="frame" x="166" y="624.5" width="42.5" height="99.5"/>
+                                        <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ut9-ko-LwY">
+                                        <rect key="frame" x="0.0" y="744" width="374" height="60"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dxM-5a-MX3">
+                                                <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VgM-ic-MW0"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lwF-cN-uG4">
+                                                <rect key="frame" x="197" y="0.0" width="177" height="60"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CUb-0H-hfU"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="CWj-Uy-qSg"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="158" id="8fH-tn-0A3"/>
-                                    <constraint firstAttribute="height" constant="60" id="sz3-6y-K6K"/>
+                                    <constraint firstItem="p3M-jK-ZfM" firstAttribute="leading" secondItem="nFF-Ir-XTN" secondAttribute="leading" id="0Kl-UX-arR"/>
+                                    <constraint firstAttribute="trailing" secondItem="p3M-jK-ZfM" secondAttribute="trailing" id="SEq-uC-X6W"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ut9-ko-LwY" secondAttribute="bottom" id="bD7-tl-F5X"/>
+                                    <constraint firstItem="Ut9-ko-LwY" firstAttribute="leading" secondItem="nFF-Ir-XTN" secondAttribute="leading" id="lrz-6d-Mn8"/>
                                 </constraints>
-                                <inset key="imageEdgeInsets" minX="16" minY="18" maxX="16" maxY="18"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" cornerStyle="large">
-                                    <attributedString key="attributedTitle">
-                                        <fragment content="Да">
-                                            <attributes>
-                                                <font key="NSFont" size="20" name="YSDisplay-Medium"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                    <color key="baseForegroundColor" name="YP Black"/>
-                                    <color key="baseBackgroundColor" name="YP White"/>
-                                </buttonConfiguration>
-                            </button>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Background"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Fzt-vQ-G1E" secondAttribute="trailing" constant="20" id="JLe-cr-qqf"/>
-                            <constraint firstItem="Fzt-vQ-G1E" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="197" id="R0c-gA-Wm7"/>
-                            <constraint firstItem="Fzt-vQ-G1E" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="718" id="ah8-FQ-78L"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Fzt-vQ-G1E" secondAttribute="bottom" constant="34" id="xKR-9n-Tq4"/>
+                            <constraint firstItem="nFF-Ir-XTN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="LcB-dk-Dlo"/>
+                            <constraint firstItem="nFF-Ir-XTN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="NCD-Gm-y9F"/>
+                            <constraint firstItem="nFF-Ir-XTN" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-20" id="a2A-Ve-Esi"/>
+                            <constraint firstItem="nFF-Ir-XTN" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="oiq-yp-bU9"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="UILabel" destination="3Le-Xh-NLu" id="Iax-mf-LGF"/>
-                        <outlet property="yesButton" destination="Fzt-vQ-G1E" id="sLM-Up-OCG"/>
+                        <outlet property="PreviewImage" destination="kod-2E-GAB" id="eJY-w7-tYw"/>
+                        <outlet property="counterLabel" destination="gs2-nJ-xLn" id="Yt0-hY-VG3"/>
+                        <outlet property="noButton" destination="dxM-5a-MX3" id="0NR-D4-i8O"/>
+                        <outlet property="previewImage" destination="kod-2E-GAB" id="nsQ-4I-4BN"/>
+                        <outlet property="questionLabel" destination="3Le-Xh-NLu" id="hBH-1r-AP1"/>
+                        <outlet property="upperLabel" destination="cnN-JT-fLm" id="4JF-Iq-D9e"/>
+                        <outlet property="yesButton" destination="lwF-cN-uG4" id="QWr-sw-wvY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -73,12 +117,6 @@
     <resources>
         <namedColor name="YP Background">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP Black">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP White">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
