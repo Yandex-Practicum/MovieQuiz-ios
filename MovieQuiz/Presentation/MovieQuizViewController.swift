@@ -45,6 +45,10 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -154,6 +158,8 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResult () {
         previewImage.layer.borderColor = UIColor.clear.cgColor
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
         
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат \(correctAnswers)/\(questions.count)"
@@ -177,6 +183,8 @@ final class MovieQuizViewController: UIViewController {
         
         print ("Нажата кнопка - Да.")
         
+        yesButton.isEnabled = false
+        
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -186,6 +194,8 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
         print ("Нажата кнопка - Нет.")
+        
+        noButton.isEnabled = false
     }
     
 }
