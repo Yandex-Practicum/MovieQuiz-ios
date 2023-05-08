@@ -5,8 +5,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
 
-    @IBOutlet weak var NoButton: UIButton!
-    @IBOutlet weak var YesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private let questionsCount: Int = 10
@@ -60,8 +60,8 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - QuestionFactoryDelegate
     
     private func toggleButtonsInteraction(_ enabled: Bool) {
-        YesButton.isUserInteractionEnabled = enabled
-        NoButton.isUserInteractionEnabled = enabled
+        yesButton.isUserInteractionEnabled = enabled
+        noButton.isUserInteractionEnabled = enabled
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
