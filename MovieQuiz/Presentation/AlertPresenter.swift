@@ -25,11 +25,8 @@ class AlertPresenter {
             data.completion()
         }
     
-            alert.addAction(action)
-    
+        alert.addAction(action)
 
-        guard let view = self.view else { return }
-
-        view.present(alert, animated: true, completion: nil)
+        view?.present(alert, animated: true, completion: nil)
     }
 }

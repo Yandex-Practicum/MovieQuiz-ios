@@ -19,7 +19,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(Bundle.main.bundlePath)
         previewImage.layer.cornerRadius = 20
         
         var documentsURL = FileManager.default.urls(
@@ -27,9 +26,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             in: .userDomainMask).first!
         let fileName = "top250MoviesIMDB.json"
         documentsURL.appendPathComponent(fileName)
-        let jsonString = try? String(contentsOf: documentsURL)
         
-            
         self.statisticService = StatisticServiceImplementation()
 
         alertPresenter = AlertPresenter(view: self)
@@ -154,20 +151,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         for button in buttons {
             button.isEnabled = enabled
         }
-    }
-    
-    private func getMovies(from jsonString: String) -> TopMovies? {
-        var topMovies: TopMovies? = nil
-        do {
-            guard let data = jsonString.data(using: .utf8) else { return nil }
-            
-            topMovies = try JSONDecoder().decode(TopMovies.self, from: data)
-
-        } catch {
-            print("Failed to parse \(jsonString)")
-        }
-
-        return topMovies
     }
 }
 
