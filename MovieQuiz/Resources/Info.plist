@@ -7,7 +7,7 @@
          <string>YS Display-Bold</string>
          <string>YS Display-Medium</string>
     </array>
-	<key>UIApplicationSceneManifest</key>
+   <key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
