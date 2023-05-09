@@ -102,7 +102,7 @@ final class MovieQuizViewController: UIViewController {
             quizPlayed += 1
             if correctAnswers > quizRecord {
                 quizRecord = correctAnswers
-                let date = Date()
+                _ = Date()
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "dd-MM-yy HH:mm:ss"
                 dateRecord = dateFormatter.string(from: Date())
