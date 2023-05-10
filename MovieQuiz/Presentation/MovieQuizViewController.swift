@@ -2,13 +2,13 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
-    // структура для массива со списком моковых вопросов
+    /// структура для массива со списком моковых вопросов
     struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
     }
-    // массив со списком моковых вопросов
+    /// массив со списком моковых вопросов
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -51,13 +51,13 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false),
     ]
-    // структура для конвертации
+    /// структура для конвертации
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    // структура для состояния "Результат квиза"
+    /// структура для состояния "Результат квиза"
     struct QuizResultsViewModel {
         let title: String
         let text: String
@@ -67,10 +67,11 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    
-    // переменная с индексом текущего вопроса, начальное значение 0
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
+    /// переменная с индексом текущего вопроса, начальное значение 0
     private var currentQuestionIndex = 0
-    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
+    /// переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
         
     // MARK: - Lifecycle
@@ -79,8 +80,11 @@ final class MovieQuizViewController: UIViewController {
         // текущий вопрос - вопрос из массива по индексу текушеко вопроса
         let currentQuestion = questions[currentQuestionIndex]
         show(quiz: convert(model: currentQuestion))
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
     }
-    // метод конвертации, принимаем моковый вопрос и возвращаем вью модель для экрана вопросов
+    
+    /// метод конвертации, принимаем моковый вопрос и возвращаем вью модель для экрана вопросов
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -88,9 +92,9 @@ final class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return questionStep
     }
-    // метод для показа результатов раунда квиза
+    /// метод для показа результатов раунда квиза
     private func show(quiz result: QuizResultsViewModel) {
-        // переменная всплывающего окна
+        /// переменная всплывающего окна
         let alert = UIAlertController(
             title: result.title,
             message: result.text,
@@ -105,14 +109,14 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
-    // метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+    /// метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         imageView.layer.borderWidth = 0
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
-    // метод, содержащий логику перехода в один из сценариев
+    /// метод, содержащий логику перехода в один из сценариев
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             // идем в состояние "Результат квиза"
@@ -132,29 +136,30 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    // метод, меняющий не только цвет рамки :)
+    /// метод, меняющий не только цвет рамки
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true //разрешение на рисование рамки
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         if isCorrect {correctAnswers += 1}
         
-        // запускаем через 1 секунду с помощью диспетчера задач
+        /// запускаем через 1 секунду с помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            // код, который мы хотим вызвать через 1 секунду
+            /// код, который мы хотим вызвать через 1 секунду
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
             self.showNextQuestionOrResults()
         }
     }
     // методы активности из экрана
-    // нажатие на "ДА"
+    /// нажатие на "ДА"
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    // нажатие на "НЕТ"
+    /// нажатие на "НЕТ"
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
