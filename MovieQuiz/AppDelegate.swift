@@ -6,6 +6,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        // показываем launchScreen в течение 3 секунд
+        //sleep(3)
         return true
     }
 
