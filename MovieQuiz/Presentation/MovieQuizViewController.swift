@@ -10,25 +10,33 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: firstQuestion)
     }
     @IBAction private func yesButtonClick(_ sender: Any) {
+        noButton.isEnabled = false
+        yesBotton.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
     }
     
     @IBAction private func noButtonClick(_ sender: Any) {
+        noButton.isEnabled = false
+        yesBotton.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
+    
     @IBOutlet private weak var imageView: UIImageView!
     
     @IBOutlet private weak var textLabel: UILabel!
     
-    @IBOutlet weak var counterLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
+    
+    @IBOutlet private weak var noButton: UIButton!
+    
+    @IBOutlet private weak var yesBotton: UIButton!
     
     
     private var currentQuestionIndex = 0
@@ -46,8 +54,14 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         correctAnswers = isCorrect ? correctAnswers + 1 : correctAnswers
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
             // код, который мы хотим вызвать через 1 секунду
+           
+            self.imageView.layer.masksToBounds = false
+            self.imageView.layer.borderWidth = 0
+            self.imageView.layer.borderColor = nil
+            noButton.isEnabled = true
+            yesBotton.isEnabled = true
             self.showNextQuestionOrResults()
         }
     }
@@ -88,9 +102,13 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(quiz step: QuizStepViewModel) {
+        imageView.layer.cornerRadius = 20
+        imageView.contentMode = .scaleToFill
+        imageView.layer.masksToBounds = true
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        textLabel.textAlignment = .center
     }
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
