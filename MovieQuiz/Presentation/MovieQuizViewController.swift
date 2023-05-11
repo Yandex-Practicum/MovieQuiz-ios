@@ -6,8 +6,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     
-    @IBOutlet var yesButton: UIButton!
-    @IBOutlet var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
+    
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    
     //MARK: Переменные
     
     // Переменная с индексом текущего вопроса, начальное значение 0
@@ -26,13 +29,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
       
-        questionFactory = QuestionFactory(delegate: self)
-        
-        questionFactory?.requestNextQuestion()
-        
-        alertPresenter = AlertPresenter()
-        
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+
         statisticService = StatisticServiceImplementation()
+        showLoadingIndicator()
+        alertPresenter = AlertPresenter()
+        questionFactory?.loadData()
+        
+    
     }
     
     //MARK: - QuestionFactoryDelegate
@@ -48,27 +52,68 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмем в качестве сообщения ошибки
+    }
+    
         
     //MARK: - Приватные методы
     
+    
+    // Метод для activityIndicator
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true // индикатор скрыт
+    }
+    
+    func didFailToLoadImage(with error: Error, onReloadHandler: (() -> Void)?) {
+        hideLoadingIndicator()
+        
+        let errorAlertModel = AlertModel(
+            title: "Ошибка",
+            message: "Не удалось загрузить изображение",
+            buttonText: "Попробовать еще раз",
+            completion: { _ in
+                onReloadHandler?()
+            })
+        alertPresenter?.presentAlert(from: self, quiz: errorAlertModel)
+    }
+    
+    // Состояние ошибки
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        
+        let errorAlertModel = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать еще раз",
+            completion: { [weak self] _ in
+                guard let self = self else { return }
+                
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                
+                self.questionFactory?.requestNextQuestion()
+            })
+        alertPresenter?.presentAlert(from: self, quiz: errorAlertModel)
+        
+    }
+    
     // Метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        // 1. Создаем константу questionStep и вызываем конструктор QuizStepViewModel
-        let questionStep = QuizStepViewModel(
-            
-            // 2. Инициализируем картинку с помощью конструктора UIImage(named: ),
-            // и если не найдется картинка с таким названием, то подставляем пустую
-            image: UIImage(named: model.image) ?? UIImage(),
-            
-            // 3. Просто выбираем уже готовый вопрос из мокового вопроса
+        return QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
-            
-            // 4. Высчитываем номер вопроса с помощью переменной текущего вопроса
-            // и массива со списком вопросов questions. С помощью интрополяции заполняем String
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        
-        // 5. Метод конвертации должен вернуть объект структуры QuizStepViewModel. Созданный questionStep
-        return questionStep
     }
     
     // Приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает

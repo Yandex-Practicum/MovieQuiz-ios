@@ -8,8 +8,8 @@
 import Foundation
 
 struct QuizQuestion {
-    // Строка с названием фильма, совпадает с Assets
-    let image: String
+    
+    let image: Data
     // Строка с вопросом о рейтинге фильма
     let text: String
     // Булево значение true, false, правильный ответ на вопрос
