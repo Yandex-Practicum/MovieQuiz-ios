@@ -53,6 +53,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showLoadingIndicator()
         questionFactory?.loadData()
         alertPresenter = AlertPresenter(delegate: self)
+        
     }
 
 // MARK: - Логика
@@ -88,6 +89,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.questionFactory?.requestNextQuestion()
         }
         alertPresenter?.show(model)
+        
     }
 
     func didReceiveNextQuestion(question: QuizQuestion?) {
