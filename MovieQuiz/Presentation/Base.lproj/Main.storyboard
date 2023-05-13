@@ -49,7 +49,7 @@
                                             <constraint firstAttribute="width" secondItem="B01-qb-Vgc" secondAttribute="height" multiplier="2:3" id="ZfG-8Y-NaW"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rm8-MO-7zH" userLabel="Question Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="Rm8-MO-7zH" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="103.5"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>

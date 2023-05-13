@@ -2,14 +2,18 @@ import Foundation
 
 /// Задача NetworkClient — загружать данные, но не преобразовывать их
 
-struct NetworkClient {
+protocol NetworkRouting {
+    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
+}
+
+struct NetworkClient: NetworkRouting {
     private enum NetworkError: Error {
         case codeError
     }
 
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url, timeoutInterval: 5)
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             //проверяем, пришла ли ошибка
             if let error = error {
                 handler(.failure(error))
