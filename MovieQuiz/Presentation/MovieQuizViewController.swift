@@ -8,6 +8,7 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         let firstQuestion = convert(model: questions[currentQuestionIndex])
         show(quiz: firstQuestion)
+        imageView.contentMode = .scaleAspectFill
     }
     @IBAction private func yesButtonClick(_ sender: Any) {
         noButton.isEnabled = false
@@ -54,14 +55,15 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         correctAnswers = isCorrect ? correctAnswers + 1 : correctAnswers
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
             // код, который мы хотим вызвать через 1 секунду
-           
+            
             self.imageView.layer.masksToBounds = false
             self.imageView.layer.borderWidth = 0
             self.imageView.layer.borderColor = nil
-            noButton.isEnabled = true
-            yesBotton.isEnabled = true
+            self.noButton.isEnabled = true
+            self.yesBotton.isEnabled = true
             self.showNextQuestionOrResults()
         }
     }
@@ -103,7 +105,7 @@ final class MovieQuizViewController: UIViewController {
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.layer.cornerRadius = 20
-        imageView.contentMode = .scaleToFill
+        //imageView.contentMode = .scaleToFill
         imageView.layer.masksToBounds = true
         imageView.image = step.image
         textLabel.text = step.question
@@ -144,7 +146,9 @@ final class MovieQuizViewController: UIViewController {
             message: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(quizPlayed) \nРекорд: \(quizRecord)/\(questions.count) (\(dateRecord)) \nСредняя точность: \(String(format: "%.2f", avarageAccuracy))%",
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
