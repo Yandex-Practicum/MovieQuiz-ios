@@ -23,6 +23,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didDiscardSceneSessions sceneSessions: Set<UISceneSession>
     ) {
-        print("hello world!")
+        print("Hello world for branch to merge")
     }
 }
