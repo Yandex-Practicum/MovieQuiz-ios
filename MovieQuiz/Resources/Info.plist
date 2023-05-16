@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
     <key>UIAppFonts</key>
-         <array>
-              <string>YS Display-Bold</string>
-              <string>YS Display-Medium</string>
-         </array>
+    <array>
+        <string>YS Display-Bold</string>
+        <string>YS Display-Medium</string>
+    </array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
