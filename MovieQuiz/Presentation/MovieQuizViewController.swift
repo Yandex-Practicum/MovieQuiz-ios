@@ -4,35 +4,42 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
     /*
-     Привет код-ревьюерам!
-     -------------------------------------------------------------------------------------------------------------------------------
-     ____🐸🐸🐸🐸____🐸🐸🐸
-     ___🐸🐸🐸🐸🐸__🐸🐸🐸🐸
-     __🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     🐸🐸⚪️⚫️⚫️⚪️🐸🐸🐸⚪️⚫️⚫️⚪️
-     🐸⚪️⚫️⚫️⚪️⚫️⚪️🐸⚪️⚫️⚫️⚪️⚫️⚪️
-     🐸⚪️⚫️⚪️⚫️⚫️⚪️🐸⚪️⚫️⚪️⚫️⚫️⚪️
-     🐸🐸⚪️⚫️⚪️⚪️🐸🐸🐸⚪️⚫️⚪️⚪️
-     🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     🔴🔴🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     🐸🔴🔴🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     🐸🐸🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-     🐸🐸🐸🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-     🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     🐸🐸🐸🐸🐸🐸🐸🐸🐸
-     -------------------------------------------------------------------------------------------------------
+     
+     Спасибо за ревью!
+     
+     ________00000000000000______00000000000000________
+     ______000000000000000000__0000000000000000000_____
+     ____000000000000000000000000000000________00000___
+     ___0000000000000000000000000000000__________0000__
+     __0000000000000000000000000000000000__________000_
+     __00000000000000000000000000000000000000_____0000_
+     _00000000000000000000000000000000000000000___00000
+     _000000000000000000000000000000000000000000_000000
+     _000000000000000000000000000000000000000000000000_
+     _000000000000000000000000000000000000000000000000_
+     __00000000000000000000000000000000000000000000000_
+     ___000000000000000000000000000000000000000000000__
+     _____00000000000000000000000000000000000000000____
+     _______0000000000000000000000000000000000000______
+     __________0000000000000000000000000000000_________
+     _____________00000000000000000000000000___________
+     _______________00000000000000000000______________
+     __________________000000000000000________________
+     ____________________0000000000___________________
+     ______________________000000_____________________
+     _______________________0000______________________
+     ________________________00_______________________
+     -------------------------------------------------
      */
     
+  
+    @IBOutlet private var QuestionLabel: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
     
-    
-    
-    
-    
-    @IBOutlet private var imageView: UIImageView! //imageView outlet
-    @IBOutlet private var textLabel: UILabel!     //textLabel outlet
-    @IBOutlet private var counterLabel: UILabel!  //counterLabel otlet
+    @IBOutlet weak var noButtonClicked: UIButton!
+    @IBOutlet weak var yesButtonClicked: UIButton!
     
     
     // вью модель для состояния "Вопрос показан"
@@ -89,6 +96,7 @@ final class MovieQuizViewController: UIViewController {
             showAnswerResult(isCorrect: answer == currentQuestion.correctAnswer)
     }
     
+    
     // массив вопросов
     private let questions: [QuizQuestion] = [
             QuizQuestion(
@@ -140,13 +148,17 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
                 correctAnswers += 1
             }
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-        
+        yesButtonClicked.isEnabled = false //отключаем обе кнопки чтобы не засчитывалось несколько ответов за раз
+        noButtonClicked.isEnabled = false
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.showNextQuestionOrResults()
+            self.yesButtonClicked.isEnabled = true
+            self.noButtonClicked.isEnabled = true
+            self.showNextQuestionOrResults()
+           
+
         }
     }
     
@@ -191,25 +203,27 @@ final class MovieQuizViewController: UIViewController {
     // принимает вью модель QuizResultsViewModel и ничего не возвращает
     private func showResults(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            let firstQuestion = self.questions[self.currentQuestionIndex]
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
-        }
-        
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+                    title: result.title,
+                    message: result.text,
+                    preferredStyle: .alert)
+
+                let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+                    self.currentQuestionIndex = 0
+                    self.correctAnswers = 0
+
+                    let firstQuestion = self.questions[self.currentQuestionIndex]
+                    let viewModel = self.convert(model: firstQuestion)
+                    self.show(quiz: viewModel)
+                }
+
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
     }
     
     
     override func viewDidLoad() {
+        imageView.layer.masksToBounds = true //рисуем рамку
+        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
         // берём текущий вопрос из массива вопросов по индексу текущего вопроса
         // и вызываем метод show() для первого вопроса
         let currentQuestion = questions[currentQuestionIndex]
@@ -218,9 +232,3 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
     }
 }
-
-
-
-//    По индексу текущего вопроса находим в массиве нужный нам моковый вопрос;
-//    Создаём константу, которая в зависимости от метода имеет значение «правда» или «ложь» соответственно;
-//    Передаём в метод покраски рамок значение, сравнивая правильный ответ и ответ, который дал пользователь.

@@ -67,7 +67,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="9IL-fV-BQh"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет">
                                                     <color key="titleColor" name="YP Black"/>
@@ -84,7 +84,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jWV-oB-MoM">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да">
                                                     <color key="titleColor" name="YP Black"/>
@@ -115,9 +115,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="QuestionLabel" destination="nxm-9Q-WOf" id="UPd-QX-2Zw"/>
                         <outlet property="counterLabel" destination="qJm-0o-yRX" id="5v6-3F-SWI"/>
                         <outlet property="imageView" destination="ZkU-Fm-WwS" id="8yJ-dC-YeB"/>
+                        <outlet property="noButtonClicked" destination="7IR-ly-K4K" id="QzA-z7-9Dz"/>
                         <outlet property="textLabel" destination="g9N-Ko-J9V" id="rIF-7m-5Nm"/>
+                        <outlet property="yesButtonClicked" destination="jWV-oB-MoM" id="b4N-Cc-52x"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
