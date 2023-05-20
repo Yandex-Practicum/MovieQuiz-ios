@@ -60,7 +60,5 @@ class QuestionFactory: QuestionFactoryProtocol {
     }
 }
 
-protocol QuestionFactoryProtocol {
-    func requestNextQuestion() -> QuizQuestion?
-}
+
 
