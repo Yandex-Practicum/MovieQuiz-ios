@@ -1,6 +1,9 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+// добавляем в объявление класса реализацию протокола делегата
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+    
+    private var alertPresenter: AlertPresenterProtocol?
     
     // переменные из экрана
     @IBOutlet private var imageView: UIImageView!
@@ -13,23 +16,35 @@ final class MovieQuizViewController: UIViewController {
     /// переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
         
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // текущий вопрос - вопрос из массива по индексу текушеко вопроса
+        // инъекция через свойство, поэтому задаем делегата в методе
+        questionFactory = QuestionFactory(delegate: self)
         // исправляем ошибки (1)
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        questionFactory?.requestNextQuestion()
+        // alertPresenter
+        alertPresenter = AlertPresenter(viewController: self)
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
     }
     
+    // MARK: - QuestionFactoryDelegate
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in self?.show(quiz: viewModel)
+        }
+    }
+    
+    // MARK: - Private functions
     /// метод конвертации, принимаем моковый вопрос и возвращаем вью модель для экрана вопросов
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -41,23 +56,14 @@ final class MovieQuizViewController: UIViewController {
     }
     /// метод для показа результатов раунда квиза
     private func show(quiz result: QuizResultsViewModel) {
-        /// переменная всплывающего окна
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in guard let self = self else { return }
+        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText, completion: { [weak self] in guard let self else { return }
+            self.imageView.layer.borderColor = nil
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-           // исправляем ошибки (5)
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-                self.show(quiz: viewModel)
-            }
-        }
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+            // исправляем ошибки (5)
+            self.questionFactory?.requestNextQuestion()
+        })
+        alertPresenter?.show(with: alertModel)
     }
     /// метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
@@ -71,23 +77,22 @@ final class MovieQuizViewController: UIViewController {
         // исправляем ошибки (6)
         if currentQuestionIndex == questionsAmount - 1 {
             // идем в состояние "Результат квиза"
-            let text = "Ваш результат: \(correctAnswers)/10"
-            let viewModel = QuizResultsViewModel(
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть еще раз")
-            show(quiz: viewModel)
+                let alertModel = AlertModel(title: "Этот раунд окончен!", message: "Ваш результат: \(correctAnswers)/10", buttonText: "Сыграть еще раз", completion: { [weak self] in guard let self else { return }
+                    self.imageView.layer.borderColor = nil
+                    self.currentQuestionIndex = 0
+                    self.correctAnswers = 0
+                    // исправляем ошибки (5)
+                    self.questionFactory?.requestNextQuestion()
+                })
+                alertPresenter?.show(with: alertModel)
 
+            
+            
         } else {
             currentQuestionIndex += 1
             // идем в состояние "Вопрос показан"
             // исправляем ошибки (7)
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-                
-                show(quiz: viewModel)
-            }
+            questionFactory?.requestNextQuestion()
         }
     }
     
@@ -107,7 +112,8 @@ final class MovieQuizViewController: UIViewController {
             self.showNextQuestionOrResults()
         }
     }
-    // методы активности из экрана
+    
+    // MARK: - Actions
     /// нажатие на "ДА"
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         // исправляем ошибки (2)

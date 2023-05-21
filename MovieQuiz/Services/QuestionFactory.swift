@@ -9,7 +9,18 @@ import Foundation
 
 
 class QuestionFactory: QuestionFactoryProtocol {
-    
+    weak var delegate: QuestionFactoryDelegate?
+    init(delegate: QuestionFactoryDelegate) {
+        self.delegate = delegate
+    }
+    func requestNextQuestion() {
+        guard let index = (0..<questions.count).randomElement() else {
+            delegate?.didReceiveNextQuestion(question: nil)
+            return
+        }
+        let question = questions[safe: index]
+        delegate?.didReceiveNextQuestion(question: question)
+    }
     /// массив со списком моковых вопросов
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -53,11 +64,6 @@ class QuestionFactory: QuestionFactoryProtocol {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false),
     ]
-    
-    func requestNextQuestion() -> QuizQuestion? {
-        guard let index = (0..<questions.count).randomElement() else { return nil }
-        return questions[safe: index]
-    }
 }
 
 
