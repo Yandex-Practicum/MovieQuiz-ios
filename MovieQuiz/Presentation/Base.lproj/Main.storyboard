@@ -31,7 +31,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3d2-vn-YGF">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIM-H3-Y0j" userLabel="Question Title Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIM-H3-Y0j" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="338" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
@@ -45,11 +45,10 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YYn-Yd-3aU" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mwh-6m-iZY">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
-                                        <color key="backgroundColor" name="YP White"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="YYn-Yd-3aU" secondAttribute="height" multiplier="2:3" id="600-8X-6Bh"/>
+                                            <constraint firstAttribute="width" secondItem="Mwh-6m-iZY" secondAttribute="height" multiplier="2:3" id="g3s-Qg-6ZF"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-w5-iWG" userLabel="Question Label">
@@ -114,7 +113,7 @@
                     </view>
                     <connections>
                         <outlet property="counterLabel" destination="eP3-Ib-mjJ" id="unw-4U-Nds"/>
-                        <outlet property="imageView" destination="YYn-Yd-3aU" id="2el-QK-8j1"/>
+                        <outlet property="imageView" destination="Mwh-6m-iZY" id="NNg-vR-NH0"/>
                         <outlet property="noButton" destination="vRC-7p-ZG6" id="YZ9-kH-Wiw"/>
                         <outlet property="textLabel" destination="c4V-w5-iWG" id="Xna-u9-ghw"/>
                         <outlet property="yesButton" destination="PGP-ed-WqD" id="48X-i6-gDz"/>
