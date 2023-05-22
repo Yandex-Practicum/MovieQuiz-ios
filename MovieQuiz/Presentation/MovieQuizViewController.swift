@@ -21,6 +21,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
     struct QuizStepViewModel {
         let image: UIImage
@@ -85,6 +87,11 @@ final class MovieQuizViewController: UIViewController {
                 correctAnswer: false)
         ]
     
+    private func enabledButtons(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
+    }
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
                                  question: model.text,
@@ -125,8 +132,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        enabledButtons(isEnabled: false)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.enabledButtons(isEnabled: true)
             self.showNextQuestionOrResult()
         }
     }
@@ -141,6 +150,8 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
+            
+            imageView.layer.borderWidth = 0
             
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
