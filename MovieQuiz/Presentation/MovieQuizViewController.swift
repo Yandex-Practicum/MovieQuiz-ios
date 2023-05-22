@@ -9,12 +9,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        presenter.currentQuestion = currentQuestion
         presenter.yesButtonClicked()
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        presenter.currentQuestion = currentQuestion
         presenter.noButtonClicked()
     }
 
@@ -24,9 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     // переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
-
     private var questionFactory: QuestionFactoryProtocol? = nil
-    private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
     private let presenter = MovieQuizPresenter()
@@ -87,20 +83,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
     }
 
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-
-        currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
+   func didReceiveNextQuestion(question: QuizQuestion?) {
+       presenter.didReceiveNextQuestion(question: question)
     }
 
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
-    private func show(quiz step: QuizStepViewModel) {
+     func show(quiz step: QuizStepViewModel) {
         // попробуйте написать код показа на экран самостоятельно
         imageView.image = step.image
         questionLabel.text = step.question
