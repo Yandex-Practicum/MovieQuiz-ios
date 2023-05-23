@@ -2,6 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
 
+
     // MARK: - Аутлеты и действия
 
     @IBOutlet private weak var questionLabel: UILabel!
@@ -67,7 +68,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         view.isUserInteractionEnabled = val
     }
 
-    func showNetworkError(message: String) {
+ /*   func showNetworkError(message: String) {
         hideLoadingIndicator()
 
         let model = AlertModel(title: "Ошибка",
@@ -79,7 +80,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             self.presenter.restartGame()
         }
         presenter.showAlert(model)
-    }
+    } */
     
 }
 

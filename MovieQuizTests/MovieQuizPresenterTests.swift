@@ -4,7 +4,6 @@ import XCTest
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
     func show(quiz step: MovieQuiz.QuizStepViewModel) {}
-    func showNetworkError(message:String) {}
     func highlightImageBorder(isCorrectAnswer isCorrect: Bool) {}
     func showLoadingIndicator() {}
     func showResult(present: UIAlertController) {}

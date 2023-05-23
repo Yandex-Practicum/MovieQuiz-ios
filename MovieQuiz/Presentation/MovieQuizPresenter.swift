@@ -19,6 +19,19 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController.showLoadingIndicator()
     }
 
+    private func showNetworkError(message: String) {
+        viewController?.hideLoadingIndicator()
+
+           let model = AlertModel(title: "Ошибка",
+                                  message: message,
+                                  buttonText: "Попробовать еще раз") { [weak self] _ in
+               guard let self = self else { return }
+
+               self.questionFactory?.loadData()
+               self.restartGame()
+           }
+           showAlert(model)
+       }
 
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -53,7 +66,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
-        viewController?.showNetworkError(message: message)
+        showNetworkError(message: message)
     }
 
     func convert(model: QuizQuestion) -> QuizStepViewModel {
