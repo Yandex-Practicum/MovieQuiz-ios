@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
 
     // MARK: - Аутлеты и действия
 
@@ -28,7 +28,6 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
 
         imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-
         presenter = MovieQuizPresenter(viewController: self)
         showLoadingIndicator()
         
@@ -41,12 +40,18 @@ final class MovieQuizViewController: UIViewController {
         questionLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.layer.borderWidth = 0
+
+        setInteractionEnabled(true)
     }
 
     func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
+
+    func showResult(present: UIAlertController) {
+        self.present(present,animated: true, completion: nil)
     }
 
     func showLoadingIndicator() {
@@ -57,5 +62,24 @@ final class MovieQuizViewController: UIViewController {
     func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
+
+    func setInteractionEnabled(_ val: Bool) {
+        view.isUserInteractionEnabled = val
+    }
+
+    func showNetworkError(message: String) {
+        hideLoadingIndicator()
+
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] _ in
+            guard let self = self else { return }
+
+            self.presenter.questionFactory?.loadData()
+            self.presenter.restartGame()
+        }
+        presenter.showAlert(model)
+    }
+    
 }
 

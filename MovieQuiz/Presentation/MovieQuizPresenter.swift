@@ -2,8 +2,8 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
 
-    private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
+    var questionFactory: QuestionFactoryProtocol?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private let statisticService: StatisticService!
 
     private var currentQuestion: QuizQuestion?
@@ -11,7 +11,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
 
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         statisticService = StatisticServiceImplemintation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -53,10 +53,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
-        showNetworkError(message: message)
+        viewController?.showNetworkError(message: message)
     }
 
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
     func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
@@ -125,7 +124,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             style: .default,
             handler: alertModel.completion)
         alert.addAction(action)
-        viewController?.present(alert, animated: true, completion: nil)
+        viewController?.showResult(present: alert)
     }
 
     private func proceedWithAnswer(isCorrect: Bool) {
@@ -136,25 +135,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.viewController?.view.isUserInteractionEnabled = true
             self.showNextQuestionOrResults()
         }
-        viewController?.view.isUserInteractionEnabled = false
     }
-
-    func showNetworkError(message: String) {
-        viewController?.hideLoadingIndicator()
-
-        let model = AlertModel(title: "Ошибка",
-                               message: message,
-                               buttonText: "Попробовать ещё раз") { [weak self] _ in
-            guard let self = self else { return }
-
-            self.questionFactory?.loadData()
-            self.restartGame()
-        }
-        showAlert(model)
-    }
-
 }
 
