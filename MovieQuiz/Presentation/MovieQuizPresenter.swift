@@ -48,6 +48,10 @@ final class MovieQuizPresenter {
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 
+    private func didAnswer(isCorrectAnswer: Bool) {
+        
+    }
+
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return

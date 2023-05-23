@@ -19,7 +19,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     //MARK: - Свойства
 
-    private var correctAnswers = 0
+  //  private var correctAnswers = 0
     private var questionFactory: QuestionFactoryProtocol? = nil
     var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
@@ -66,15 +66,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описания ошибки
     }
 
+//шаг 6
     private func showNetworkError(message: String) {
         hideLoadingIndicator() // скрываем индикатор загрузки
-        let model = AlertModel(title: "Ошибка",
-                               message: message,
-                               buttonText: "Попробовать ещё раз") { [weak self] _ in
+        let action = UIAlertAction(title: "Попробовать ещё раз",
+                                   style: .default) { [weak self] _ in
             guard let self = self else { return }
 
             self.presenter.resetQuestionIndex()
-            self.correctAnswers = 0
+            self.presenter.restartGame()
             self.questionFactory?.requestNextQuestion()
         }
         alertPresenter?.show(model)
@@ -90,10 +90,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.layer.borderWidth = 0 // толщина рамки
+
+         //шаг 6
+         if let statisticService = statisticService {
+             statisticService.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
+
+             let currentGameResultLine = "Ваш результат: \(presenter.correctAnswers)\\\(presenter.questionsAmount)"
+         }
+         //шаг 6
+         let action = UIAlertAction(title: result.buttonText, style: .default) [weak self] _ in
+         self.presenter.restartGame
+
     }
 
     func showAnswerResult(isCorrect: Bool) {
-
         if isCorrect {
             correctAnswers += 1
         }
@@ -107,10 +117,42 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.view.isUserInteractionEnabled = true  // включаем интерактивность
-            self.presenter.correctAnswers = self.correctAnswers
             self.presenter.questionFactory = self.questionFactory
             self.presenter.showNextQuestionOrResults()
         }
     }
+
+
+    private func showNextQuestionOrResults() {
+           if presenter.isLastQuestion() {
+               // идём в состояние "Результат квиза"
+               guard let statisticService = statisticService else {
+                   return
+               }
+
+               statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
+
+               let text = "Вы ответили на \(presenter.correctAnswers) из 10, попробуйте ещё раз!"
+
+
+               let viewModel = AlertModel (
+                   title: "Этот раунд окончен!",
+                   message: text,
+                   buttonText: "Сыграть ещё раз") { [weak self] _ in
+
+                       guard let self = self else { return }
+                       self.presenter.resetQuestionIndex()
+                       //сбрасываем переменную с количеством правильных ответов
+                       self.presenter.correctAnswers = 0
+                       self.questionFactory?.requestNextQuestion()
+                   }
+               alertPresenter?.show(viewModel)
+
+           } else {
+               presenter.switchToNextQuestion()
+               questionFactory?.requestNextQuestion()
+           }
+       }
+
 }
 
