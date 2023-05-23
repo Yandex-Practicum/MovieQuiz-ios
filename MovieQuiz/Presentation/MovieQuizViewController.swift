@@ -2,6 +2,8 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
+    
+    private var statisticService: StatisticService?
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     
@@ -15,8 +17,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.imageView.layer.masksToBounds = true
         self.imageView.layer.cornerRadius = 20
+        
+        statisticService = StatisticServiceImplementation()
         
         questionFactory = QuestionFactory(delegate: self)
         
@@ -100,9 +105,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.questionFactory?.requestNextQuestion()
         }
         
+        self.statisticService?.store(correct: self.correctAnswers, total: self.currentQuestionIndex)
+        
+        let message: String
+        
+        if let gamesCount = self.statisticService?.gamesCount,
+           let correct = self.statisticService?.bestGame.correct,
+           let total = self.statisticService?.bestGame.total,
+           let date = self.statisticService?.bestGame.date,
+           let totalAccuracy = self.statisticService?.totalAccuracy {
+            
+            message =
+              "Ваш результат: \(self.correctAnswers)/\(self.questionsAmount)\n" +
+          "Количество сыгранных квизов: \(gamesCount)\n" +
+            "Рекорд: \(correct)/\(total) (\(date.dateTimeString))\n" +
+          "Средняя точность: \(String(format: "%.2f", totalAccuracy))%"
+        } else {
+            message = result.text
+        }
+        
         let alertModel = AlertModel(
             title: result.title,
-            message: result.text,
+            message: message,
             buttonText: result.buttonText,
             completion: action)
         
