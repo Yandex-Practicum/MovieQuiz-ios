@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="YS Display-Bold.ttf">
+            <string>YSDisplay-Bold</string>
+        </array>
         <array key="YS Display-Medium.ttf">
             <string>YSDisplay-Medium</string>
         </array>
@@ -53,7 +56,7 @@
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <string key="text">Рейтинг этого фильма
 меньше чем 5?</string>
-                                        <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
+                                        <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White (iOS)"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -121,7 +124,6 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="dJ2-2E-upZ" secondAttribute="bottom" id="WRc-9N-xgy"/>
                             <constraint firstItem="dJ2-2E-upZ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Y6W-Wb-AQm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dJ2-2E-upZ" secondAttribute="trailing" constant="20" id="bqG-Xc-qh2"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dJ2-2E-upZ" secondAttribute="trailing" constant="20" id="f7D-ro-gb8"/>
                             <constraint firstItem="gHG-2T-Hak" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="fkt-V9-F3E"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="gHG-2T-Hak" secondAttribute="bottom" id="gZz-GU-fZi"/>
                         </constraints>
