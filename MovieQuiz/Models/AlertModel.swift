@@ -10,4 +10,5 @@ struct AlertModel {
     let title: String
     let messege: String
     let buttonText: String
+    let comletion: (() -> Void)
 }

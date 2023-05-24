@@ -4,12 +4,18 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
+    private var alertPresenter: AlertPresenterProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         questionFactory = QuestionFactory(delegate: self)
         
         questionFactory?.requestNextQuestion()
+        
+        alertPresenter = AlertPresenter(viewController: self)
+        
+        imageView.contentMode = .scaleAspectFill
     }
     //MARK: QuestionFactoryDalagate
     
@@ -103,7 +109,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz step: QuizStepViewModel) {
-        questionFactory?.requestNextQuestion()
         imageView.layer.cornerRadius = 20
         imageView.layer.masksToBounds = true
         imageView.image = step.image
@@ -126,36 +131,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 dateFormatter.dateFormat = "dd-MM-yy HH:mm:ss"
                 dateRecord = dateFormatter.string(from: Date())
             }
-            let text = "Ваш результат: \(correctAnswers)/10" // 1
-            let viewModel = QuizResultsViewModel( // 2
+            let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: text,
+                text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(quizPlayed) \nРекорд: \(quizRecord)/\(questionsAmount) (\(dateRecord)) \nСредняя точность: \(String(format: "%.2f", avarageAccuracy))%",
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel) // 3
         } else { // 2
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion() } }
-        private func show(quiz result: QuizResultsViewModel) {
-            let alert = UIAlertController(
-                title: "Этот раунд окончен!",
-                message: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(quizPlayed) \nРекорд: \(quizRecord)/\(questionsAmount) (\(dateRecord)) \nСредняя точность: \(String(format: "%.2f", avarageAccuracy))%",
-                preferredStyle: .alert)
+    private func show(quiz result: QuizResultsViewModel) {
+        let alertModel = AlertModel(title: result.title,
+                                    messege: result.text,
+                                    buttonText: result.buttonText,
+                                    comletion: { [ weak self ] in
+            guard let self else { return }
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
             
-            let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                
-                questionFactory?.requestNextQuestion()
-                }
-            
-            alert.addAction(action)
-            
-            self.present(alert, animated: true, completion: nil) }
+        })
+        alertPresenter?.show(with: alertModel )
         
-        
-    }
+             }
+}
 
 
 // массив вопросов
