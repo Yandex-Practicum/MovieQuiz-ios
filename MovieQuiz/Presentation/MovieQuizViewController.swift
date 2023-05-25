@@ -2,8 +2,16 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
+    
+    
+    @IBOutlet weak var button: UIButton!
+    
+    @IBAction func yesButton(_ sender: Any) {
+    }
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
+      super.viewDidLoad()
+      
     }
 }
 
