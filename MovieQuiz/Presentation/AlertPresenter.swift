@@ -8,23 +8,31 @@
 import UIKit
 
 protocol AlertPresenterProtocol: AnyObject {
-    func show(with model: AlertModel)
+    func show(with alertModel: AlertModel)
 }
 
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenterImpl {
     private weak var viewController: UIViewController?
+    
     init(viewController: UIViewController?) {
         self.viewController = viewController
     }
-    func show(with model: AlertModel) {
-        let alert = UIAlertController(title: model.title, message: model.message, preferredStyle: .alert)
-        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
-            model.completion()
+
+}
+
+extension AlertPresenterImpl: AlertPresenterProtocol {
+    func show(with alertModel: AlertModel) {
+        let alert = UIAlertController(
+            title: alertModel.title,
+            message: alertModel.message,
+            preferredStyle: .alert)
+        let action = UIAlertAction(
+            title: alertModel.buttonText,
+            style: .default) { _ in
+            alertModel.completion()
         }
         alert.addAction(action)
-        viewController?.present(alert, animated: true, completion: nil)
+        viewController?.present(alert,
+                                animated: true)
     }
-    
-    
-    
 }

@@ -4,7 +4,6 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Properties
-    private var alertPresenter: AlertPresenterProtocol?
     
     // переменные из экрана
     @IBOutlet private var imageView: UIImageView!
@@ -16,10 +15,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     /// переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
+    /// переменная общего количества вопросов
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol?
+    /// переменная с текущим  вопросом
     private var currentQuestion: QuizQuestion?
-        
+    /// переменная фабрики вопросов подписанная под протокол
+    private var questionFactory: QuestionFactoryProtocol?
+    /// переменная алерт сообщения подписанная под протокол
+    private var alertPresenter: AlertPresenterProtocol?
+    
+    private var statisticService: StatisticService?
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +35,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         // исправляем ошибки (1)
         questionFactory?.requestNextQuestion()
         // alertPresenter
-        alertPresenter = AlertPresenter(viewController: self)
+        alertPresenter = AlertPresenterImpl(viewController: self)
+        statisticService = StatisticServiceImpl()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
     }
@@ -55,17 +62,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
-    /// метод для показа результатов раунда квиза
-    private func show(quiz result: QuizResultsViewModel) {
-        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText, completion: { [weak self] in guard let self else { return }
-            self.imageView.layer.borderColor = nil
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            // исправляем ошибки (5)
-            self.questionFactory?.requestNextQuestion()
-        })
-        alertPresenter?.show(with: alertModel)
-    }
+ 
+    
     /// метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -73,22 +71,54 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
+    
+    private func showFinalResults() {
+        statisticService?.store(correct: correctAnswers, total: questionsAmount)
+        
+            
+        
+        let alertModel = AlertModel(
+            title: "Этот раунд окончен!",
+            message: makeResultMessage(),
+            buttonText: "Сыграть еще раз!",
+            completion: { [weak self] in guard let self else { return }
+                self.imageView.layer.borderColor = nil
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                // исправляем ошибки (5)
+                self.questionFactory?.requestNextQuestion()
+            })
+        alertPresenter?.show(with: alertModel)
+    }
+    
+    private func makeResultMessage() -> String {
+
+        guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
+            assertionFailure("Error message: Show final result")
+            return ""
+        }
+        
+        var gameDate = bestGame.date
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.YY HH:MM"
+        var resultDate = dateFormatter.string(from: gameDate)
+        
+        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gameCount)"
+        let currentCameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд \(bestGame.correct)/\(bestGame.total) (\(resultDate))"
+        let averageAccuracyLine = "Средняя точность: \(accuracy)%"
+        let resultMessage = [currentCameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine].joined(separator: "\n")
+        
+        return resultMessage
+    }
+    
     /// метод, содержащий логику перехода в один из сценариев
     private func showNextQuestionOrResults() {
         // исправляем ошибки (6)
         if currentQuestionIndex == questionsAmount - 1 {
             // идем в состояние "Результат квиза"
-                let alertModel = AlertModel(title: "Этот раунд окончен!", message: "Ваш результат: \(correctAnswers)/\(questionsAmount)", buttonText: "Сыграть еще раз", completion: { [weak self] in guard let self else { return }
-                    self.imageView.layer.borderColor = nil
-                    self.currentQuestionIndex = 0
-                    self.correctAnswers = 0
-                    // исправляем ошибки (5)
-                    self.questionFactory?.requestNextQuestion()
-                })
-                alertPresenter?.show(with: alertModel)
-
-            
-            
+           showFinalResults()
         } else {
             currentQuestionIndex += 1
             // идем в состояние "Вопрос показан"
@@ -133,8 +163,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-
-
+    
+    
     
 }
 

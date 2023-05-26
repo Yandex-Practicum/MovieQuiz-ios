@@ -20,7 +20,7 @@ protocol StatisticService {
 }
 
 
-final class StatisticServiceImp {
+final class StatisticServiceImpl {
     
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
@@ -46,7 +46,7 @@ final class StatisticServiceImp {
     
 }
 
-extension StatisticServiceImp: StatisticService {
+extension StatisticServiceImpl: StatisticService {
     
     
     var gameCount: Int {
