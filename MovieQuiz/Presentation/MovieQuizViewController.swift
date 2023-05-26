@@ -5,7 +5,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     private var alertPresenter: AlertPresenterProtocol?
-    
+    private var statisticService: StatisticServiceImplementation?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -14,6 +14,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
         
         alertPresenter = AlertPresenter(viewController: self)
+        
+        statisticService = StatisticServiceImplementation()
         
         imageView.contentMode = .scaleAspectFill
     }
@@ -120,10 +122,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            allCorrectAnswers += correctAnswers
-            allAnswers += questionsAmount
-            avarageAccuracy = Double(allCorrectAnswers) / Double(allAnswers) * 100
-            quizPlayed += 1
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
+//            allCorrectAnswers += correctAnswers
+//            allAnswers += questionsAmount
+//            avarageAccuracy = Double(allCorrectAnswers) / Double(allAnswers) * 100
+//            quizPlayed += 1
             if correctAnswers > quizRecord {
                 quizRecord = correctAnswers
                 _ = Date()
@@ -133,7 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(quizPlayed) \nРекорд: \(quizRecord)/\(questionsAmount) (\(dateRecord)) \nСредняя точность: \(String(format: "%.2f", avarageAccuracy))%",
+                text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(String(describing: statisticService?.gamesCount)) \nРекорд: \(quizRecord)/\(10) (\(dateRecord)) \nСредняя точность: \(String(describing: statisticService?.totalAccuracy))%",
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel) // 3
         } else { // 2
