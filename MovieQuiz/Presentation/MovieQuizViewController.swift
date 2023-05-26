@@ -3,6 +3,7 @@ import UIKit
 // добавляем в объявление класса реализацию протокола делегата
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
+    // MARK: - Properties
     private var alertPresenter: AlertPresenterProtocol?
     
     // переменные из экрана
@@ -24,7 +25,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         // текущий вопрос - вопрос из массива по индексу текушеко вопроса
         // инъекция через свойство, поэтому задаем делегата в методе
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactoryImpl(delegate: self)
         // исправляем ошибки (1)
         questionFactory?.requestNextQuestion()
         // alertPresenter
@@ -34,7 +35,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - QuestionFactoryDelegate
-    func didReceiveNextQuestion(question: QuizQuestion?) {
+    func didReceiveNextQuestion(_ question: QuizQuestion?) {
         guard let question = question else {
             return
         }
@@ -77,7 +78,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         // исправляем ошибки (6)
         if currentQuestionIndex == questionsAmount - 1 {
             // идем в состояние "Результат квиза"
-                let alertModel = AlertModel(title: "Этот раунд окончен!", message: "Ваш результат: \(correctAnswers)/10", buttonText: "Сыграть еще раз", completion: { [weak self] in guard let self else { return }
+                let alertModel = AlertModel(title: "Этот раунд окончен!", message: "Ваш результат: \(correctAnswers)/\(questionsAmount)", buttonText: "Сыграть еще раз", completion: { [weak self] in guard let self else { return }
                     self.imageView.layer.borderColor = nil
                     self.currentQuestionIndex = 0
                     self.correctAnswers = 0
