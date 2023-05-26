@@ -123,7 +123,8 @@ final class MovieQuizViewController: UIViewController {
         let questionStep = QuizStepViewModel( // 1
             image: UIImage(named: model.image) ?? UIImage(), // 2
             question: model.text, // 3
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // 4
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
+        ) // 4
         return questionStep
     }
     // создаем метод для показа карточки
@@ -135,7 +136,7 @@ final class MovieQuizViewController: UIViewController {
     }
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.borderWidth = 8
-        self.enabledButtons(isEnabled: false)
+        enabledButtons(isEnabled: false)
         // метод красит рамку
         if (isCorrect == true) {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
