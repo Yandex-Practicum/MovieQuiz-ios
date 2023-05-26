@@ -136,7 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(String(describing: statisticService?.gamesCount)) \nРекорд: \(quizRecord)/\(10) (\(dateRecord)) \nСредняя точность: \(String(describing: statisticService?.totalAccuracy))%",
+                text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(String(statisticService?.gamesCount ?? 0)) \nРекорд: \(quizRecord)/\(10) (\(dateRecord)) \nСредняя точность: \(String(format: "%.2f",(statisticService?.totalAccuracy ?? 0)))%",
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel) // 3
         } else { // 2

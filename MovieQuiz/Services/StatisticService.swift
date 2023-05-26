@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GameRecord: Codable {
+struct GameRecord: Codable, Comparable {
     
     let correct: Int
     let total: Int
@@ -33,8 +33,8 @@ final class StatisticServiceImplementation: StaticService {
     
     func store(correct count: Int, total amount: Int) {
         gamesCount += 1
-        totalAccuracy = totalAccuracy + Double(count / amount * 100)
-        
+        totalAccuracy = (totalAccuracy + Double(count / amount * 100)) / Double(gamesCount)
+        print(gamesCount, totalAccuracy)
     }
     
     var totalAccuracy: Double { get  {
