@@ -5,6 +5,7 @@
 //  Created by DANCECOMMANDER on 09.05.2023.
 //
 //k_6r5vvzy5
+//k_12345678
 
 import Foundation
 
@@ -23,7 +24,7 @@ struct MoviesLoader: MoviesLoading {
     //MARK: - URL
     private var mostPopularMoviesUrl: URL {
         // Если мы не смогли преобразовать URL в строку, то приложение упадет с ошибкой
-        guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_12345678") else {
+        guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_6r5vvzy5") else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         return url

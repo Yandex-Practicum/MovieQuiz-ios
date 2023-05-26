@@ -13,14 +13,14 @@ class QuestionFactory: QuestionFactoryProtocol {
     private weak var delegate: QuestionFactoryDelegate?
     private var movies: [MostPopularMovie] = []
     
-    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
+    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
     
     func loadData() {
-        moviesLoader.loadMovies { [weak self] result in
-            DispatchQueue.main.async {
+        moviesLoader.loadMovies { result in
+            DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
@@ -37,28 +37,19 @@ class QuestionFactory: QuestionFactoryProtocol {
     // Функция возвращает опциональную модель QuizQuestion, чтобы на случай пустого массива приложение не упало.
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
-            
-            guard let movie = self.movies[safe: index] else { return }
+            guard
+                let self = self,
+                let index = (0..<self.movies.count).randomElement(),
+                let movie = self.movies[safe: index]
+            else {
+                return
+            }
             
             var imageData = Data()
             
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self else { return }
-                    self.delegate?.didFailToLoadImage(with: error, onReloadHandler: {
-                        switch imageData {
-                        case imageData:
-                            self.requestNextQuestion()
-                        default:
-                            self.requestNextQuestion()
-                        }
-                        
-                    })
-                }
                 print("Failed to load image")
             }
             
@@ -68,14 +59,13 @@ class QuestionFactory: QuestionFactoryProtocol {
             let correctAnswer = rating > 7
             
             let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
+                                         text: text,
+                                         correctAnswer: correctAnswer)
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.delegate?.didRecieveNextQuestion(question: question)
             }
-            
         }
     }
 }

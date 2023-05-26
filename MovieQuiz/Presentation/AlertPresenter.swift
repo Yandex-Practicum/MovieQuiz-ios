@@ -9,18 +9,18 @@ import Foundation
 import UIKit
 
 class AlertPresenter {
-    
-    func presentAlert(from viewController: UIViewController, quiz result: AlertModel) {
+    func show(in vc: UIViewController, model: AlertModel) {
         let alert = UIAlertController(
-            title: result.title,
-            message: result.message,
+            title: model.title,
+            message: model.message,
             preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default, handler: result.completion)
-        
+
+        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
+            model.completion()
+        }
+
         alert.addAction(action)
-        
-        viewController.present(alert, animated: true, completion: nil)
+
+        vc.present(alert, animated: true, completion: nil)
     }
-    
 }
