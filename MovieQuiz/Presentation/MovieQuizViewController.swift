@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
-    @IBOutlet var textLabel: UILabel!
+    @IBOutlet private var textLabel: UILabel!
     
     // переменная с индексом текущего вопроса, начальное значение 0
     // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
@@ -60,6 +60,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.showNextQuestionOrResults()
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
@@ -119,7 +120,6 @@ final class MovieQuizViewController: UIViewController {
             title: result.title,
             message: result.text,
             preferredStyle: .alert)
-        
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
@@ -155,8 +155,7 @@ final class MovieQuizViewController: UIViewController {
         let image: UIImage
         let question: String
         let questionNumber: String
-    }
-    // для состояния "Вопрос показан"
+    }    // для состояния "Вопрос показан"
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
