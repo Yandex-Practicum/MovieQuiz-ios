@@ -1,5 +1,28 @@
 import UIKit
 
+// для состояния "Вопрос показан"
+struct QuizStepViewModel {
+    let image: UIImage
+    let question: String
+    let questionNumber: String
+}
+
+// для состояния "Результат квиза"
+struct QuizResultsViewModel {
+    let title: String
+    let text: String
+    let buttonText: String
+}
+struct QuizQuestion {
+    // строка с названием фильма,
+    // совпадает с названием картинки афиши фильма в Assets
+    let image: String
+    // строка с вопросом о рейтинге фильма
+    let text: String
+    // булевое значение (true, false), правильный ответ на вопрос
+    let correctAnswer: Bool
+}
+
 final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var counterLabel: UILabel!
@@ -58,7 +81,8 @@ final class MovieQuizViewController: UIViewController {
     ]
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    
+    override  func viewDidLoad() {
         super.viewDidLoad()
         self.showNextQuestionOrResults()
     }
@@ -77,7 +101,7 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-
+    
     
     
     
@@ -133,7 +157,7 @@ final class MovieQuizViewController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             // идём в состояние "Результат квиза"
@@ -155,26 +179,5 @@ final class MovieQuizViewController: UIViewController {
         let image: UIImage
         let question: String
         let questionNumber: String
-    }    // для состояния "Вопрос показан"
-    struct QuizStepViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-    
-    // для состояния "Результат квиза"
-    struct QuizResultsViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
-    }
-    struct QuizQuestion {
-        // строка с названием фильма,
-        // совпадает с названием картинки афиши фильма в Assets
-        let image: String
-        // строка с вопросом о рейтинге фильма
-        let text: String
-        // булевое значение (true, false), правильный ответ на вопрос
-        let correctAnswer: Bool
     }
 }
