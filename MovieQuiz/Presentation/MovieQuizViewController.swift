@@ -15,7 +15,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         alertPresenter = AlertPresenter(viewController: self)
         
-        statisticService = StatisticServiceImplementation()
         
         imageView.contentMode = .scaleAspectFill
     }
@@ -70,13 +69,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    private var quizPlayed = 0
-    private var quizRecord = 0
-    private var dateRecord: String = ""
-    private var avarageAccuracy: Double = 0
-    private var allCorrectAnswers = 0
-    private var allAnswers = 0
-    
     
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
@@ -122,21 +114,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
+            statisticService = StatisticServiceImplementation()
             statisticService?.store(correct: correctAnswers, total: questionsAmount)
-//            allCorrectAnswers += correctAnswers
-//            allAnswers += questionsAmount
-//            avarageAccuracy = Double(allCorrectAnswers) / Double(allAnswers) * 100
-//            quizPlayed += 1
-            if correctAnswers > quizRecord {
-                quizRecord = correctAnswers
-                _ = Date()
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MM-yy HH:mm:ss"
-                dateRecord = dateFormatter.string(from: Date())
-            }
+            guard let stat = statisticService?.totalAccuracy,
+                  let dateRecord = statisticService?.bestGame.date,
+                  let bestGame = statisticService?.bestGame else {
+                assertionFailure("error")
+                return }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd-MM-yy HH:mm:ss"
+            let dateRecordString = dateFormatter.string(from: dateRecord)
+            
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(String(statisticService?.gamesCount ?? 0)) \nРекорд: \(quizRecord)/\(10) (\(dateRecord)) \nСредняя точность: \(String(format: "%.2f",(statisticService?.totalAccuracy ?? 0)))%",
+                text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(String(statisticService?.gamesCount ?? 0)) \nРекорд: \(bestGame.correct)/\(10) (\(dateRecordString)) \nСредняя точность: \(String(format: "%.2f", stat))%",
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel) // 3
         } else { // 2
@@ -154,7 +145,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         })
         alertPresenter?.show(with: alertModel )
         
-             }
+    }
 }
 
 
