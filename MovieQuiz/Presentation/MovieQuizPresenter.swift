@@ -50,6 +50,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.show(quiz: viewModel)
         }
+        viewController?.hideLoadingIndicator()
     }
     
     func makeResultsMessage() -> String {
