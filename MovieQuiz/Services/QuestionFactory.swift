@@ -33,7 +33,6 @@ class QuestionFactory: QuestionFactoryProtocol {
         }
     }
 
-    
     // Функция возвращает опциональную модель QuizQuestion, чтобы на случай пустого массива приложение не упало.
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
