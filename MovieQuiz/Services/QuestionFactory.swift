@@ -5,31 +5,16 @@
 //  Created by Mikhail Vostrikov on 08.04.2023.
 //
  
-import Foundation
+import UIKit
 
-    //MARK: -  Protocol
-
-protocol QuestionFactoryDelegate: AnyObject {
-    func didReceiveQuestion(_ question: QuizQuestion)
-    func didLoadDataFromServer()
-    func didFailToLoadData(with error: Error)
-}
-
-protocol QuestionFactory {
-    func requestNextQuestion()
-    func loadData ()
-}
-
-final class QuestionFactoryImpl: QuestionFactory {
-    
-    //MARK: - Properties
+class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
-    private weak var delegate: QuestionFactoryDelegate?
+    
+    weak var delegate: QuestionFactoryDelegate?
+    
     private var movies: [MostPopularMovie] = []
-    
-    // MARK: - Init
-    
-    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
+
+    init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
@@ -55,9 +40,7 @@ final class QuestionFactoryImpl: QuestionFactory {
             }
         }
     }
-}
-    
-    extension QuestionFactoryImpl {
+
         func requestNextQuestion() {
             DispatchQueue.global().async { [weak self] in
                 guard let self = self else { return }
