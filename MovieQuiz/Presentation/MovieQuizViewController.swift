@@ -5,8 +5,25 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var ButtonYes: UIButton!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
-    @IBOutlet weak var counterLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
     // MARK: - Lifecycle
+    
+    private var currentQuestionIndex = 0
+    
+    private var correctAnswers = 0
+    
+    @IBAction func noButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    @IBAction func yesButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ButtonNo.layer.masksToBounds=true
@@ -19,65 +36,50 @@ final class MovieQuizViewController: UIViewController {
         let viewModel = self.convert(model: firstQuestion)
         self.show(quiz: viewModel)
     }
-    @IBAction func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
- }
     
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-
     private let questions: [QuizQuestion] = [
-            QuizQuestion(
-                image: "The Godfather",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Dark Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Kill Bill",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Avengers",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Deadpool",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Green Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Old",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "The Ice Age Adventures of Buck Wild",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "Tesla",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "Vivarium",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false)
-        ]
+        QuizQuestion(
+            image: "The Godfather",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Dark Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Kill Bill",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Avengers",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Deadpool",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Green Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Old",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "The Ice Age Adventures of Buck Wild",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "Tesla",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "Vivarium",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false)
+    ]
     
-    private var currentQuestionIndex = 0
-    
-    private var correctAnswers = 0
-   
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -91,7 +93,7 @@ final class MovieQuizViewController: UIViewController {
             title: result.title,
             message: result.text,
             preferredStyle: .alert)
-
+        
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
@@ -100,9 +102,9 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
         }
-
+        
         alert.addAction(action)
-
+        
         self.present(alert, animated: true, completion: nil)
         
     }
@@ -127,10 +129,10 @@ final class MovieQuizViewController: UIViewController {
         ButtonYes.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.showNextQuestionOrResults()
-                self.ButtonNo.isEnabled = true
-                self.ButtonYes.isEnabled = true
-            }
+            self.showNextQuestionOrResults()
+            self.ButtonNo.isEnabled = true
+            self.ButtonYes.isEnabled = true
+        }
     }
     
     private func showNextQuestionOrResults() {
@@ -143,7 +145,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-        
+            
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             
@@ -153,9 +155,9 @@ final class MovieQuizViewController: UIViewController {
 }
 
 struct QuizQuestion {
-  let image: String
-  let text: String
-  let correctAnswer: Bool
+    let image: String
+    let text: String
+    let correctAnswer: Bool
 }
 
 struct QuizStepViewModel {
