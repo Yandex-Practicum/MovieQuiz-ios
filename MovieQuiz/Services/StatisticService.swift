@@ -43,8 +43,6 @@ final class StatisticServiceImplementation: StaticService {
             bestGame = currentBestGame
         }
         print(totalAccuracy, correct, total)
-        //        totalAccuracy = (totalAccuracy + Double(count / amount * 100)) / Double(gamesCount)
-        //        print(gamesCount, totalAccuracy, count, amount)
     }
     
     var total: Int { get  {
