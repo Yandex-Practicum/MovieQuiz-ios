@@ -8,12 +8,12 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate  {
-    let questionsCount: Int = 10
-    var currentQuestionIndex: Int = 0
+    private let questionsCount: Int = 10
+    private var currentQuestionIndex: Int = 0
     var correctAnswers: Int = 0
-    var statisticService: StatisticService?
+    private var statisticService: StatisticService?
     var questionFactory: QuestionFactory?
-    var currentQuestion: QuizQuestion?
+    private var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
     
     init() { questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -26,7 +26,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate  {
     }
     
     func resetQuestionIndex() {
-        currentQuestionIndex = 0
+        currentQuestionIndex = -2
+        switchToNextQuestion()
     }
     
     func switchToNextQuestion() {
@@ -56,7 +57,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate  {
         }
         let givenAnswer = isYes
         
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        viewController?.proceedToNextQuestionOrResults(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     func didReceiveQuestion(_ question: QuizQuestion) {
@@ -65,7 +66,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate  {
         self.viewController?.show(quiz: viewModel)
     }
     
-    func showNextQuestionOrResults () {
+    func proceedToNextQuestionOrResults () {
         self.viewController?.toggleButtonsInteraction(true)
         if self.isLastQuestion() {
             showFinalResults()

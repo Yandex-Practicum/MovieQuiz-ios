@@ -1,7 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
-    
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -10,7 +9,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
     
-    var presenter = MovieQuizPresenter()
+    private var presenter = MovieQuizPresenter()
     
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
@@ -20,6 +19,11 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         alertPresenter = AlertPresenterImpl(viewContoller: self)
+        imageView.accessibilityIdentifier = "Poster"
+                yesButton.accessibilityIdentifier = "Yes"
+        counterLabel.accessibilityIdentifier = "Index"
+        noButton.accessibilityIdentifier = "No"
+        textLabel.accessibilityIdentifier = "Game results"
         
         imageView.layer.cornerRadius = 20
         presenter.viewController = self
@@ -42,7 +46,6 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func NoButton(_ sender: UIButton) {
         presenter.noButtonClicked()
     }
-    
     // MARK: - QuestionFactoryDelegate
     
     func showNetworkError(message: String) {
@@ -86,7 +89,7 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = viewModel.questionNumber
     }
     
-    func showAnswerResult(isCorrect: Bool) {
+    func proceedToNextQuestionOrResults(isCorrect: Bool) {
         if isCorrect {
             presenter.correctAnswers += 1
         }
@@ -96,7 +99,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
-            self.presenter.showNextQuestionOrResults()
+            self.presenter.proceedToNextQuestionOrResults()
         }
     }
     
@@ -120,6 +123,7 @@ final class MovieQuizViewController: UIViewController {
     func handleFinalResults() {
         presenter.correctAnswers = 0
         presenter.resetQuestionIndex()
+        presenter.proceedToNextQuestionOrResults()
     }
 }
 
