@@ -32,13 +32,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aoe-Gg-TqN" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="338" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nQm-yX-Lqt" userLabel="Index Label">
-                                                <rect key="frame" x="338" y="0.0" width="36" height="23.5"/>
+                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -103,11 +103,11 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="ButtonNo" destination="Z5J-Qg-FuJ" id="pyr-e4-HxA"/>
-                        <outlet property="ButtonYes" destination="cyG-3N-rqP" id="bZL-8J-qzq"/>
                         <outlet property="counterLabel" destination="nQm-yX-Lqt" id="6oc-iQ-FqE"/>
                         <outlet property="imageView" destination="0VR-g6-DMc" id="FTk-zk-ngq"/>
+                        <outlet property="noButton" destination="Z5J-Qg-FuJ" id="pyr-e4-HxA"/>
                         <outlet property="textLabel" destination="nQm-yX-Lqt" id="IwR-hE-Gg8"/>
+                        <outlet property="yesButton" destination="cyG-3N-rqP" id="bZL-8J-qzq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
