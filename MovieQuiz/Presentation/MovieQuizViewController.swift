@@ -1,20 +1,12 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    
-    @IBOutlet private var imageView: UIImageView!
-    
-    @IBOutlet private var textLabel: UILabel!
-    
-    @IBOutlet private var counterLabel: UILabel!
-    
-    
+    // MARK: - Public Properties
     struct ViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    
     // вью модель для состояния "Вопрос показан"
     struct QuizStepViewModel {
         // картинка с афишей фильма с типом UIImage
@@ -24,14 +16,12 @@ final class MovieQuizViewController: UIViewController {
         // строка с порядковым номером этого вопроса (ex. "1/10")
         let questionNumber: String
     }
-    
     // для состояния "Результат квиза"
     struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
-    
     struct QuizQuestion {
         // строка с названием фильма,
         // совпадает с названием картинки афиши фильма в Assets
@@ -41,7 +31,17 @@ final class MovieQuizViewController: UIViewController {
         // булевое значение (true, false), правильный ответ на вопрос
         let correctAnswer: Bool
     }
+    //MARK: - IBOutlet
+    @IBOutlet private var imageView: UIImageView!
     
+    @IBOutlet private var textLabel: UILabel!
+    
+    @IBOutlet private var counterLabel: UILabel!
+    
+    @IBOutlet weak private var noButton: UIButton!
+    
+    @IBOutlet weak private var yesButton: UIButton!
+    //MARK: - Private Properties
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -88,26 +88,21 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     // переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
-    
-    // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel( // 1
-            image: UIImage(named: model.image) ?? UIImage(), // 2
-            question: model.text, // 3
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // 4
-        return questionStep
+        // MARK: - Pubblic Methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Прописал закругление, так как не работает через настройку layer.cornerRadius в Runtime atributes
+        yesButton.layer.cornerRadius = 15
+        noButton.layer.cornerRadius = 15
+        imageView.layer.cornerRadius = 20
+        let currentQuestion = questions[currentQuestionIndex]
+        imageView.layer.masksToBounds = true
+        show(quiz: convert(model: currentQuestion))
     }
-    
-    
-    
-    @IBOutlet weak private var noButton: UIButton!
-    
-    @IBOutlet weak private var yesButton: UIButton!
-    
+    // MARK: - IBAciton
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     //Кнопка Да
@@ -116,36 +111,32 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true //задаем константу, что по нажатию - правда
         showAnswerResult(isCorrect: givenAnswer == currentQuestsion.correctAnswer)
         //передаем в метод покраски, равен ли данный ответ правильному ответу по корректному ответу
-        
     }
-    
-    
-    
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Прописал закругление, так как не работает через настройку layer.cornerRadius в Runtime atributes
-        yesButton.layer.cornerRadius = 15
-        
-        noButton.layer.cornerRadius = 15
-        
-        let currentQuestion = questions[currentQuestionIndex]
-        show(quiz: convert(model: currentQuestion))
+    //MARK: - Private Methods
+    //Добавил метод enabledButtons(isEnabled: Bool)
+    private func enabledButtons(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
     }
-    
-    // создаем функцию для показа карточки
+    // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let questionStep = QuizStepViewModel( // 1
+            image: UIImage(named: model.image) ?? UIImage(), // 2
+            question: model.text, // 3
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
+        ) // 4
+        return questionStep
+    }
+    // создаем метод для показа карточки
     private func show(quiz step: QuizStepViewModel){
         // здесь мы заполняем нашу картинку, текст и счётчик данными
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
-    
     private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        
+        enabledButtons(isEnabled: false)
         // метод красит рамку
         if (isCorrect == true) {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
@@ -154,33 +145,30 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.showNextQuestionOrResults()
-            }
+            self.enabledButtons(isEnabled: true)
+            self.showNextQuestionOrResults()
+        }
     }
-    
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // 1
+        imageView.layer.borderWidth = 0
+        
+        if currentQuestionIndex == questions.count - 1 {
             // идём в состояние "Результат квиза"
             let text = "Ваш результат: \(correctAnswers) из 10"
-                        let viewModel = QuizResultsViewModel(
-                            title: "Этот раунд закончен!",
-                            text: text,
-                            buttonText: "Сыграть еще раз")
-            // Не нравится,что рамка остается после прошлого ответа, тут убираю
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 0
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд закончен!",
+                text: text,
+                buttonText: "Сыграть еще раз")
             show(quiz: viewModel)
         }
         else { // 2
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
             let nextQuestion = questions[currentQuestionIndex]
-                  let viewModel = convert(model: nextQuestion)
+            let viewModel = convert(model: nextQuestion)
             // Не нравится,что рамка остается после прошлого ответа, тут убираю
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 0
             show(quiz: viewModel)
         }
     }
@@ -190,7 +178,6 @@ final class MovieQuizViewController: UIViewController {
         let alert = UIAlertController(title: result.title,
                                       message: result.text,
                                       preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
-        
         // создаём для алерта кнопку с действием
         // в замыкании пишем, что должно происходить при нажатии на кнопку
         // константа с кнопкой для системного алерта
@@ -198,15 +185,12 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             let firstQuestion = self.questions[self.currentQuestionIndex]
-                        let viewModel = self.convert(model: firstQuestion)
-                        self.show(quiz: viewModel)
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
         }
-        
         // добавляем в алерт кнопку
         alert.addAction(action)
-        
         // показываем всплывающее окно
         self.present(alert, animated: true, completion: nil)
     }
-
 }
