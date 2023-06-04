@@ -27,32 +27,33 @@ final class MovieQuizViewController: UIViewController {
         // берём текущий вопрос из массива вопросов по индексу текущего вопроса
         let currentQuestion = questions[currentQuestionIndex]
         
-        let alert = UIAlertController(
-            title: "Этот раунд окончен!",
-            message: "Ваш результат ???",
-            preferredStyle: .alert)
+       // let alert = UIAlertController(
+       //     title: "Этот раунд окончен!",
+         //   message: "Ваш результат ???",
+           // preferredStyle: .alert)
 
-        let action = UIAlertAction(title: "Сыграть еще раз", style: .default) { _ in
-            self.currentQuestionIndex = 0
+        // let action = UIAlertAction(title: "Сыграть еще раз", style: .default) { _ in
+           // self.currentQuestionIndex = 0
             // сбрасываем переменную с количеством правильных ответов
-            self.correctAnswers = 0
+           // self.correctAnswers = 0
             
             // заново показываем первый вопрос
-            let firstQuestion = self.questions[self.currentQuestionIndex]
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
-        }
+            //let firstQuestion = self.questions[self.currentQuestionIndex]
+            //let viewModel = self.convert(model: firstQuestion)
+            // self.show(quiz: viewModel)
+        // }
 
-        alert.addAction(action)
+     //   alert.addAction(action)
 
-        self.present(alert, animated: true, completion: nil)
-      
+       // self.present(alert, animated: true, completion: nil)
+        let quizStepViewModel = convert(model: currentQuestion)
+        self.show(quiz: quizStepViewModel)
     }
     
     
     
     
-    // массив со списком моковых вопросов
+    // массив со списком моковых вопросов.
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -166,9 +167,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8 // 2
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.showNextQuestionOrResults()
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                    self?.imageView.layer.borderColor = UIColor.clear.cgColor
+                    self?.showNextQuestionOrResults()
+                }
         }
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
