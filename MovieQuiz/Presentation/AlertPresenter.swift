@@ -18,7 +18,7 @@ class AlertPresenter: AlertPresenterProtocol {
     }
     func show(with model: AlertModel) {
         let alert = UIAlertController(title: model.title,
-                                      message: model.messege,
+                                      message: model.message,
                                       preferredStyle: .alert)
         let ation = UIAlertAction(title: model.buttonText, style: .default) { _ in
             model.comletion()
