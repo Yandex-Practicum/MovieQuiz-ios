@@ -114,6 +114,7 @@ final class MovieQuizViewController: UIViewController {
     private func reset() {
         currentQuestionIndex = 0
         correctAnswers = 0
+        imageView.layer.borderWidth = 0
         let first = convert(model: questions[currentQuestionIndex])
         show(quiz: first)
     }
