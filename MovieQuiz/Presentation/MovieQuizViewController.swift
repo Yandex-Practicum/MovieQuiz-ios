@@ -94,7 +94,7 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
-            let results = QuizResultsViewModel(title: "Раунд окончен!",
+            let results = QuizResultsViewModel(title: "Этот раунд окончен!",
                                            text: "Ваш результат: \(correctAnswers)/10",
                                            buttonText: "Сыграть ещё раз")
             show(quiz: results)
