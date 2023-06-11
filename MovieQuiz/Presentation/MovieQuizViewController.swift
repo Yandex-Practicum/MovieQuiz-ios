@@ -91,6 +91,9 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func imageWithBorder(result: Bool) {
+        if (result) {
+            correctAnswers += 1
+        }
         let color = result ? UIColor.ypGreen : UIColor.ypRed
         imageView.layer.masksToBounds = true
         imageView.layer.borderColor = color.cgColor
@@ -99,9 +102,36 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
-        currentQuestionIndex+=1
-        renderQuestion(currentIndex: currentQuestionIndex)
+        
+        imageView.layer.borderWidth = 0
+        
+        if currentQuestionIndex == questions.count - 1 {
+            let quizResultsViewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswers)/\(questions.count)", buttonText: "Сыграть еще раз")
+            show(quiz: quizResultsViewModel)
+        } else {
+            currentQuestionIndex += 1
+            
+            renderQuestion(currentIndex: currentQuestionIndex)
+        }
     }
+    
+    private func show(quiz result: QuizResultsViewModel) {
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+        
+                // заново показываем первый вопрос
+                self.renderQuestion(currentIndex: self.currentQuestionIndex)
+            }
+            alert.addAction(action)
+        
+            self.present(alert, animated: true, completion: nil)
+    }
+    
 }
 
 struct QuizQuestion {
@@ -122,7 +152,12 @@ struct QuizStepViewModel {
   let questionNumber: String
 }
 
-extension UIImage {
-    
+struct QuizResultsViewModel {
+  
+  let title: String
+  
+  let text: String
+  
+  let buttonText: String
 }
 
