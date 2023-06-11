@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -51,7 +51,7 @@
                                             <constraint firstAttribute="width" secondItem="Mwh-6m-iZY" secondAttribute="height" multiplier="2:3" id="g3s-Qg-6ZF"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-w5-iWG" userLabel="Question Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 7?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-w5-iWG" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
@@ -101,17 +101,24 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="h9Q-X2-sYY">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <color key="color" name="YP Gray"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="UaZ-Yx-aav" secondAttribute="bottom" id="2cT-dF-Jza"/>
+                            <constraint firstItem="h9Q-X2-sYY" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="DgX-Ax-qvW"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="UaZ-Yx-aav" secondAttribute="trailing" constant="20" id="Q23-CC-42Y"/>
+                            <constraint firstItem="h9Q-X2-sYY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Qxa-uv-FL6"/>
                             <constraint firstItem="UaZ-Yx-aav" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="bkJ-ER-RM5"/>
                             <constraint firstItem="UaZ-Yx-aav" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="zlf-cC-0uA"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="h9Q-X2-sYY" id="xK8-dD-GbB"/>
                         <outlet property="counterLabel" destination="eP3-Ib-mjJ" id="unw-4U-Nds"/>
                         <outlet property="imageView" destination="Mwh-6m-iZY" id="NNg-vR-NH0"/>
                         <outlet property="noButton" destination="vRC-7p-ZG6" id="YZ9-kH-Wiw"/>
@@ -127,6 +134,9 @@
     <resources>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP Gray">
+            <color red="0.90200001001358032" green="0.9100000262260437" blue="0.92199999094009399" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
