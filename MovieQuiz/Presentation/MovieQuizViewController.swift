@@ -1,7 +1,10 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
+    
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -19,7 +22,6 @@ final class MovieQuizViewController: UIViewController {
         return .lightContent
     }
 
-    
     struct QuizQuestion {
         let image: String
         let text: String
@@ -96,11 +98,15 @@ final class MovieQuizViewController: UIViewController {
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
+            self.imageView.layer.borderWidth = 0
         }
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
     }
     
     private func showNextQuestionOrResults() {
@@ -118,6 +124,8 @@ final class MovieQuizViewController: UIViewController {
             
             show(quiz: viewModel)
         }
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -158,6 +166,9 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         
         present(alert, animated: true, completion: nil)
+        
+        self.yesButton.isEnabled = true
+        self.noButton.isEnabled = true
     }
 }
 
