@@ -21,10 +21,10 @@ private struct QuizResultsViewModel {
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     private var currentQuestionIndex = 0
@@ -45,6 +45,7 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.cornerRadius = 20
         addFontInCode()
         let first = convert(model: questions[currentQuestionIndex])
         show(quiz: first)
@@ -81,15 +82,20 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         correctAnswers += isCorrect ? 1 : 0
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+            self.imageView.layer.borderWidth = 0
         }
     }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let results = QuizResultsViewModel(title: "Этот раунд окончен!",
-                                           text: "Ваш результат: \(correctAnswers)",
+                                           text: "Ваш результат: \(correctAnswers)/10",
                                            buttonText: "Сыграть ещё раз")
             show(quiz: results)
         }else {
@@ -114,13 +120,12 @@ final class MovieQuizViewController: UIViewController {
     private func reset() {
         currentQuestionIndex = 0
         correctAnswers = 0
-        imageView.layer.borderWidth = 0
         let first = convert(model: questions[currentQuestionIndex])
         show(quiz: first)
     }
     private func addFontInCode() {
-        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Bold", size: 15)
-        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Bold", size: 15)
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
         titleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
