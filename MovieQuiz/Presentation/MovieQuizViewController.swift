@@ -24,7 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-
+        
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
@@ -66,7 +66,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     }
     
     private func showNetworkError(message: String) {
-        hideLoadingIndicator() // скрываем индикатор загрузки
+        hideLoadingIndicator()
         let alert: AlertModel = AlertModel(
             title: "Ошибка",
             message: message,
@@ -76,7 +76,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 
-                self.questionFactory?.requestNextQuestion()
+                self.questionFactory?.loadData()
             }
         alertPresenter?.showAlert(alert)
     }

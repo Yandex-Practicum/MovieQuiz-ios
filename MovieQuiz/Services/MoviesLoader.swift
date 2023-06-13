@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MoviesLoading {
-    func loadMovies(handler: @escaping (Result<MostPopularMovie, Error>) -> Void)
+    func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
 
 struct MoviesLoader: MoviesLoading {
@@ -26,12 +26,12 @@ struct MoviesLoader: MoviesLoading {
         return url
     }
     
-    func loadMovies(handler: @escaping (Result<MostPopularMovie, Error>) -> Void) {
+    func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
             switch result {
             case .success(let data):
                 do {
-                    let mostPopularMovies = try JSONDecoder().decode(MostPopularMovie.self, from: data)
+                    let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
                     handler(.success(mostPopularMovies))
                 }
                 catch {

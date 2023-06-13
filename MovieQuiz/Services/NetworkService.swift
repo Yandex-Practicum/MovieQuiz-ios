@@ -7,6 +7,14 @@
 
 import Foundation
 
+struct ApiErrorMessage: LocalizedError {
+    var errorDescription: String?
+    
+    init(_ errorDescription: String? = nil) {
+        self.errorDescription = errorDescription
+    }
+}
+
 struct NetworkClient {
     
     private enum NetworkError: Error {
