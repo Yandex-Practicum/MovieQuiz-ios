@@ -61,7 +61,6 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var currentQuestion: QuizQuestion? = nil
-    private var isEnabled: Bool = false
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -100,7 +99,7 @@ final class MovieQuizViewController: UIViewController {
         if (result) {
             correctAnswers += 1
         }
-        let color = result ? UIColor.ypGreen : UIColor.ypRed
+        let color: UIColor = result ? .ypGreen : .ypRed
         imageView.layer.masksToBounds = true
         imageView.layer.borderColor = color.cgColor
         imageView.layer.cornerRadius = 20.0
