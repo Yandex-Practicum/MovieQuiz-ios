@@ -53,12 +53,15 @@ final class MovieQuizViewController: UIViewController {
         let result = currentQuestion!.correctAnswer == false
         showAnswerResult(isCorrect: result)
     }
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var counterLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var currentQuestion: QuizQuestion? = nil
+    private var isEnabled: Bool = false
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -77,14 +80,17 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         imageWithBorder(result: isCorrect)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
-           // код, который мы хотим вызвать через 1 секунду
             showNextQuestionOrResults()
         }
     }
     
     private func renderQuestion(currentIndex: Int){
+        imageView.layer.cornerRadius = 20.0
+        imageView.layer.borderWidth = 0
         currentQuestion = questions[currentIndex]
         let quizStepViewModel = convert(model: currentQuestion!)
         show(quiz: quizStepViewModel)
@@ -102,15 +108,13 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
-        
-        imageView.layer.borderWidth = 0
-        
         if currentQuestionIndex == questions.count - 1 {
             let quizResultsViewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswers)/\(questions.count)", buttonText: "Сыграть еще раз")
             show(quiz: quizResultsViewModel)
         } else {
             currentQuestionIndex += 1
-            
+            yesButton.isEnabled = true
+            noButton.isEnabled = true
             renderQuestion(currentIndex: currentQuestionIndex)
         }
     }
@@ -124,7 +128,6 @@ final class MovieQuizViewController: UIViewController {
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
         
-                // заново показываем первый вопрос
                 self.renderQuestion(currentIndex: self.currentQuestionIndex)
             }
             alert.addAction(action)
