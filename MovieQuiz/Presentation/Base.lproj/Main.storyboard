@@ -74,6 +74,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pMH-LS-6AX"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PWI-AN-mp9" userLabel="Yes button">
                                                 <rect key="frame" x="205" y="0.0" width="185" height="60"/>
@@ -88,6 +91,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mln-ig-fX5"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -95,6 +101,9 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="Xso-8e-AFG" firstAttribute="leading" secondItem="eYg-Nj-h2y" secondAttribute="leading" id="H6f-zC-clx"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -106,6 +115,11 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="RZ5-0W-HTY" secondAttribute="trailing" constant="20" id="yoF-cH-BuL"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="V6R-bl-flY" id="3LI-UQ-qU0"/>
+                        <outlet property="imageView" destination="alx-7f-JEN" id="SCS-Jm-yWc"/>
+                        <outlet property="textLabel" destination="Xso-8e-AFG" id="Afx-sZ-Zvu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
