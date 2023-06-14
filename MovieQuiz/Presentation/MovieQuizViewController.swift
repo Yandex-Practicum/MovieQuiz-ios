@@ -107,13 +107,13 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
         if currentQuestionIndex == questions.count - 1 {
             let quizResultsViewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswers)/\(questions.count)", buttonText: "Сыграть еще раз")
             show(quiz: quizResultsViewModel)
         } else {
             currentQuestionIndex += 1
-            yesButton.isEnabled = true
-            noButton.isEnabled = true
             renderQuestion(currentIndex: currentQuestionIndex)
         }
     }
