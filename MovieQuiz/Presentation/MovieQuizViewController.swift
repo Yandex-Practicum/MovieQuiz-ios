@@ -29,6 +29,12 @@ final class MovieQuizViewController: UIViewController {
         let text: String
         let correctAnswer: Bool
     }
+    
+    struct QuizResultsViewModel {
+        let title: String
+        let text: String
+        let buttonText: String
+    }
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private let questions: [QuizQuestion] = [
@@ -93,9 +99,12 @@ final class MovieQuizViewController: UIViewController {
     // метод содержит логику перехода в один из сценариев
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
-            let action = UIAlertAction(title: "Сыграть ещё раз", style: .default) { _ in
-              // код, который сбрасывает игру и показывает первый вопрос
-            }
+            let text = "Ваш результат: \(correctAnswers)/10"
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
@@ -111,6 +120,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 20
         if isCorrect == true {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
+            correctAnswers+=1
         } else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
@@ -121,6 +131,24 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
+    // метод показывает результаты раунда квиза
+    private func show(quiz result: QuizResultsViewModel) {
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
