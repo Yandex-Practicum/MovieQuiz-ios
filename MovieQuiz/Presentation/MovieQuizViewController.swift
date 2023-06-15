@@ -2,6 +2,11 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     @IBAction private func noButtonClicked(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
@@ -111,6 +116,8 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
         }
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     // метод меняет цвет рамки
@@ -129,6 +136,8 @@ final class MovieQuizViewController: UIViewController {
             self.imageView.layer.borderColor = UIColor.clear.cgColor
             self.showNextQuestionOrResults()
         }
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
     }
     
     // метод показывает результаты раунда квиза
