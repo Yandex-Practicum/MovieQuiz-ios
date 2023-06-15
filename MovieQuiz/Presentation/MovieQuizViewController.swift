@@ -153,7 +153,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // выводим информацию на экран для 1 вопроса
+        // выводим информацию на экран для первого вопроса
         let firstStep = self.questions[self.currentQuestionIndex]
         let viewModel = self.convert(model: firstStep)
         show(quiz: viewModel)
