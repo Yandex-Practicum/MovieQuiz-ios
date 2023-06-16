@@ -19,6 +19,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        presenter.viewController = self
+        
         self.imageView.layer.masksToBounds = true
         self.imageView.layer.cornerRadius = 20
         
@@ -50,27 +52,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        
-        if currentQuestion.correctAnswer == true {
-            self.showAnswerResult(isCorrect: true)
-        } else {
-            self.showAnswerResult(isCorrect: false)
-        }
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        
-        if currentQuestion.correctAnswer == false {
-            self.showAnswerResult(isCorrect: true)
-        } else {
-            self.showAnswerResult(isCorrect: false)
-        }
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
     
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
@@ -78,19 +66,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        /*
-        if self.currentQuestionIndex < self.questionsAmount - 1 {
-            self.currentQuestionIndex += 1
-            questionFactory?.requestNextQuestion()
-        } else {
-            let title = "Этот раунд окончен!"
-            let message =
-                "Ваш результат: \(self.correctAnswers)/\(self.questionsAmount)\n" +
-                "Количество сыгранных квизов: \(self.currentQuestionIndex + 1)\n"
-            let buttonText = "Сыграть ещё раз"
-            self.show(quiz: QuizResultsViewModel(title: title, text: message, buttonText: buttonText))
-        }
-        */
         if self.presenter.isLastQuestion() {
             let title = "Этот раунд окончен!"
             let message =
@@ -103,22 +78,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     }
-    
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
-    /*
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
-    */
-    
-    /*
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
-    */
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
@@ -171,7 +130,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             self.correctAnswers += 1
             self.imageView.layer.borderColor = UIColor(named: "YP Green")?.cgColor
