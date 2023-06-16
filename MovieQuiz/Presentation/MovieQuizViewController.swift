@@ -145,6 +145,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 title: "Этот раунд окончен!",
                 text: "Ваш результат \(correctAnswers)/10 \nКоличество сыгранных квизов: \(String(statisticService?.gamesCount ?? 0)) \nРекорд: \(bestGame.correct)/\(10) (\(dateRecordString)) \nСредняя точность: \(String(format: "%.2f", stat))%",
                 buttonText: "Сыграть ещё раз")
+            
             show(quiz: viewModel) // 3
         } else { // 2
             currentQuestionIndex += 1
@@ -158,7 +159,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             questionFactory?.requestNextQuestion()
-            
             
         })
         alertPresenter?.show(with: alertModel )
