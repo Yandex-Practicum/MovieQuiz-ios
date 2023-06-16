@@ -2,27 +2,6 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    @IBOutlet private weak var noButton: UIButton!
-    @IBOutlet private weak var yesButton: UIButton!
-    @IBAction private func noButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var textLabel: UILabel!
-    @IBOutlet private weak var counterLabel: UILabel!
-    
     struct QuizStepViewModel {
         let image: UIImage
         let question: String
@@ -85,6 +64,34 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false)
     ]
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    @IBOutlet private weak var noButton: UIButton!
+    
+    @IBOutlet private weak var yesButton: UIButton!
+    
+    @IBAction private func noButtonClicked(_ sender: Any) {
+        responseProcessing (answer:false)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: Any) {
+        responseProcessing (answer:true)
+    }
+    
+    @IBOutlet private weak var imageView: UIImageView!
+    
+    @IBOutlet private weak var textLabel: UILabel!
+    
+    @IBOutlet private weak var counterLabel: UILabel!
+    
+    // метод обрабатывает ответ
+    private func responseProcessing (answer:Bool){
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer:Bool = answer
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
     // метод конвертирует моковые данные во вью модель
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel (
