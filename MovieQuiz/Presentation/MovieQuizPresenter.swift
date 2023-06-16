@@ -14,6 +14,9 @@ final class MovieQuizPresenter {
     var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
     
+    var correctAnswers = 0
+    var questionFactory: QuestionFactoryProtocol?
+    
     func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
@@ -43,22 +46,47 @@ final class MovieQuizPresenter {
     }
     
     func yesButtonClicked() {
-        guard let currentQuestion = currentQuestion else { // ОШИБКА КОМПИЛЯЦИИ 1: `currentQuestion` не определён
-            return
-        }
-        
-        let givenAnswer = true
-        
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        didAnswer(isYes: true)
     }
     
     func noButtonClicked() {
+        didAnswer(isYes: false)
+    }
+    
+    private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
         }
         
-        let givenAnswer = false
+        let givenAnswer = isYes
         
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func didRecieveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
+    
+    func showNextQuestionOrResults() {
+        if self.isLastQuestion() {
+            let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+                viewController?.show(quiz: viewModel)
+        } else {
+            self.switchToNextQuestion()
+            questionFactory?.requestNextQuestion()
+        }
     }
 }
