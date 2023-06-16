@@ -80,7 +80,7 @@ final class StatisticServiceImplementation: StatisticService {
         self.gamesCount += 1
         self.totalAccuracy = Double(count * 100 / 10)
         
-        let newRecord = GameRecord(correct: count, total: amount + 1, date: Date())
+        let newRecord = GameRecord(correct: count, total: amount, date: Date())
         
         if self.bestGame.compare(other: newRecord) == true {
             self.bestGame = newRecord
