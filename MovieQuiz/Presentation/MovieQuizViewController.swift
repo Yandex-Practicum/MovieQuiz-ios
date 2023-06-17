@@ -1,26 +1,23 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
-    private var statisticService: StatisticService?
-    
-    @IBOutlet private var counterLabel: UILabel!
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
-    
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
+
     private var presenter: MovieQuizPresenter!
-    
+
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = MovieQuizPresenter(viewController: self)
         
-        self.imageView.layer.masksToBounds = true
         self.imageView.layer.cornerRadius = 20
-        
-        statisticService = StatisticServiceImplementation()
-        
-        showLoadingIndicator()
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -31,7 +28,7 @@ final class MovieQuizViewController: UIViewController {
         presenter.noButtonClicked()
     }
     
-    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    // MARK: - Private functions
 
     func show(quiz step: QuizStepViewModel) {
         self.counterLabel.text = step.questionNumber
@@ -40,58 +37,32 @@ final class MovieQuizViewController: UIViewController {
     }
     
     func show(quiz result: QuizResultsViewModel) {
-        let action: (() -> Void) = { [weak self] in
-            guard let self = self else { return }
-            
-            self.presenter.restartGame()
-        }
+        let message = presenter.makeResultsMessage()
         
-        self.statisticService?.store(correct: presenter.correctAnswers, total: presenter.getQuestionAmount())
-        
-        let message: String
-        
-        if let gamesCount = self.statisticService?.gamesCount,
-           let correct = self.statisticService?.bestGame.correct,
-           let total = self.statisticService?.bestGame.total,
-           let date = self.statisticService?.bestGame.date,
-           let totalAccuracy = self.statisticService?.totalAccuracy {
-            message =
-            "Ваш результат: \(presenter.correctAnswers)/\(presenter.getQuestionAmount())\n" +
-          "Количество сыгранных квизов: \(gamesCount)\n" +
-            "Рекорд: \(correct)/\(total) (\(date.dateTimeString))\n" +
-          "Средняя точность: \(String(format: "%.2f", totalAccuracy))%"
-        } else {
-            message = result.text
-        }
-        
-        let alertModel = AlertModel(
+        let alert = UIAlertController(
             title: result.title,
             message: message,
-            buttonText: result.buttonText,
-            completion: action)
+            preferredStyle: .alert)
+            
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                
+                self.presenter.restartGame()
+        }
         
-        let alertPresenter = AlertPresenter(controller: self, model: alertModel)
-        alertPresenter.run()
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-        
-        if isCorrect {
-            imageView.layer.borderColor = UIColor(named: "YP Green")?.cgColor
-        } else {
-            imageView.layer.borderColor = UIColor(named: "YP Red")?.cgColor
-        }
-        
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            
-            self.imageView.layer.borderWidth = 0
-            
-            self.presenter.showNextQuestionOrResults()
-        }
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor(named: "YP Green")?.cgColor : UIColor(named: "YP Red")?.cgColor
+    }
+    
+    func hideImageBorder() {
+        imageView.layer.borderWidth = 0
     }
     
     func showLoadingIndicator() {
