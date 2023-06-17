@@ -16,7 +16,7 @@ protocol StatisticService {
     func store(correct count: Int, total amount: Int) //метод для сохранения текущего результата игры
 }
 
-final class StatisticServiceImplementation: StatisticService {//класс для ведения статистики
+final class StatisticServiceImplementation: StatisticService { //класс для ведения статистики
     
     private let userDefaults = UserDefaults.standard //конст чтобы каждый раз при работе с User Defaults не обращаться к standard
     private enum Keys: String { //ключи для всех сущностей для сохранения в User Defaults через enum, более безопасно т.к. у кейсов можно просто брать rawValue. Тем самым снижается вероятность ошибки в строковых переменных, а ключ будет легче переименовать.
@@ -78,8 +78,8 @@ final class StatisticServiceImplementation: StatisticService {//класс дл�
     //MARK: Function //реализовать функцию сохранения лучшего результата store (с проверкой на то, что новый результат лучше сохранённого в User Defaults)
     
     func store(correct count: Int, total amount: Int) {
-        correct += count
-        total += amount
+        correct += count // сохранить корректные ответы за все время
+        total += amount // сохранить количество вопросов за все время
         gamesCount += 1
         
         let currentGame = GameRecord(correct: count, total: amount, date: Date())

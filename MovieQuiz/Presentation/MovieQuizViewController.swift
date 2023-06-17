@@ -9,25 +9,29 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak private var imageView: UIImageView!
     
     private var correctAnswers = 0
-    
     private var currentQuestionIndex = 0
+    private var numberOfRounds = 0
+    
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    
-    
+    private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+        alertPresenter = AlertPresenter(viewController: self)
+        statisticService = StatisticServiceImplementation()
         
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 1 //0?
         imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 6 //20?
         
     }
     
@@ -74,13 +78,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+            image: UIImage(named: model.image) ?? UIImage(),// распаковываем картинку
+            question: model.text,// берём текст вопроса
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")// высчитываем номер вопроса
         return questionStep
     }
     
-    
+    // приватный метод для показа результатов раунда квиза (заполняем нашу картинку, текст и счётчик данными), принимает вью модель QuizResultsViewModel и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -88,31 +92,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show (quiz result: QuizResultsViewModel) {
-        let action: () -> Void = {[weak self] in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
-        }
-        let alertModel  = AlertModel(
-            title: result.title,
-            message: result.text,
-            buttonText: result.buttonText,
-            completion: action)
+    statisticService?.store(correct: correctAnswers, total: questionsAmount)
+
+             let alertModel  = AlertModel(
+             title: result.title,
+             message: result.text,
+             buttonText: result.buttonText, completion: { [weak self] in
+                 guard let self = self else { return }
+                 self.currentQuestionIndex = 0
+                 self.correctAnswers = 0// скидываем счётчик правильных ответов
+                 self.questionFactory?.requestNextQuestion() // заново показываем первый вопрос
+             }
         
-        let alertPresenter = AlertPresenter(controller: self, model: alertModel)
-        alertPresenter.run()
-    }
+        self.alertPresenter?.showAlert(alertModel)
+     }
     
     private func showAnswerResult(isCorrect: Bool, sender: UIButton) {
         if isCorrect {
             correctAnswers += 1
         }
+    
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
@@ -120,19 +124,34 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func showNextQuestionOrResults() {
-        if currentQuestionIndex < questionsAmount - 1 {
-            currentQuestionIndex += 1
-            self.questionFactory?.requestNextQuestion()
-        } else {
-            let title = "Этот раунд окончен!"
-            let message =
-            "Ваш результат: \(correctAnswers)/\(questionsAmount)\n" +
-            "Количество сыгранных квизов: \(currentQuestionIndex + 1)\n"
-            let buttonText = "Сыграть еще раз"
-            self.show(quiz: QuizResultsViewModel(title: title, text: message, buttonText: buttonText))
-        }
-    }
+        private func showNextQuestionOrResults() {
+            yesButton.isEnabled = true
+            noButton.isEnabled = true
+        if currentQuestionIndex == questionsAmount - 1 {
+                    guard let statisticService = statisticService else { return }
+                    statisticService.store(correct: correctAnswers, total: questionsAmount)
+                    let bestGameRes = "\(statisticService.bestGame.correct)/\(statisticService.bestGame.total)"
+                    let text = """
+                    Ваш результат: \(correctAnswers) из \(questionsAmount)
+                    Количество сыгранных квизов:\(statisticService.gamesCount)
+                    Рекорд: \(bestGameRes)/ \(statisticService.bestGame.date.dateTimeString)
+                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy) + "%")
+                    """
+                    let viewModel = QuizResultsViewModel(
+                        title: "Этот раунд окончен!",
+                        text: text,
+                        buttonText: "Сыграть ещё раз")
+        show(quiz: viewModel)
+                } else {
+                    currentQuestionIndex += 1
+        questionFactory?.requestNextQuestion()
+                }
+            }
+//        statisticService?.store(correct: correctAnswers, total: questionsAmount)
+//        Количество сыграных квизов: \(statisticService?.gamesCount ?? 1)
+//                    Рекорд: \(statisticService?.bestGame.correct ?? 0)/\(statisticService?.bestGame.total ?? 10) \(statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString)
+//                    Cредняя точность: \(statisticService?.totalAccurancy ?? 0)%
+//                    """
     
     
 }

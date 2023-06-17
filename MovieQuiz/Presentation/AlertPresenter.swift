@@ -8,26 +8,33 @@
 import Foundation
 import UIKit
 
+protocol AlertPresenterProtocol {
+    func showAlert(_ model: AlertModel)
+}
 
-class AlertPresenter {
+final class AlertPresenter: AlertPresenterProtocol {
     
-    private let controller: AnyObject
-    private let model: AlertModel
-    private let alert: UIAlertController
+    private weak var viewController: UIViewController?
     
-    init(controller: AnyObject, model: AlertModel) {
-        self.controller = controller
-        self.model = model
-        self.alert = UIAlertController(title: self.model.title, message: self.model.message, preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: self.model.buttonText, style: .default) {[weak self] _ in
-            self?.model.completion()
-        }
-        alert.addAction(action)
+    init(viewController: UIViewController? = nil) {
+        self.viewController = viewController
     }
     
-    func run() -> Void {
-        controller.present(self.alert, animated: true, completion: nil)
+    func showAlert(_ model: AlertModel) {
+        let alertController = UIAlertController(
+            title: model.title,
+            message: model.message,
+            preferredStyle: .alert)
+        
+        
+        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in model.completion()
+            
+        }
+        
+        alertController.addAction(action)
+        
+        viewController?.present(alertController, animated: true)
+        
     }
 }
 
@@ -41,16 +48,16 @@ class AlertPresenter {
  Инъектируйте контроллер, на котором нужно отобразить алерт, в AlertPresenter.
  
  let action = UIAlertAction(title: result.buttonText, style: .default) {[weak self] _ in
-    guard let self = self else { return }
-    self.currentQuestionIndex = 0
-    self.correctAnswers = 0
-    
-    self.questionFactory?.requestNextQuestion()
-    
-}
-
-alert.addAction(action)
-self.present(alert, animated: true, completion: nil) */
+ guard let self = self else { return }
+ self.currentQuestionIndex = 0
+ self.correctAnswers = 0
+ 
+ self.questionFactory?.requestNextQuestion()
+ 
+ }
+ 
+ alert.addAction(action)
+ self.present(alert, animated: true, completion: nil) */
 
 
 
