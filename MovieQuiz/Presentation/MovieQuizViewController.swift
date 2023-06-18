@@ -102,8 +102,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                  self.currentQuestionIndex = 0
                  self.correctAnswers = 0// скидываем счётчик правильных ответов
                  self.questionFactory?.requestNextQuestion() // заново показываем первый вопрос
-             }
-        
+             } )
         self.alertPresenter?.showAlert(alertModel)
      }
     
@@ -116,7 +115,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
@@ -125,16 +124,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
         private func showNextQuestionOrResults() {
-            yesButton.isEnabled = true
-            noButton.isEnabled = true
+            
         if currentQuestionIndex == questionsAmount - 1 {
                     guard let statisticService = statisticService else { return }
-                    statisticService.store(correct: correctAnswers, total: questionsAmount)
-                    let bestGameRes = "\(statisticService.bestGame.correct)/\(statisticService.bestGame.total)"
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+
                     let text = """
                     Ваш результат: \(correctAnswers) из \(questionsAmount)
                     Количество сыгранных квизов:\(statisticService.gamesCount)
-                    Рекорд: \(bestGameRes)/ \(statisticService.bestGame.date.dateTimeString)
+                    Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total)(\(statisticService.bestGame.date.dateTimeString))
                     Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy) + "%")
                     """
                     let viewModel = QuizResultsViewModel(
@@ -147,13 +145,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
                 }
             }
-//        statisticService?.store(correct: correctAnswers, total: questionsAmount)
-//        Количество сыграных квизов: \(statisticService?.gamesCount ?? 1)
-//                    Рекорд: \(statisticService?.bestGame.correct ?? 0)/\(statisticService?.bestGame.total ?? 10) \(statisticService?.bestGame.date.dateTimeString ?? Date().dateTimeString)
-//                    Cредняя точность: \(statisticService?.totalAccurancy ?? 0)%
-//                    """
-    
-    
 }
 
 
