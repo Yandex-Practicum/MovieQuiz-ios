@@ -15,7 +15,7 @@ struct GameRecord: Codable, Comparable {
     //функция оператора сравнения < между двумя объектами типа GameRecord
     static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         return lhs.correct < rhs.correct //сравнение свойств correct каждого объекта GameRecord и возвращает true, если левый операнд меньше правого, и false в противном случае.
-        }
+    }
 }
 
 
