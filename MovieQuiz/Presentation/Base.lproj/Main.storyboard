@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -99,7 +100,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
+
                                                     <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7I5-1L-dKx"/>
+
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cPD-3V-OUk" userLabel="YesButton">
@@ -118,7 +121,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
+
                                                     <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tu6-Tw-IRc"/>
+
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -141,11 +146,13 @@
                         </constraints>
                     </view>
                     <connections>
+
                         <outlet property="counterLabel" destination="1au-R5-P4y" id="9ky-c4-Tp1"/>
                         <outlet property="imageView" destination="cbE-G5-OwO" id="dnH-47-fug"/>
                         <outlet property="noButton" destination="n54-sJ-Fb2" id="OlA-zm-zJS"/>
                         <outlet property="textLabel" destination="Cv9-hO-CKg" id="zFC-jr-ud4"/>
                         <outlet property="yesButton" destination="cPD-3V-OUk" id="Q1N-Yu-iSE"/>
+
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
