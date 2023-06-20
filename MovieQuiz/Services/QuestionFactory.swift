@@ -4,7 +4,6 @@
 //
 //  Created by Василий on 10.06.2023.
 //
-
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol{
@@ -74,4 +73,3 @@ class QuestionFactory: QuestionFactoryProtocol{
     
     
 }
-

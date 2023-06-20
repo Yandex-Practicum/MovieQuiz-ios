@@ -4,7 +4,6 @@
 //
 //  Created by Василий on 14.06.2023.
 //
-
 import Foundation
 
 struct BestGame: Codable {

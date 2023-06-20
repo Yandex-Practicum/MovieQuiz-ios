@@ -4,7 +4,6 @@
 //
 //  Created by Василий on 11.06.2023.
 //
-
 import Foundation
 
 protocol QuestionFactoryDelegate: AnyObject {               // 1
