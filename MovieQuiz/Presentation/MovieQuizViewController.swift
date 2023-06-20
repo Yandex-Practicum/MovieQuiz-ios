@@ -49,7 +49,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true
         let isCorrect = givenAnswer == currentQuestion.correctAnswer
         
-        sender.isEnabled = false
+        yesButtonOutlet.isEnabled = false
         noButtonOutlet.isEnabled = false
         showAnswerResult(isCorrect: isCorrect, sender: sender)
     }
@@ -61,7 +61,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         let isCorrect = givenAnswer == currentQuestion.correctAnswer
         
-        sender.isEnabled = false
+        noButtonOutlet.isEnabled = false
         yesButtonOutlet.isEnabled = false
         showAnswerResult(isCorrect: isCorrect, sender: sender)
     }
@@ -112,7 +112,8 @@ final class MovieQuizViewController: UIViewController {
             guard let self = self else { return }
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
-            sender.isEnabled = true
+            self.noButtonOutlet.isEnabled = true
+            self.yesButtonOutlet.isEnabled = true
         }
     }
     
