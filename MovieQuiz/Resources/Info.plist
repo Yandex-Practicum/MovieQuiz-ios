@@ -4,8 +4,8 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>YS Display-Bold</string>
-		<string>YS Display-Medium</string>
+		<string>YS Display-Bold.ttf</string>
+		<string>YS Display-Medium.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
