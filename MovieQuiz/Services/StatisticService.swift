@@ -17,7 +17,7 @@ struct GameRecord: Codable, Comparable {
     }
 }
 
-protocol StaticService {
+protocol StatisticService {
     func store(correct count: Int, total amount: Int)
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
@@ -25,7 +25,7 @@ protocol StaticService {
     var correct: Int { get }
     var total: Int { get }
 }
-final class StatisticServiceImplementation: StaticService {
+final class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
     
