@@ -35,17 +35,11 @@ extension AlertPresenteImpl: AlertPresenter {
             alertModel.actionButton()
             
         }
-            
-//            self.currentQuestionIndex = 0
-//            self.correctAnswers = 0
-//
-//            self.questionFactory?.requestNextQuestion()
-//        }
-        
+
         alert.addAction(action)
         
         viewController?.present(alert, animated: true)
         
-//        self.present(alert, animated: true, completion: nil)
+
     }
 }

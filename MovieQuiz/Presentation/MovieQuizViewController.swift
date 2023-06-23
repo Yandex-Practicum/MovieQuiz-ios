@@ -38,12 +38,12 @@ final class MovieQuizViewController: UIViewController {
     }
 
     
-    @IBAction func noButtonClicked(_ sender: UIButton) {
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion?.correctAnswer)
     }
     
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion?.correctAnswer)
     }

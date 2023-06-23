@@ -50,10 +50,10 @@ extension StatisticServiceImpl: StatisticService {
     
     var correct: Int {
         get {
-            userDefaults.integer(forKey: Keys.gamesCount.rawValue)
+            userDefaults.integer(forKey: Keys.correct.rawValue)
         }
         set {
-            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
+            userDefaults.set(newValue, forKey: Keys.correct.rawValue)
         }
     }
     
@@ -72,7 +72,6 @@ extension StatisticServiceImpl: StatisticService {
                 let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
                 let bestGame = try? decoder.decode(BestGame.self, from: data)
             else {
-                assertionFailure("error massange")
                 return nil
             }
             return bestGame
@@ -99,10 +98,9 @@ extension StatisticServiceImpl: StatisticService {
             if currentBestGame > previousBestGame {
                 bestGame = currentBestGame
             }
-                  else {
+        } else {
                 bestGame = currentBestGame
             }
-        }
     }
     
 }

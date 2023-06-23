@@ -22,8 +22,6 @@ final class QuestionFactoryImpl {
     init(delegate: QuestionFactoryDelegate? = nil) {
         self.delegate = delegate
     }
-    
-
 }
 
 extension QuestionFactoryImpl: QuestionFactory {
