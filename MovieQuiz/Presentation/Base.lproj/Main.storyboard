@@ -49,7 +49,7 @@
                                         <rect key="frame" x="0.0" y="43.5" width="280" height="340.5"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="169-kG-A2S" secondAttribute="height" multiplier="2:3" constant="1" id="VkW-m5-9Kx"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="169-kG-A2S" secondAttribute="height" multiplier="2:3" id="VkW-m5-9Kx"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A4L-SN-cGy">
