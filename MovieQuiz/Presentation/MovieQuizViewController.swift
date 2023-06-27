@@ -2,6 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
+    // MARK: - Variables
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -64,14 +65,17 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?", // настоящий 5,8
             correctAnswer: false)
     ]
-
-    // берём текущий вопрос из массива вопросов по индексу текущего вопроса
-//    let currentQuestion = questions[currentQuestionIndex]
+    
+    // делаем статус бар светлым
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        showNextQuestionOrResults()
+        imageView.layer.cornerRadius = 20 // скругление рамки
     }
     
     // MARK: - View Models
@@ -94,14 +98,13 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // MARK: - Methods
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
+    // метод конвертации, который принимает мок данные и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(
+        return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionIndex)/\(questions.count)")
         
-        return questionStep
     }
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
@@ -137,20 +140,25 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
+        UIView.animate(withDuration: 2.0, animations: {
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
+        })
+        
         if isCorrect {
             correctAnswers += 1
         }
         
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-           // код, который мы хотим вызвать через 1 секунду
-           self.showNextQuestionOrResults()
+            // код, который мы хотим вызвать через 1 секунду
+            self.showNextQuestionOrResults()
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
     
     // приватный метод, который содержит логику перехода в один из сценариев
-    // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
+        // если вопросов больше нет, отображаем алерт
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/\(questions.count)"
             let viewModel = QuizResultViewModel(
@@ -160,6 +168,7 @@ final class MovieQuizViewController: UIViewController {
             )
             show(quiz: viewModel)
         } else {
+            // иначе считаем количество вопросов
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
@@ -167,21 +176,31 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-
-    
     
     // MARK: - IBActions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
+        sender.isEnabled = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+           // код, который мы хотим вызвать через 1 секунду
+            sender.isEnabled = true
+        }
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
-        
+        sender.isEnabled = false
+
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+           // код, который мы хотим вызвать через 1 секунду
+            sender.isEnabled = true
+        }
     }
 }
