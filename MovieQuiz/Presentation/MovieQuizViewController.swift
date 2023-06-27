@@ -2,12 +2,6 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
-    struct ViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-    
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -29,7 +23,7 @@ final class MovieQuizViewController: UIViewController {
         questionFactory = QuestionFactoryImpl(delegate: self)
         alertPresenter = AlertPresenterImpl(viewController: self)
         statisticService = StatisticServiceImpl()
-        questionFactory?.recuestNextQuestion()
+        questionFactory?.requestNextQuestion()
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -49,15 +43,13 @@ final class MovieQuizViewController: UIViewController {
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsCount)")
-        
     }
-    
-    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -80,7 +72,7 @@ final class MovieQuizViewController: UIViewController {
             showFinalResults()
         } else {
             currentQuestionIndex += 1
-            questionFactory?.recuestNextQuestion()
+            questionFactory?.requestNextQuestion()
         }
     }
     
@@ -94,7 +86,7 @@ final class MovieQuizViewController: UIViewController {
             buttonAction: { [ weak self ] in
                 self?.currentQuestionIndex = 0
                 self?.correctAnswers = 0
-                self?.questionFactory?.recuestNextQuestion()
+                self?.questionFactory?.requestNextQuestion()
             }
         )
         
@@ -108,6 +100,7 @@ final class MovieQuizViewController: UIViewController {
             return ""
         }
         let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+
         let totalPlayCountLine = "Количетсво сыгранных квизов: \(statisticService.gamesCount)"
         let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsCount)"
         let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
@@ -119,6 +112,7 @@ final class MovieQuizViewController: UIViewController {
             bestGameInfoLine,
             averageAccuracyLine
         ]
+        
         let resultMassege = components.joined(separator: "\n")
         return resultMassege
     }

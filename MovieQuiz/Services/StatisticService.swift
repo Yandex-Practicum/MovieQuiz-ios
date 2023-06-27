@@ -13,7 +13,6 @@ protocol StatisticService {
     var bestGame: BestGame? { get }
     
     func store(correct: Int, total: Int)
-    
 }
 
 final class  StatisticServiceImpl {
@@ -76,7 +75,6 @@ extension StatisticServiceImpl: StatisticService {
     }
     
     var bestGame: BestGame? {
-        
         get {
             guard
                 let data =  userDefaults.data(forKey: Keys.bestGame.rawValue),

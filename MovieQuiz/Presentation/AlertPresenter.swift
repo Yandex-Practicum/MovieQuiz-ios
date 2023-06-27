@@ -18,7 +18,6 @@ final class AlertPresenterImpl {
     init(viewController: UIViewController? = nil) {
         self.viewController = viewController
     }
-    
 }
 
 extension AlertPresenterImpl: AlertPresenter {
