@@ -45,7 +45,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ruR-Pg-dwL" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ruR-Pg-dwL" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="ruR-Pg-dwL" secondAttribute="height" multiplier="2:3" id="kKI-Xu-Jvq"/>
@@ -117,11 +117,11 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="NoButton" destination="tJu-ZR-7O8" id="Q4B-4q-HIS"/>
-                        <outlet property="YesButtom" destination="HdS-Wc-k6A" id="X68-Ax-Q8V"/>
                         <outlet property="counterLabel" destination="3ba-5u-OL0" id="gC5-ia-Nj5"/>
                         <outlet property="imageView" destination="ruR-Pg-dwL" id="9Lw-I1-XN2"/>
+                        <outlet property="noButton" destination="tJu-ZR-7O8" id="5mP-9a-wJ5"/>
                         <outlet property="textLabel" destination="BOb-nZ-RjR" id="Wzd-36-AZE"/>
+                        <outlet property="yesButtom" destination="HdS-Wc-k6A" id="bpy-sQ-9az"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
