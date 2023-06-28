@@ -97,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
         let buttonText: String
     }
     
-    // MARK: - Methods
+    // MARK: - Private Methods
     // метод конвертации, который принимает мок данные и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
