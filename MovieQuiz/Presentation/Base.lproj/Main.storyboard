@@ -51,6 +51,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="csF-7I-Dyf" secondAttribute="height" multiplier="2:3" id="Vrk-cs-uD1"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ru-hP-8FY" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
@@ -76,6 +81,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1pP-2x-zYW"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wZq-15-Pdj" userLabel="Yes Button">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
@@ -90,6 +98,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zW0-R6-Iqe"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -108,6 +119,11 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="t9B-id-KXZ" secondAttribute="bottom" id="dCX-eP-0FF"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="filmPosterImage" destination="csF-7I-Dyf" id="dLj-aa-bbA"/>
+                        <outlet property="questionCounterLabel" destination="sTl-8r-CVd" id="YJh-8a-jVr"/>
+                        <outlet property="questionLabel" destination="4Ru-hP-8FY" id="CeF-1V-Sc6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
