@@ -9,7 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
     // MARK: - QuestionFactoryDelegate
-
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -54,15 +54,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz step: QuizStepViewModel) {
-      imageView.image = step.image
-      textLabel.text = step.question
-      counterLabel.text = step.questionNumber
+        imageView.image = step.image
+        textLabel.text = step.question
+        counterLabel.text = step.questionNumber
     }
     
     private func showAnswerResult(isCorrect: Bool) {  //показ рамки после ответа, отлючение кнопок да и нет, через 1 сек включение кнопок Да и Нет, скрытие рамки, запуск функции showNextQuestionOrResults
         if isCorrect {
-                correctAnswers += 1
-            }
+            correctAnswers += 1
+        }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -82,20 +82,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1{
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
-                       "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-             let viewModel = AlertModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть ещё раз", completion: { [weak self] _ in
+            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            let viewModel = AlertModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть ещё раз", completion: { [weak self] _ in
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 self.questionFactory?.requestNextQuestion()
             })
             showingAlert?.showAlert(alertModel: viewModel)
-                
+            
         } else {
             currentQuestionIndex += 1
-            self.questionFactory?.requestNextQuestion() 
+            self.questionFactory?.requestNextQuestion()
         }
-
+        
     }
     
     // MARK: - private var
