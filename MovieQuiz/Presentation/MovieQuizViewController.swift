@@ -6,10 +6,12 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
-    // переменная с индексом текущего вопроса
+    /// переменная с индексом текущего вопроса
     private var currentQuestionIndex = 0
-    // переменная со счётчиком правильных ответов
+    /// переменная со счётчиком правильных ответов
     private var correctAnswers = 0
 
     
@@ -107,11 +109,20 @@ final class MovieQuizViewController: UIViewController {
         
     }
     
-    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        
+        /// делаем кнопки активными
+        answerButtons(isEnabled: true)
+    }
+    
+    /// устанавливаем флаг на вкл. или откл. кнопок
+    private func answerButtons(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
     }
     
     private func show(quiz result: QuizResultViewModel) {
@@ -136,6 +147,9 @@ final class MovieQuizViewController: UIViewController {
     
     // приватный метод, который меняет цвет рамки
     private func showAnswerResult(isCorrect: Bool) {
+        /// блокируем кнопки до появляения следующешо вопроса
+        answerButtons(isEnabled: false)
+        
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -179,28 +193,14 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - IBActions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        sender.isEnabled = false
+        let givenAnswer = questions[currentQuestionIndex].correctAnswer == true
         
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-           // код, который мы хотим вызвать через 1 секунду
-            sender.isEnabled = true
-        }
+        showAnswerResult(isCorrect: givenAnswer)
     }
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        sender.isEnabled = false
 
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-           // код, который мы хотим вызвать через 1 секунду
-            sender.isEnabled = true
-        }
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        let givenAnswer = questions[currentQuestionIndex].correctAnswer == false
+
+        showAnswerResult(isCorrect: givenAnswer)
     }
 }
