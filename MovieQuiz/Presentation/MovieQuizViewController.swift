@@ -13,10 +13,18 @@ final class MovieQuizViewController: UIViewController {
     
     //событие кнопки да
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+            
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     //событие кнопки нет
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+            let givenAnswer = false
+            
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     // переменная с индексом текущего вопроса, начальное значение 0
@@ -24,13 +32,6 @@ final class MovieQuizViewController: UIViewController {
     
     // переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
-    
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let currentQuestion = convert(model: questions[currentQuestionIndex])
-        show(quiz: QuizStepViewModel(image: currentQuestion.image, question: currentQuestion.question, questionNumber: currentQuestion.questionNumber))
-    }
     
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -46,6 +47,26 @@ final class MovieQuizViewController: UIViewController {
       imageView.image = step.image
       textLabel.text = step.question
       counterLabel.text = step.questionNumber
+    }
+    
+    // приватный метод, который меняет цвет рамки
+    private func showAnswerResult(isCorrect: Bool) {
+        imageView.layer.masksToBounds = true // 1
+        imageView.layer.borderWidth = 8 // 2
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        imageView.layer.cornerRadius = 20
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.showNextQuestionOrResults()
+            }
+    }
+    
+    
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let currentQuestion = convert(model: questions[currentQuestionIndex])
+        show(quiz: QuizStepViewModel(image: currentQuestion.image, question: currentQuestion.question, questionNumber: currentQuestion.questionNumber))
     }
     
     // вью модель для состояния "Вопрос показан"
@@ -105,7 +126,23 @@ final class MovieQuizViewController: UIViewController {
                 text: "Рейтинг этого фильма больше чем 6?",
                 correctAnswer: false)
         ]
+    
+    // приватный метод, который содержит логику перехода в один из сценариев
+    // метод ничего не принимает и ничего не возвращает
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 { // 1
+            // идём в состояние "Результат квиза"
+        } else { // 2
+            currentQuestionIndex += 1
+            
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            
+            show(quiz: viewModel)
+        }
+    }
 }
+
 
 /*
  Mock-данные
