@@ -7,6 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         showingAlert = AlertPresenter(alertDelegate: self)
         questionFactory?.requestNextQuestion()
+        statisticService = StatisticServiceImplementation()
     }
     // MARK: - QuestionFactoryDelegate
     
@@ -59,7 +60,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterLabel.text = step.questionNumber
     }
     
-    private func showAnswerResult(isCorrect: Bool) {  //показ рамки после ответа, отлючение кнопок да и нет, через 1 сек включение кнопок Да и Нет, скрытие рамки, запуск функции showNextQuestionOrResults
+    private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
@@ -78,24 +79,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func showNextQuestionOrResults() { //проверка на последний ворпрос в квизе, при true запуск функции Snow, при false добавить к индексу вопроса 1, передать  в currentQuestion следующи случайный вопрос из questionFactory
-        if currentQuestionIndex == questionsAmount - 1{
-            let text = correctAnswers == questionsAmount ?
-            "Поздравляем, Вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questionsAmount - 1 {
+            
+            var text = "Ваш результат \(correctAnswers)/\(questionsAmount)"
+            if let statisticService = statisticService {
+                statisticService.store(correct: correctAnswers, total: questionsAmount)
+                text += """
+                \nКоличество сыгранных квизов: \(statisticService.gamesCount)
+                Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+                Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                """
+                questionFactory?.resetUsedIndices()
+            }
             let viewModel = AlertModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть ещё раз", completion: { [weak self] _ in
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 self.questionFactory?.requestNextQuestion()
+
             })
             showingAlert?.showAlert(alertModel: viewModel)
-            
         } else {
             currentQuestionIndex += 1
-            self.questionFactory?.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
         }
-        
     }
     
     // MARK: - private var
@@ -104,6 +112,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
     private var showingAlert: AlertPresenter?
+    private var statisticService: StatisticService?
     // MARK: - private let
     private let questionsAmount: Int = 10
 }

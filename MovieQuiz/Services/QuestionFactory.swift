@@ -43,13 +43,21 @@ class QuestionFactory: QuestionFactoryProtocol   {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
+    
+    var usedIndices: Set<Int> = []
+    func resetUsedIndices() {
+        usedIndices = []
+    }
     func requestNextQuestion(){
-        guard let index = (0..<questions.count).randomElement() else {
+        let availableIndices = Set(0..<questions.count).subtracting(usedIndices) // создаем множество свободных индексов
+        
+        guard let index = availableIndices.randomElement() else { // выбираем случайный индекс из свободных индексов
             delegate?.didReceiveNextQuestion(question: nil)
             return
         }
         
         let question = questions[safe: index]
+        usedIndices.insert(index) // добавляем выбранный индекс в список использованных
         delegate?.didReceiveNextQuestion(question: question)
     }
     
