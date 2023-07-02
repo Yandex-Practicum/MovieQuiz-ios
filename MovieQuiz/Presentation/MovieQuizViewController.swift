@@ -1,6 +1,11 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    //аутлет кнопки да
+    @IBOutlet weak var yesButton: UIButton!
+    
+    // аутелт кнопки нет
+    @IBOutlet weak var noButton: UIButton!
     
     //аутлет изображения
     @IBOutlet weak private var imageView: UIImageView!
@@ -23,7 +28,6 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
-        var _: Bool
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
@@ -61,10 +65,17 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.cornerRadius = 20
         
+        //отключает активность кнопок после нажатия на ответ
+        self.yesButton.isEnabled = false
+        self.noButton.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
+            
+            //включает активность кнопок после показа следующего вопроса
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
             }
     }
     
@@ -99,6 +110,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = convert(model: questions[currentQuestionIndex])
         show(quiz: QuizStepViewModel(image: currentQuestion.image, question: currentQuestion.question, questionNumber: currentQuestion.questionNumber))
         
+        //скругление углов у афиши фильма
         imageView.layer.cornerRadius = 20
     }
     
