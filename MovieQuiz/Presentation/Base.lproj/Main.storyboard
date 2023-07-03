@@ -108,12 +108,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="buttonNo" destination="nPo-pm-Imi" id="pnn-6T-j39"/>
-                        <outlet property="buttonYes" destination="YLJ-O0-o86" id="f8Y-6l-Y0b"/>
-                        <outlet property="imageView" destination="wMO-Ed-I62" id="lVc-sh-j8s"/>
-                        <outlet property="labelQuestion" destination="jUz-ZI-mir" id="fH7-Tg-c01"/>
-                        <outlet property="labelQuestionIndex" destination="Ee4-FE-HZS" id="3nB-QK-56Q"/>
-                        <outlet property="labelTitleQuestion" destination="cNJ-7x-RFT" id="OlL-a3-e5N"/>
+                        <outlet property="mainImageView" destination="wMO-Ed-I62" id="K6k-HN-fLm"/>
+                        <outlet property="noButton" destination="nPo-pm-Imi" id="ln1-zN-JAQ"/>
+                        <outlet property="questionIndexLabel" destination="Ee4-FE-HZS" id="ea8-a7-aGd"/>
+                        <outlet property="questionLabel" destination="jUz-ZI-mir" id="B1w-kK-7jA"/>
+                        <outlet property="questionTitleLabel" destination="cNJ-7x-RFT" id="ybd-2p-4ro"/>
+                        <outlet property="yesButton" destination="YLJ-O0-o86" id="xEn-9o-Gc4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

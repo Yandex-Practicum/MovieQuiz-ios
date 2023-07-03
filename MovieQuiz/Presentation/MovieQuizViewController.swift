@@ -1,22 +1,20 @@
 
-
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
-//    @IBOutlet private weak var testlabel: UILabel!
-    @IBOutlet private weak var labelTitleQuestion: UILabel!
-    @IBOutlet private weak var labelQuestionIndex: UILabel!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var labelQuestion: UILabel!
-    @IBOutlet private weak var buttonNo: UIButton!
-    @IBOutlet private weak var buttonYes: UIButton!
+    @IBOutlet private weak var questionTitleLabel: UILabel!
+    @IBOutlet private weak var questionIndexLabel: UILabel!
+    @IBOutlet private weak var mainImageView: UIImageView!
+    @IBOutlet private weak var questionLabel: UILabel!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
-    // Индекс текущего вопроса
+    /// Индекс текущего вопроса
     private var currentQuestionIndex = 0
-    // Количество правильных ответов
+    /// Количество правильных ответов
     private var correctAnswers = 0
-    // Массив вопросов
+    /// Массив вопросов
     private var questions: [QuizQuestion] = [
         QuizQuestion(image: "The Godfather", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
         QuizQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
@@ -35,35 +33,53 @@ final class MovieQuizViewController: UIViewController {
         
         super.viewDidLoad()
         
-        // У меня Xcode (14.3) не отображает установленные шрифты в списке шрифтов. Перепробовал всё, что рекомендовалось ...
-        labelTitleQuestion.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        labelQuestionIndex.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        labelQuestion.font = UIFont(name: "YSDisplay-Bold", size: 23)
-        buttonNo.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        buttonYes.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        // У меня Xcode (14.3) не отображает установленные шрифты в списке шрифтов. Перепробовал всё, что рекомендовалось, поэтому ...
+        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionIndexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
         
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8     // В соответствии с Figma-моделью
-        imageView.layer.cornerRadius = 20   // В соответствии с Figma-моделью
+        mainImageView.layer.masksToBounds = true
+        mainImageView.layer.borderWidth = 8     // В соответствии с Figma-моделью
+        mainImageView.layer.cornerRadius = 20   // В соответствии с Figma-моделью
         
         showQuiz()
     }
     
-    // Метот вызываемый по нажатию кнопки Нет
+    // Окрашиваем статусную панель в светлые тона
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    /// Метод вызываемый по нажатию кнопки Нет
     @IBAction private func noButtonClicked(_ sender: UIButton){
         
         // Вызываем реакцию приложения на отрицательный ответ пользователя
+        toggleButtons(to: false)
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == false)
     }
     
-    // Метот вызываемый по нажатию кнопки Да
+    /// Метод вызываемый по нажатию кнопки Да
     @IBAction private func yesButtonClicked(_ sender: UIButton){
         
         // Вызываем реакцию приложения на утвердительных ответ пользователя
+        toggleButtons(to: false)
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
     }
     
-    // Подготовка вопроса к визуализации
+    /// Метод включающий/выключающий кнопки ответов
+    ///  - Parameters:
+    ///     - to: Состояние в которое переводится свойство кнопок isEnabled, true - включаем кнопки, false - отключаем
+    private func toggleButtons(to state: Bool){
+        noButton.isEnabled = state
+        yesButton.isEnabled = state
+    }
+    
+    /// Подготовка вопроса к визуализации
+    /// - Parameters:
+    ///     - question: QuizQuestion-структура
+    /// - Returns: Возвращает структуру "QuizStepViewModel" для отображения вопроса в представлении
     private func convert(question: QuizQuestion) -> QuizStepViewModel {
         
         return QuizStepViewModel(
@@ -73,7 +89,9 @@ final class MovieQuizViewController: UIViewController {
         )
     }
     
-    // Отображение уведомления о результатах игры
+    /// Отображение уведомления о результатах игры
+    /// - Parameters:
+    ///     - quizResult: QuizResultsViewModel-структура
     private func show(quizResult model: QuizResultsViewModel) {
         
         let alert = UIAlertController(title: model.title, message: model.text, preferredStyle: .alert)
@@ -89,17 +107,22 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    // Смена декораций представления/view
+    /// Смена декораций представления/view
+    ///  - Parameters
+    ///     - quizStep: QuizStepViewModel-структура, содержащая необходимые элементы для обновления представления
+    ///
     private func show(quizStep model: QuizStepViewModel){
         
-        imageView.layer.borderColor = UIColor.clear.cgColor
+        mainImageView.layer.borderColor = UIColor.clear.cgColor
         
-        labelQuestionIndex.text = model.questionNumber
-        imageView.image = model.image
-        labelQuestion.text = model.question
+        questionIndexLabel.text = model.questionNumber
+        mainImageView.image = model.image
+        questionLabel.text = model.question
+        
+        toggleButtons(to: true)
     }
    
-    // Подготовка представления/view к следующему вопросу
+    /// Подготовка представления/view к следующему вопросу
     private func showQuiz(){
         
         let question = questions[currentQuestionIndex]
@@ -108,11 +131,13 @@ final class MovieQuizViewController: UIViewController {
         show(quizStep: viewModel)
     }
    
-    // Реагируем на ответ пользователя (нажатие кнопки ответа)
+    /// Реагируем на ответ пользователя (нажатие кнопки ответа) - окрашиваем рамку картинки, переходим к следующему вопросу
+    /// - Parameters:
+    ///     - isCorrect: индикатор верности ответа
     private func showAnswerResult(isCorrect: Bool){
         
         // Окрашиваем рамку картинки вопроса в соответствии с правильностью ответа
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        mainImageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         if isCorrect {
             // Инкриментируем счётчик верных ответов
@@ -125,6 +150,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
+    /// Отображение следующего вопроса или результатов
     private func showNextQuestionOrResults(){
        
         // Если предыдущий вопрос был последним
@@ -150,31 +176,38 @@ final class MovieQuizViewController: UIViewController {
     
 }
 
+/// Структура вопроса
+/// - Parameters:
+///     - image: Наименование используемого файла
+///     - text: Текст вопроса
+///     - correctAnswer: Верный Ответ на вопрос
 struct QuizQuestion {
-    // Наименование файла квиза
+    
     let image: String
-    // Вопрос квиза
     let text: String
-    // Верный ответ
     let correctAnswer: Bool
 }
 
+/// Структура модели вопроса
+/// - Parameters:
+///     - image: Изображение вопроса
+///     - question: Текст вопроса
+///     - questionNumber: Номер вопроса в квизе
 struct QuizStepViewModel {
     
-    // Изображение квиза
     let image: UIImage
-    // Вопрос квиза
     let question: String
-    // Номер вопроса
     let questionNumber: String
 }
 
+/// Структура модели отображаемого уведомления с результатами
+/// - Parameters:
+///     - title: Заголовок уведомления
+///     - text: Строка с текстом о количестве набранных очков
+///     - buttonText: Текст кнопки уведомления
 struct QuizResultsViewModel {
     
-    // Заголовок алёрта
     let title: String
-    // Строка с текстом о количестве набранных очков
     let text: String
-    // Текст для кнопки алёрта
     let buttonText: String
 }
