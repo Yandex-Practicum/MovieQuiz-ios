@@ -103,8 +103,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 """
                 Вы ответили на: \(correctAnswers) из \(questionAmount)), попробуйте еще раз! \n
                 Количество сыгранных квизов: \(gamesCount)\n
-                Рекорд: \(bestGame.correct)(\(bestGame.date) \n
-                Средняя точность: \(totalAccuracy)
+                Рекорд: \(bestGame.correct)(\(bestGame.date.dateTimeString)) \n
+                Средняя точность: \(String(format: "%.2f", totalAccuracy))
                 """
             
             let alertModel = AlertModel(title: "Этот раунд окончен",

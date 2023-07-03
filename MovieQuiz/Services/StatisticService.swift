@@ -31,8 +31,8 @@ final class StatisticServiceImplementation: StatisticService {
                 let total = try? JSONDecoder().decode(Int.self, from: dataTotal) else {
                 return 0
             }
-            let accuracy = (total / 100) * correct
-            return Double(accuracy)
+            let accuracy: Double = (Double(total) / 100) * Double(correct)
+            return accuracy
         }
     }
     
