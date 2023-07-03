@@ -27,9 +27,9 @@ struct QuizQuestion {
 }
 
 struct QuizResultsViewModel {
-  let title: String
-  let text: String
-  let buttonText: String
+    let title: String
+    let text: String
+    let buttonText: String
     
     init(_ title: String, _ text: String, _ buttonText: String) {
         self.title = title
@@ -40,17 +40,17 @@ struct QuizResultsViewModel {
 
 final class MovieQuizViewController: UIViewController {
     private let questions: [QuizQuestion] = [
-            QuizQuestion("The Godfather", true),
-            QuizQuestion("The Dark Knight", true),
-            QuizQuestion("Kill Bill", true),
-            QuizQuestion("The Avengers", true),
-            QuizQuestion("Deadpool", true),
-            QuizQuestion("The Green Knight", true),
-            QuizQuestion("Old", false),
-            QuizQuestion("The Ice Age Adventures of Buck Wild", false),
-            QuizQuestion("Tesla", false),
-            QuizQuestion("Vivarium", false)
-        ]
+        QuizQuestion("The Godfather", true),
+        QuizQuestion("The Dark Knight", true),
+        QuizQuestion("Kill Bill", true),
+        QuizQuestion("The Avengers", true),
+        QuizQuestion("Deadpool", true),
+        QuizQuestion("The Green Knight", true),
+        QuizQuestion("Old", false),
+        QuizQuestion("The Ice Age Adventures of Buck Wild", false),
+        QuizQuestion("Tesla", false),
+        QuizQuestion("Vivarium", false)
+    ]
     
     private var currentQuestionIdx: Int = 0
     private var correctAnswersCount: Int = 0
@@ -116,7 +116,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    private func showAnswerResultAndNextStep(isCorrect: Bool) {
+    private func show(isCorrect: Bool) {
         if isCorrect {
             correctAnswersCount += 1
         }
@@ -129,11 +129,11 @@ final class MovieQuizViewController: UIViewController {
     
     @IBAction private func noButtonTap(_ sender: UIButton) {
         let correctAnswer = questions[currentQuestionIdx].correctAnswer
-        showAnswerResultAndNextStep(isCorrect : !correctAnswer)
+        show(isCorrect : !correctAnswer)
     }
     
     @IBAction private func yesButtonTap(_ sender: UIButton) {
         let correctAnswer = questions[currentQuestionIdx].correctAnswer
-        showAnswerResultAndNextStep(isCorrect : correctAnswer)
+        show(isCorrect : correctAnswer)
     }
 }
