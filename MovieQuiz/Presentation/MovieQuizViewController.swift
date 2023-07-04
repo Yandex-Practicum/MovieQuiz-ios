@@ -1,5 +1,5 @@
 import UIKit
-
+//тест комита
 final class MovieQuizViewController: UIViewController {
     //аутлет кнопки да
     @IBOutlet weak var yesButton: UIButton!
