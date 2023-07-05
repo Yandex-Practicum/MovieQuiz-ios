@@ -114,10 +114,25 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 1 // толщина рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor//
         imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+        }
         
     }
+    // приватный метод, который содержит логику перехода в один из сценариев
+    // метод ничего не принимает и ничего не возвращает
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 { // 1
+            // идём в состояние "Результат квиза"
+        } else { // 2
+            currentQuestionIndex += 1
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            
+            show(quiz: viewModel)
+        }
+    }
 }
-
 struct QuizQuestion {
     // строка с названием фильма,
     // совпадает с названием картинки афиши фильма в Assets
