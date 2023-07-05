@@ -41,6 +41,8 @@ final class MovieQuizViewController: UIViewController {
                      corrcetAnswer: false)
     ]
     
+    // константа с кнопкой для системного алерта
+  
     override func viewDidLoad() {
         show(quiz: convert(model: questions[currentQuestionIndex]))
         super.viewDidLoad()
@@ -109,7 +111,31 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     
+    // приватный метод для показа результатов раунда квиза
+    // принимает вью модель QuizResultsViewModel и ничего не возвращает
+    private func show(quiz result: QuizResultsViewModel) {
+        let alert = UIAlertController(
+            title: (result.title),
+            message: (result.text),
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            // код, который сбрасывает игру и показывает первый вопрос
+            self.currentQuestionIndex = 0 // 1
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex] // 2
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+        }
+        
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect { // 1
+               correctAnswers += 1 // 2
+           }
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 1 // толщина рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor//
@@ -117,14 +143,19 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
-        
     }
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // 1
+        if currentQuestionIndex == questions.count - 1 {
             // идём в состояние "Результат квиза"
-        } else { // 2
+            let text = "Ваш результат: \(correctAnswers)/10"
+                   let viewModel = QuizResultsViewModel(
+                       title: "Этот раунд окончен!",
+                       text: text,
+                       buttonText: "Сыграть ещё раз")
+                   show(quiz: viewModel)
+        } else { 
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
@@ -133,6 +164,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
 }
+
 struct QuizQuestion {
     // строка с названием фильма,
     // совпадает с названием картинки афиши фильма в Assets
@@ -152,14 +184,15 @@ struct QuizStepViewModel {
   let questionNumber: String
 }
 
-
-
-
-
-
-
-
-
+// для состояния "Результат квиза"
+struct QuizResultsViewModel {
+  // строка с заголовком алерта
+  let title: String
+  // строка с текстом о количестве набранных очков
+  let text: String
+  // текст для кнопки алерта
+  let buttonText: String
+}
 
 /*
  Mock-данные
