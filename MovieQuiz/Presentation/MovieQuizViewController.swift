@@ -49,47 +49,14 @@ final class MovieQuizViewController: UIViewController {
     }
     // метод вызывается, когда пользователь нажимает на кнопку "Нет"
     @IBAction private func noButtonClicked(_ sender: Any) {
-        //        if questions[currentQuestionIndex].corrcetAnswer == false {
-        //            showAnswerResult(isCorrect: true)
-        //            correctAnswers += 1
-        //        } else {
-        //            showAnswerResult(isCorrect: false)
-        //        }
-        //
-        //        if currentQuestionIndex+1 < questions.count {
-        //            currentQuestionIndex += 1
-        //        } else {
-        //            currentQuestionIndex = 0
-        //            correctAnswers = 0
-        //        }
-        //        show(quiz: convert(model: questions[currentQuestionIndex]))
-        
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.corrcetAnswer)
-        
     }
     // метод вызывается, когда пользователь нажимает на кнопку "Да"
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        //        if questions[currentQuestionIndex].corrcetAnswer == true {
-        //            showAnswerResult(isCorrect: true)
-        //            correctAnswers += 1
-        //        } else {
-        //            showAnswerResult(isCorrect: false)
-        //        }
-        //
-        //        if currentQuestionIndex+1 < questions.count {
-        //            currentQuestionIndex += 1
-        //        } else {
-        //            currentQuestionIndex = 0
-        //            correctAnswers = 0
-        //        }
-        //        show(quiz: convert(model: questions[currentQuestionIndex]))
-        
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.corrcetAnswer)
     }
     @IBOutlet private weak var imageView: UIImageView!
