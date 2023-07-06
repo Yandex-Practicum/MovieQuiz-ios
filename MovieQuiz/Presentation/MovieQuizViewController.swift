@@ -29,15 +29,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        // настройка индикатора загрузки
+        activityIndicator.hidesWhenStopped = true
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         // алерт презентер
         alertPresenter = AlertPresenter(viewController: self)
         // контроллер статистики
         statisticService = StatisticServiceImplementation()
-        
+        // включить индикатор загрузки данных
         showLoadingAnimation()
+        // загрузить данные по сети
         questionFactory?.loadData()
-//        questionFactory?.requestNextQuestion()
         
     }
     
@@ -63,8 +65,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
+        // если ответ пользователя верный, увеличить счетчик
         if isCorrect {
-            // если ответ пользователя верный, увеличить счетчик
             correctAnswers += 1
         }
         
@@ -73,13 +75,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else { return }
             
             self.showNextQuestionOrResults()
-            self.imageView.layer.borderWidth = 0
         }
         // разблокировать кнопки ответа
         blockAnswerButtons(blockButtons: false)
     }
     
     private func showNextQuestionOrResults() {
+        
+        self.imageView.layer.borderWidth = 0
         // если последний вопрос
         if currentQuestionIndex == questionAmount - 1 {
             
@@ -140,8 +143,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showLoadingAnimation() {
-            activityIndicator.isHidden = false
-            activityIndicator.startAnimating()
+        activityIndicator.startAnimating()
     }
     
     func didRecieveNextQuestion(question: QuizQuestion?) {
@@ -156,7 +158,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func didLoadFromServer() {
-        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
         questionFactory?.requestNextQuestion()
     }
     
