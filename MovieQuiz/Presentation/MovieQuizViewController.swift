@@ -18,13 +18,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers = 0
     
     // общее кол-во вопросов
-    private let questionAmount: Int = 10
+    private let questionAmount: Int = 4
     
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     
     private var alertPresenter: AlertPresenter?
-    private var statisticService: StatisticServiceImplementation?
+    private var statisticService: StatisticService?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -83,8 +83,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         // если последний вопрос
         if currentQuestionIndex == questionAmount - 1 {
             
-            // добавить 1 к общему кол-ву пройденных квизов
-            statisticService?.gamesCount += 1
             // увеличить кол-во сыгранных игр за все время
             statisticService?.total += questionAmount
             // увеличить  кол-во верных ответов за все время
@@ -97,14 +95,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
             
             // проверить превосходит ли результат рекорд, если да, то перезаписать в userDefaults
-            bestGame = statisticService?.store(correct: correctAnswers, total: questionAmount) ?? bestGame
+            if bestGame.correct <= correctAnswers {
+                bestGame = statisticService?.store(correct: correctAnswers, total: questionAmount) ?? bestGame
+
+            }
             
             let text =
                 """
-                Вы ответили на: \(correctAnswers) из \(questionAmount)), попробуйте еще раз! \n
-                Количество сыгранных квизов: \(gamesCount)\n
-                Рекорд: \(bestGame.correct)(\(bestGame.date.dateTimeString)) \n
-                Средняя точность: \(String(format: "%.2f", totalAccuracy))
+                Вы ответили на: \(correctAnswers) из \(questionAmount)
+                Количество сыгранных квизов: \(gamesCount)
+                Рекорд: \(bestGame.correct)(\(bestGame.date.dateTimeString))
+                Средняя точность: \(String(format: "%.2f", totalAccuracy))%
                 """
             
             let alertModel = AlertModel(title: "Этот раунд окончен",

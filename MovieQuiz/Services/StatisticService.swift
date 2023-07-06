@@ -10,6 +10,8 @@ import Foundation
 protocol StatisticService {
     func store(correct count: Int, total amount: Int) -> GameRecord
     var totalAccuracy: Double { get }
+    var total: Int { get set }
+    var correct: Int { get set }
     var gamesCount: Int { get }
     var bestGame: GameRecord { get }
 }
@@ -22,6 +24,7 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     private let userDefaults = UserDefaults.standard
+   
     
     // общая точность ответов
     var totalAccuracy: Double {
@@ -31,7 +34,7 @@ final class StatisticServiceImplementation: StatisticService {
                 let total = try? JSONDecoder().decode(Int.self, from: dataTotal) else {
                 return 0
             }
-            let accuracy: Double = (Double(total) / 100) * Double(correct)
+            let accuracy: Double = (Double(correct) / Double(total) * 100)
             return accuracy
         }
     }
@@ -40,18 +43,17 @@ final class StatisticServiceImplementation: StatisticService {
     var gamesCount: Int {
         get {
             guard let data = userDefaults.data(forKey: Keys.gamesCount.rawValue),
-                let record = try? JSONDecoder().decode(Int.self, from: data) else {
+                var record = try? JSONDecoder().decode(Int.self, from: data) else {
                 return 0
             }
-            return record
-        }
-        
-        set {
-            guard let data = try? JSONEncoder().encode(newValue) else {
+            record += 1
+            
+            guard let data = try? JSONEncoder().encode(record) else {
                 print("Unable to save gamesCount")
-                return
+                return 1
             }
             userDefaults.set(data, forKey: Keys.gamesCount.rawValue)
+            return record
         }
     }
     
@@ -112,21 +114,12 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     func store(correct count: Int, total amount: Int) -> GameRecord {
-        // получить старую запись для сравнения с новым результатом
-        guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
-            let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
+        bestGame = GameRecord(correct: count, total: amount, date: Date())
+        guard let data = try? JSONEncoder().encode(bestGame) else {
+            print("Unable to save new record")
             return bestGame
         }
-        if count > record.correct {
-            // если кол-во верных ответов больше рекордного перезаписать объект
-            bestGame = GameRecord(correct: count, total: amount, date: Date.now)
-            guard let data = try? JSONEncoder().encode(bestGame) else {
-                print("Unable to save new record")
-                return bestGame
-            }
-            userDefaults.set(data, forKey: Keys.bestGame.rawValue)
-            return bestGame
-        }
+        userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         return bestGame
     }
 }
