@@ -15,6 +15,9 @@
 		7C56F7632A43147000C8E310 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C56F7622A43147000C8E310 /* QuizQuestion.swift */; };
 		7CAFA9752A4C8426003F552A /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAFA9742A4C8426003F552A /* StatisticService.swift */; };
 		7CAFA9772A4C88D7003F552A /* BestGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAFA9762A4C88D7003F552A /* BestGame.swift */; };
+		7CAFA9792A54350C003F552A /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAFA9782A54350C003F552A /* NetworkClient.swift */; };
+		7CAFA97B2A5436A1003F552A /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAFA97A2A5436A1003F552A /* MostPopularMovies.swift */; };
+		7CAFA97D2A543712003F552A /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAFA97C2A543712003F552A /* MoviesLoader.swift */; };
 		7CC1DC6E2A44532000363B8C /* QuestionFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC1DC6D2A44532000363B8C /* QuestionFactoryProtocol.swift */; };
 		7CC1DC702A44651000363B8C /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC1DC6F2A44651000363B8C /* QuestionFactoryDelegate.swift */; };
 		7CC1DC722A449F8600363B8C /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC1DC712A449F8600363B8C /* AlertModel.swift */; };
@@ -39,6 +42,9 @@
 		7C56F7622A43147000C8E310 /* QuizQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
 		7CAFA9742A4C8426003F552A /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		7CAFA9762A4C88D7003F552A /* BestGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestGame.swift; sourceTree = "<group>"; };
+		7CAFA9782A54350C003F552A /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		7CAFA97A2A5436A1003F552A /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
+		7CAFA97C2A543712003F552A /* MoviesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoader.swift; sourceTree = "<group>"; };
 		7CC1DC6D2A44532000363B8C /* QuestionFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryProtocol.swift; sourceTree = "<group>"; };
 		7CC1DC6F2A44651000363B8C /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		7CC1DC712A449F8600363B8C /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
@@ -83,6 +89,8 @@
 				7CC1DC6D2A44532000363B8C /* QuestionFactoryProtocol.swift */,
 				7CC1DC6F2A44651000363B8C /* QuestionFactoryDelegate.swift */,
 				7CAFA9742A4C8426003F552A /* StatisticService.swift */,
+				7CAFA9782A54350C003F552A /* NetworkClient.swift */,
+				7CAFA97C2A543712003F552A /* MoviesLoader.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -95,6 +103,7 @@
 				7C56F7622A43147000C8E310 /* QuizQuestion.swift */,
 				7CC1DC712A449F8600363B8C /* AlertModel.swift */,
 				7CAFA9762A4C88D7003F552A /* BestGame.swift */,
+				7CAFA97A2A5436A1003F552A /* MostPopularMovies.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -170,6 +179,7 @@
 				AD1ABAAA2831907B00B3E448 /* Sources */,
 				AD1ABAAB2831907B00B3E448 /* Frameworks */,
 				AD1ABAAC2831907B00B3E448 /* Resources */,
+				7C3498972A571B8D00C518D7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -229,6 +239,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7C3498972A571B8D00C518D7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "alias swiftlint=\"/opt/homebrew/bin/swiftlint\"\nif swiftlint >/dev/null; \nthen swiftlint \nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\" \nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AD1ABAAA2831907B00B3E448 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -237,17 +267,20 @@
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				7CAFA9772A4C88D7003F552A /* BestGame.swift in Sources */,
 				7CC1DC742A44C6BD00363B8C /* AlertPresenter.swift in Sources */,
+				7CAFA97B2A5436A1003F552A /* MostPopularMovies.swift in Sources */,
 				7CC1DC722A449F8600363B8C /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				7CC1DC6E2A44532000363B8C /* QuestionFactoryProtocol.swift in Sources */,
 				7CC1DC702A44651000363B8C /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
+				7CAFA9792A54350C003F552A /* NetworkClient.swift in Sources */,
 				7CAFA9752A4C8426003F552A /* StatisticService.swift in Sources */,
 				7C56F75F2A43144D00C8E310 /* QuizStepViewModel.swift in Sources */,
 				7C56F7632A43147000C8E310 /* QuizQuestion.swift in Sources */,
 				7C56F75C2A430E2C00C8E310 /* QuestionFactory.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
+				7CAFA97D2A543712003F552A /* MoviesLoader.swift in Sources */,
 				7C56F7612A43146100C8E310 /* QuizResultsViewModel.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
 			);

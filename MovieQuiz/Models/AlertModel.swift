@@ -6,4 +6,3 @@ struct AlertModel {
     let buttonText: String
     let buttonAction: () -> Void
 }
-

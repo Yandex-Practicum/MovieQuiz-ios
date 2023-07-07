@@ -8,22 +8,21 @@ protocol StatisticService {
 }
 
 final class StatisticServiceImpl {
-    
+
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
-    
+
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
     private var userDefaults = UserDefaults.standard
     private let dateProvider: () -> Date
-    
-    
+
     init
     (userDefaults: UserDefaults,
      decoder: JSONDecoder = JSONDecoder(),
      encoder: JSONEncoder = JSONEncoder(),
-     dateProvider: @escaping () -> Date = { Date () }
+     dateProvider: @escaping () -> Date = { Date() }
     ) {
         self.userDefaults = userDefaults
         self.decoder = decoder
@@ -31,9 +30,9 @@ final class StatisticServiceImpl {
         self.dateProvider = dateProvider
     }
 }
- 
+
 extension StatisticServiceImpl: StatisticService {
-    
+
     var gamesCount: Int {
         get {
             userDefaults.integer(forKey: Keys.gamesCount.rawValue)
@@ -42,7 +41,7 @@ extension StatisticServiceImpl: StatisticService {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
-    
+
     var correct: Int {
         get {
             userDefaults.integer(forKey: Keys.correct.rawValue)
@@ -51,7 +50,7 @@ extension StatisticServiceImpl: StatisticService {
             userDefaults.set(newValue, forKey: Keys.correct.rawValue)
         }
     }
-    
+
     var total: Int {
         get {
             userDefaults.integer(forKey: Keys.total.rawValue)
@@ -60,11 +59,11 @@ extension StatisticServiceImpl: StatisticService {
             userDefaults.set(newValue, forKey: Keys.total.rawValue)
         }
     }
-    
+
     var totalAccuracy: Double {
        Double(correct) / Double(total) * 100
     }
-    
+
             var bestGame: BestGame? {
                 get {
                     guard
@@ -74,21 +73,21 @@ extension StatisticServiceImpl: StatisticService {
                     }
                     return bestGame
                 }
-                
+
                 set {
                     let data = try? encoder.encode(newValue)
                     userDefaults.set(data, forKey: Keys.bestGame.rawValue)
                 }
             }
-            
+
     func store(correct: Int, total: Int) {
         self.correct += correct
         self.total += total
         self.gamesCount += 1
-        
+
         let date = dateProvider()
-        let currentBestGame = BestGame (correct: correct, total: total, date: date)
-        
+        let currentBestGame = BestGame(correct: correct, total: total, date: date)
+
         if let previousBestGame = bestGame {
             if currentBestGame > previousBestGame {
                 bestGame = currentBestGame

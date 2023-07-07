@@ -114,16 +114,25 @@
                                     <constraint firstAttribute="height" constant="60" id="n53-91-40x"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="fed-YC-ZZh">
+                                <rect key="frame" x="207" y="448" width="0.0" height="0.0"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" id="3xk-ai-Fcs"/>
+                                    <constraint firstAttribute="height" id="Geu-KZ-3oi"/>
+                                </constraints>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="fed-YC-ZZh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4vf-Ty-qVH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DVy-Wf-zTX" secondAttribute="trailing" constant="20" id="PPI-0W-JKj"/>
                             <constraint firstItem="4XJ-3u-KyD" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bx1-7c-DZd"/>
                             <constraint firstItem="4XJ-3u-KyD" firstAttribute="top" secondItem="DVy-Wf-zTX" secondAttribute="bottom" constant="20" id="jur-19-dkK"/>
                             <constraint firstItem="DVy-Wf-zTX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="kEf-3v-Sow"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="4XJ-3u-KyD" secondAttribute="bottom" id="mOx-3N-kGm"/>
                             <constraint firstItem="4XJ-3u-KyD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="qSV-Ae-jIg"/>
+                            <constraint firstItem="fed-YC-ZZh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="wRz-xj-sRP"/>
                             <constraint firstItem="DVy-Wf-zTX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="yrv-g7-dos"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
@@ -131,6 +140,7 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="fed-YC-ZZh" id="0v1-Ii-TtB"/>
                         <outlet property="counterLabel" destination="IFr-N4-Adu" id="a7h-ig-eyP"/>
                         <outlet property="imageView" destination="5Gr-Br-EYd" id="KKA-gD-TF7"/>
                         <outlet property="noButton" destination="K5a-tK-umt" id="Mva-k0-F8g"/>
