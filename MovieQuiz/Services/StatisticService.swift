@@ -1,5 +1,6 @@
 import Foundation
 
+// Протокол для сервиса статистики
 protocol StatisticService {
     func store(correct: Int, total: Int)
     var totalAccuracy: Double { get }
@@ -7,22 +8,24 @@ protocol StatisticService {
     var bestGame: BestGame? { get }
 }
 
+// Реализация сервиса статистики
 final class StatisticServiceImpl {
 
+    // Перечисление для ключей UserDefaults
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
 
-    private let decoder: JSONDecoder
-    private let encoder: JSONEncoder
-    private var userDefaults = UserDefaults.standard
-    private let dateProvider: () -> Date
+    private let decoder: JSONDecoder  // Декодер JSON
+    private let encoder: JSONEncoder  // Кодер JSON
+    private var userDefaults = UserDefaults.standard  // UserDefaults
+    private let dateProvider: () -> Date  // Функция для предоставления текущей даты
 
-    init
-    (userDefaults: UserDefaults,
-     decoder: JSONDecoder = JSONDecoder(),
-     encoder: JSONEncoder = JSONEncoder(),
-     dateProvider: @escaping () -> Date = { Date() }
+    // Инициализатор сервиса статистики
+    init(userDefaults: UserDefaults,
+         decoder: JSONDecoder = JSONDecoder(),
+         encoder: JSONEncoder = JSONEncoder(),
+         dateProvider: @escaping () -> Date = { Date() }
     ) {
         self.userDefaults = userDefaults
         self.decoder = decoder
@@ -31,6 +34,7 @@ final class StatisticServiceImpl {
     }
 }
 
+// Расширение класса StatisticServiceImpl, реализующее протокол StatisticService
 extension StatisticServiceImpl: StatisticService {
 
     var gamesCount: Int {
@@ -64,22 +68,23 @@ extension StatisticServiceImpl: StatisticService {
        Double(correct) / Double(total) * 100
     }
 
-            var bestGame: BestGame? {
-                get {
-                    guard
-                        let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
-                        let bestGame = try? decoder.decode(BestGame.self, from: data) else {
-                        return nil
-                    }
-                    return bestGame
-                }
-
-                set {
-                    let data = try? encoder.encode(newValue)
-                    userDefaults.set(data, forKey: Keys.bestGame.rawValue)
-                }
+    var bestGame: BestGame? {
+        get {
+            guard
+                let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
+                let bestGame = try? decoder.decode(BestGame.self, from: data) else {
+                return nil
             }
+            return bestGame
+        }
 
+        set {
+            let data = try? encoder.encode(newValue)
+            userDefaults.set(data, forKey: Keys.bestGame.rawValue)
+        }
+    }
+
+    // Метод для сохранения результатов игры
     func store(correct: Int, total: Int) {
         self.correct += correct
         self.total += total
@@ -93,7 +98,8 @@ extension StatisticServiceImpl: StatisticService {
                 bestGame = currentBestGame
             }
         } else {
-                    bestGame = currentBestGame
-            }
+            bestGame = currentBestGame
         }
+    }
 }
+
