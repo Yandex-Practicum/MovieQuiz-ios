@@ -69,7 +69,10 @@ final class MovieQuizViewController: UIViewController {
         self.yesButton.isEnabled = false
         self.noButton.isEnabled = false
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        ///реализована корректная работа замыкания
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else {return}
+            
                 self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
             
@@ -84,8 +87,10 @@ final class MovieQuizViewController: UIViewController {
             title: result.title,
             message: result.text,
             preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        ///реализована корректная работа замыкания
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else {return}
+            
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
