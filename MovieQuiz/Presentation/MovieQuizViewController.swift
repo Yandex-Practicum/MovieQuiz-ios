@@ -52,7 +52,9 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        screenSettings()
         show(quiz: convert(model: questions[currentQuestionIndex]))
+        
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
@@ -72,7 +74,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageViev: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var indexLabel: UILabel!
-    
+    @IBOutlet private weak var questionLabel: UILabel!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     // логика перехода в один из сценариев
     private func showNextQuestionOrResults() {
@@ -83,6 +87,16 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             show(quiz: convert(model: questions[currentQuestionIndex]))
         }
+    }
+    
+    private func buttonsIsDisabled(){
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+    }
+    
+    private func buttonsIsEnabled(){
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
     }
         
         //Приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
@@ -101,6 +115,7 @@ final class MovieQuizViewController: UIViewController {
         imageViev.image = step.image
         textLabel.text = step.question
         indexLabel.text = step.questionNumber
+        screenSettings()
     }
     
 //Конвертация из QuizQuestions -> QuizStepViewModel
@@ -121,7 +136,62 @@ final class MovieQuizViewController: UIViewController {
             self.showNextQuestionOrResults()
         }
     }
-  
+    
+    private func screenSettings() {
+        questionTitleLabelStyle()
+        counterLabelStyle()
+        imageViewStyle()
+        imageViewBorderStyle()
+        textLabelStyle()
+        yesButtonStyle()
+        noButtonStyle()
+    }
+    
+    private func questionTitleLabelStyle() {
+        questionLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionLabel.textColor = .ypWhite
+    }
+    
+    private func counterLabelStyle() {
+        indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        indexLabel.textColor = .ypWhite
+    }
+    
+    private func imageViewStyle() {
+        imageViev.layer.cornerRadius = 20
+        imageViev.contentMode = .scaleAspectFill
+        imageViev.backgroundColor = .ypWhite
+    }
+    
+    private func textLabelStyle() {
+        textLabel.textColor = .ypWhite
+        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        textLabel.numberOfLines = 2
+        textLabel.textAlignment = .center
+    }
+    
+    private func yesButtonStyle() {
+        yesButton.setTitle("Да", for: .normal)
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        yesButton.setTitleColor(.ypBlack, for: .normal)
+        yesButton.layer.cornerRadius = 15
+        yesButton.backgroundColor = .ypWhite
+    }
+    
+    private func noButtonStyle() {
+        noButton.setTitle("Нет", for: .normal)
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        noButton.setTitleColor(.ypBlack, for: .normal)
+        noButton.layer.cornerRadius = 15
+        noButton.backgroundColor = .ypWhite
+    }
+    
+    private func imageViewBorderStyle() {
+        imageViev.layer.masksToBounds = true
+        imageViev.layer.borderWidth = 8
+        imageViev.layer.borderColor = UIColor.clear.cgColor
+        imageViev.layer.cornerRadius = 20
+    }
 }
 
 /*
