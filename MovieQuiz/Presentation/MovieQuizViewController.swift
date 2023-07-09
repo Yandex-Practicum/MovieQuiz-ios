@@ -51,8 +51,8 @@ final class MovieQuizViewController: UIViewController {
     //общее количество вопросов
     private let questionsAmount: Int = 10
     
-    //обращение к фабрике вопросов
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    //обращение к протоколу фабрики вопросов
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
     
     //текущий вопрос, который видит пользователь
     private var currentQuestion: QuizQuestion?
