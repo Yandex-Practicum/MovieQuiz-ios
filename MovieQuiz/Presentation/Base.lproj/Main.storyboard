@@ -37,6 +37,9 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="gGw-Nj-HAR" firstAttribute="leading" secondItem="jV1-Kg-wdo" secondAttribute="leading" id="Dqd-uA-6RX"/>
+                                        </constraints>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default" translatesAutoresizingMaskIntoConstraints="NO" id="ijn-OE-nPZ" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
@@ -71,7 +74,7 @@
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="15"/>
+                                                        <integer key="value" value="20"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -88,7 +91,7 @@
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="15"/>
+                                                        <integer key="value" value="20"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
@@ -121,7 +124,10 @@
                     <connections>
                         <outlet property="imageViev" destination="ijn-OE-nPZ" id="oVb-YL-4eA"/>
                         <outlet property="indexLabel" destination="yew-hT-wZE" id="XQD-KG-yai"/>
+                        <outlet property="noButton" destination="S1z-JW-hZe" id="0se-7L-7SV"/>
+                        <outlet property="questionLabel" destination="gGw-Nj-HAR" id="PVo-BH-Zrf"/>
                         <outlet property="textLabel" destination="mic-EJ-luE" id="Pv8-Fq-gpz"/>
+                        <outlet property="yesButton" destination="Ebg-M2-uoC" id="km4-SF-glA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
