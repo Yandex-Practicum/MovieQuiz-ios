@@ -18,7 +18,12 @@ final class MovieQuizViewController: UIViewController {
     
     //событие кнопки да
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
+        
+        //распаковка опционала для хранения текущего вопроса
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        
         let givenAnswer = true
             
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
@@ -26,7 +31,12 @@ final class MovieQuizViewController: UIViewController {
     
     //событие кнопки нет
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
+       
+        //распаковка опционала для хранения текущего вопроса
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
@@ -38,12 +48,21 @@ final class MovieQuizViewController: UIViewController {
     // переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
     
+    //общее количество вопросов
+    private let questionsAmount: Int = 10
+    
+    //обращение к фабрике вопросов
+    private let questionFactory: QuestionFactory = QuestionFactory()
+    
+    //текущий вопрос, который видит пользователь
+    private var currentQuestion: QuizQuestion?
+    
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
     
@@ -94,9 +113,12 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            let firstQuestion = self.questions[self.currentQuestionIndex]
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
+            if let firstQuestion = self.questionFactory.requestNextQuestion() {
+                self.currentQuestion = firstQuestion
+                let viewModel = self.convert(model: firstQuestion)
+                
+                self.show(quiz: viewModel)
+            }
         }
         
         alert.addAction(action)
@@ -112,8 +134,13 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let currentQuestion = convert(model: questions[currentQuestionIndex])
-        show(quiz: QuizStepViewModel(image: currentQuestion.image, question: currentQuestion.question, questionNumber: currentQuestion.questionNumber))
+        
+        //обращение к фабрике вопросов
+        if let firstQuestion = questionFactory.requestNextQuestion() {
+            currentQuestion = firstQuestion
+            let viewModel = convert(model: firstQuestion)
+            show(quiz: viewModel)
+        }
         
         //скругление углов у афиши фильма
         imageView.layer.cornerRadius = 20
@@ -121,19 +148,19 @@ final class MovieQuizViewController: UIViewController {
     
     // приватный метод, который содержит логику перехода в один из сценариев
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 {
+        if currentQuestionIndex == questionsAmount - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
             let viewModel = QuizResultsViewModel(
                         title: "Этот раунд окончен!",
                         text: text,
                         buttonText: "Сыграть ещё раз")
                     show(quiz: viewModel)
-        } else {
+        } else if let nextQuestion = questionFactory.requestNextQuestion() {
             currentQuestionIndex += 1
             
-            let nextQuestion = questions[currentQuestionIndex]
+            currentQuestion = nextQuestion
             let viewModel = convert(model: nextQuestion)
-            
+
             show(quiz: viewModel)
         }
     }
