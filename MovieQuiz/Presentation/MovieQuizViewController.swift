@@ -1,3 +1,6 @@
+//
+// Sprint 05 branch
+//
 
 import UIKit
 
@@ -95,11 +98,14 @@ final class MovieQuizViewController: UIViewController {
     private func show(quizResult model: QuizResultsViewModel) {
         
         let alert = UIAlertController(title: model.title, message: model.text, preferredStyle: .alert)
-        let action = UIAlertAction(title: model.buttonText, style: .default){ _ in
+        let action = UIAlertAction(title: model.buttonText, style: .default){ [ weak self ] _ in
+            
+            guard let self = self else { return }
             
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.showQuiz()
+            
         }
         
         alert.addAction(action)
@@ -145,8 +151,8 @@ final class MovieQuizViewController: UIViewController {
         }
         
         // Пауза перед следующим вопросом
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-            self.showNextQuestionOrResults()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1){ [weak self] in
+            self?.showNextQuestionOrResults()
         }
     }
     
