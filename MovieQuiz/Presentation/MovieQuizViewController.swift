@@ -17,19 +17,19 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     /// Количество правильных ответов
     private var correctAnswers = 0
-    /// Массив вопросов
-    private var questions: [QuizQuestion] = [
-        QuizQuestion(image: "The Godfather", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image: "The Avengers", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image: "Deadpool", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image: "The Green Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image: "Old", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-        QuizQuestion(image: "The Ice Age Adventures of Buck Wild", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-        QuizQuestion(image: "Tesla", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-        QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
-    ]
+    
+    /// Количество вопросов в игре
+    private let questionsAmount: Int = 10
+    /// Фабрика вопросов
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    /// Текущий вопрос
+    private var currentQuestion: QuizQuestion?
+    
+    
+    // Окрашиваем статусную панель в светлые тона
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -50,17 +50,15 @@ final class MovieQuizViewController: UIViewController {
         showQuiz()
     }
     
-    // Окрашиваем статусную панель в светлые тона
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     /// Метод вызываемый по нажатию кнопки Нет
     @IBAction private func noButtonClicked(_ sender: UIButton){
         
         // Вызываем реакцию приложения на отрицательный ответ пользователя
         toggleButtons(to: false)
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == false)
+        
+        guard let currentQuestion = currentQuestion else { return }
+        
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
     }
     
     /// Метод вызываемый по нажатию кнопки Да
@@ -68,15 +66,25 @@ final class MovieQuizViewController: UIViewController {
         
         // Вызываем реакцию приложения на утвердительных ответ пользователя
         toggleButtons(to: false)
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
+        
+        guard let currentQuestion = currentQuestion else { return }
+        
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
     
-    /// Метод включающий/выключающий кнопки ответов
-    ///  - Parameters:
-    ///     - to: Состояние в которое переводится свойство кнопок isEnabled, true - включаем кнопки, false - отключаем
-    private func toggleButtons(to state: Bool){
-        noButton.isEnabled = state
-        yesButton.isEnabled = state
+    /// Подготовка представления/view к следующему вопросу
+    private func showQuiz(){
+        
+        // получаем следующий произвольный вопрос
+        currentQuestion = questionFactory.requestNextQuestion()
+        
+        guard let question = currentQuestion else {
+            return
+        }
+        
+        let viewModel = convert(question: question)
+        
+        show(quizStep: viewModel)
     }
     
     /// Подготовка вопроса к визуализации
@@ -88,8 +96,34 @@ final class MovieQuizViewController: UIViewController {
         return QuizStepViewModel(
             image: UIImage(named: question.image) ?? UIImage(),
             question: question.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
+    }
+    
+    /// Смена декораций представления/view
+    ///  - Parameters
+    ///     - quizStep: QuizStepViewModel-структура, содержащая необходимые элементы для обновления представления
+    ///
+    private func show(quizStep model: QuizStepViewModel){
+        
+        // Убираем окраску рамки изображения
+        mainImageView.layer.borderColor = UIColor.clear.cgColor
+        
+        // Адаптируем интерфейс под новый вопрос
+        questionIndexLabel.text = model.questionNumber
+        mainImageView.image = model.image
+        questionLabel.text = model.question
+        
+        // Включаем кнопки
+        toggleButtons(to: true)
+    }
+    
+    /// Метод включающий/выключающий кнопки ответов
+    ///  - Parameters:
+    ///     - to: Состояние в которое переводится свойство кнопок isEnabled, true - включаем кнопки, false - отключаем
+    private func toggleButtons(to state: Bool){
+        noButton.isEnabled = state
+        yesButton.isEnabled = state
     }
     
     /// Отображение уведомления о результатах игры
@@ -111,30 +145,6 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         
         self.present(alert, animated: true)
-    }
-    
-    /// Смена декораций представления/view
-    ///  - Parameters
-    ///     - quizStep: QuizStepViewModel-структура, содержащая необходимые элементы для обновления представления
-    ///
-    private func show(quizStep model: QuizStepViewModel){
-        
-        mainImageView.layer.borderColor = UIColor.clear.cgColor
-        
-        questionIndexLabel.text = model.questionNumber
-        mainImageView.image = model.image
-        questionLabel.text = model.question
-        
-        toggleButtons(to: true)
-    }
-   
-    /// Подготовка представления/view к следующему вопросу
-    private func showQuiz(){
-        
-        let question = questions[currentQuestionIndex]
-        let viewModel = convert(question: question)
-        
-        show(quizStep: viewModel)
     }
    
     /// Реагируем на ответ пользователя (нажатие кнопки ответа) - окрашиваем рамку картинки, переходим к следующему вопросу
@@ -160,7 +170,7 @@ final class MovieQuizViewController: UIViewController {
     private func showNextQuestionOrResults(){
        
         // Если предыдущий вопрос был последним
-        if currentQuestionIndex == questions.count - 1 {
+        if currentQuestionIndex == questionsAmount - 1 {
             
             // Подготавливаем уведомление
             let text = "Ваш результат: \(correctAnswers)/10"
@@ -178,42 +188,4 @@ final class MovieQuizViewController: UIViewController {
             showQuiz()
         }
     }
-
-    
-}
-
-/// Структура вопроса
-/// - Parameters:
-///     - image: Наименование используемого файла
-///     - text: Текст вопроса
-///     - correctAnswer: Верный Ответ на вопрос
-struct QuizQuestion {
-    
-    let image: String
-    let text: String
-    let correctAnswer: Bool
-}
-
-/// Структура модели вопроса
-/// - Parameters:
-///     - image: Изображение вопроса
-///     - question: Текст вопроса
-///     - questionNumber: Номер вопроса в квизе
-struct QuizStepViewModel {
-    
-    let image: UIImage
-    let question: String
-    let questionNumber: String
-}
-
-/// Структура модели отображаемого уведомления с результатами
-/// - Parameters:
-///     - title: Заголовок уведомления
-///     - text: Строка с текстом о количестве набранных очков
-///     - buttonText: Текст кнопки уведомления
-struct QuizResultsViewModel {
-    
-    let title: String
-    let text: String
-    let buttonText: String
 }
