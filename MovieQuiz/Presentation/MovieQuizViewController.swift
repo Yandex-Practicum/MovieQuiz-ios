@@ -16,6 +16,35 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //аутлет счетчика вопросов
     @IBOutlet weak private var counterLabel: UILabel!
     
+    
+    // переменная с индексом текущего вопроса, начальное значение 0
+    private var currentQuestionIndex = 0
+    
+    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
+    private var correctAnswers = 0
+    
+    //общее количество вопросов
+    private let questionsAmount: Int = 10
+    
+    //обращение к протоколу фабрики вопросов
+    private var questionFactory: QuestionFactoryProtocol?
+    
+    //текущий вопрос, который видит пользователь
+    private var currentQuestion: QuizQuestion?
+    
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        questionFactory?.requestNextQuestion()
+        
+        //обращение к фабрике вопросов
+        questionFactory = QuestionFactory(delegate: self)
+        
+        //скругление углов у афиши фильма
+        imageView.layer.cornerRadius = 20
+    }
+    
     //событие кнопки да
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         
@@ -42,36 +71,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    // переменная с индексом текущего вопроса, начальное значение 0
-    private var currentQuestionIndex = 0
-    
-    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
-    private var correctAnswers = 0
-    
-    //общее количество вопросов
-    private let questionsAmount: Int = 10
-    
-    //обращение к протоколу фабрики вопросов
-    private var questionFactory: QuestionFactoryProtocol?
-    
-    //текущий вопрос, который видит пользователь
-    private var currentQuestion: QuizQuestion?
-    
-    // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        return questionStep
+    // MARK: - QuestionFactoryDelegate
+
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async {
+            [weak self] in self?.show(quiz: viewModel)
+        }
+        
     }
     
-    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
-    private func show(quiz step: QuizStepViewModel) {
-      imageView.image = step.image
-      textLabel.text = step.question
-      counterLabel.text = step.questionNumber
-    }
     
     // приватный метод, который меняет цвет рамки
     private func showAnswerResult(isCorrect: Bool) {
@@ -101,57 +115,41 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
     }
     
+    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
+    private func show(quiz step: QuizStepViewModel) {
+      imageView.image = step.image
+      textLabel.text = step.question
+      counterLabel.text = step.questionNumber
+    }
+    
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        ///реализована корректная работа замыкания
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else {return}
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            questionFactory?.requestNextQuestion()
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
+        let completion = {
+                    self.currentQuestionIndex = 0
+                    self.correctAnswers = 0
+                    self.questionFactory?.requestNextQuestion()
+                }
+        let alertModel = AlertModel(
+                    title: result.title,
+                    message: result.text,
+                    buttonText: result.buttonText,
+                    completion: completion)
+                
+                let alertPsenenter = AlertPresenter(alertModel: alertModel, viewController: self)
+                alertPsenenter.showResultsAlert()
+    }
+    
+    // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let questionStep = QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        return questionStep
     }
     
     //изменяет статус бар на белый
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
-    }
-    
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        questionFactory?.requestNextQuestion()
-        
-        //обращение к фабрике вопросов
-        questionFactory = QuestionFactory(delegate: self)
-        
-        //скругление углов у афиши фильма
-        imageView.layer.cornerRadius = 20
-    }
-    
-    // MARK: - QuestionFactoryDelegate
-
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async {
-            [weak self] in self?.show(quiz: viewModel)
-        }
-        
     }
     
     // приватный метод, который содержит логику перехода в один из сценариев
