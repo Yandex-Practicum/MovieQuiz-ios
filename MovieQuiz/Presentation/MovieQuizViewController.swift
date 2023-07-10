@@ -1,6 +1,6 @@
 import UIKit
 //тест комита
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //аутлет кнопки да
     @IBOutlet weak var yesButton: UIButton!
     
@@ -52,7 +52,7 @@ final class MovieQuizViewController: UIViewController {
     private let questionsAmount: Int = 10
     
     //обращение к протоколу фабрики вопросов
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     
     //текущий вопрос, который видит пользователь
     private var currentQuestion: QuizQuestion?
@@ -113,12 +113,7 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-                
-                self.show(quiz: viewModel)
-            }
+            questionFactory?.requestNextQuestion()
         }
         
         alert.addAction(action)
@@ -135,15 +130,28 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        questionFactory?.requestNextQuestion()
+        
         //обращение к фабрике вопросов
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        questionFactory = QuestionFactory(delegate: self)
         
         //скругление углов у афиши фильма
         imageView.layer.cornerRadius = 20
+    }
+    
+    // MARK: - QuestionFactoryDelegate
+
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async {
+            [weak self] in self?.show(quiz: viewModel)
+        }
+        
     }
     
     // приватный метод, который содержит логику перехода в один из сценариев
@@ -155,14 +163,7 @@ final class MovieQuizViewController: UIViewController {
                         text: text,
                         buttonText: "Сыграть ещё раз")
                     show(quiz: viewModel)
-        } else if let nextQuestion = questionFactory.requestNextQuestion() {
-            currentQuestionIndex += 1
-            
-            currentQuestion = nextQuestion
-            let viewModel = convert(model: nextQuestion)
-
-            show(quiz: viewModel)
-        }
+        } else {questionFactory?.requestNextQuestion()}
     }
 }
 
