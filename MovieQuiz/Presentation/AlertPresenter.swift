@@ -8,7 +8,5 @@
 import Foundation
 
 protocol AlertPresenter {
-    
     func show(alertModel: AlertModel)
-    
 }
