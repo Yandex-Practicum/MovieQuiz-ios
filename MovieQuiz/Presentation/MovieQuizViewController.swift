@@ -28,8 +28,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenter?
-    private var statisticService: StatisticServiceImplementation?
+    private var statisticService: StatisticService?
     private var currentQuestion: QuizQuestion?
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+             return .lightContent
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
