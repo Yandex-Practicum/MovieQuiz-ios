@@ -141,7 +141,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             // иначе считаем количество вопросов
             currentQuestionIndex += 1
-            
             questionFactory?.requestNextQuestion()
         }
     }
