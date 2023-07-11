@@ -60,7 +60,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         self.delegate = delegate
     } 
 
-    func requestNextQuestion() -> QuizQuestion? {
+    func requestNextQuestion() {
         guard let index = (0..<questions.count).randomElement() else {
             delegate?.didReceiveNextQuestion(question: nil)
             return
