@@ -4,8 +4,11 @@
 
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController{
     
+    // MARK: - Properties
+    
+    // Outlets
     @IBOutlet private weak var questionTitleLabel: UILabel!
     @IBOutlet private weak var questionIndexLabel: UILabel!
     @IBOutlet private weak var mainImageView: UIImageView!
@@ -13,18 +16,19 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     
+    /// Фабрика вопросов
+    private var questionFactory: QuestionFactoryProtocol?
+    /// Текущий вопрос
+    private var currentQuestion: QuizQuestion?
+    /// Количество вопросов в игре
+    private let questionsAmount: Int = 10
     /// Индекс текущего вопроса
     private var currentQuestionIndex = 0
     /// Количество правильных ответов
     private var correctAnswers = 0
     
-    /// Количество вопросов в игре
-    private let questionsAmount: Int = 10
-    /// Фабрика вопросов
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
-    /// Текущий вопрос
-    private var currentQuestion: QuizQuestion?
-    
+    /// Фабрика уведомлений
+    private var alertPresenter: AlertPresenterProtocol?
     
     // Окрашиваем статусную панель в светлые тона
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -47,8 +51,13 @@ final class MovieQuizViewController: UIViewController {
         mainImageView.layer.borderWidth = 8     // В соответствии с Figma-моделью
         mainImageView.layer.cornerRadius = 20   // В соответствии с Figma-моделью
         
-        showQuiz()
+        questionFactory = QuestionFactory(delegate: self)
+        alertPresenter = AlertPresenter(delegate: self)
+        
+        questionFactory?.requestNextQuestion()
     }
+    
+    // MARK: - Actions
     
     /// Метод вызываемый по нажатию кнопки Нет
     @IBAction private func noButtonClicked(_ sender: UIButton){
@@ -72,20 +81,7 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
     
-    /// Подготовка представления/view к следующему вопросу
-    private func showQuiz(){
-        
-        // получаем следующий произвольный вопрос
-        currentQuestion = questionFactory.requestNextQuestion()
-        
-        guard let question = currentQuestion else {
-            return
-        }
-        
-        let viewModel = convert(question: question)
-        
-        show(quizStep: viewModel)
-    }
+    // MARK: - Private functions
     
     /// Подготовка вопроса к визуализации
     /// - Parameters:
@@ -101,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     /// Смена декораций представления/view
-    ///  - Parameters
+    ///  - Parameters:
     ///     - quizStep: QuizStepViewModel-структура, содержащая необходимые элементы для обновления представления
     ///
     private func show(quizStep model: QuizStepViewModel){
@@ -125,27 +121,6 @@ final class MovieQuizViewController: UIViewController {
         noButton.isEnabled = state
         yesButton.isEnabled = state
     }
-    
-    /// Отображение уведомления о результатах игры
-    /// - Parameters:
-    ///     - quizResult: QuizResultsViewModel-структура
-    private func show(quizResult model: QuizResultsViewModel) {
-        
-        let alert = UIAlertController(title: model.title, message: model.text, preferredStyle: .alert)
-        let action = UIAlertAction(title: model.buttonText, style: .default){ [ weak self ] _ in
-            
-            guard let self = self else { return }
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.showQuiz()
-            
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true)
-    }
    
     /// Реагируем на ответ пользователя (нажатие кнопки ответа) - окрашиваем рамку картинки, переходим к следующему вопросу
     /// - Parameters:
@@ -155,8 +130,8 @@ final class MovieQuizViewController: UIViewController {
         // Окрашиваем рамку картинки вопроса в соответствии с правильностью ответа
         mainImageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
+        // Если ответ верный инкриментируем счётчик верных ответов
         if isCorrect {
-            // Инкриментируем счётчик верных ответов
             correctAnswers += 1
         }
         
@@ -174,18 +149,51 @@ final class MovieQuizViewController: UIViewController {
             
             // Подготавливаем уведомление
             let text = "Ваш результат: \(correctAnswers)/10"
-            let quizResult = QuizResultsViewModel(title: "Раунд окончен!", text: text, buttonText: "Сыграть ещё раз")
+            let alertModel = AlertModel(title: "Раунд окончен!", message: text, buttonText: "Сыграть ещё раз", completion: roundIsOver)
             
             // Отображаем уведомление
-            show(quizResult: quizResult)
+            alertPresenter?.alert(with: alertModel)
             
         // Иначе переходим к следующему вопросу
         } else {
             
             // Инкриментируем счётчик текущего вопроса
             currentQuestionIndex += 1
-            // Отображаем вопрос
-            showQuiz()
+            
+            // Посылаем запрос на вопрос на фабрику вопросов
+            questionFactory?.requestNextQuestion()
         }
+    }
+}
+
+// MARK: - Extensions
+
+/// Расширение для соответствия делегату фабрики вопросов
+extension MovieQuizViewController: QuestionFactoryDelegate {
+    
+    /// Обработка Квиз-вопроса, полученного от фабрики вопросов
+    internal func didReceiveNextQuestion(question: QuizQuestion?){
+       
+        guard let question  = question else { return }
+        
+        currentQuestion = question
+        
+        let viewModel = convert(question: question)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quizStep: viewModel)
+        }
+    }
+}
+
+/// Расширение для соответствия алерт-делегату
+extension MovieQuizViewController: AlertPresenterDelegate {
+    
+    /// Функция для инициализации квиз-раунда
+    internal func roundIsOver( _ : UIAlertAction){
+        
+        self.currentQuestionIndex = 0
+        self.correctAnswers = 0
+        self.questionFactory?.requestNextQuestion()
     }
 }
