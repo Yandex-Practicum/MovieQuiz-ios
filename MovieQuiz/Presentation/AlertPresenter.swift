@@ -9,18 +9,16 @@ import Foundation
 import UIKit
 
 class AlertPresenter {
-    let alertModel: AlertModel
-        weak var viewController: UIViewController?
+    weak var viewController: UIViewController?
         
-        init(alertModel: AlertModel, viewController: UIViewController) {
-            self.alertModel = alertModel
+        init(viewController: UIViewController) {
             self.viewController = viewController
         }
         
-        func showResultsAlert() {
+    func showResultsAlert(_ alertModel: AlertModel) {
             let alert = UIAlertController(title: alertModel.title, message: alertModel.message, preferredStyle: .alert)
-            let action = UIAlertAction(title: alertModel.buttonText, style: .default) { [weak self] _ in
-                self?.alertModel.completion()
+            let action = UIAlertAction(title: alertModel.buttonText, style: .default) {_ in
+                alertModel.completion()
             }
             
             guard let viewController = viewController else { return }

@@ -32,14 +32,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //текущий вопрос, который видит пользователь
     private var currentQuestion: QuizQuestion?
     
+    private lazy var alertPsenenter = AlertPresenter(viewController: self)
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        questionFactory?.requestNextQuestion()
-        
         //обращение к фабрике вопросов
         questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
         
         //скругление углов у афиши фильма
         imageView.layer.cornerRadius = 20
@@ -104,14 +105,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         ///реализована корректная работа замыкания
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else {return}
+            self?.showNextQuestionOrResults()
             
-                self.showNextQuestionOrResults()
-            self.imageView.layer.borderWidth = 0
+            self?.imageView.layer.borderWidth = 0
             
             //включает активность кнопок после показа следующего вопроса
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
+            self?.yesButton.isEnabled = true
+            self?.noButton.isEnabled = true
             }
     }
     
@@ -124,18 +124,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func show(quiz result: QuizResultsViewModel) {
         let completion = {
-                    self.currentQuestionIndex = 0
-                    self.correctAnswers = 0
-                    self.questionFactory?.requestNextQuestion()
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.questionFactory?.requestNextQuestion()
                 }
         let alertModel = AlertModel(
                     title: result.title,
                     message: result.text,
                     buttonText: result.buttonText,
                     completion: completion)
-                
-                let alertPsenenter = AlertPresenter(alertModel: alertModel, viewController: self)
-                alertPsenenter.showResultsAlert()
+        
+        alertPsenenter.showResultsAlert(alertModel)
     }
     
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
@@ -161,7 +160,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                         text: text,
                         buttonText: "Сыграть ещё раз")
                     show(quiz: viewModel)
-        } else {questionFactory?.requestNextQuestion()}
+        } else {
+            currentQuestionIndex += 1
+            questionFactory?.requestNextQuestion()
+            
+        }
     }
 }
 
