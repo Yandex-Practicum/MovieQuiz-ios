@@ -100,6 +100,12 @@ final class MovieQuizViewController: UIViewController {
     
     private lazy var convertedQuestion: QuizStepViewModel = convert(model: currentQuestion)
     
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        show(quiz: convertedQuestion)
+    }
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -113,26 +119,16 @@ final class MovieQuizViewController: UIViewController {
     }
     
     
-    
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        show(quiz: convertedQuestion)
-    }
-    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
         
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 8 // толщина рамки
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        
-        // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            // код, который мы хотим вызвать через 1 секунду
             self.showNextQuestionOrResults()
         }
     }
@@ -192,6 +188,5 @@ final class MovieQuizViewController: UIViewController {
 
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-
 }
 
