@@ -19,6 +19,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     /// текущий вопрос
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenterProtocol?
 
     // делаем статус бар светлым
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -32,7 +33,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20 // скругление рамки
         
         questionFactory = QuestionFactory(delegate: self)
-        
+        alertPresenter = AlertPresenter(delegate: self)
         questionFactory?.requestNextQuestion()
         
     }
@@ -78,26 +79,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         yesButton.isEnabled = isEnabled
     }
     
-    private func show(quiz result: QuizResultViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert
-        )
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            questionFactory?.requestNextQuestion()
-        }
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     // приватный метод, который меняет цвет рамки
     private func showAnswerResult(isCorrect: Bool) {
         /// блокируем кнопки до появляения следующешо вопроса
@@ -124,6 +105,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    // рестарт игры
+    private func restartGame() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
+    }
+    
     // приватный метод, который содержит логику перехода в один из сценариев
     private func showNextQuestionOrResults() {
         // если вопросов больше нет, отображаем алерт
@@ -132,15 +120,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             "Поздравляем! Вы ответили на \(questionsAmount) из \(questionsAmount)!" :
             "Ваш результат: \(correctAnswers)/\(questionsAmount)"
             
-            let viewModel = QuizResultViewModel(
+            let viewModel = AlertModel(
                 title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть еще раз"
-            )
-            show(quiz: viewModel)
+                message: text,
+                buttonText: "Сыграть еще раз",
+                completion: { [weak self] in
+                    guard let self = self else { return }
+                    self.restartGame()
+                })
+            alertPresenter?.show(model: viewModel)
         } else {
             // иначе считаем количество вопросов
             currentQuestionIndex += 1
+            
             questionFactory?.requestNextQuestion()
         }
     }
