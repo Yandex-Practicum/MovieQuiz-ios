@@ -51,8 +51,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
     }
     
-
-    
     // MARK: - Private Methods
     // метод конвертации, который принимает мок данные и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -127,6 +125,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 completion: { [weak self] in
                     guard let self = self else { return }
                     self.restartGame()
+                    print("✅нажали на кнопку алерта")
                 })
             alertPresenter?.show(model: viewModel)
         } else {
