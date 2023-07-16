@@ -9,17 +9,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     
-    /// переменная с индексом текущего вопроса
+    /// индекс текущего вопроса
     private var currentQuestionIndex = 0
-    /// переменная со счётчиком правильных ответов
+    /// счётчик правильных ответов
     private var correctAnswers = 0
-    /// переменная с заданным кол-вом вопросов
+    /// количество вопросов
     private let questionsAmount: Int = 2
     /// фабрика вопросов
     private var questionFactory: QuestionFactoryProtocol?
     /// текущий вопрос
     private var currentQuestion: QuizQuestion?
+    /// алерт после игры
     private var alertPresenter: AlertPresenterProtocol?
+    /// статистика которая хранится в UserDefaults
+    private var statisticService: StatisticService = StatisticServiceImpl()
+    
 
     // делаем статус бар светлым
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -35,7 +39,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory?.requestNextQuestion()
-        
+
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -114,18 +118,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         // если вопросов больше нет, отображаем алерт
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = questionsAmount == correctAnswers ?
-            "Поздравляем! Вы ответили на \(questionsAmount) из \(questionsAmount)!" :
-            "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+            
+            let messageQuizResult = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+            let messageQuizCount = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+            let messageQuizRecord = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
+            let messageQuizAvgAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.averageAccuracy))%"
+            let messageQuiz = [
+                messageQuizResult, messageQuizCount, messageQuizRecord, messageQuizAvgAccuracy
+            ].joined(separator: "\n")
+            
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
+            let title = questionsAmount == correctAnswers ?
+            "Поздравляем!" : "Этот раунд окончен"
+            let message = messageQuiz
             
             let viewModel = AlertModel(
-                title: "Этот раунд окончен!",
-                message: text,
+                title: title,
+                message: message,
                 buttonText: "Сыграть еще раз",
                 completion: { [weak self] in
                     guard let self = self else { return }
                     self.restartGame()
-                    print("✅нажали на кнопку алерта")
                 })
             alertPresenter?.show(model: viewModel)
         } else {
