@@ -8,6 +8,11 @@
 		<false/>
 		<key>UISceneConfigurations</key>
 		<dict>
+            <key>UIAppFonts</key>
+             <array>
+                  <string>YS Display-Bold</string>
+                  <string>YS Display-Medium</string>
+             </array>
 			<key>UIWindowSceneSessionRoleApplication</key>
 			<array>
 				<dict>
