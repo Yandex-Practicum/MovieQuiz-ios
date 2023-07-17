@@ -26,6 +26,8 @@ final class MovieQuizViewController: UIViewController{
     private var currentQuestionIndex = 0
     /// Количество правильных ответов
     private var correctAnswers = 0
+    /// Сервис подсчёта, обработки результатов квиза
+    private let statisticService: StatisticService = StatisticServiceImplementation()
     
     /// Фабрика уведомлений
     private var alertPresenter: AlertPresenterProtocol?
@@ -51,9 +53,11 @@ final class MovieQuizViewController: UIViewController{
         mainImageView.layer.borderWidth = 8     // В соответствии с Figma-моделью
         mainImageView.layer.cornerRadius = 20   // В соответствии с Figma-моделью
         
+        // Обеспечение зависимостей
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
         
+        // Получаем/отображаем первый вопрос квиза
         questionFactory?.requestNextQuestion()
     }
     
@@ -147,9 +151,26 @@ final class MovieQuizViewController: UIViewController{
         // Если предыдущий вопрос был последним
         if currentQuestionIndex == questionsAmount - 1 {
             
+            // Подводим итог текущей игры
+            
+            let totalQuestions = currentQuestionIndex + 1
+            
+            statisticService.store(correct: correctAnswers, total: totalQuestions)
+            
             // Подготавливаем уведомление
-            let text = "Ваш результат: \(correctAnswers)/10"
-            let alertModel = AlertModel(title: "Раунд окончен!", message: text, buttonText: "Сыграть ещё раз", completion: roundIsOver)
+            
+            let bestGame = statisticService.bestGame
+            
+            var text = "Ваш результат: \(correctAnswers)/\(totalQuestions)\n"
+            
+            text = text + "Количество сыгранных квизов: \(statisticService.gamesCount)\n"
+            
+            text = text + "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))\n"
+            
+            text = text + "Средняя точность: \(String(format: "%.2f", statisticService.accuracy))%"
+            
+            
+            let alertModel = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть ещё раз", completion: startNewQuiz)
             
             // Отображаем уведомление
             alertPresenter?.alert(with: alertModel)
@@ -190,7 +211,7 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
 extension MovieQuizViewController: AlertPresenterDelegate {
     
     /// Функция для инициализации квиз-раунда
-    internal func roundIsOver( _ : UIAlertAction){
+    internal func startNewQuiz( _ : UIAlertAction){
         
         self.currentQuestionIndex = 0
         self.correctAnswers = 0

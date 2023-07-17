@@ -8,5 +8,5 @@
 import UIKit
 
 protocol AlertPresenterDelegate: UIViewController {
-    func roundIsOver(_: UIAlertAction)
+    func startNewQuiz(_: UIAlertAction)
 }
