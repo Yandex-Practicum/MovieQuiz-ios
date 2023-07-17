@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     /// счётчик правильных ответов
     private var correctAnswers = 0
     /// количество вопросов
-    private let questionsAmount: Int = 2
+    private let questionsAmount: Int = 10
     /// фабрика вопросов
     private var questionFactory: QuestionFactoryProtocol?
     /// текущий вопрос
@@ -39,7 +39,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory?.requestNextQuestion()
-
     }
     
     // MARK: - QuestionFactoryDelegate

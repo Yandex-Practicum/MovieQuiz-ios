@@ -3,10 +3,7 @@ import UIKit
 final class StatisticServiceImpl: StatisticService {
     private let userDefaults = UserDefaults.standard
     private enum Keys: String {
-        case correct, // верные ответы
-             total, // общее коли-во сыгранных игр
-             bestGame, // лучшая игра за все время
-             gamesCount // количество сыгранных игр за все время
+        case correct, total, bestGame, gamesCount
     }
     
     var gamesCount: Int {
@@ -25,7 +22,9 @@ final class StatisticServiceImpl: StatisticService {
     }
     
     var averageAccuracy: Double {
-        return total > 0 ? Double(correct) / Double(total) * 100 : 0
+        get {
+            return total > 0 ? Double(correct) / Double(total) * 100 : 0
+        }
     }
     
     var bestGame: GameRecord {
@@ -54,8 +53,8 @@ final class StatisticServiceImpl: StatisticService {
             bestGame = currentGameRecord
         }
     
-        self.correct += correct
-        self.total += total
+        correct += count
+        total += amount
         gamesCount += 1
     }
 }
