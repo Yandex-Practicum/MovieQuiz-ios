@@ -34,10 +34,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private lazy var alertPsenenter = AlertPresenter(viewController: self)
     
+    private var statisticService: StatisticService?
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        statisticService = StatisticServiceImplementation()
+    
         //обращение к фабрике вопросов
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
@@ -154,12 +157,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // приватный метод, который содержит логику перехода в один из сценариев
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = "Ваш результат: \(correctAnswers)/10"
-            let viewModel = QuizResultsViewModel(
-                        title: "Этот раунд окончен!",
-                        text: text,
-                        buttonText: "Сыграть ещё раз")
-                    show(quiz: viewModel)
+            if let statisticService = statisticService {
+                
+                statisticService.store(correct: correctAnswers, total: questionsAmount)
+                
+                let bestGame = statisticService.bestGame
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd.MM.YYYY HH:mm"
+                
+                let text = "Ваш результат: \(correctAnswers) из 10\n" +
+                                "Количество сыгранных квизов: \(statisticService.gamesCount)\n" +
+                                "Ваш рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))\n" +
+                                "Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)\n"
+                
+                let viewModel = QuizResultsViewModel(
+                                    title: "Этот раунд окончен!",
+                                    text: text,
+                                    buttonText: "Сыграть ещё раз")
+                                show(quiz: viewModel)
+            }
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
