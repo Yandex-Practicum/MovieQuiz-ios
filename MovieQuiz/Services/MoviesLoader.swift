@@ -18,7 +18,11 @@ struct MoviesLoader: MoviesLoading {
     // MARK: - NetworkClient
 
     // Создание экземпляра NetworkClient для выполнения сетевых запросов
-    private let networkClient = NetworkClient()
+    private let networkClient: NetworkRouting
+    
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+        }
 
     // MARK: - URL
 

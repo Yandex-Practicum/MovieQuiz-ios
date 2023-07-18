@@ -7,8 +7,13 @@
 
 import Foundation
 
+//Протокол для тестирования
+protocol NetworkRouting {
+    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
+}
+
 // Структура для клиента сетевых запросов
-struct NetworkClient {
+struct NetworkClient: NetworkRouting {
 
     // Перечисление для ошибки сетевого запроса
     private enum NetworkError: Error {

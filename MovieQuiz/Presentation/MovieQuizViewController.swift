@@ -61,7 +61,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
-
+    
     // Отображение текущего вопроса
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
