@@ -15,7 +15,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
    
     private var correctAnswers = 0  // Количество правильных ответов
     private var questionFactory: QuestionFactory?  // Фабрика вопросов
-    private var currentQuestion: QuizQuestion?  // Текущий вопрос
     private var alertPresenter: AlertPresenter?  // Презентер для отображения алертов
     private var statisticService: StatisticService?  // Сервис для сохранения статистики
     
@@ -27,6 +26,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.viewController = self
         statisticService = StatisticServiceImpl(userDefaults: UserDefaults.standard)  // Инициализация сервиса статистики
         alertPresenter = AlertPresenterImpl(viewController: self)  // Инициализация презентера алертов
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)  // Инициализация фабрики вопросов
@@ -47,7 +47,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
 
-        currentQuestion = question
+        presenter.currentQuestion = question
         let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
@@ -102,7 +102,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     // Отображение результата ответа на вопрос
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
@@ -153,6 +153,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.activityIndicator.stopAnimating()
         }
     }
+    
+    // Обработчик нажатия кнопки "Да"
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+                presenter.yesButtonClicked()
+    }
+
+    // Обработчик нажатия кнопки "Нет"
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        presenter.noButtonClicked()
+    }
 
     // Отображение ошибки сети
     private func showNetworkError(message: String) {
@@ -170,26 +180,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
 
         alertPresenter?.show(alertModel: model)
-    }
-
-    // Обработчик нажатия кнопки "Да"
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-
-    // Обработчик нажатия кнопки "Нет"
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 
     // Обработка ошибки загрузки данных

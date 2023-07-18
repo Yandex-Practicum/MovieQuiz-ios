@@ -10,8 +10,13 @@ import UIKit
 
 final class MovieQuziPresenter {
     
-    let questionsAmount: Int = 10  // Общее количество вопросов
     private var currentQuestionIndex = 0  // Индекс текущего вопроса
+    
+    let questionsAmount: Int = 10  // Общее количество вопросов
+    
+    var currentQuestion: QuizQuestion?  // Текущий вопрос
+    weak var viewController: MovieQuizViewController?
+    
     
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -32,4 +37,26 @@ final class MovieQuziPresenter {
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
+    
+    // Обработчик нажатия кнопки "Да"
+    func yesButtonClicked() {
+            guard let currentQuestion = currentQuestion else {
+                return
+            }
+            
+            let givenAnswer = true
+            
+            viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        }
+
+    // Обработчик нажатия кнопки "Нет"
+    func noButtonClicked() {
+            guard let currentQuestion = currentQuestion else {
+                return
+            }
+            
+            let givenAnswer = false
+            
+            viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        }
 }
