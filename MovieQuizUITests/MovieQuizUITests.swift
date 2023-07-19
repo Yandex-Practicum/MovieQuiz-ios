@@ -25,7 +25,6 @@ final class MovieQuizUITests: XCTestCase {
         
         app.terminate()
         app = nil
-        
     }
     
     func testExample() throws {

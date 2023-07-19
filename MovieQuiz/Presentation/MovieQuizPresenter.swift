@@ -15,8 +15,10 @@ final class MovieQuizPresenter {
         currentQuestionIndex == questionsAmount - 1
     }
     
-    func resetQuestionIndex() {
+    func restartGame() {
         currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
     }
     
     func switchToNextQuestion() {
@@ -32,21 +34,17 @@ final class MovieQuizPresenter {
     }
     
     func yesButtonClicked() {
-        didAnswer(isYes: true)
+        didAnswer(isCorrectAnswer: true)
     }
     
     func noButtonClicked() {
-        didAnswer(isYes: false)
+        didAnswer(isCorrectAnswer: false)
     }
     
-    private func didAnswer(isYes: Bool) {
-        guard let currentQuestion = currentQuestion else {
-            return
+    func didAnswer(isCorrectAnswer: Bool) {
+        if isCorrectAnswer {
+            correctAnswers += 1
         }
-        
-        let givenAnswer = isYes
-        
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -60,10 +58,14 @@ final class MovieQuizPresenter {
             self?.viewController?.showCurrentQuestion(step: viewModel)
         }
     }
+    
+    func updateButtonState(isEnabled: Bool) {
+        viewController?.updateButtonState(isEnabled: isEnabled)
+    }
 
     // Переход к следующему вопросу или отображение результатов квиза
     func showNextQuestionOrResults() {
-        if self.isLastQuestion() {
+        if isLastQuestion() {
             let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             
             let viewModel = QuizResultsViewModel(
@@ -72,7 +74,7 @@ final class MovieQuizPresenter {
                 buttonText: "Сыграть ещё раз")
             viewController?.showQuizResults(result: viewModel)
         } else {
-            self.switchToNextQuestion()
+            switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
