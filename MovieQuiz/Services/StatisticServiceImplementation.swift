@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - StatisticServiceImplementation
 /// Сервис подсчёта, обработки результатов квиза
 final class StatisticServiceImplementation: StatisticService {
     
@@ -94,7 +95,7 @@ final class StatisticServiceImplementation: StatisticService {
     func store(correct count: Int, total amount: Int) {
         
         // Увеличиваем счётчик пройденных квизов
-        self.gamesCount = self.gamesCount + 1
+        self.gamesCount += 1
         
         // Формируем эксемпляр потенциального рекорда из результатов прохождения текущего квиза
         let currentGame = GameRecord(correct: count, total: amount, date: Date())
@@ -105,7 +106,20 @@ final class StatisticServiceImplementation: StatisticService {
         }
         
         // Инкрементируем счётчики верных ответов и суммарное количество вопросов во всех квизах
-        correctQuestions = correctQuestions + count
-        totalQuestions = totalQuestions + amount
+        correctQuestions += count
+        totalQuestions += amount
     }
 }
+
+// MARK: - StatisticService Protocol
+//
+protocol StatisticService {
+    var correctQuestions: Int { get }
+    var totalQuestions: Int { get }
+    var accuracy: Double { get }
+    var gamesCount: Int { get }
+    var bestGame: GameRecord { get }
+    
+    func store(correct count: Int, total amount: Int)
+}
+

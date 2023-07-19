@@ -4,6 +4,8 @@
 
 import UIKit
 
+// MARK: - MovieQuizViewController Class
+///
 final class MovieQuizViewController: UIViewController{
     
     // MARK: - Properties
@@ -39,19 +41,9 @@ final class MovieQuizViewController: UIViewController{
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        // У меня Xcode (14.3) не отображает установленные шрифты в списке шрифтов. Перепробовал всё, что рекомендовалось, поэтому ...
-        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionIndexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
-        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
-        
-        mainImageView.layer.masksToBounds = true
-        mainImageView.layer.borderWidth = 8     // В соответствии с Figma-моделью
-        mainImageView.layer.cornerRadius = 20   // В соответствии с Figma-моделью
+        someMakeup()
         
         // Обеспечение зависимостей
         questionFactory = QuestionFactory(delegate: self)
@@ -61,27 +53,21 @@ final class MovieQuizViewController: UIViewController{
         questionFactory?.requestNextQuestion()
     }
     
-    // MARK: - Actions
+    // MARK: - IBActions
     
     /// Метод вызываемый по нажатию кнопки Нет
     @IBAction private func noButtonClicked(_ sender: UIButton){
-        
         // Вызываем реакцию приложения на отрицательный ответ пользователя
         toggleButtons(to: false)
-        
         guard let currentQuestion = currentQuestion else { return }
-        
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
     }
     
     /// Метод вызываемый по нажатию кнопки Да
     @IBAction private func yesButtonClicked(_ sender: UIButton){
-        
         // Вызываем реакцию приложения на утвердительных ответ пользователя
         toggleButtons(to: false)
-        
         guard let currentQuestion = currentQuestion else { return }
-        
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
     
@@ -92,7 +78,6 @@ final class MovieQuizViewController: UIViewController{
     ///     - question: QuizQuestion-структура
     /// - Returns: Возвращает структуру "QuizStepViewModel" для отображения вопроса в представлении
     private func convert(question: QuizQuestion) -> QuizStepViewModel {
-        
         return QuizStepViewModel(
             image: UIImage(named: question.image) ?? UIImage(),
             question: question.text,
@@ -106,16 +91,11 @@ final class MovieQuizViewController: UIViewController{
     ///
     private func show(quizStep model: QuizStepViewModel){
         
-        // Убираем окраску рамки изображения
-        mainImageView.layer.borderColor = UIColor.clear.cgColor
-        
-        // Адаптируем интерфейс под новый вопрос
-        questionIndexLabel.text = model.questionNumber
+        mainImageView.layer.borderColor = UIColor.clear.cgColor // Убираем окраску рамки изображения
+        questionIndexLabel.text = model.questionNumber          // Адаптируем интерфейс под новый вопрос
         mainImageView.image = model.image
         questionLabel.text = model.question
-        
-        // Включаем кнопки
-        toggleButtons(to: true)
+        toggleButtons(to: true)                                 // Включаем кнопки
     }
     
     /// Метод включающий/выключающий кнопки ответов
@@ -134,13 +114,11 @@ final class MovieQuizViewController: UIViewController{
         // Окрашиваем рамку картинки вопроса в соответствии с правильностью ответа
         mainImageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        // Если ответ верный инкриментируем счётчик верных ответов
-        if isCorrect {
+        if isCorrect {  // Если ответ верный инкриментируем счётчик верных ответов
             correctAnswers += 1
         }
         
-        // Пауза перед следующим вопросом
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1){ [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1){ [weak self] in     // Пауза перед следующим вопросом
             self?.showNextQuestionOrResults()
         }
     }
@@ -149,46 +127,50 @@ final class MovieQuizViewController: UIViewController{
     private func showNextQuestionOrResults(){
        
         // Если предыдущий вопрос был последним
-        if currentQuestionIndex == questionsAmount - 1 {
-            
-            // Подводим итог текущей игры
+        if currentQuestionIndex == questionsAmount - 1 {    // Подводим итог текущей игры
             
             let totalQuestions = currentQuestionIndex + 1
-            
             statisticService.store(correct: correctAnswers, total: totalQuestions)
             
             // Подготавливаем уведомление
-            
             let bestGame = statisticService.bestGame
-            
-            var text = "Ваш результат: \(correctAnswers)/\(totalQuestions)\n"
-            
-            text = text + "Количество сыгранных квизов: \(statisticService.gamesCount)\n"
-            
-            text = text + "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))\n"
-            
-            text = text + "Средняя точность: \(String(format: "%.2f", statisticService.accuracy))%"
-            
-            
+            let text = """
+                Ваш результат: \(correctAnswers)/\(totalQuestions)
+                Количество сыгранных квизов: \(statisticService.gamesCount)
+                Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
+                Средняя точность: \(String(format: "%.2f", statisticService.accuracy))%
+            """
             let alertModel = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть ещё раз", completion: startNewQuiz)
             
-            // Отображаем уведомление
-            alertPresenter?.alert(with: alertModel)
+            alertPresenter?.alert(with: alertModel)     // Отображаем уведомление
             
         // Иначе переходим к следующему вопросу
         } else {
-            
-            // Инкриментируем счётчик текущего вопроса
-            currentQuestionIndex += 1
-            
-            // Посылаем запрос на вопрос на фабрику вопросов
-            questionFactory?.requestNextQuestion()
+            currentQuestionIndex += 1                   // Инкриментируем счётчик текущего вопроса
+            questionFactory?.requestNextQuestion()      // Посылаем запрос на вопрос на фабрику вопросов
         }
+    }
+    
+    /// Настраиваем параметры представления
+    ///
+    private func someMakeup(){
+        
+        // У меня Xcode (14.3) не отображает установленные шрифты в списке шрифтов. Перепробовал всё, что рекомендовалось, поэтому ...
+        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionIndexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        
+        mainImageView.layer.masksToBounds = true
+        mainImageView.layer.borderWidth = 8     // В соответствии с Figma-моделью
+        mainImageView.layer.cornerRadius = 20   // В соответствии с Figma-моделью
     }
 }
 
 // MARK: - Extensions
 
+// MARK: - QuestionFactoryDelegate
 /// Расширение для соответствия делегату фабрики вопросов
 extension MovieQuizViewController: QuestionFactoryDelegate {
     
@@ -207,6 +189,7 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
     }
 }
 
+// MARK: - AlertPresenterDelegate
 /// Расширение для соответствия алерт-делегату
 extension MovieQuizViewController: AlertPresenterDelegate {
     

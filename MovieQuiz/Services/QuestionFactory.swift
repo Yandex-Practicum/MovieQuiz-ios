@@ -7,10 +7,8 @@
 
 import Foundation
 
-
-/// Фабрика вопросов
-///
-class QuestionFactory: QuestionFactoryProtocol {
+// MARK: - Фабрика вопросов
+final class QuestionFactory: QuestionFactoryProtocol {
     
     /// Делегат - получатель Квиз-вопросов
     weak var delegate: QuestionFactoryDelegate?
@@ -46,4 +44,16 @@ class QuestionFactory: QuestionFactoryProtocol {
         let question = questions[safe: index]
         delegate?.didReceiveNextQuestion(question: question)
     }
+}
+
+// MARK: - QuestionFactoryProtocol
+//
+protocol QuestionFactoryProtocol {
+    func requestNextQuestion()
+}
+
+// MARK: - QuestionFactoryDelegate
+//
+protocol QuestionFactoryDelegate: AnyObject {
+    func didReceiveNextQuestion(question: QuizQuestion?)
 }
