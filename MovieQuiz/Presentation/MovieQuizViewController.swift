@@ -9,19 +9,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     
-    /// индекс текущего вопроса
     private var currentQuestionIndex = 0
-    /// счётчик правильных ответов
     private var correctAnswers = 0
-    /// количество вопросов
     private let questionsAmount: Int = 10
-    /// фабрика вопросов
     private var questionFactory: QuestionFactoryProtocol?
-    /// текущий вопрос
     private var currentQuestion: QuizQuestion?
-    /// алерт после игры
     private var alertPresenter: AlertPresenterProtocol?
-    /// статистика которая хранится в UserDefaults
     private var statisticService: StatisticService = StatisticServiceImpl()
     
 
@@ -74,15 +67,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         answerButtons(isEnabled: true)
     }
     
-    /// устанавливаем флаг на вкл. или откл. кнопок
     private func answerButtons(isEnabled: Bool) {
         noButton.isEnabled = isEnabled
         yesButton.isEnabled = isEnabled
     }
     
-    // приватный метод, который меняет цвет рамки
     private func showAnswerResult(isCorrect: Bool) {
-        /// блокируем кнопки до появляения следующешо вопроса
         answerButtons(isEnabled: false)
         
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
@@ -113,9 +103,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
     
-    // приватный метод, который содержит логику перехода в один из сценариев
     private func showNextQuestionOrResults() {
-        // если вопросов больше нет, отображаем алерт
         if currentQuestionIndex == questionsAmount - 1 {
             
             let messageQuizResult = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
@@ -142,7 +130,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 })
             alertPresenter?.show(model: viewModel)
         } else {
-            // иначе считаем количество вопросов
             currentQuestionIndex += 1
             
             questionFactory?.requestNextQuestion()

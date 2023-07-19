@@ -1,6 +1,10 @@
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
+protocol AlertPresenterProtocol {
+    func show(model: AlertModel)
+}
+
+final class AlertPresenter: AlertPresenterProtocol {
 
     weak var delegate: UIViewController?
     
