@@ -7,6 +7,7 @@
 
 import Foundation
 
+//публичная модель алерат
 public struct AlertModel {
     let title: String
     let message: String

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+//класс который формирует алерт
 class AlertPresenter {
     weak var viewController: UIViewController?
         

@@ -163,12 +163,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 
                 let bestGame = statisticService.bestGame
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd.MM.YYYY HH:mm"
+                dateFormatter.dateFormat = "dd.MM.YY HH:mm"
                 
-                let text = "Ваш результат: \(correctAnswers) из 10\n" +
-                                "Количество сыгранных квизов: \(statisticService.gamesCount)\n" +
-                                "Ваш рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))\n" +
-                                "Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)\n"
+                let text = """
+                                Ваш результат: \(correctAnswers) из 10
+                                Ваш рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))
+                                Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)
+                            """
                 
                 let viewModel = QuizResultsViewModel(
                                     title: "Этот раунд окончен!",
