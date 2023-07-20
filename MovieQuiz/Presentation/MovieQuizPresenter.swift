@@ -1,15 +1,36 @@
 import Foundation
 import UIKit
 
-final class MovieQuizPresenter {
+final class MovieQuizPresenter: QuestionFactoryDelegate {
+    private var questionFactory: QuestionFactory?
+    weak var viewController: MovieQuizViewController?
+    
+    init(viewController: MovieQuizViewController) {
+        self.viewController = viewController
+        
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+    }
     
     private var currentQuestionIndex = 0  // Индекс текущего вопроса
     var correctAnswers = 0  // Количество правильных ответов
     let questionsAmount: Int = 10  // Общее количество вопросов
     
     var currentQuestion: QuizQuestion?  // Текущий вопрос
-    weak var viewController: MovieQuizViewController?
-    weak var questionFactory: QuestionFactory?
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        // Весь код для обработки получения нового вопроса остается здесь, т.к. теперь MovieQuizPresenter является QuestionFactoryDelegate
+        guard let question = question else {
+            return
+        }
+
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.showCurrentQuestion(step: viewModel)
+        }
+    }
     
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -34,24 +55,40 @@ final class MovieQuizPresenter {
     }
     
     func yesButtonClicked() {
-        didAnswer(isCorrectAnswer: true)
+        didAnswer(isYes: true)
     }
     
     func noButtonClicked() {
-        didAnswer(isCorrectAnswer: false)
+        didAnswer(isYes: false)
     }
     
-    func didAnswer(isCorrectAnswer: Bool) {
-        if isCorrectAnswer {
-            correctAnswers += 1
+    private func didAnswer(isYes: Bool) {
+        guard let currentQuestion = currentQuestion else {
+            return
         }
+        
+        let givenAnswer = isYes
+        
+        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    func didReceiveNextQuestion(question: QuizQuestion?) {
+    // MARK: - QuestionFactoryDelegate
+    
+    func didLoadDataFromServer() {
+        viewController?.hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        let message = error.localizedDescription
+        viewController?.showNetworkError(message: message)
+    }
+    
+    func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
-
+        
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
@@ -59,13 +96,9 @@ final class MovieQuizPresenter {
         }
     }
     
-    func updateButtonState(isEnabled: Bool) {
-        viewController?.updateButtonState(isEnabled: isEnabled)
-    }
-
     // Переход к следующему вопросу или отображение результатов квиза
     func showNextQuestionOrResults() {
-        if isLastQuestion() {
+        if self.isLastQuestion() {
             let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             
             let viewModel = QuizResultsViewModel(
@@ -74,7 +107,7 @@ final class MovieQuizPresenter {
                 buttonText: "Сыграть ещё раз")
             viewController?.showQuizResults(result: viewModel)
         } else {
-            switchToNextQuestion()
+            self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
