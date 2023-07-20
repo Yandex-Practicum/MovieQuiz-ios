@@ -158,12 +158,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 
                 statisticService.store(correct: correctAnswers, total: questionsAmount)
                 
+                let gamesCount = statisticService.gamesCount
                 let bestGame = statisticService.bestGame
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "dd.MM.YY HH:mm"
                 
                 let text = """
                                 Ваш результат: \(correctAnswers) из 10
+                                Количество сыгранных квизов: \(gamesCount)
                                 Ваш рекорд: \(bestGame.correct)/\(bestGame.total) (\(dateFormatter.string(from: bestGame.date)))
                                 Средняя точность: (\(String(format: "%.2f", statisticService.totalAccuracy))%)
                             """
