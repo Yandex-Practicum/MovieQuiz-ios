@@ -2,40 +2,34 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
+    
+    // MARK: - IBOutlet
+    
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
+    
+    
+   
+    
+    // MARK: - Private Properties
+    
     private struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
-        
-        init(image: String, text: String, correctAnswer: Bool) {
-            self.image = image
-            self.text = text
-            self.correctAnswer = correctAnswer
-        }
     }
     
     private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
-        
-        init(image: UIImage, question: String, questionNumber: String) {
-            self.image = image
-            self.question = question
-            self.questionNumber = questionNumber
-        }
     }
     
     private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
-        
-        init(title: String, text: String, buttonText: String) {
-            self.title = title
-            self.text = text
-            self.buttonText = buttonText
-        }
     }
     
     private let questions: [QuizQuestion] = [
@@ -85,11 +79,6 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     private lazy var currentQuestion = questions[currentQuestionIndex]
     
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
-    
-    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -98,13 +87,16 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
-    private lazy var convertedQuestion: QuizStepViewModel = convert(model: currentQuestion)
+    
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        let convertedQuestion: QuizStepViewModel = convert(model: currentQuestion)
         show(quiz: convertedQuestion)
     }
+    
+    // MARK: - Private Methods
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -174,6 +166,8 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
+    
+    // MARK: - IBAction
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
