@@ -157,7 +157,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             if let statisticService = statisticService {
                 
                 statisticService.store(correct: correctAnswers, total: questionsAmount)
-                
+                //
                 let gamesCount = statisticService.gamesCount
                 let bestGame = statisticService.bestGame
                 let dateFormatter = DateFormatter()
