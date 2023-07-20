@@ -1,5 +1,9 @@
 import UIKit
 
+protocol QuestionFactoryProtocol {
+    func requestNextQuestion()
+}
+
 final class QuestionFactory: QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
