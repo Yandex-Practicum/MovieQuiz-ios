@@ -2,7 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
-
+    
     @IBOutlet weak var counerLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -58,7 +58,7 @@ final class MovieQuizViewController: UIViewController {
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.layer.cornerRadius = 6
     }
     
@@ -66,7 +66,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer) // 3
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
@@ -88,7 +88,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.image = step.image
         textLabel.text = step.question
         counerLabel.text = step.questionNumber
-        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -118,7 +118,7 @@ final class MovieQuizViewController: UIViewController {
                 let nextQuestion = questions[currentQuestionIndex]
                 let viewModel = convert(model: nextQuestion)
                 
-                imageView.layer.borderColor = UIColor.white.cgColor
+                imageView.layer.borderColor = UIColor.clear.cgColor
                 show(quiz: viewModel)
             }
         }
