@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Default.png",
+      "filename" : "Defolt.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Default@2x.png",
+      "filename" : "Defolt@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
