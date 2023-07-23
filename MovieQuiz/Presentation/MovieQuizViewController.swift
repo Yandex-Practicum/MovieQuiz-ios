@@ -74,8 +74,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false // индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true // индикатор загрузки скрыт
+        activityIndicator.stopAnimating() // выключаем анимацию
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let viewModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Невозможно загрузить данные",
+            buttonText: "Попробовать еще раз",
+            completion: { [weak self] in
+                guard let self = self else { return }
+                self.restartGame()
+            })
+        
+        alertPresenter?.show(model: viewModel)
     }
     
     private func showAnswerResult(isCorrect: Bool) {
