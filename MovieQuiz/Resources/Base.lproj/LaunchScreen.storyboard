@@ -17,16 +17,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Dy8-oL-RaL" userLabel="LaunchScreen">
-                                <rect key="frame" x="0.0" y="-78" width="414" height="1048"/>
+                                <rect key="frame" x="0.0" y="-311" width="414" height="1518"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Dy8-oL-RaL" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" constant="74" id="5pD-jA-gyJ"/>
+                            <constraint firstItem="Dy8-oL-RaL" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" constant="20" symbolic="YES" id="5pD-jA-gyJ"/>
                             <constraint firstAttribute="trailing" secondItem="Dy8-oL-RaL" secondAttribute="trailing" id="Cux-hk-9kP"/>
                             <constraint firstItem="Dy8-oL-RaL" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="dg0-YB-zWn"/>
-                            <constraint firstAttribute="top" secondItem="Dy8-oL-RaL" secondAttribute="top" constant="72" id="qP6-Nd-Z8n"/>
+                            <constraint firstAttribute="top" secondItem="Dy8-oL-RaL" secondAttribute="top" constant="20" symbolic="YES" id="qP6-Nd-Z8n"/>
                         </constraints>
                     </view>
                 </viewController>
