@@ -67,8 +67,8 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8N-yk-X8F">
-                                        <rect key="frame" x="0.0" y="624.5" width="354" height="99.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8N-yk-X8F">
+                                        <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White (iOS)"/>
                                         <nil key="highlightedColor"/>
@@ -137,9 +137,9 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="OAu-gM-Z6j" secondAttribute="trailing" id="KGZ-ST-xh9"/>
+                                    <constraint firstAttribute="trailing" secondItem="h8N-yk-X8F" secondAttribute="trailing" id="UqA-jq-PmY"/>
                                     <constraint firstAttribute="trailing" secondItem="k2c-yD-ro8" secondAttribute="trailing" id="cFH-zD-fMN"/>
                                     <constraint firstAttribute="trailing" secondItem="cqa-lz-eQW" secondAttribute="trailing" id="qed-Us-XAU"/>
-                                    <constraint firstAttribute="trailing" secondItem="h8N-yk-X8F" secondAttribute="trailing" constant="20" symbolic="YES" id="zNW-mc-2kQ"/>
                                 </constraints>
                             </stackView>
                         </subviews>
