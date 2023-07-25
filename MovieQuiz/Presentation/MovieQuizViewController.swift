@@ -21,6 +21,7 @@ final class MovieQuizViewController: UIViewController {
         noButton.layer.cornerRadius = 15.0
         yesButton.layer.cornerRadius = 15.0
         imageView.layer.cornerRadius = 15.0
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
