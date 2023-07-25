@@ -8,7 +8,7 @@ import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {
     
-    weak var delegate: UIViewController?
+    private weak var delegate: UIViewController?
     
     init(delegate: UIViewController) {
         self.delegate = delegate

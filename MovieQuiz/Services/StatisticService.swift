@@ -22,7 +22,7 @@ final class StatisticServiceImplementation: StatisticService {
              gamesCount
     }
     private let userDefaults = UserDefaults.standard
-    private var date = Date()
+    private var date = { return Date() }
     private var correct: Int {
         return userDefaults.integer(forKey: Keys.correct.rawValue)
     }
@@ -70,8 +70,8 @@ final class StatisticServiceImplementation: StatisticService {
         userDefaults.set(self.total + amount, forKey: Keys.total.rawValue)
         userDefaults.set(self.correct + count, forKey: Keys.correct.rawValue)
         
-        if bestGame < GameRecord(correct: count, total: amount, date: date) {
-            self.bestGame = GameRecord(correct: count, total: amount, date: date)
+        if bestGame < GameRecord(correct: count, total: amount, date: date()) {
+            self.bestGame = GameRecord(correct: count, total: amount, date: date())
         } else {
             self.bestGame = bestGame
         }
