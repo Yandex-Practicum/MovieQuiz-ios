@@ -93,7 +93,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.isHidden = true
     }
     
-    
+    // MARK: - Network
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
         
@@ -177,13 +177,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer)
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = false
 
-        showAnswerResult(isCorrect: givenAnswer)
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }
