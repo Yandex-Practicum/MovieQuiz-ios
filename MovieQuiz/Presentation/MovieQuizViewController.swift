@@ -22,6 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     private var alertPresenter: AlertPresenterProtocol?
     
+    
     private var statisticService: StatisticService?
     
     private var currentQuestion: QuizQuestion?
