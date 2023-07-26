@@ -21,6 +21,9 @@ final class MovieQuizViewController: UIViewController {
         noButton.layer.cornerRadius = 15.0
         yesButton.layer.cornerRadius = 15.0
         imageView.layer.cornerRadius = 15.0
+                
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
