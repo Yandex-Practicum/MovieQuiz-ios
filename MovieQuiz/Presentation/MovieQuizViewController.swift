@@ -21,7 +21,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory?.requestNextQuestion() 
+        print(NSHomeDirectory())
         noButton.layer.cornerRadius = 15.0
         yesButton.layer.cornerRadius = 15.0
         imageView.layer.cornerRadius = 15.0
@@ -136,7 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     }
     
     private func makeResultMessage() -> String {
-        guard let statisticService = statisticService, let gameRecord = statisticService.gameRecord else {
+        guard let statisticService = statisticService, let gameRecord = statisticService.bestGame else {
             assertionFailure("error message")
             return ""
         }
@@ -146,14 +146,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
         let bestGameInfoLine = "Рекорд: \(gameRecord.correct)/\(gameRecord.total) (\(gameRecord.date.dateTimeString))"
         let averageAccuracyLine = "Средняя точность: \(accuracy)%"
-
-        let components: [String] =
-            [currentGameResultLine,
-            totalPlaysCountLine,
-            bestGameInfoLine,
-            averageAccuracyLine]
     
-        let resultMessage = components.joined(separator: "\n")
+        let resultMessage = [
+            currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine
+        ].joined(separator: "\n")
         return resultMessage
     }
 }
