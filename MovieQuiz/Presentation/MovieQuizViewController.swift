@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  {
     
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
@@ -14,22 +14,38 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        questionFactory?.requestNextQuestion() 
         noButton.layer.cornerRadius = 15.0
         yesButton.layer.cornerRadius = 15.0
         imageView.layer.cornerRadius = 15.0
                 
         noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
         yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
+        statisticService = StatisticServiceImpl(userDefaults: UserDefaults.standard)
+        alertPresenter = AlertPresenterImpl(viewController: self)
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+    }
+    
+    // MARK: - QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+                self?.show(quiz: viewModel)
+            }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -96,44 +112,48 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-                
-                show(quiz: viewModel)
-            }
+            self.questionFactory?.requestNextQuestion()
         }
-        yesButton.isEnabled = true
-        noButton.isEnabled = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self = self else { return }
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+        }
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
+        statisticService? .store (correct: correctAnswers, total: questionsAmount)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-                
-                self.show(quiz: viewModel)
-            }
-        }
-        
-        alert.addAction(action)
-        
-        present(alert, animated: true, completion: nil)
-        
-        self.yesButton.isEnabled = true
-        self.noButton.isEnabled = true
+        let alertModel = AlertModel(
+                    title: "Этот раунд окончен!",
+                    message: makeResultMessage(),
+                    buttonText: result.buttonText) { [weak self] in
+                        self?.currentQuestionIndex = 0
+                        self?.correctAnswers = 0
+                        self?.questionFactory?.requestNextQuestion()
+                }
+                alertPresenter?.show(alertModel: alertModel)
     }
     
+    private func makeResultMessage() -> String {
+        guard let statisticService = statisticService, let gameRecord = statisticService.gameRecord else {
+            assertionFailure("error message")
+            return ""
+        }
     
+        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(gameRecord.correct)/\(gameRecord.total) (\(gameRecord.date.dateTimeString))"
+        let averageAccuracyLine = "Средняя точность: \(accuracy)%"
+
+        let components: [String] =
+            [currentGameResultLine,
+            totalPlaysCountLine,
+            bestGameInfoLine,
+            averageAccuracyLine]
+    
+        let resultMessage = components.joined(separator: "\n")
+        return resultMessage
+    }
 }
