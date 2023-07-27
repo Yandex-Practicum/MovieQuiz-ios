@@ -5,8 +5,8 @@ protocol QuestionFactoryProtocol {
     func loadData()
 }
 
-class QuestionFactory: QuestionFactoryProtocol {
-    private let moviesLoader: MoviesLoader
+final class QuestionFactory: QuestionFactoryProtocol {
+    private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
     
     private var movies: [MostPopularMovie] = []
@@ -47,15 +47,13 @@ class QuestionFactory: QuestionFactoryProtocol {
             let rating = Float(movie.rating) ?? 0
             let randomRatingValue = Int.random(in: 3...9)
             let randomWordInText = ["больше", "меньше"].randomElement() ?? "больше"
-            let text: String
+            let text = "Рейтинг этого фильма \(randomWordInText), чем \(randomRatingValue)?"
             let correctAnswer: Bool
             
-            if Bool.random() {
-                text = "Рейтинг этого фильма меньше, чем \(randomRatingValue)?"
-                correctAnswer = rating < Float(randomRatingValue)
-            } else {
-                text = "Рейтинг этого фильма больше, чем \(randomRatingValue)?"
+            if (randomWordInText == "больше") {
                 correctAnswer = rating > Float(randomRatingValue)
+            } else {
+                correctAnswer = rating < Float(randomRatingValue)
             }
             
             let question = QuizQuestion(
