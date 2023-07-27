@@ -8,6 +8,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -29,9 +30,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         imageView.layer.cornerRadius = 20 // скругление рамки
         
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        statisticService = StatisticServiceImpl()
         alertPresenter = AlertPresenter(delegate: self)
-        questionFactory?.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -47,13 +50,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
     }
     
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     // MARK: - Private Methods
     // метод конвертации, который принимает мок данные и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
-            
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
@@ -70,6 +81,33 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func answerButtons(isEnabled: Bool) {
         noButton.isEnabled = isEnabled
         yesButton.isEnabled = isEnabled
+    }
+    
+    // MARK: - Indicator
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    // MARK: - Network
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let viewModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Невозможно загрузить данные",
+            buttonText: "Попробовать еще раз",
+            completion: { [weak self] in
+                guard let self = self else { return }
+                self.restartGame()
+                self.questionFactory?.loadData()
+            })
+        
+        alertPresenter?.show(model: viewModel)
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -96,7 +134,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    // рестарт игры
     private func restartGame() {
         currentQuestionIndex = 0
         correctAnswers = 0
@@ -140,13 +177,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer)
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = false
 
-        showAnswerResult(isCorrect: givenAnswer)
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }
