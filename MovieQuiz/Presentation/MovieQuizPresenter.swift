@@ -3,9 +3,21 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
-    private weak var viewController: MovieQuizViewControllerProtocol?
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
+    
     private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
+    private weak var viewController: MovieQuizViewControllerProtocol?
 
     private var currentQuestion: QuizQuestion?
     private let questionsAmount: Int = 10
@@ -34,17 +46,17 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.showNetworkError(message: message)
     }
 
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.viewController?.show(quiz: viewModel)
-        }
-    }
+//    func didRecieveNextQuestion(question: QuizQuestion?) {
+//        guard let question = question else {
+//            return
+//        }
+//
+//        currentQuestion = question
+//        let viewModel = convert(model: question)
+//        DispatchQueue.main.async { [weak self] in
+//            self?.viewController?.show(quiz: viewModel)
+//        }
+//    }
 
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -76,12 +88,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     func yesButtonClicked() {
         didAnswer(isYes: true)
-        viewController?.showLoadingIndicator()
     }
 
     func noButtonClicked() {
         didAnswer(isYes: false)
-        viewController?.showLoadingIndicator()
     }
 
     private func didAnswer(isYes: Bool) {
@@ -127,11 +137,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
         let bestGame = statisticService.bestGame
 
-        
-        
         let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-        let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
-        let bestGameInfoLine = "Рекорд: \(bestGame.correct)/\(bestGame.total)"
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
         + " (\(bestGame.date.dateTimeString))"
         let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
 
@@ -141,4 +149,4 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
         return resultMessage
     }
-} 
+}

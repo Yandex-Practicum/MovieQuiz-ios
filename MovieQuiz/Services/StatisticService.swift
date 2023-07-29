@@ -28,7 +28,6 @@ final class StatisticServiceImplementation: StatisticService {
     }
 
     // MARK: - Public properties
-    /// Средняя точность правильных ответов в процентах
     var totalAccuracy: Double {
         Double(correct) / Double(total) * 100
     }

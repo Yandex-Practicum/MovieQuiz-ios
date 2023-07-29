@@ -16,10 +16,20 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        noButton.layer.cornerRadius = 15.0
+        yesButton.layer.cornerRadius = 15.0
+        imageView.layer.cornerRadius = 15.0
+        
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
         presenter = MovieQuizPresenter(viewController: self)
 
         imageView.layer.cornerRadius = 20
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .lightContent
+        }
 
     // MARK: - Actions
 
@@ -31,6 +41,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter.noButtonClicked()
     }
 
+    
     // MARK: - Private functions
 
     func show(quiz step: QuizStepViewModel) {
@@ -66,9 +77,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
 
     func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        
-        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
     }
 
     func hideLoadingIndicator() {
@@ -92,5 +102,5 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
 
         alert.addAction(action)
     }
-    
 }
+    
