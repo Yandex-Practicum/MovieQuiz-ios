@@ -18,5 +18,8 @@ extension BestGame: Comparable{
         lhs.accuracy < rhs.accuracy
     }
     
+    func isBetterThan(_ another: BestGame) -> Bool {
+        correct > another.correct
+    }
     
 }
