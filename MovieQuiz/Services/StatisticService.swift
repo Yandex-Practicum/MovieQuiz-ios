@@ -19,7 +19,7 @@ final class StatisticServiceImpl{
     private let encoder: JSONEncoder
     private let dateProvider: () -> Date
     
-   
+    
     
     init(
         userDefaults: UserDefaults = .standard,
@@ -84,7 +84,7 @@ extension StatisticServiceImpl: StatisticService{
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
-
+    
     
     func store(correct: Int, total: Int) {
         self.correct += correct
@@ -96,7 +96,7 @@ extension StatisticServiceImpl: StatisticService{
         
         if let previousBestGame = bestGame {
             if currentBestGame > previousBestGame {
-                    bestGame = currentBestGame
+                bestGame = currentBestGame
             }
         } else {
             bestGame = currentBestGame

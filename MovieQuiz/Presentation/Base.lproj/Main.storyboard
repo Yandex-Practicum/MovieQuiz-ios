@@ -136,6 +136,9 @@
                                     <constraint firstAttribute="trailing" secondItem="cqa-lz-eQW" secondAttribute="trailing" id="qed-Us-XAU"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="6WO-at-Icp">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
@@ -144,9 +147,12 @@
                             <constraint firstItem="cVT-oi-gnf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="To7-Fu-sbR"/>
                             <constraint firstItem="cVT-oi-gnf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ZS7-J9-maU"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cVT-oi-gnf" secondAttribute="trailing" constant="20" id="iot-pe-vuu"/>
+                            <constraint firstItem="6WO-at-Icp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="oaG-8b-faF"/>
+                            <constraint firstItem="6WO-at-Icp" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ynS-2W-Z1n"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="6WO-at-Icp" id="EhW-fa-bgV"/>
                         <outlet property="counterLabel" destination="K8t-fE-9f9" id="7Xe-Jx-XJi"/>
                         <outlet property="imageView" destination="OAu-gM-Z6j" id="rFd-oC-Mnv"/>
                         <outlet property="noButton" destination="pyr-a3-R0i" id="aKb-Jg-DPA"/>
