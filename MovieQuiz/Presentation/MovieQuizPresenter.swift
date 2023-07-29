@@ -3,10 +3,9 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
-    
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
 
     private var currentQuestion: QuizQuestion?
     private let questionsAmount: Int = 10
@@ -77,10 +76,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     func yesButtonClicked() {
         didAnswer(isYes: true)
+        viewController?.showLoadingIndicator()
     }
 
     func noButtonClicked() {
         didAnswer(isYes: false)
+        viewController?.showLoadingIndicator()
     }
 
     private func didAnswer(isYes: Bool) {

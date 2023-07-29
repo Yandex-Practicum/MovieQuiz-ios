@@ -1,6 +1,7 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -65,8 +66,9 @@ final class MovieQuizViewController: UIViewController {
     }
 
     func showLoadingIndicator() {
-        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
-        activityIndicator.startAnimating() // включаем анимацию
+        activityIndicator.isHidden = false
+        
+        activityIndicator.startAnimating()
     }
 
     func hideLoadingIndicator() {
@@ -90,4 +92,5 @@ final class MovieQuizViewController: UIViewController {
 
         alert.addAction(action)
     }
+    
 }
