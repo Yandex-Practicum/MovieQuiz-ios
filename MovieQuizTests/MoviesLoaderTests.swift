@@ -1,4 +1,4 @@
-import XCTest
+`import XCTest
 @testable import MovieQuiz
 
 class MoviesLoaderTests: XCTestCase {
@@ -98,3 +98,4 @@ class MoviesLoaderTests: XCTestCase {
         }
     }
 }
+`

@@ -2,6 +2,10 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
+    func setButtonsLocked(_ isLocked: Bool) {
+        
+    }
+    
     func show(quiz step: QuizStepViewModel) {
         
     }
