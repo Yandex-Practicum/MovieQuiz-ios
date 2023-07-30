@@ -3,17 +3,7 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProtocol {
     
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.viewController?.show(quiz: viewModel)
-        }
-    }
+    
     
     private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
@@ -46,7 +36,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProto
         viewController?.showNetworkError(message: message)
     }
     
-    func didRecieveNextQuestion(question: QuizQuestion?) {
+    func didReceiveNextQuestion(question: QuizQuestion?)  {
         guard let question = question else {
             return
         }
