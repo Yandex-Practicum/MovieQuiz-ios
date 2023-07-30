@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final class MovieQuizPresenter: QuestionFactoryDelegate {
+final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProtocol {
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {

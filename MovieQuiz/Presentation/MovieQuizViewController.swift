@@ -9,7 +9,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var noButton: UIButton!
     
-    private var presenter: MovieQuizPresenter!
+    private var presenter: MovieQuizPresenterProtocol!
     private var isButtonsLocked = true
     
     // MARK: - Lifecycle
