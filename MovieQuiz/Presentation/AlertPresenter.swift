@@ -29,5 +29,3 @@ extension AlertPresenterImpl: AlertPresenter {
         viewController?.present(alert, animated: true)
     }
 }
-
-

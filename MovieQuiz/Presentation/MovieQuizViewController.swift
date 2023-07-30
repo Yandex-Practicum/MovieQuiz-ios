@@ -10,6 +10,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private var noButton: UIButton!
     
     private var presenter: MovieQuizPresenterProtocol!
+    private var alertPresenter: AlertPresenter!
     private var isButtonsLocked = true
     
     // MARK: - Lifecycle
@@ -24,7 +25,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
         yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
         presenter = MovieQuizPresenter(viewController: self)
-        
+        alertPresenter = AlertPresenterImpl(viewController: self)
         imageView.layer.cornerRadius = 20
     }
     
@@ -44,14 +45,14 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         setButtonsLocked(false)
     }
     
+    
+    // MARK: -  functions
+    
     func setButtonsLocked(_ isLocked: Bool) {
         isButtonsLocked = isLocked
         yesButton.isEnabled = isLocked
         noButton.isEnabled = isLocked
     }
-    
-    
-    // MARK: - Private functions
     
     func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
@@ -63,20 +64,14 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     func show(quiz result: QuizResultsViewModel) {
         let message = presenter.makeResultsMessage()
         
-        let alert = UIAlertController(
-            title: result.title,
-            message: message,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+        alertPresenter?.show(alertModel: presenter.createAlertModel(title: "Этот раунд окончен!",
+                                                                    message: message,
+                                                                    buttonText: "Сыграть ещё раз",
+                                                                    buttonAction: { [weak self] in
             guard let self = self else { return }
-            
             self.presenter.restartGame()
-        }
+        }))
         
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
     }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
@@ -96,20 +91,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     func showNetworkError(message: String) {
         hideLoadingIndicator()
-        
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: message,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Попробовать ещё раз",
-                                   style: .default) { [weak self] _ in
+        alertPresenter?.show(alertModel: presenter.createAlertModel(title: "Ошибка", message: message,buttonText: "Попробовать еще раз",
+                                                                    buttonAction: { [weak self] in
             guard let self = self else { return }
-            
             self.presenter.restartGame()
-        }
-        
-        alert.addAction(action)
+            self.presenter.switchToNextQuestion()
+            self.showLoadingIndicator()
+        } ))
     }
 }
 

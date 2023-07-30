@@ -9,5 +9,4 @@ struct BestGame: Codable {
         correct > another.correct
     }
 }
- 
 

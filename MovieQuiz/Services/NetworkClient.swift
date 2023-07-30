@@ -32,4 +32,3 @@ struct NetworkClient: NetworkRouting {
         task.resume()
     }
 }
-

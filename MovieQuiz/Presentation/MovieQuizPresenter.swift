@@ -155,4 +155,15 @@ final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProto
         
         return resultMessage
     }
+    
+    
+    func createAlertModel(title: String, message: String, buttonText: String, buttonAction: @escaping () -> Void) -> AlertModel {
+        let alertModel = AlertModel(
+            title: title,
+            message: message,
+            buttonText: buttonText,
+            buttonAction: buttonAction
+        )
+        return alertModel
+    }
 }
