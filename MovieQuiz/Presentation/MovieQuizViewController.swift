@@ -24,7 +24,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
         yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)!
-        presenter = MovieQuizPresenter(viewController: self)
+        alertPresenter = AlertPresenterImpl(viewController: self)
+        presenter = MovieQuizPresenter(viewController: self, alertPresenter: alertPresenter)
         alertPresenter = AlertPresenterImpl(viewController: self)
         imageView.layer.cornerRadius = 20
     }
@@ -62,16 +63,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func show(quiz result: QuizResultsViewModel) {
-        let message = presenter.makeResultsMessage()
-        
-        alertPresenter?.show(alertModel: presenter.createAlertModel(title: "Этот раунд окончен!",
-                                                                    message: message,
-                                                                    buttonText: "Сыграть ещё раз",
-                                                                    buttonAction: { [weak self] in
-            guard let self = self else { return }
-            self.presenter.restartGame()
-        }))
-        
+        presenter.showQuizResultsAlert()
     }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
@@ -91,13 +83,17 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     func showNetworkError(message: String) {
         hideLoadingIndicator()
-        alertPresenter?.show(alertModel: presenter.createAlertModel(title: "Ошибка", message: message,buttonText: "Попробовать еще раз",
-                                                                    buttonAction: { [weak self] in
+        let alertModel = AlertModel(title: "Ошибка",
+                                    message: message,
+                                    buttonText: "Попробовать еще раз") { [weak self] in
             guard let self = self else { return }
+            
             self.presenter.restartGame()
             self.presenter.switchToNextQuestion()
             self.showLoadingIndicator()
-        } ))
+        }
+        
+        alertPresenter?.show(alertModel: alertModel)
     }
 }
 

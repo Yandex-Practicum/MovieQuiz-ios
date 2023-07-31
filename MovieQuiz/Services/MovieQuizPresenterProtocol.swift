@@ -11,5 +11,5 @@ protocol MovieQuizPresenterProtocol {
     
     func switchToNextQuestion()
     
-    func createAlertModel(title: String, message: String, buttonText: String, buttonAction: @escaping () -> Void) -> AlertModel
+    func showQuizResultsAlert()
 }

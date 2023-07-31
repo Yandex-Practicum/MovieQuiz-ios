@@ -10,13 +10,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProto
     private weak var viewController: MovieQuizViewControllerProtocol?
     
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenter!
     private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
-    init(viewController: MovieQuizViewControllerProtocol) {
+    init(viewController: MovieQuizViewControllerProtocol, alertPresenter: AlertPresenter) {
         self.viewController = viewController
-        
+        self.alertPresenter = alertPresenter
         statisticService = StatisticServiceImplementation()
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -128,6 +129,18 @@ final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProto
         }
     }
     
+    func showQuizResultsAlert() {
+        let message = makeResultsMessage()
+        alertPresenter.show(alertModel: AlertModel(
+            title: "Этот раунд окончен!",
+            message: message,
+            buttonText: "Сыграть ещё раз",
+            buttonAction: { [weak self] in
+                guard let self = self else { return }
+                self.restartGame()
+            }))
+    }
+    
     func makeResultsMessage() -> String {
         statisticService.store(correct: correctAnswers, total: questionsAmount)
         
@@ -144,16 +157,5 @@ final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProto
         ].joined(separator: "\n")
         
         return resultMessage
-    }
-    
-    
-    func createAlertModel(title: String, message: String, buttonText: String, buttonAction: @escaping () -> Void) -> AlertModel {
-        let alertModel = AlertModel(
-            title: title,
-            message: message,
-            buttonText: buttonText,
-            buttonAction: buttonAction
-        )
-        return alertModel
     }
 }
