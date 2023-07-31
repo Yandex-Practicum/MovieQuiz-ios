@@ -1,10 +1,6 @@
 import Foundation
 import UIKit
 
-protocol AlertPresenter {
-    func show(alertModel: AlertModel)
-}
-
 final class AlertPresenterImpl {
     private weak var viewController: UIViewController?
     
@@ -13,7 +9,7 @@ final class AlertPresenterImpl {
     }
 }
 
-extension AlertPresenterImpl: AlertPresenter {
+extension AlertPresenterImpl: AlertPresenterProtocol {
     func show(alertModel: AlertModel) {
         let alert = UIAlertController(
             title: alertModel.title,

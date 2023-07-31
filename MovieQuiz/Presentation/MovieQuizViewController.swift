@@ -2,6 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -10,7 +11,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private var noButton: UIButton!
     
     private var presenter: MovieQuizPresenterProtocol!
-    private var alertPresenter: AlertPresenter!
+    private var alertPresenter: AlertPresenterProtocol!
     private var isButtonsLocked = true
     
     // MARK: - Lifecycle
@@ -81,18 +82,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         activityIndicator.isHidden = true
     }
     
-    func showNetworkError(message: String) {
+    func showNetworkError(alertModel : AlertModel) {
         hideLoadingIndicator()
-        let alertModel = AlertModel(title: "Ошибка",
-                                    message: message,
-                                    buttonText: "Попробовать еще раз") { [weak self] in
-            guard let self = self else { return }
-            
-            self.presenter.restartGame()
-            self.presenter.switchToNextQuestion()
-            self.showLoadingIndicator()
-        }
-        
         alertPresenter?.show(alertModel: alertModel)
     }
 }

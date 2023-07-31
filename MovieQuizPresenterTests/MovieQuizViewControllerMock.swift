@@ -26,7 +26,7 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
         
     }
     
-    func showNetworkError(message: String) {
+    func showNetworkError(alertModel: AlertModel) {
         
     }
 }

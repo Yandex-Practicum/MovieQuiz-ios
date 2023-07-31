@@ -4,7 +4,9 @@ import XCTest
 final class MovieQuizPresenterTests: XCTestCase {
     func testPresenterConvertModel() throws {
         let viewControllerMock = MovieQuizViewControllerMock()
-        let sut = MovieQuizPresenter(viewController: viewControllerMock)
+        let alertPresenterMock =  AlertPresenterMock()
+        
+        let sut = MovieQuizPresenter(viewController: viewControllerMock, alertPresenter: alertPresenterMock)
         
         let emptyData = Data()
         let question = QuizQuestion(image: emptyData, text: "Question Text", correctAnswer: true)

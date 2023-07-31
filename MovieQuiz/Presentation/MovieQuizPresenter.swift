@@ -10,12 +10,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProto
     private weak var viewController: MovieQuizViewControllerProtocol?
     
     private var currentQuestion: QuizQuestion?
-    private var alertPresenter: AlertPresenter!
+    private var alertPresenter: AlertPresenterProtocol
     private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
-    init(viewController: MovieQuizViewControllerProtocol, alertPresenter: AlertPresenter) {
+    init(viewController: MovieQuizViewControllerProtocol, alertPresenter: AlertPresenterProtocol) {
         self.viewController = viewController
         self.alertPresenter = alertPresenter
         statisticService = StatisticServiceImplementation()
@@ -33,8 +33,17 @@ final class MovieQuizPresenter: QuestionFactoryDelegate, MovieQuizPresenterProto
     }
     
     func didFailToLoadData(with error: Error) {
-        let message = error.localizedDescription
-        viewController?.showNetworkError(message: message)
+        let alertModel = AlertModel(title: "Ошибка",
+                                    message: error.localizedDescription,
+                                    buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            
+            self.restartGame()
+            self.switchToNextQuestion()
+            self.viewController?.showLoadingIndicator()
+        }
+        
+        viewController?.showNetworkError(alertModel:alertModel)
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?)  {
