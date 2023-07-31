@@ -50,9 +50,17 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-
+    
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderWidth = 8
+        noButton.layer.cornerRadius = 15
+        yesButton.layer.cornerRadius = 15
         showNextQuestion()
     }
 
@@ -86,10 +94,8 @@ final class MovieQuizViewController: UIViewController {
             correctAnswers += 1
         }
 
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 15
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
+        
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.currentQuestionIndex += 1
