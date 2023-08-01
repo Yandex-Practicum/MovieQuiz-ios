@@ -128,7 +128,7 @@
                     </view>
                     <connections>
                         <outlet property="counterLabel" destination="naI-bs-LtH" id="tpz-qO-Dc7"/>
-                        <outlet property="imageView" destination="6lc-PN-kna" id="q5A-nV-jpC"/>
+                        <outlet property="imageView" destination="6lc-PN-kna" id="DdR-04-flt"/>
                         <outlet property="noButton" destination="Lr8-or-Gsv" id="RlK-nL-uIp"/>
                         <outlet property="textLabel" destination="Xof-Xt-eCG" id="Kgw-YU-EKP"/>
                         <outlet property="yesButton" destination="IZL-8G-M5v" id="ZLg-GD-6Ap"/>
