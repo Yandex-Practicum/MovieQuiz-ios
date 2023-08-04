@@ -4,7 +4,6 @@
 //
 //  Created by Ivan on 16.07.2023.
 //
-
 import Foundation
 
 struct GameRecord: Codable, Comparable {

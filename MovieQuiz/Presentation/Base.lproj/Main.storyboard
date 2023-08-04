@@ -110,17 +110,25 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="nEA-Lf-awR">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="nEA-Lf-awR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="3oy-dq-bCq"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="jOg-A3-KNk" secondAttribute="trailing" constant="20" id="6kD-C9-47A"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jOg-A3-KNk" secondAttribute="bottom" id="B99-y2-fpM"/>
                             <constraint firstItem="jOg-A3-KNk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Kvb-3y-wYW"/>
+                            <constraint firstItem="nEA-Lf-awR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Snw-Lj-pLe"/>
+                            <constraint firstItem="nEA-Lf-awR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="en9-Ft-LDH"/>
+                            <constraint firstItem="nEA-Lf-awR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nT2-eh-5x3"/>
                             <constraint firstItem="jOg-A3-KNk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="wOZ-gz-VWk"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="nEA-Lf-awR" id="cai-ze-hP1"/>
                         <outlet property="counterLabel" destination="zDb-DE-Ec5" id="Hzq-IY-uHz"/>
                         <outlet property="imageView" destination="OVt-C5-IU5" id="agy-7w-nmD"/>
                         <outlet property="noButton" destination="Mef-zc-WxL" id="lQe-hs-ZTf"/>
