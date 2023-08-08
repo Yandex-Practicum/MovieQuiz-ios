@@ -127,11 +127,11 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLabel" destination="naI-bs-LtH" id="tpz-qO-Dc7"/>
-                        <outlet property="imageView" destination="6lc-PN-kna" id="DdR-04-flt"/>
-                        <outlet property="noButton" destination="Lr8-or-Gsv" id="RlK-nL-uIp"/>
-                        <outlet property="textLabel" destination="Xof-Xt-eCG" id="Kgw-YU-EKP"/>
-                        <outlet property="yesButton" destination="IZL-8G-M5v" id="ZLg-GD-6Ap"/>
+                        <outlet property="counterLabel" destination="naI-bs-LtH" id="EyW-ub-lNz"/>
+                        <outlet property="imageView" destination="6lc-PN-kna" id="Bby-X3-EHt"/>
+                        <outlet property="noButton" destination="Lr8-or-Gsv" id="O6q-dJ-pUy"/>
+                        <outlet property="textLabel" destination="Xof-Xt-eCG" id="eRL-Pm-CCK"/>
+                        <outlet property="yesButton" destination="IZL-8G-M5v" id="etN-hv-jbn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
