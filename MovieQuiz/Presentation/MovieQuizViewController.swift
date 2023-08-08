@@ -2,21 +2,24 @@ import UIKit
 
 // MARK: - MovieQuizViewController Class
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController{
     
     
     @IBOutlet private weak var counerLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
-   private var correctAnswers: Int = 0
+    private var correctAnswers: Int = 0
     
     private var currentQuestionIndex: Int = 0
     private let questionsAmount: Int = 10
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
-    private var alertPresenter: AlertPresenterProtocol?
     private let statisticService: StatisticService = StatisticServiceImplementation()
+    
+    /// Фабрика уведомлений
+    internal var alertPresenter: AlertPresenterProtocol?
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -32,11 +35,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 6
         
         questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(delegate: self)
+        activityIndicator.hidesWhenStopped = true
+        showLoadingIndicator(is: true)
     }
-    
-    
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         
@@ -54,7 +56,7 @@ final class MovieQuizViewController: UIViewController {
     
     private func convert(question: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: question.image) ?? UIImage(),
+            image: UIImage(data: question.image) ?? UIImage(),
             question: question.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
@@ -101,12 +103,33 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             
             questionFactory?.requestNextQuestion()
-            //imageView.layer.borderColor = UIColor.clear.cgColor
+        
         }
     }
-}
+    
+    internal func showLoadingIndicator(is displayed: Bool){
+        if displayed {
+            activityIndicator.startAnimating()
+        } else {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    private func showNetworkError(message: String){
+            showLoadingIndicator(is: false)
+        let messageText = message.isEmpty ? "При загрузке данных возникла ошибка" : message
 
-// MARK: - QuestionFactoryDelegate
+        let alertModel = AlertModel(title: "Ошибка", message: messageText, buttonText: "Попробовать ещё раз" ) { [weak self] _ in
+
+                   self?.questionFactory?.loadData()
+               }
+               alertPresenter?.alert(with: alertModel)
+           }
+        }
+    
+    
+    // MARK: - QuestionFactoryDelegate
     
 extension MovieQuizViewController: QuestionFactoryDelegate {
     
@@ -121,24 +144,26 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
             self?.show(quizStep: viewModel)
         }
     }
-}
-
-// MARK: - AlertPresenterDelegate
-
-extension MovieQuizViewController: AlertPresenterDelegate {
-    internal func startNewQuiz( _ : UIAlertAction){
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
+    
+    func didLoadDataFromServer(){
+            showLoadingIndicator(is: false)
+            questionFactory?.requestNextQuestion()
+        }
+    func didFailToLoadData(with error: Error) {
+            showNetworkError(message: error.localizedDescription)
         }
     }
+    
+// MARK: - AlertPresenterDelegate
+extension MovieQuizViewController: AlertPresenterDelegate {
+    
+    /// Функция для инициализации квиз-раунда
+    internal func startNewQuiz( _ : UIAlertAction){
         
-
-
-
+        self.currentQuestionIndex = 0
+        self.correctAnswers = 0
+        self.questionFactory?.requestNextQuestion()
+    }
+}
     
-    
-
-
-
+ 
