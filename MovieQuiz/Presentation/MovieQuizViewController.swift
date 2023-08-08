@@ -75,6 +75,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var textLabel: UILabel!
     
     
+    
+    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount {
             showFinalResults()
@@ -86,9 +88,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled = true
     }
     
-    
     // MARK: - Results and Allerts
-    
     
     private func showFinalResults() {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
@@ -168,4 +168,4 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return questionStep
     }
 }
-
+//commit
