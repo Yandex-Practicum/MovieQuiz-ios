@@ -111,6 +111,9 @@
                                     <constraint firstAttribute="trailing" secondItem="mic-EJ-luE" secondAttribute="trailing" id="ltX-qW-ub7"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="o6X-KX-Gll">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
@@ -118,10 +121,13 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="w7c-yw-Cta" secondAttribute="bottom" id="25O-oG-Obd"/>
                             <constraint firstItem="w7c-yw-Cta" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="7aE-i7-bEm"/>
                             <constraint firstItem="w7c-yw-Cta" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Gj5-ZX-bhH"/>
+                            <constraint firstItem="o6X-KX-Gll" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Tqh-Mf-2wp"/>
+                            <constraint firstItem="o6X-KX-Gll" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="XW1-Jg-WTe"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="w7c-yw-Cta" secondAttribute="trailing" constant="20" id="hqr-ic-6MG"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="o6X-KX-Gll" id="lEK-77-KcE"/>
                         <outlet property="imageViev" destination="ijn-OE-nPZ" id="oVb-YL-4eA"/>
                         <outlet property="indexLabel" destination="yew-hT-wZE" id="XQD-KG-yai"/>
                         <outlet property="noButton" destination="S1z-JW-hZe" id="0se-7L-7SV"/>
