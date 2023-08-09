@@ -36,21 +36,21 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 // В случае неудачи пробуем задать вопрос с картинкой по другому фильму
                 print("Failed to load image data")
                 DispatchQueue.main.async {
-                                  let alertModel = AlertModel(title: "Ошибка", message: "Не удалось загрузить изображение", buttonText: "Повторить") { _ in
-
-                                      self.requestNextQuestion()
-                                  }
-                                  self.delegate?.alertPresenter?.alert(with: alertModel)
-                              }
-                              return
-                          }
+                    let alertModel = AlertModel(title: "Ошибка", message: "Не удалось загрузить изображение", buttonText: "Повторить") { _ in
+                        
+                        self.requestNextQuestion()
+                    }
+                    self.delegate?.alertPresenter?.alert(with: alertModel)
+                }
+                return
+            }
             
             let rating = Float(movie.rating) ?? 0
             let text = "Рейтинг этого фильма больше чем 7?"
             let correctAnswer = rating > 7
             
             let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
-                       
+            
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.delegate?.didReceiveNextQuestion(question: question)
@@ -80,7 +80,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
         }
     }
 }
-        
+
 // MARK: - QuestionFactoryProtocol
 
 protocol QuestionFactoryProtocol {

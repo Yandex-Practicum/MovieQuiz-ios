@@ -4,7 +4,8 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController{
     
-    
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     @IBOutlet private weak var counerLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
@@ -30,9 +31,8 @@ final class MovieQuizViewController: UIViewController{
         super.viewDidLoad()
         
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
-        imageView.layer.cornerRadius = 6
         
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
@@ -41,14 +41,14 @@ final class MovieQuizViewController: UIViewController{
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        
+        toggleButtons(to: false)
         guard let currentQuestion = currentQuestion else { return }
         
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        
+        toggleButtons(to: false)
         guard let currentQuestion = currentQuestion else { return }
         
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
@@ -67,14 +67,20 @@ final class MovieQuizViewController: UIViewController{
         textLabel.text = model.question
         counerLabel.text = model.questionNumber
         imageView.layer.borderColor = UIColor.clear.cgColor
+        toggleButtons(to: true)
+        showLoadingIndicator(is: true)
     }
     
-    
+    private func toggleButtons(to state: Bool){
+        noButton.isEnabled = state
+        yesButton.isEnabled = state
+    }
     
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        showLoadingIndicator(is: false)
         
         if isCorrect {
             correctAnswers += 1
@@ -103,7 +109,6 @@ final class MovieQuizViewController: UIViewController{
             currentQuestionIndex += 1
             
             questionFactory?.requestNextQuestion()
-        
         }
     }
     
@@ -111,26 +116,26 @@ final class MovieQuizViewController: UIViewController{
         if displayed {
             activityIndicator.startAnimating()
         } else {
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
+            DispatchQueue.main.async { [weak self] in
+                self?.activityIndicator.stopAnimating()
             }
         }
     }
     private func showNetworkError(message: String){
-            showLoadingIndicator(is: false)
+        showLoadingIndicator(is: false)
         let messageText = message.isEmpty ? "При загрузке данных возникла ошибка" : message
-
+        
         let alertModel = AlertModel(title: "Ошибка", message: messageText, buttonText: "Попробовать ещё раз" ) { [weak self] _ in
-
-                   self?.questionFactory?.loadData()
-               }
-               alertPresenter?.alert(with: alertModel)
-           }
+            
+            self?.questionFactory?.loadData()
         }
-    
-    
-    // MARK: - QuestionFactoryDelegate
-    
+        alertPresenter?.alert(with: alertModel)
+    }
+}
+
+
+// MARK: - QuestionFactoryDelegate
+
 extension MovieQuizViewController: QuestionFactoryDelegate {
     
     internal func didReceiveNextQuestion(question: QuizQuestion?){
@@ -146,14 +151,14 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
     }
     
     func didLoadDataFromServer(){
-            showLoadingIndicator(is: false)
-            questionFactory?.requestNextQuestion()
-        }
-    func didFailToLoadData(with error: Error) {
-            showNetworkError(message: error.localizedDescription)
-        }
+        showLoadingIndicator(is: false)
+        questionFactory?.requestNextQuestion()
     }
-    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+}
+
 // MARK: - AlertPresenterDelegate
 extension MovieQuizViewController: AlertPresenterDelegate {
     
@@ -165,5 +170,5 @@ extension MovieQuizViewController: AlertPresenterDelegate {
         self.questionFactory?.requestNextQuestion()
     }
 }
-    
- 
+
+

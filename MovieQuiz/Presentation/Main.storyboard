@@ -45,9 +45,9 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="The Godfather" translatesAutoresizingMaskIntoConstraints="NO" id="3bM-EH-6rW" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3bM-EH-6rW" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
-                                        <color key="backgroundColor" name="YP White"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="3bM-EH-6rW" secondAttribute="height" multiplier="2:3" id="ev9-FR-7n3"/>
                                         </constraints>
@@ -59,6 +59,7 @@
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 6?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8SM-LZ-gWN" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
@@ -129,7 +130,9 @@
                         <outlet property="activityIndicator" destination="I5p-f0-xNS" id="of7-SI-DuF"/>
                         <outlet property="counerLabel" destination="E1T-GE-tsU" id="fCH-tR-oM9"/>
                         <outlet property="imageView" destination="3bM-EH-6rW" id="ycv-ea-sFs"/>
+                        <outlet property="noButton" destination="Qj2-7o-zO8" id="fzz-IN-fRK"/>
                         <outlet property="textLabel" destination="8SM-LZ-gWN" id="H9J-vT-kqc"/>
+                        <outlet property="yesButton" destination="dh5-0P-2dk" id="BVn-m7-TUv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -138,7 +141,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="The Godfather" width="1192" height="1716"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
