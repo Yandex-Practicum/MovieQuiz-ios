@@ -6,7 +6,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+<<<<<<< Updated upstream
         print("Hello world for branch to merge")
+=======
+        sleep(3)
+>>>>>>> Stashed changes
         return true
     }
 
