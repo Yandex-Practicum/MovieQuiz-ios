@@ -18,6 +18,7 @@ final class AlertPresenter: AlertPresenterProtocol {
             message: model.message,
             preferredStyle: .alert
         )
+        
     
         let action = UIAlertAction(
             title: model.buttonText,
@@ -25,6 +26,7 @@ final class AlertPresenter: AlertPresenterProtocol {
                 model.completion()
             }
 
+        alert.view.accessibilityIdentifier = "Alert Result"
         alert.addAction(action)
     
         delegate?.present(alert, animated: true, completion: nil)
