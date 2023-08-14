@@ -10,12 +10,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
-    private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
+    private let presenter = MovieQuizPresenter()
     private var statisticService: StatisticService = StatisticServiceImpl()
     
 
@@ -44,7 +43,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
             
             currentQuestion = question
-            let viewModel = convert(model: question)
+            let viewModel = presenter.convert(model: question)
             DispatchQueue.main.async { [weak self] in
                 self?.show(quiz: viewModel)
             }
@@ -60,14 +59,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - Private Methods
-    // метод конвертации, который принимает мок данные и возвращает вью модель для экрана вопроса
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
-    
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
