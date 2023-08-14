@@ -31,8 +31,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(NSHomeDirectory()) 
+        presenter.viewController = self
+        //print(NSHomeDirectory()) 
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
@@ -45,12 +45,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
-        setUnavailableButtons()
-        showAnswerResults(isCorrect: self.currentQuestion?.correctAnswer == false)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
+        //setUnavailableButtons()
     }
     @IBAction func yesButtonClicked(_ sender: UIButton) {
         setUnavailableButtons()
-        showAnswerResults(isCorrect: self.currentQuestion?.correctAnswer == true)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
         
     }
     
@@ -189,7 +191,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     //Меняет цвет рамки
-    private func showAnswerResults(isCorrect: Bool) {
+    func showAnswerResults(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
