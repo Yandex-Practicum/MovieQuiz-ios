@@ -63,7 +63,7 @@ final class MovieQuizViewController: UIViewController {
         
         if let currentQuestion{
             let convertedModel = convert(model: currentQuestion)
-            show(quiz: convertedModel, nextQuestion: currentQuestion)
+            show(quizStepViewModel: convertedModel, nextQuestion: currentQuestion)
         }
     }
     
@@ -77,10 +77,10 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
     }
     
-    private func show(quiz step: QuizStepViewModel,  nextQuestion nextQuestion: QuizQuestion) {
-        imageView.image = step.image
-        textLabel.text = step.question
-        counterLabel.text = step.questionNumber
+    private func show(quizStepViewModel: QuizStepViewModel,  nextQuestion: QuizQuestion) {
+        imageView.image = quizStepViewModel.image
+        textLabel.text = quizStepViewModel.question
+        counterLabel.text = quizStepViewModel.questionNumber
         currentQuestion = nextQuestion
     }
     
@@ -97,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
             
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel, nextQuestion: firstQuestion)
+            self.show(quizStepViewModel: viewModel, nextQuestion: firstQuestion)
         }
         
         alert.addAction(action)
@@ -173,7 +173,7 @@ final class MovieQuizViewController: UIViewController {
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             
-            show(quiz: viewModel, nextQuestion: nextQuestion)
+            show(quizStepViewModel: viewModel, nextQuestion: nextQuestion)
         }
     }
 }
