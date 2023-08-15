@@ -60,9 +60,10 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         
         currentQuestion = questions[self.currentQuestionIndex]
+        
         if let currentQuestion{
             let convertedModel = convert(model: currentQuestion)
-            show(quiz: convertedModel)
+            show(quiz: convertedModel, nextQuestion: currentQuestion)
         }
     }
     
@@ -76,16 +77,18 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
     }
     
-    private func show(quiz step: QuizStepViewModel) {
+    private func show(quiz step: QuizStepViewModel,  nextQuestion nextQuestion: QuizQuestion) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        currentQuestion = nextQuestion
     }
     
     private func showAlert(quiz result: QuizResultsViewModel) {
+        let message = result.text + "\n" + result.description + "\n" + result.record + "\n" + result.accuracy
         let alert = UIAlertController(
             title: result.title,
-            message: result.text + "\n" + result.description,
+            message: message,
             preferredStyle: .alert)
         
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
@@ -94,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
             
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
+            self.show(quiz: viewModel, nextQuestion: firstQuestion)
         }
         
         alert.addAction(action)
@@ -124,7 +127,7 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        if currentQuestionIndex == questions.count{
+        if currentQuestionIndex == questions.count - 1{
             playedQuizCauntity += 1
         }
         
@@ -136,21 +139,33 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    func imageBorder(borderColor: CGColor){
+    private func imageBorder(borderColor: CGColor){
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = borderColor
         imageView.layer.cornerRadius = 15
     }
     
+    private func bestResult() -> String{
+        var max = 0
+        if correctAnswers > max {
+            max += correctAnswers
+        }
+        let date: Date = Date()
+        return "Рекорд: \(max)/10 (\(date.dateTimeString))"
+    }
+    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
             let playedQuizCauntity = "Количество сыгранных квизов: \(playedQuizCauntity)"
+            let accuracy = "Средняя точность: \((Double(correctAnswers) / Double(questions.count)) * 100)%"
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
                 description: playedQuizCauntity,
+                record: bestResult(),
+                accuracy: accuracy,
                 buttonText: "Сыграть ещё раз")
             showAlert(quiz: viewModel)
         } else {
@@ -158,7 +173,7 @@ final class MovieQuizViewController: UIViewController {
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             
-            show(quiz: viewModel)
+            show(quiz: viewModel, nextQuestion: nextQuestion)
         }
     }
 }
