@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizPresenter {
-    private let questionsAmount = 10
+    let questionsAmount = 10
     private var currentQuestionIndex = 0
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {

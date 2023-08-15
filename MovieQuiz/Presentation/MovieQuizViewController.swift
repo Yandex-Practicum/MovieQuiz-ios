@@ -127,15 +127,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func restartGame() {
-        currentQuestionIndex = 0
-        correctAnswers = 0
+        presenter.resetQuestionIndex() 
         questionFactory?.requestNextQuestion()
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             
-            let messageQuizResult = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+            let messageQuizResult = "Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)"
             let messageQuizCount = "Количество сыгранных квизов: \(statisticService.gamesCount)"
             let messageQuizRecord = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))"
             let messageQuizAvgAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.averageAccuracy))%"
@@ -143,9 +142,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 messageQuizResult, messageQuizCount, messageQuizRecord, messageQuizAvgAccuracy
             ].joined(separator: "\n")
             
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
             
-            let title = questionsAmount == correctAnswers ?
+            let title = presenter.questionsAmount == correctAnswers ?
             "Поздравляем!" : "Этот раунд окончен"
             let message = messageQuiz
             
@@ -159,7 +158,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 })
             alertPresenter?.show(model: viewModel)
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             
             questionFactory?.requestNextQuestion()
         }
