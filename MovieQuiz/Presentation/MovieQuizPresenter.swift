@@ -1,18 +1,17 @@
 import UIKit
 
+
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     private let questionsAmount = 10
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
     private var currentQuestion: QuizQuestion?
-    private weak var viewController: MovieQuizViewController?
+    weak var viewController: MovieQuizViewControllerProtocol?
     private var questionFactory: QuestionFactoryProtocol?
     private var statisticService: StatisticService!
     
-//    var alertPresenter: AlertPresenter?
-    
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         statisticService = StatisticServiceImpl()
@@ -114,7 +113,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
-            viewController?.imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
     
@@ -129,7 +127,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                     guard let self = self else { return }
                     restartGame()
                 })
-            viewController?.alertPresenter?.show(model: viewModel)
+            
+
+            viewController?.presentAlert(viewModel)
         } else {
             switchToNextQuestion()
             questionFactory?.requestNextQuestion()

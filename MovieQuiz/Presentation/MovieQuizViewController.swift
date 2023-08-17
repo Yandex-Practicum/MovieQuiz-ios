@@ -1,7 +1,18 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    func show(quiz step: QuizStepViewModel)
     
+    func highlightImageBorder(isCorrectAnswer: Bool)
+    
+    func answerButtons(isEnabled: Bool)
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
+    func presentAlert(_ alert: AlertModel)
+    func showNetworkError(message: String)
+}
+
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     // MARK: - Variables
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
@@ -11,8 +22,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     var alertPresenter: AlertPresenterProtocol?
-    private var presenter: MovieQuizPresenter!
-    private var statisticService: StatisticService = StatisticServiceImpl()
+    var presenter: MovieQuizPresenter!
+    var statisticService: StatisticService = StatisticServiceImpl()
     
 
     // делаем статус бар светлым
@@ -30,7 +41,7 @@ final class MovieQuizViewController: UIViewController {
         presenter = MovieQuizPresenter(viewController: self)
     }
     
-    // MARK: - Private Methods
+    // MARK: - Internal Methods
     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -40,7 +51,7 @@ final class MovieQuizViewController: UIViewController {
         answerButtons(isEnabled: true)
     }
     
-    private func answerButtons(isEnabled: Bool) {
+    func answerButtons(isEnabled: Bool) {
         noButton.isEnabled = isEnabled
         yesButton.isEnabled = isEnabled
     }
@@ -71,6 +82,12 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter?.show(model: viewModel)
     }
     
+    func presentAlert(_ alert: AlertModel) {
+        alertPresenter?.show(model: alert)
+    }
+    
+    
+    
     func highlightImageBorder(isCorrectAnswer: Bool) {
         answerButtons(isEnabled: false)
         
@@ -83,6 +100,7 @@ final class MovieQuizViewController: UIViewController {
         })
     }
 
+    // MARK: - Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
     }
