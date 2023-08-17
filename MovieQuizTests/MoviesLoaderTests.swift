@@ -4,8 +4,8 @@ import XCTest
 class MoviesLoaderTests: XCTestCase {
     func testSuccessLoading()throws {
         // Given
-        let loader = MoviesLoader()
         let stubNetworkClient = StubNetworkClient(emulateError: false)
+        let loader = MoviesLoader(networkClient: stubNetworkClient)
         
         // When
         let expectation = expectation(description: "Loading expectation")
@@ -26,8 +26,8 @@ class MoviesLoaderTests: XCTestCase {
     
     func testFailureLoading() throws {
         // Given
-        let loader = MoviesLoader()
         let stubNetworkClient = StubNetworkClient(emulateError: true)
+        let loader = MoviesLoader(networkClient: stubNetworkClient)
         
         // When
         let expectation = expectation(description: "Loading expectation")
