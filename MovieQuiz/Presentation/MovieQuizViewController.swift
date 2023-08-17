@@ -54,7 +54,7 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
-    @IBOutlet weak var counterLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,7 +143,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = borderColor
-        imageView.layer.cornerRadius = 15
+        imageView.layer.cornerRadius = 20
     }
     
     private func bestResult() -> String{
