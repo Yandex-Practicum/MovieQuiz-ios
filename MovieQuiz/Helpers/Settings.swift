@@ -27,6 +27,5 @@ enum Settings {
     static let questionLabelFontName: String = "YSDisplay-Bold"
     
     static let posterImageViewRadius: CGFloat = 15
-    
 }
 

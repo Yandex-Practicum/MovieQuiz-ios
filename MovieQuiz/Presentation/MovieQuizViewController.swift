@@ -55,9 +55,9 @@ final class MovieQuizViewController: UIViewController {
             correctAnswers += 1
         }
         
-        posterImageView.layer.masksToBounds = true
-        posterImageView.layer.borderWidth = 8
-        posterImageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        self.posterImageView.layer.masksToBounds = true
+        self.posterImageView.layer.borderWidth = 8
+        self.posterImageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
          
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.posterImageView.layer.borderWidth = 0
