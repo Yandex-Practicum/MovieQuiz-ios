@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="YS Display-Bold.ttf">
+            <string>YSDisplay-Bold</string>
+        </array>
+        <array key="YS Display-Medium.ttf">
+            <string>YSDisplay-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Movie Quiz View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -15,13 +24,114 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="aSR-S4-uwj">
+                                <rect key="frame" x="20" y="38" width="374" height="814"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="j3y-5Y-aM9" userLabel="Navigation">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="22"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9d-mm-Q2I" userLabel="NavigationLeftLabel">
+                                                <rect key="frame" x="0.0" y="0.0" width="187" height="22"/>
+                                                <color key="tintColor" name="YP White"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" name="YP White"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWd-yr-Qfg" userLabel="NavigationRightLabel">
+                                                <rect key="frame" x="187" y="0.0" width="187" height="22"/>
+                                                <color key="tintColor" name="YP White"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" name="YP White"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="Bxr-Hu-Scy"/>
+                                            <constraint firstItem="EWd-yr-Qfg" firstAttribute="width" secondItem="j3y-5Y-aM9" secondAttribute="width" multiplier="0.5" id="UX5-TV-7U2"/>
+                                            <constraint firstItem="v9d-mm-Q2I" firstAttribute="width" secondItem="j3y-5Y-aM9" secondAttribute="width" multiplier="0.5" id="Ufq-Ax-cWw"/>
+                                        </constraints>
+                                    </stackView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kill Bill" translatesAutoresizingMaskIntoConstraints="NO" id="Shh-Ab-VPt" userLabel="Poster">
+                                        <rect key="frame" x="0.0" y="42" width="374" height="561"/>
+                                        <color key="backgroundColor" name="YP White"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Shh-Ab-VPt" secondAttribute="height" multiplier="2:3" id="1xd-BT-Hkh"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmS-2W-3gk" userLabel="Question">
+                                        <rect key="frame" x="0.0" y="623" width="374" height="111"/>
+                                        <string key="text">Рейтинг этого фильма
+меньше чем 5?</string>
+                                        <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
+                                        <color key="textColor" name="YP White"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gol-go-aKp" userLabel="Buttons">
+                                        <rect key="frame" x="0.0" y="754" width="374" height="60"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fro-Av-Eg8">
+                                                <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="15"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="yesButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9vl-Jk-zuQ"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D61-RE-QSU">
+                                                <rect key="frame" x="197" y="0.0" width="177" height="60"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="noButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KSD-lF-RKA"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="Vn3-Sy-1vK"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="RmS-2W-3gk" firstAttribute="top" secondItem="Shh-Ab-VPt" secondAttribute="bottom" constant="20" id="WTL-k7-b0F"/>
+                                    <constraint firstItem="gol-go-aKp" firstAttribute="top" secondItem="RmS-2W-3gk" secondAttribute="bottom" constant="20" id="odT-Q1-aQe"/>
+                                    <constraint firstItem="Shh-Ab-VPt" firstAttribute="top" secondItem="j3y-5Y-aM9" secondAttribute="bottom" constant="20" id="zuV-r6-Rby"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <color key="tintColor" name="YP White"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="aSR-S4-uwj" secondAttribute="top" constant="10" id="7cT-fn-AMv"/>
+                            <constraint firstItem="aSR-S4-uwj" firstAttribute="height" secondItem="6Tk-OE-BBY" secondAttribute="height" id="Lh8-fp-uSK"/>
+                            <constraint firstItem="aSR-S4-uwj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="OxO-1k-KoS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="aSR-S4-uwj" secondAttribute="trailing" constant="20" id="oej-RM-2Ow"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="navigationLeftLabel" destination="v9d-mm-Q2I" id="KTn-Gr-Gca"/>
+                        <outlet property="navigationRightLabel" destination="EWd-yr-Qfg" id="zSo-2W-Euh"/>
+                        <outlet property="noButton" destination="D61-RE-QSU" id="86k-91-o85"/>
+                        <outlet property="posterImageView" destination="Shh-Ab-VPt" id="PSl-1M-HCu"/>
+                        <outlet property="questionLabel" destination="RmS-2W-3gk" id="9XX-Gv-caS"/>
+                        <outlet property="yesButton" destination="Fro-Av-Eg8" id="6RL-q6-7h7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-55.072463768115945" y="55.580357142857139"/>
         </scene>
     </scenes>
+    <color key="tintColor" name="YP White"/>
+    <resources>
+        <image name="Kill Bill" width="860" height="1449"/>
+        <namedColor name="YP Black">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
