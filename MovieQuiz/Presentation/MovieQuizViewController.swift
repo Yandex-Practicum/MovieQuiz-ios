@@ -53,15 +53,6 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    //    func didLoadDataFromServer() {
-    //        activityIndicator.isHidden = true
-    //        questionFactory?.requestNextQuestion()
-    //    }
-    //
-    //    func didFailToLoadData(with error: Error) {
-    //        showNetworkError(message: error.localizedDescription)
-    //    }
-    
     //не скрыт
     func showLoadingIndicator() {
         activityIndicator.isHidden = false
@@ -83,23 +74,6 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         }
         alert.addAction(action)
     }
-
-        
-//        let model = AlertModel(text: "Ошибка", message: message, buttonText: "Попробовать еще раз") { [weak self] in
-//            guard let self = self else { return }
-//
-//            self.presenter.resetQuestionIndex()
-//            self.presenter.correctAnswers = 0
-//
-//            self.presenter.restartGame()
-//        }
-//
-//        alertPresenter?.showAlert(model: model)
-//    }
-    
-//    func didReceiveNextQuestion(question: QuizQuestion?) {
-//        presenter.didRecieveNextQuestion(question: question)
-//    }
     
     func showResult() {
         //statisticService?.store(correct: correctAnswers, total: presenter.questionsAmount)
@@ -142,18 +116,6 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         return message
     }
     
-    // логика перехода в один из сценариев
-//    private func showNextQuestionOrResults() {
-//        if presenter.isLastQuestion() {
-//            let text = "Вы ответили на \(presenter.correctAnswers) из 10, попробуйте еще раз!"
-//            showResult()
-//        } else {
-//            presenter.switchToNextQuestion()
-//            //111111/questionFactory?.requestNextQuestion()
-//            presenter.restartGame()
-//        }
-//    }
-    
     private func buttonsIsDisabled(){
         noButton.isEnabled = false
         yesButton.isEnabled = false
@@ -178,9 +140,6 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
             style: .default){ [weak self] _ in
                 guard let self = self else { return }
                 self.presenter.restartGame()
-//            self.presenter.currentQuestionIndex = 0
-//            self.correctAnswers = 0
-//            self.show(quiz: self.convert(model: self.questions[self.currentQuestionIndex]))
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
@@ -199,17 +158,6 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         imageViev.layer.borderWidth = 8
         imageViev.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
-    
-    //Меняет цвет рамки
-//    func showAnswerResults(isCorrect: Bool) {
-//
-//        presenter.didAnswer(isYes: isCorrect)
-//        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-//            guard let self = self else { return }
-//            self.showNextQuestionOrResults()
-//        }
-//    }
     
     private func setUnavailableButtons() {
         noButton.isUserInteractionEnabled = false
@@ -277,67 +225,3 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         imageViev.layer.cornerRadius = 20
     }
 }
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
