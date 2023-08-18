@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {
-    
+
     private weak var delegate: AlertPresenterDelegate?
-    
+
     init(delegate: AlertPresenterDelegate) {
         self.delegate = delegate
     }
-    
+
     func showAlert(model: AlertModel) {
         let alert = UIAlertController(
             title: model.text,
