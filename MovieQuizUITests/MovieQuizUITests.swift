@@ -12,15 +12,12 @@ class MovieQuizUITests: XCTestCase {
     var app: XCUIApplication!
     
     override func setUpWithError() throws {
-        
-        try super.setUpWithError()
         app = XCUIApplication()
         app.launch()
         continueAfterFailure = false
     }
+    
     override func tearDownWithError() throws {
-        try super.tearDownWithError()
-        
         app.terminate()
         app = nil
     }
@@ -58,35 +55,38 @@ class MovieQuizUITests: XCTestCase {
         XCTAssertEqual(indexLabel.label, "2/10")
     }
     
-    func testGameFinish() {
-        sleep(2)
+    func testGameFinishAlert() {
+        sleep(4)
+        
         for _ in 1...10 {
-            app.buttons["No"].tap()
-            sleep(2)
+            app.buttons["Yes"].tap()
+            sleep(3)
         }
-
-        let alert = app.alerts["Game results"]
+        
+        let alert = app.alerts["GameResult"]
         
         XCTAssertTrue(alert.exists)
         XCTAssertTrue(alert.label == "Этот раунд окончен!")
-        XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть ещё раз")
+        XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть ещё раз?")
+      
     }
 
     func testAlertDismiss() {
-        sleep(2)
+        sleep(3)
+        
         for _ in 1...10 {
-            app.buttons["No"].tap()
-            sleep(2)
+            app.buttons["Yes"].tap()
+            sleep(3)
         }
         
-        let alert = app.alerts["Game results"]
+        let alert = app.alerts["GameResult"]
         alert.buttons.firstMatch.tap()
         
-        sleep(2)
+        sleep(3)
         
-        let indexLabel = app.staticTexts["Index"]
+        let indexLable = app.staticTexts["Index"]
         
         XCTAssertFalse(alert.exists)
-        XCTAssertTrue(indexLabel.label == "1/10")
-    } 
+        XCTAssertEqual(indexLable.label, "1/10")
+    }
 }

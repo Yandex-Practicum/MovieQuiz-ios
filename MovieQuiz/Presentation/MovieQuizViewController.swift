@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     // MARK: - Lifecycle
     
@@ -11,12 +11,9 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         let questionNumber: String
     }
     
-    var alertPresenter: AlertPresenterProtocol?
-    
+    private var alertPresenter = AlertPresenter()
     var statisticService: StatisticService?
-    
     var currentQuestion: QuizQuestion?
-    
     private var presenter: MovieQuizPresenter!
     
     override func viewDidLoad() {
@@ -24,9 +21,9 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         
         presenter = MovieQuizPresenter(viewController: self)
         
-        presenter.viewController = self
+        //presenter.viewController = self
 
-        alertPresenter = AlertPresenter(delegate: self)
+        //alertPresenter = AlertPresenter(delegate: self)
         
         statisticService = StatisticServiceImplementation()
         
@@ -36,12 +33,12 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
-        presenter.noButtonClicked()
+        presenter.noButtonPressed()
         //setUnavailableButtons()
     }
     @IBAction func yesButtonClicked(_ sender: UIButton) {
         //setUnavailableButtons()
-        presenter.yesButtonClicked()
+        presenter.yesButtonPressed()
         
     }
     
@@ -70,50 +67,9 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         
         let action = UIAlertAction(title: "Попробовать еще раз", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.presenter.restartGame()
+            self.presenter.restartQuiz()
         }
         alert.addAction(action)
-    }
-    
-    func showResult() {
-        //statisticService?.store(correct: correctAnswers, total: presenter.questionsAmount)
-        statisticService?.updateGameStatisticService(correct: presenter.correctAnswers, amount: presenter.questionsAmount)
-        let gameRecord = GameRecord(correct: presenter.correctAnswers, total: presenter.questionsAmount, date: Date())
-        
-        if let bestGame = statisticService?.bestGame,
-            gameRecord > bestGame {
-            statisticService?.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
-        }
-        
-        let alertModel = AlertModel(
-            text: "Этот раунд окончен",
-            message: makeMessage(),
-            buttonText: "Сыграть еще раз",
-            completion: { [weak self] in
-                guard let self = self else { return }
-                
-                self.presenter.resetQuestionIndex()
-                self.presenter.correctAnswers = 0
-                ///1111/self.questionFactory?.requestNextQuestion()
-                self.presenter.restartGame()
-            })
-        alertPresenter?.showAlert(model: alertModel)
-    }
-    
-    private func makeMessage() -> String { //MARK:
-        guard let gamesCount = statisticService?.gamesCount,
-              let recordCount = statisticService?.bestGame.correct,
-              let recordTotal = statisticService?.bestGame.total,
-              let recordTime = statisticService?.bestGame.date.dateTimeString,
-              let average = statisticService?.totalAccuracy else {
-            return "Ошибка при формировании сообщения"
-        }
-        
-        let message = "Ваш результат: \(presenter.correctAnswers)\\\(presenter.questionsAmount)\n"
-            .appending("Количество сыгранных квизов: \(gamesCount)\n")
-            .appending("Рекорд: \(recordCount)/\(recordTotal) (\(recordTime))\n")
-            .appending("Средняя точность \(String(format: "%.2f", average))%")
-        return message
     }
     
     private func buttonsIsDisabled(){
@@ -128,7 +84,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         
     //Приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
     func show(quiz result: QuizResultsViewModel) {
-        let message = presenter.makeResultsMessage()
+        let message = presenter.makeResultMessage()
         
         let alert = UIAlertController(
             title: result.title,
@@ -139,7 +95,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
             title: result.buttonText,
             style: .default){ [weak self] _ in
                 guard let self = self else { return }
-                self.presenter.restartGame()
+                self.presenter.restartQuiz()
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
@@ -225,3 +181,43 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         imageViev.layer.cornerRadius = 20
     }
 }
+//    func showResult() {
+//        //statisticService?.store(correct: correctAnswers, total: presenter.questionsAmount)
+//        statisticService?.updateGameStatisticService(correct: presenter.correctAnswers, amount: presenter.questionsAmount)
+//        let gameRecord = GameRecord(correct: presenter.correctAnswers, total: presenter.questionsAmount, date: Date())
+//
+//        if let bestGame = statisticService?.bestGame,
+//            gameRecord > bestGame {
+//            statisticService?.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
+//        }
+//
+//        let alertModel = AlertModel(
+//            text: "Этот раунд окончен",
+//            message: makeMessage(),
+//            buttonText: "Сыграть еще раз",
+//            completion: { [weak self] in
+//                guard let self = self else { return }
+//
+//                self.presenter.resetQuestionIndex()
+//                self.presenter.correctAnswers = 0
+//                ///1111/self.questionFactory?.requestNextQuestion()
+//                self.presenter.restartGame()
+//            })
+//        alertPresenter?.showAlert(model: alertModel)
+//    }
+//
+//    private func makeMessage() -> String { //MARK:
+//        guard let gamesCount = statisticService?.gamesCount,
+//              let recordCount = statisticService?.bestGame.correct,
+//              let recordTotal = statisticService?.bestGame.total,
+//              let recordTime = statisticService?.bestGame.date.dateTimeString,
+//              let average = statisticService?.totalAccuracy else {
+//            return "Ошибка при формировании сообщения"
+//        }
+//
+//        let message = "Ваш результат: \(presenter.correctAnswers)\\\(presenter.questionsAmount)\n"
+//            .appending("Количество сыгранных квизов: \(gamesCount)\n")
+//            .appending("Рекорд: \(recordCount)/\(recordTotal) (\(recordTime))\n")
+//            .appending("Средняя точность \(String(format: "%.2f", average))%")
+//        return message
+//    }
