@@ -22,7 +22,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter = MovieQuizPresenter(viewController: self)
         
         //presenter.viewController = self
-
+        
         //alertPresenter = AlertPresenter(delegate: self)
         
         statisticService = StatisticServiceImplementation()
@@ -81,7 +81,19 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         noButton.isEnabled = true
         yesButton.isEnabled = true
     }
-        
+    
+    func showAlert(model: AlertModel) {
+        let alert = UIAlertController(
+            title: model.text,
+            message: model.text,
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
+            model.completion()
+        }
+        alert.addAction(action)
+        alert.view.accessibilityIdentifier = "Game results"
+        (delegate as? UIViewController)?present(alert, animated: true, completion: nil)
+    }                                                                                                        
     //Приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
     func show(quiz result: QuizResultsViewModel) {
         let message = presenter.makeResultMessage()
@@ -98,6 +110,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                 self.presenter.restartQuiz()
         }
         alert.addAction(action)
+        alert.view.accessibilityIdentifier = "Game results"
         self.present(alert, animated: true, completion: nil)
     }
 
