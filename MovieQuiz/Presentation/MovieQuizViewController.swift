@@ -1,8 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
-   
+  
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
@@ -52,6 +51,8 @@ final class MovieQuizViewController: UIViewController {
                 text: "Рейтинг этого фильма больше чем 6?",
                 correctAnswer: false)
         ]
+   
+// MARK:- Action
     
     @IBAction private func noButtonCliked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex] // 1
@@ -64,38 +65,6 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer) // 3
     }
     
-private struct ViewModel {
-      let image: UIImage
-      let question: String
-      let questionNumber: String
-    }
-    // для состояния "Вопрос показан"
-private struct QuizStepViewModel {
-      let image: UIImage
-      let question: String
-      let questionNumber: String
-    }
-
-    // для состояния "Результат квиза"
-private struct QuizResultsViewModel {
-      let title: String
-      let text: String
-      let buttonText: String
-    }
-private struct QuizQuestion {
-      // строка с названием фильма,
-      // совпадает с названием картинки афиши фильма в Assets
-      let image: String
-      // строка с вопросом о рейтинге фильма
-      let text: String
-      // булевое значение (true, false), правильный ответ на вопрос
-      let correctAnswer: Bool
-    }
- 
-    // переменная с индексом текущего вопроса, начальное значение 0
-    // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
-   
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
@@ -159,12 +128,44 @@ private func showAnswerResult(isCorrect: Bool) {
     
         }
     }
-  
+private struct ViewModel {
+          let image: UIImage
+          let question: String
+          let questionNumber: String
+        }
+        // для состояния "Вопрос показан"
+private struct QuizStepViewModel {
+          let image: UIImage
+          let question: String
+          let questionNumber: String
+        }
+
+        // для состояния "Результат квиза"
+private struct QuizResultsViewModel {
+          let title: String
+          let text: String
+          let buttonText: String
+        }
+private struct QuizQuestion {
+          // строка с названием фильма,
+          // совпадает с названием картинки афиши фильма в Assets
+          let image: String
+          // строка с вопросом о рейтинге фильма
+          let text: String
+          // булевое значение (true, false), правильный ответ на вопрос
+          let correctAnswer: Bool
+        }
+     
+    
+//MARK:- lifecycle
+    
 override func viewDidLoad() {
         super.viewDidLoad()
+    imageView.layer.cornerRadius = 20
+    
         // берём текущий вопрос из массива вопросов по индексу текущего вопроса
         let currentQuestion = questions[currentQuestionIndex]
-    let viewModel = convert(model: currentQuestion)
+        let viewModel = convert(model: currentQuestion)
          show(quiz: viewModel)
     }
 }
