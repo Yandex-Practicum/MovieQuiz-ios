@@ -92,7 +92,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         }
         alert.addAction(action)
         alert.view.accessibilityIdentifier = "Game results"
-        (delegate as? UIViewController)?present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }                                                                                                        
     //Приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса
     func show(quiz result: QuizResultsViewModel) {
