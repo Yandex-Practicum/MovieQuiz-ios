@@ -2,14 +2,13 @@
 //  QuestionFactoryProtocol.swift
 //  MovieQuiz
 //
-//  Created by TATIANA VILDANOVA on 26.07.2023.
+//  Created by TATIANA VILDANOVA on 20.08.2023.
 //
 
 import Foundation
-import UIKit
-
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion ()
+    var delegate: QuestionFactoryDelegate? { get set }
+    func requestNextQuestion()
+    func loadData()
+    func resetData()
 }
-    
-

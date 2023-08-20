@@ -4,41 +4,24 @@
 //
 //  Created by TATIANA VILDANOVA on 03.08.2023.
 //
-
 import UIKit
-
-// MARK: - AlertPresenter Class
-
-final class AlertPresenter: AlertPresenterProtocol {
-    
-    weak var delegate: AlertPresenterDelegate?
-    
-    init(delegate: AlertPresenterDelegate?) {
-        self.delegate = delegate
+class AlertPresenter {
+    private weak var presentingViewController: UIViewController?
+    init(presentingViewController: UIViewController) {
+        self.presentingViewController = presentingViewController
     }
-    
-    func alert(with model: AlertModel) {
-        
-        let alert = UIAlertController(title: model.title, message: model.message, preferredStyle: .alert)
-        let action = UIAlertAction(title: model.buttonText, style: .default, handler: model.completion)
-        
+    func presentAlert(with model: AlertModel) {
+        let alert = UIAlertController(title: model.title,
+                                      message: model.message,
+                                      preferredStyle: .alert)
+        let action = UIAlertAction(title: model.buttonText,
+                                   style: .default) { _ in
+            model.completion?()
+        }
         alert.addAction(action)
-        
-        delegate?.present(alert, animated: true)
+        if let accessibilityIdentifier = model.accessibilityIdentifier {
+            alert.view.accessibilityIdentifier = accessibilityIdentifier
+        }
+        presentingViewController?.present(alert, animated: true, completion: nil)
     }
 }
-
-
-// MARK: - AlertPresenterProtocol
-///
-protocol AlertPresenterProtocol {
-    var delegate: AlertPresenterDelegate? { get }
-    func alert(with model: AlertModel)
-}
-
-// MARK: - AlertPresenterDelegate
-
-protocol AlertPresenterDelegate: UIViewController {
-    func startNewQuiz(_: UIAlertAction)
-}
-
