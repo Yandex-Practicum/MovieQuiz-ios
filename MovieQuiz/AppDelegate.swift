@@ -7,7 +7,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         return true
-        print("Hi, world for branch to merge! ")
     }
 
     // MARK: UISceneSession Lifecycle
