@@ -140,15 +140,4 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

@@ -30,7 +30,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         statisticService = StatisticServiceImplementation()
     }
     
-    // MARK: - Private functions
+    // MARK: - MovieQuizViewControllerProtocol
     
     func hideLoadingIndicator() {
         activityIndicator.isHidden = true
@@ -44,11 +44,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     func showNetworkError(message: String) {
         hideLoadingIndicator()
         
-        let model = AlertModel(title: "Ошибка",
-                               message: message,
-                               buttonText: "Попробовать еще раз") { [weak self] in
+        let model = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать еще раз"
+        ) { [weak self] in
             guard let self = self else { return }
-            
             self.presenter?.restartGame()
             self.presenter?.correctAnswers = 0
             
