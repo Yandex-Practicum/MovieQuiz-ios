@@ -8,32 +8,25 @@
 import Foundation
 import UIKit
 
-protocol AlertPresenterProtocol: AnyObject {
-    func showAlert(_ model: AlertModel)
-}
-
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter {
+    private let controller: AnyObject
+    private let model: AlertModel
+    private let alert: UIAlertController
     
-    private weak var viewController: UIViewController?
-    
-    init(delegate: UIViewController?) {
-        self.viewController = delegate
+    init(controller: AnyObject, model: AlertModel) {
+        self.controller = controller
+        self.model = model
+        
+        self.alert = UIAlertController(title: self.model.title, message: self.model.message, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: self.model.buttonText, style: .default) { _ in
+            self.model.completion()
+        }
+        
+        self.alert.addAction(action)
     }
     
-    func showAlert(_ model: AlertModel) {
-        let alert = UIAlertController(
-            title: model.title,
-            message: model.message,
-            preferredStyle: .alert
-        )
-        
-        let action = UIAlertAction(
-            title: model.buttonText,
-            style: .default) { _ in
-                model.completion()
-            }
-        
-        alert.addAction(action)
-        viewController?.present(alert, animated: true)
+    func run() -> Void {
+        controller.present(self.alert, animated: true, completion: nil)
     }
 }
