@@ -11,13 +11,13 @@ import XCTest
 
 class ArrayTests: XCTestCase {
     func testGetValueInRange() throws {
-//        Given
+        //        Given
         let array = [1, 1, 2, 3, 5]
         
-//        When
+        //        When
         let value = array[safe: 2]
         
-//        Then
+        //        Then
         XCTAssertNotNil(value)
         XCTAssertEqual(value, 2)
     }
@@ -25,10 +25,10 @@ class ArrayTests: XCTestCase {
     func testGetValueOutOfRaange() throws {
         //        Given
         let array = [1, 1, 2, 3, 5]
-
+        
         //        When
         let value = array[safe: 20]
-
+        
         //        Then
         XCTAssertNil(value)
     }

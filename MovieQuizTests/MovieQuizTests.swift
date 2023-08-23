@@ -38,8 +38,8 @@ final class MovieQuizTests: XCTestCase {
         
         // When
         let expectation = expectation(description: "Addition function expectation")
-       
-       arithmeticOperations.addition(num1: num1, num2: num2) { result in
+        
+        arithmeticOperations.addition(num1: num1, num2: num2) { result in
             // Then
             XCTAssertEqual(result, 3)
             expectation.fulfill()

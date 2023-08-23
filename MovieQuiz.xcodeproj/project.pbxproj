@@ -14,6 +14,9 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
+		E72251C62A957B3200AD0254 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
+		E72251C72A957BA200AD0254 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
+		E72251C82A957BA200AD0254 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		E763A7FF2A8D5E1900B70420 /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = E763A7FE2A8D5E1900B70420 /* MostPopularMovies.swift */; };
 		E763A8012A8D5E6100B70420 /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E763A8002A8D5E6100B70420 /* MoviesLoader.swift */; };
 		E763A8032A8D693D00B70420 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E763A8022A8D693D00B70420 /* NetworkClient.swift */; };
@@ -421,6 +424,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E72251C72A957BA200AD0254 /* SceneDelegate.swift in Sources */,
+				E72251C82A957BA200AD0254 /* AppDelegate.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				E790EE752A8190C3007FDF92 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
@@ -468,6 +473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E72251C62A957B3200AD0254 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

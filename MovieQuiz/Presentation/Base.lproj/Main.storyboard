@@ -39,6 +39,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="naI-bs-LtH" userLabel="Index Label">
                                                 <rect key="frame" x="338" y="0.0" width="36" height="23.5"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Index"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White (iOS)"/>
                                                 <nil key="highlightedColor"/>
@@ -64,7 +65,6 @@
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xof-Xt-eCG" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="664.5" width="374" height="54"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="Index"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White (iOS)"/>
                                         <nil key="highlightedColor"/>
@@ -77,8 +77,26 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="zJe-Es-6sn">
                                 <rect key="frame" x="20" y="802" width="374" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lr8-or-Gsv" userLabel="No Button">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IZL-8G-M5v" userLabel="Yes Button">
                                         <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                        <color key="backgroundColor" name="YP White (iOS)"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Yes"/>
+                                        <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Да">
+                                            <color key="titleColor" name="YP Black (iOS)"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius ">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fbH-sN-hkD"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lr8-or-Gsv" userLabel="No Button">
+                                        <rect key="frame" x="197" y="0.0" width="177" height="60"/>
                                         <color key="backgroundColor" name="YP White (iOS)"/>
                                         <accessibility key="accessibilityConfiguration" identifier="No"/>
                                         <constraints>
@@ -96,24 +114,6 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zs0-SO-Oko"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IZL-8G-M5v" userLabel="Yes Button">
-                                        <rect key="frame" x="197" y="0.0" width="177" height="60"/>
-                                        <color key="backgroundColor" name="YP White (iOS)"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="Yes"/>
-                                        <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Да">
-                                            <color key="titleColor" name="YP Black (iOS)"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius ">
-                                                <integer key="value" value="15"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fbH-sN-hkD"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -139,9 +139,11 @@
                         <outlet property="activityIndicator" destination="7Ze-EJ-06a" id="nKP-it-zNI"/>
                         <outlet property="counterLabel" destination="naI-bs-LtH" id="EyW-ub-lNz"/>
                         <outlet property="imageView" destination="6lc-PN-kna" id="Bby-X3-EHt"/>
-                        <outlet property="noButton" destination="Lr8-or-Gsv" id="aiU-8k-bOc"/>
+                        <outlet property="noButton" destination="Lr8-or-Gsv" id="anc-Ux-PGf"/>
                         <outlet property="textLabel" destination="Xof-Xt-eCG" id="eRL-Pm-CCK"/>
-                        <outlet property="yesButton" destination="IZL-8G-M5v" id="GkK-Ua-yDF"/>
+                        <outlet property="yesButton" destination="IZL-8G-M5v" id="1G7-J1-rTa"/>
+                        <outletCollection property="buttons" destination="IZL-8G-M5v" collectionClass="NSMutableArray" id="RsP-Zs-2gi"/>
+                        <outletCollection property="buttons" destination="Lr8-or-Gsv" collectionClass="NSMutableArray" id="wKr-ds-PWa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
