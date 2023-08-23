@@ -1,55 +1,13 @@
 //
-//  MoviestLoaderTests.swift
+//  File.swift
 //  MovieQuizTests
 //
-//  Created by TATIANA VILDANOVA on 15.08.2023.
+//  Created by TATIANA VILDANOVA on 23.08.2023.
 //
 import XCTest
-
 @testable import MovieQuiz
 
-final class MoviesLoaderTests: XCTestCase {
-    
-    func testSuccessLoading() throws {
-        
-        let stubNetworkClient = StubNetworkClient(emulateError: false)
-        let loader = MoviesLoader(networkClient: stubNetworkClient)
-        let expectation = expectation(description: "Loading expectation")
-        
-        loader.loadMovies { result in
-            
-            switch result {
-            case .success(let movies):
-                XCTAssertEqual(movies.items.count, 2)
-                expectation.fulfill()
-            case .failure(_):
-                XCTFail("Unexpexted failure")
-            }
-        }
-        waitForExpectations(timeout: 1)
-    }
-    
-    func testFailureLoading() throws {
-        
-        let stubNetworkClient = StubNetworkClient(emulateError: true)
-        let loader = MoviesLoader(networkClient: stubNetworkClient)
-        let expectation = expectation(description: "Loading expectation")
-        
-        loader.loadMovies { result in
-            
-            switch result {
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            case .success(_):
-                XCTFail("Unexpexted failure")
-            }
-        }
-        waitForExpectations(timeout: 1)
-    }
-}
-
-//MARK: - тестовая версия сетевогоклиента
+//MARK: - Stub Network Client
 
 struct StubNetworkClient: NetworkRouting {
     
@@ -70,7 +28,7 @@ struct StubNetworkClient: NetworkRouting {
     private var expectedResponse: Data {
         """
         {
-           "errorMessage" : "",
+        "errorMessage" : "",
            "items" : [
               {
                  "crew" : "Dan Trachtenberg (dir.), Amber Midthunder, Dakota Beavers",
@@ -97,7 +55,7 @@ struct StubNetworkClient: NetworkRouting {
                  "year" : "2022"
               }
             ]
-          }
-        """.data(using: .utf8) ?? Data()
+        }
+       """.data(using: .utf8) ?? Data()
     }
 }
