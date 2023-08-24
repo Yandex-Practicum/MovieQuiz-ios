@@ -6,6 +6,7 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet weak var yesButton: UIButton!
     
+    @IBOutlet weak var questionTitleLabel: UILabel!
     
     @IBOutlet private var imageView: UIImageView!
     
@@ -18,13 +19,11 @@ final class MovieQuizViewController: UIViewController {
         let question: String
         let questionNumber: String
     }
-    
     struct QuizResultsViewModel{
         let title: String
         let text: String
         let buttonText: String
     }
-    
     struct QuizQuestion {
         let image: String
         let text: String
@@ -52,15 +51,12 @@ final class MovieQuizViewController: UIViewController {
         
         return questionStep
     }
-    
     private func show (quiz step: QuizStepViewModel) {
         indexLabel.text = step.questionNumber
         imageView.image = step.image
         questionLabel.text = step.question
         imageView.layer.borderColor = UIColor.clear.cgColor
-
     }
-    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
@@ -69,14 +65,11 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             //код который должен быть вызван через одну секунду
             self.showNextQuestionOrResults()
         }
     }
-    
     private func showNextQuestionOrResults(){
         if currentQuestionIndex == questions.count - 1 {// идем в состояние результата квиза
             let text = "Ваш результат: \(correctAnswers)/10"
@@ -89,9 +82,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-    
     //Когда заканчивается квиз появляется системный алерт, содержащий инфу о пройденном квизе и предлогающий запустить квиз еще раз
-    
     // создадим кнопку для запуска (константа с кнопкой для системного алерта)
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(title: "Этот раунд окончен!", message: "Ваш результат \(correctAnswers)", preferredStyle: .alert)
@@ -99,35 +90,31 @@ final class MovieQuizViewController: UIViewController {
             // код, который сбрасывает игру и показывает первый вопрос
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
         }
-            
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
         }
-    
-    
-    
     //метод который вызывается когда пользователь жмет на кнопку нет
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenResult = false
         showAnswerResult(isCorrect: givenResult == currentQuestion.correctAnswer)
     }
-    
     //метод когда пользователь жмет на кнопку да
-    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenResult = true
         showAnswerResult(isCorrect: givenResult == currentQuestion.correctAnswer)
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        yesButton.titleLabel!.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        noButton.titleLabel!.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
     }
 }
 /*
