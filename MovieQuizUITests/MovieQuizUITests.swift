@@ -43,7 +43,6 @@ final class MovieQuizUITests: XCTestCase {
     
     func testNoButton() {
         
-        sleep(3)
         
         let firstPoster = app.images["Poster"]
         let firstPosterData = firstPoster.screenshot().pngRepresentation
