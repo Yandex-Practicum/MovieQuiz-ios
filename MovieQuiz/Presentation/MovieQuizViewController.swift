@@ -74,7 +74,7 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        imageView.layer.cornerRadius = 20
         let firstQuestion = questions[currentQuestionIndex]
         let viewModel = convert(model: firstQuestion)
         show(quiz: viewModel)
@@ -125,21 +125,27 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect == true {
             imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 2
+            imageView.layer.borderWidth = 8
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
-            imageView.layer.cornerRadius = 8
+            imageView.layer.cornerRadius = 20
             correctAnswers += 1
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.imageView.layer.borderColor = nil
+                self.imageView.layer.borderWidth = 0
                 self.showNextQuestionOrResults()
             }
+            
+            
         } else {
             imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 2
+            imageView.layer.borderWidth = 8
             imageView.layer.borderColor = UIColor.ypRed.cgColor
-            imageView.layer.cornerRadius = 8
+            imageView.layer.cornerRadius = 20
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.imageView.layer.borderColor = nil
+                self.imageView.layer.borderWidth = 0
                 self.showNextQuestionOrResults()
             }
         }
@@ -152,7 +158,7 @@ final class MovieQuizViewController: UIViewController {
             
            
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.isButtonEnabled = true
             }
         }
@@ -166,7 +172,7 @@ final class MovieQuizViewController: UIViewController {
             
             showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.isButtonEnabled = true
             }
         }
