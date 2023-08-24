@@ -5,6 +5,7 @@
 //  Created by TATIANA VILDANOVA on 03.08.2023.
 //
 import Foundation
+
 // MARK: - StatisticServiceImplementation
 /// Сервис подсчёта, обработки результатов квиза
 final class StatisticServiceImplementation: StatisticService {
@@ -84,17 +85,10 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     /// Сохраняем результаты квиза в UserDefaults
-    /// - Parameters:
-    ///     - correct: Количество верных ответов
-    ///     - total: Общее количество вопросов в квизе
-    ///
+    
     func store(correct count: Int, total amount: Int) {
         self.gamesCount += 1
-        
-        // Формируем эксемпляр потенциального рекорда из результатов прохождения текущего квиза
         let currentGame = GameRecord(correct: count, total: amount, date: Date())
-        
-        // Сохраняем результаты текущего квиза если они превышают показатель верных ответов (correct) ранее сохраненного рекорда
         if currentGame > bestGame {
             self.bestGame = currentGame
         }

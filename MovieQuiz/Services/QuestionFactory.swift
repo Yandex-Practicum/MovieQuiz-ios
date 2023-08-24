@@ -4,8 +4,8 @@
 //
 //  Created by TATIANA VILDANOVA on 26.07.2023.
 import Foundation
-// MARK: - QuestionFactoryProtocol
 
+// MARK: - QuestionFactoryProtocol
 protocol QuestionFactoryProtocol {
     func requestNextQuestion()
     func loadData()
@@ -27,10 +27,8 @@ final class QuestionFactory: QuestionFactoryProtocol {
     /// Делегат - получатель Квиз-вопросов
     weak var delegate: QuestionFactoryDelegate?
     
-    /// Массив данных о фильмах
     private var movies: [MostPopularMovie] = []
     
-    /// Инициализация фабрики вопросов с иньекцией делегата
     init(moviesLoader: MoviesLoader, delegate: QuestionFactoryDelegate){
         self.delegate = delegate
     }
@@ -53,7 +51,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 
             } catch {
                 
-                // В случае неудачи пробуем задать вопрос с картинкой по другому фильму
+               
                 print("Failed to load image data")
                 
                 DispatchQueue.main.async {

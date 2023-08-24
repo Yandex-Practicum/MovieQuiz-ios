@@ -4,8 +4,6 @@
 //
 //  Created by TATIANA VILDANOVA on 15.08.2023.
 //
-
-
 import XCTest
 @testable import MovieQuiz
 

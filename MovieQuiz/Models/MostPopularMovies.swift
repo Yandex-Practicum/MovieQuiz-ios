@@ -4,7 +4,6 @@
 //
 //  Created by TATIANA VILDANOVA on 08.08.2023.
 //
-
 import Foundation
 
 /// JSON-модель данных о фильмах, получаемых с IMDB-сервера

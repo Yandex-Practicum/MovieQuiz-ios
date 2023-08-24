@@ -7,10 +7,6 @@
 
 import Foundation
 
-/// Параметры игры
-/// - Parameters:
-///     - correct: количество верных ответов за квиз
-/// - total: общее количество вопрос
 struct GameRecord: Codable {
     let correct: Int
     let total: Int

@@ -4,8 +4,8 @@
 //
 //  Created by TATIANA VILDANOVA on 15.08.2023.
 //
-import XCTest
 
+import XCTest
 @testable import MovieQuiz
 
 final class MoviesLoaderTests: XCTestCase {
