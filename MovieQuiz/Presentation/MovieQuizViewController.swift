@@ -12,7 +12,7 @@ final class MovieQuizViewController: UIViewController {
  
  
  Картинка: The Godfather
- Настоящий рейтинг: 9,2
+ Наст€оящий рейтинг: 9,2
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
 
