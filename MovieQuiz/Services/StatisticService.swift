@@ -30,7 +30,7 @@ final class StatisticServiceImplementation {
 }
 
 extension StatisticServiceImplementation: StatisticService{
-    func store(correct count: Int, total amount: Int) {
+    func store(correct: Int, total: Int) {
         self.correct += correct
         self.total += total
         self.gamesCount += 1
@@ -81,7 +81,7 @@ extension StatisticServiceImplementation: StatisticService{
     var bestGame: GameRecord? {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
-            let record = try? decoder.decode(GameRecord.self, from: data) else {
+                  let record = try? decoder.decode(GameRecord.self, from: data) else {
                 return nil
             }
             

@@ -97,15 +97,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20
     }
     
-    private func bestResult() -> String{
-        var max = 0
-        if correctAnswers > max {
-            max += correctAnswers
-        }
-        let date: Date = Date()
-        return "Рекорд: \(max)/10 (\(date.dateTimeString))"
-    }
-    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             finalResult()
@@ -120,7 +111,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         let alertModel = AlertModel(
             title: "Игра окончена",
-            message: makeResult(),
+            message: makeResultMessage(),
             buttonText: "Сыграть еще раз",
             completion: {[weak self] in
                 self?.currentQuestionIndex = 0
@@ -131,16 +122,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenterProtocol?.showAlert(alertModel: alertModel)
     }
     
-    private func makeResult() -> String{
+    private func makeResultMessage() -> String{
         
         guard let statisticsService = statisticsService, let bestGame = statisticsService.bestGame else {
             return ""
         }
-        let text = "Ваш результат: \(correctAnswers)/10"
+        let text = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
         let playedQuizCauntity = "Количество сыгранных квизов: \(statisticsService.gamesCount)"
         let accuracy = "Средняя точность: \(statisticsService.totalAccuracy)%"
-        let record = "Рекорд: \(bestGame.correct)/10 (\(bestGame.date.dateTimeString))"
-        let result = [ text, playedQuizCauntity, record, accuracy].joined(separator: "\n")
+        let bestResult = "Рекорд: \(bestGame.correct)/\(questionsAmount) (\(bestGame.date.dateTimeString))"
+        let result = [ text, playedQuizCauntity, bestResult, accuracy].joined(separator: "\n")
         return result
     }
 }
