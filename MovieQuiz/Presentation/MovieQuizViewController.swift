@@ -43,7 +43,6 @@ final class MovieQuizViewController: UIViewController {
             self.showNextQuestionOrResults()
         }
     }
-    
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
@@ -69,7 +68,6 @@ final class MovieQuizViewController: UIViewController {
     private func show(quiz step: QuizStepViewModel) {
     
         // сброс стиля рамки
-        
         imageView.layer.borderWidth = 0
         imageView.layer.borderColor = nil
         imageView.layer.cornerRadius = 20
@@ -140,7 +138,6 @@ final class MovieQuizViewController: UIViewController {
         // текст для кнопки алерта
         let buttonText: String
     }
-    
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // Попробуйте написать код конвертации самостоятельно
