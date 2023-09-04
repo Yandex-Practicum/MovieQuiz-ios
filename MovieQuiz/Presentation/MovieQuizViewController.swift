@@ -3,13 +3,11 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
-    
     @IBOutlet private var imageView: UIImageView!
     
     @IBOutlet private var textLabel: UILabel!
     
     @IBOutlet private var counterLabel: UILabel!
-    
     
     // метод вызывается, когда пользователь нажимает на кнопку "Да"
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -71,7 +69,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 0
         imageView.layer.borderColor = nil
         imageView.layer.cornerRadius = 20
-
+        
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
