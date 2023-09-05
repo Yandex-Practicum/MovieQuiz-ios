@@ -82,7 +82,6 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         
-        
     }
     
     // приватный метод для показа результатов раунда квиза
