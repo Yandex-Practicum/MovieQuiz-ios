@@ -32,7 +32,7 @@ final class MovieQuizViewController: UIViewController {
         
         // imageView.layer.masksToBounds = true  даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
-        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
+        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
         
         if isCorrect == true {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor // делаем рамку зеленой
@@ -76,7 +76,6 @@ final class MovieQuizViewController: UIViewController {
         
         imageView.layer.borderWidth = 0
         imageView.layer.borderColor = nil
-        imageView.layer.cornerRadius = 20
 
         imageView.image = step.image
         textLabel.text = step.question
