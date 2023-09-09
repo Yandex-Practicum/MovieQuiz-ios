@@ -122,7 +122,9 @@
                     <connections>
                         <outlet property="indexOfQuestionLabel" destination="iEc-p4-lUK" id="ql6-SI-gR6"/>
                         <outlet property="moviePosterImageView" destination="8eK-ui-m2U" id="YN6-JP-imT"/>
+                        <outlet property="noButton" destination="Qyn-Gu-q9a" id="Rmy-8g-dLj"/>
                         <outlet property="textOfQuestionLabel" destination="co1-Rc-l0e" id="tZR-aQ-IEY"/>
+                        <outlet property="yesButton" destination="yZy-cu-ccF" id="hbh-4W-sRo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
