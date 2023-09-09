@@ -127,7 +127,8 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         //запускаем следующую задачу через 1 секунду
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else {return}
             //убираем границу рамки
             self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
@@ -172,7 +173,8 @@ final class MovieQuizViewController: UIViewController {
         
         
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else {return}
             self.currentQuestionIndex = 0
             // сбрасываем переменную с количеством правильных ответов
             self.correctAnswers = 0
