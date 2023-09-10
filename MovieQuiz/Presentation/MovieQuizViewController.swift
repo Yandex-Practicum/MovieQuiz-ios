@@ -59,22 +59,14 @@ final class MovieQuizViewController: UIViewController {
     
     @IBAction private func noButtonClicked(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
-        if currentQuestion.correctAnswer == false {
-            showAnswerResult(isCorrect: true)
-        }
-        else {
-            showAnswerResult(isCorrect: false)
-        }
+        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
+       
+        
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
-        if currentQuestion.correctAnswer == false {
-            showAnswerResult(isCorrect: true)
-        }
-        else {
-            showAnswerResult(isCorrect: false)
-        }
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -104,6 +96,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
+        imageView.layer.borderWidth = 0
         if currentQuestionIndex == questions.count - 1 {
             let quizResult = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат \(correctAnswers)/10", buttonText: "Сыграть ещё раз")
             show(quiz: quizResult)
