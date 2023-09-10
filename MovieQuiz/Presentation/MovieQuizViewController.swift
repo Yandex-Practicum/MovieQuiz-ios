@@ -69,7 +69,7 @@ final class MovieQuizViewController: UIViewController {
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderColor = UIColor.clear.cgColor //очищаем рамку от цвета
         if currentQuestionIndex == questions.count - 1 {
             // идём в состояние "Результат квиза"
             show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswers)/\(questions.count)", buttonText: "Сыграть ещё раз"))
