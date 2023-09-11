@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    //    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,18 +23,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
         alertPresenterProtocol = AlertPresenter(viewController: self)
         statisticsService = StatisticServiceImplementation()
-        
-        //        showLoadingIndicator()
+        showLoadingIndicator()
         questionFactory?.loadData()
     }
     
-    @IBAction private func noButtonClick(_ sender: Any) {
-        let answer = false
-        showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
-    }
-    @IBAction private func yesButtonClick(_ sender: Any) {
-        let answer = true
-        showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     private func show(quizStepViewModel: QuizStepViewModel,  nextQuestion: QuizQuestion) {
@@ -53,15 +47,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return quizStepViewModel
     }
     
-    //    private func showLoadingIndicator() {
-    //            activityIndicator.isHidden = false
-    //            activityIndicator.startAnimating()
-    //        }
-    //
-    //        private func hideLoadingIndicator() {
-    //            activityIndicator.isHidden = true
-    //            activityIndicator.stopAnimating()
-    //        }
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
@@ -76,7 +70,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func didLoadDataFromServer() {
-        //        activityIndicator.isHidden = true
+        activityIndicator.isHidden = true
         questionFactory?.requestNextQuestion()
     }
     
@@ -85,7 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNetworkError(message: String) {
-        //            hideLoadingIndicator() // скрываем индикатор загрузки
+        hideLoadingIndicator()
         let alert : AlertModel = AlertModel(
             title: "Ошибка",
             message: message,
@@ -165,9 +159,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         let text = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
         let playedQuizCauntity = "Количество сыгранных квизов: \(statisticsService.gamesCount)"
-        let accuracy = "Средняя точность: \(statisticsService.totalAccuracy)%"
+        let accuracy = "Средняя точность: \(String(format: "%2.f", statisticsService.totalAccuracy))%"
         let bestResult = "Рекорд: \(bestGame.correct)/\(questionsAmount) (\(bestGame.date.dateTimeString))"
         let result = [ text, playedQuizCauntity, bestResult, accuracy].joined(separator: "\n")
         return result
+    }
+    
+    @IBAction private func noButtonClick(_ sender: Any) {
+        let answer = false
+        showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
+    }
+    @IBAction private func yesButtonClick(_ sender: Any) {
+        let answer = true
+        showAnswerResult(isCorrect: answer == currentQuestion?.correctAnswer)
     }
 }
