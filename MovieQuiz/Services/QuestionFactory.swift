@@ -7,7 +7,7 @@
 
 import Foundation
 
-class QuestionFactory: QuestionFactoruProtocol {
+class QuestionFactory: QuestionFactoryProtocol{
     
     private let questions: [QuizQuestion] = [
         QuizQuestion(
