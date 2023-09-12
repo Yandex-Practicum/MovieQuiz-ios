@@ -82,7 +82,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         let alert = UIAlertController(
             title: "Результат квиза",
-            message: "Ваш результат: \(correctAnswers)/10",
+            message: """
+Ваш результат: \(correctAnswers)/10
+Количество сыграных квизов:
+Рекорд:
+Средняя точность:
+""",
             preferredStyle: .alert)
         
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
@@ -96,6 +101,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
+    
     private func showAnswerResult(isCorrect: Bool){
         
         // imageView.layer.masksToBounds = true  даём разрешение на рисование рамки
