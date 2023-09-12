@@ -83,8 +83,8 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     // переменная со счетчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
-    
     // метод вызывается, когда пользователь нажимает на кнопку "Да"
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
@@ -120,7 +120,6 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -132,6 +131,7 @@ final class MovieQuizViewController: UIViewController {
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
+        imageView.layer.borderWidth = 0
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш рузельтат: \(correctAnswers)/10"
             let viewModel = QuizReslutsViewModel(
@@ -149,7 +149,6 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-    
     // приватный метод для показа результатов раунда квиза
     // принимает вью модель QuizResultsViewModel и ничего не возвращает
     private func show(quiz result: QuizReslutsViewModel) {
