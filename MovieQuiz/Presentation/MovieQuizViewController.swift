@@ -1,9 +1,13 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        questionFactory = QuestionFactory()
+        questionFactory?.delegate = self
+        
+        
         //выводим первый вопрос на экран
         //получаем первый элемент из мок данных
         //let currentQuestion = questions[currentQuestionIndex]
@@ -12,13 +16,28 @@ final class MovieQuizViewController: UIViewController {
         //показываем вопрос на экране
         //show(quiz: firstView)
         
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
+        //if let firstQuestion = questionFactory.requestNextQuestion() {
+        //    currentQuestion = firstQuestion
+        //    let viewModel = convert(model: firstQuestion)
+        //    show(quiz: viewModel)
+        //}
+        questionFactory?.requestNextQuestion()
+    }
+    //MARK: -QuestionFactoryDelegate
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
         }
         
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
     }
+    
+    //MARK: - properties
+    
     //если нажал кнопку нет
     @IBAction private func noButtonClicked(_ sender: UIButton)  {
         //let currentQuestion = questions[currentQuestionIndex]
@@ -51,10 +70,12 @@ final class MovieQuizViewController: UIViewController {
     //количество вопросов квиза
     private let questionsAmount: Int = 10
     //обьявляем фабрику вопросов
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     //текущий вопрос который видит пользователь
     private var currentQuestion: QuizQuestion?
     
+    
+    //MARK: - private functions
     //приватный метод вывода на экран вопроса который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -108,12 +129,15 @@ final class MovieQuizViewController: UIViewController {
             //let nextQuestion = questions[currentQuestionIndex]
             //let viewModel = convert(model: nextQuestion)
             //show(quiz: viewModel)
-            if let nextQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = nextQuestion
-                let viewModel = self.convert(model: nextQuestion)
+            ///if let nextQuestion = self.questionFactory.requestNextQuestion() {
+              ///  self.currentQuestion = nextQuestion
+              ///  let viewModel = self.convert(model: nextQuestion)
                 
-                self.show(quiz: viewModel)
-            }
+             ///   self.show(quiz: viewModel)
+            ///}
+            
+            self.questionFactory?.requestNextQuestion()
+        
         }
     }
     // константа с кнопкой для системного алерта
@@ -142,12 +166,15 @@ final class MovieQuizViewController: UIViewController {
             //let viewModel = self.convert(model: firstQuestion)
             //self.show(quiz: viewModel)
             
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
+            ///if let firstQuestion = self.questionFactory.requestNextQuestion() {
+                ///self.currentQuestion = firstQuestion
+                ///let viewModel = self.convert(model: firstQuestion)
                 
-                self.show(quiz: viewModel)
-            }
+                ///self.show(quiz: viewModel)
+            
+            ///}
+            
+            self.questionFactory?.requestNextQuestion()
             
         }
         
