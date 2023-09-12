@@ -21,7 +21,6 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var yesButton: UIButton!
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    private var isEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
