@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     
     
@@ -15,20 +15,31 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     
+    // MARK: - QuestionFactoryDelegate
+
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
         
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        questionFactory = QuestionFactory(delegate: self)
+        
+        questionFactory?.requestNextQuestion()
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -80,11 +91,7 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0 // 1
             self.correctAnswers = 0
             
-            if let firstQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = firstQuestion
-                let viewModel = convert(model: firstQuestion)
-                show(quiz: viewModel)
-            }
+            questionFactory?.requestNextQuestion()
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
@@ -126,10 +133,7 @@ final class MovieQuizViewController: UIViewController {
         } else { // 2
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-                show(quiz: viewModel)
+            self.questionFactory?.requestNextQuestion() 
             }
         }
     }
@@ -264,4 +268,4 @@ final class MovieQuizViewController: UIViewController {
      Вопрос: Рейтинг этого фильма больше чем 6?
      Ответ: НЕТ
      */
-}
+
