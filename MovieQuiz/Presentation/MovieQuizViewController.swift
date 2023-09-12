@@ -27,6 +27,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     
     private let questions: [QuizQuestion] = [
         .init(image: Assets.godfatherImageName, text: Text.question, correctAnswer: true),
@@ -80,10 +82,14 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = Constants.borderWidth
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.cornerRadius = Constants.cornerRadius
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [ weak self ] in
             guard let self = self else { return }
             self.imageView.layer.borderWidth = 0
+            noButton.isEnabled = true
+            yesButton.isEnabled = true
             self.showNextQuestionOrResults()
         }
     }
@@ -105,8 +111,7 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count {
-            self.playedQuizes += 1
-            
+            playedQuizes += 1
             if correctAnswers > bestScore.score {
                 bestScore.score = correctAnswers
                 bestScore.date = formatCurrentDate()
