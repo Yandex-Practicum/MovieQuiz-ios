@@ -88,25 +88,26 @@ final class MovieQuizViewController: UIViewController {
                 correctAnswer: false)
         ]
 
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var counterLabel: UILabel!
-    @IBAction func noButtonClicked(_ sender: Any) {
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBAction private func noButtonClicked(_ sender: Any) {
         if questions[currentQuestionIndex].correctAnswer == false {
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
         }
     }
-    @IBAction func yesButtonClicked(_ sender: Any) {
+    @IBAction private func yesButtonClicked(_ sender: Any) {
         if questions[currentQuestionIndex].correctAnswer == true {
             showAnswerResult(isCorrect: true)
         } else {
             showAnswerResult(isCorrect: false)
         }
     }
-
-
+    
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel( // 1
@@ -120,9 +121,10 @@ final class MovieQuizViewController: UIViewController {
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = UIColor.ypGreen.cgColor
         if isCorrect {
             correctAnswers += 1
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
@@ -134,7 +136,8 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
             self.imageView.layer.borderWidth = 0
-            //self.imageView.layer.masksToBounds = false
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
     }
     // приватный метод, который содержит логику перехода в один из сценариев
@@ -156,22 +159,16 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: convert(model: nextQuestion))
         }
     }
-    
-    
-    
     private func show(quiz step: QuizStepViewModel) {
       imageView.image = step.image
       textLabel.text = step.question
       counterLabel.text = step.questionNumber
     }
-    
-    
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
             message: result.text,
             preferredStyle: .alert)
-        
         // создаём для алерта кнопку с действием
         // в замыкании пишем, что должно происходить при нажатии на кнопку
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
@@ -180,16 +177,12 @@ final class MovieQuizViewController: UIViewController {
             let firstQuestion = self.questions[self.currentQuestionIndex]
             self.show(quiz: self.convert(model: firstQuestion))
         }
-        
         // добавляем в алерт кнопку
         alert.addAction(action)
         
         // показываем всплывающее окно
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
-    
 }
 /*
  Mock-данные
