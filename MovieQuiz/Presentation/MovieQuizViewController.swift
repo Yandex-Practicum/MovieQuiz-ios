@@ -18,7 +18,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.requestNextQuestion()
         alertPresenterProtocol = AlertPresenter(viewController: self)
@@ -48,6 +48,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showLoadingIndicator() {
+        self.activityIndicator.transform = CGAffineTransform(scaleX: 2, y: 2)
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
