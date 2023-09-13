@@ -11,7 +11,12 @@ protocol QuestionFactoryDelegate: AnyObject {
     func didReceiveQuestion (_ question: QuizQuestion)
 }
 
-final class QuestionFactory {
+protocol QuestionFactory {
+    func requestNextQuestion()
+    
+}
+
+final class QuestionFactoryImpl {
     
     // MARK: - PROPERTIES
 
@@ -22,9 +27,9 @@ final class QuestionFactory {
     init(delegate: QuestionFactoryDelegate? ) {
         self.delegate = delegate
     }
-    
-        // MARK: - FUNCTION
-    
+}
+
+extension QuestionFactoryImpl: QuestionFactory {
     func requestNextQuestion () {
         guard let question = questions.randomElement() else {
             assertionFailure("question is empty")

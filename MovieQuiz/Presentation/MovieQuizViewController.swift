@@ -10,6 +10,8 @@ class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
 
     private var questionFactory: QuestionFactory?
+    private var currentQuestion: QuizQuestion?
+    private let questionsCount = 10
     
     private func show(quiz step: QuizStepViewModel) {
       imageView.layer.borderColor = UIColor.clear.cgColor
@@ -21,23 +23,21 @@ class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactoryImpl(delegate: self)
         
-        let currentQuestion = questions[currentQuestionIndex]
-        let quizModel = convert(model: currentQuestion)
-        show(quiz: quizModel)
+        questionFactory?.requestNextQuestion()
     }
     
-    @IBAction private func noButtonClicked(_ sender: UIButton) {  let currentQuestion = questions[currentQuestionIndex] // 1
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
         let givenAnswer = false // 2
         
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer) // 3
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion?.correctAnswer) // 3
     }
   
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {    let currentQuestion = questions[currentQuestionIndex] // 1
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let givenAnswer = true // 2
         
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer) // 3
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion?.correctAnswer) // 3
     }
     
    
@@ -48,7 +48,7 @@ class MovieQuizViewController: UIViewController {
         let questionStep = QuizStepViewModel( // 1
             image: UIImage(named: model.image) ?? UIImage(), // 2
             question: model.text, // 3
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // 4
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsCount)") // 4
         return questionStep
     }
 
@@ -71,20 +71,20 @@ class MovieQuizViewController: UIViewController {
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 {
-          // идём в состояние "Результат квиза"
-            let text = "Ваш результат: \(correctAnswers) /10"
+        if currentQuestionIndex == questionsCount - 1 {
+        
+            let text = correctAnswers == questionsCount ?
+            
+            "Поздравляем Вы ответилт на 10 из 10!" :
+            "Вы ответилт на \(correctAnswers) из 10, попробуйте ещё раз"
+            
             let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
             text: text,
             buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            
-            let nextQuestion = questions[currentQuestionIndex]
-            let viewModel = convert(model: nextQuestion)
-            
-            show(quiz: viewModel)
+            questionFactory?.requestNextQuestion()
         }
     }
     
@@ -97,9 +97,8 @@ class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0 // 1
             
             self.correctAnswers = 0
-            let firstQuestion = self.questions[self.currentQuestionIndex] // 2
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
+           
+              self.questionFactory?.requestNextQuestion()
         }
         
         alert.addAction(action)
@@ -108,7 +107,10 @@ class MovieQuizViewController: UIViewController {
 }
 extension MovieQuizViewController: QuestionFactoryDelegate {
     func didReceiveQuestion(_ question: QuizQuestion) {
-        <#code#>
+        self.currentQuestion = question
+        let viewModel = self.convert(model: question)
+        self.show(quiz: viewModel)
+        
     }
 }
 
