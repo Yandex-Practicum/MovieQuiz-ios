@@ -16,7 +16,7 @@ protocol StatisticService {
     
 }
 final class StatisticServiceImplentation {
-   
+    
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
@@ -96,7 +96,7 @@ extension StatisticServiceImplentation: StatisticService {
         }
     }
 }
-    
+
 
 
 
