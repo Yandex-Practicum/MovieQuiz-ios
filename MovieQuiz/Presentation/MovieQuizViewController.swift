@@ -8,9 +8,14 @@ final class MovieQuizViewController: UIViewController {
         let model = convert(model: firstQuestion)
         self.show(quiz: model)
         imageView.contentMode = .scaleToFill
-
     }
-    struct QuizQuestion {
+    
+    
+    @IBOutlet var noButton: UIButton!
+    @IBOutlet var yesButton: UIButton!
+    
+    
+    private struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
@@ -81,7 +86,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
@@ -102,27 +107,28 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
+        imageView.layer.borderColor = UIColor.clear.cgColor
         if currentQuestionIndex == questions.count - 1 {
-                let text = "Ваш результат: \(correctAnswers)/10" // 1
-                let viewModel = QuizResultsViewModel( // 2
-                    title: "Этот раунд окончен!",
-                    text: text,
-                    buttonText: "Сыграть ещё раз")
-                show(quiz: viewModel) // 3
+            let text = "Ваш результат: \(correctAnswers)/10" // 1
+            let viewModel = QuizResultsViewModel( // 2
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel) // 3
         } else {
-                currentQuestionIndex += 1
-                let nextQuestion = questions[currentQuestionIndex]
-                let viewModel = convert(model: nextQuestion)
-                
-                show(quiz: viewModel)
+            currentQuestionIndex += 1
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            
+            show(quiz: viewModel)
         }
     }
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect { // 1
-                correctAnswers += 1 // 2
-            }
-            
+            correctAnswers += 1 // 2
+        }
+        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -131,8 +137,8 @@ final class MovieQuizViewController: UIViewController {
             self.showNextQuestionOrResults()
         }
     }
-
-    struct QuizResultsViewModel {
+    
+    private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
@@ -158,4 +164,4 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 }
-    
+
