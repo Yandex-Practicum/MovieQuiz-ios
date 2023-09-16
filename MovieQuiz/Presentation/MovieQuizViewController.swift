@@ -12,6 +12,8 @@ class MovieQuizViewController: UIViewController {
     private var questionFactory: QuestionFactory?
     private var currentQuestion: QuizQuestion?
     private let questionsCount = 10
+    private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
     
     private func show(quiz step: QuizStepViewModel) {
       imageView.layer.borderColor = UIColor.clear.cgColor
@@ -24,6 +26,8 @@ class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         
         questionFactory = QuestionFactoryImpl(delegate: self)
+        alertPresenter = AlertPresenterImpl(viewController: self)
+        statisticService = StatisticServiceImpl()
         
         questionFactory?.requestNextQuestion()
     }
@@ -42,8 +46,7 @@ class MovieQuizViewController: UIViewController {
     
    
     
-  
-    // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
+ 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel( // 1
             image: UIImage(named: model.image) ?? UIImage(), // 2
@@ -52,8 +55,6 @@ class MovieQuizViewController: UIViewController {
         return questionStep
     }
 
-    // приватный метод, который и меняет цвет рамки, и вызывает метод перехода
-    // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
@@ -68,43 +69,55 @@ class MovieQuizViewController: UIViewController {
         }
     }
 
-    // приватный метод, который содержит логику перехода в один из сценариев
-    // метод ничего не принимает и ничего не возвращает
+  
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsCount - 1 {
-        
-            let text = correctAnswers == questionsCount ?
-            
-            "Поздравляем Вы ответилт на 10 из 10!" :
-            "Вы ответилт на \(correctAnswers) из 10, попробуйте ещё раз"
-            
-            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
-            text: text,
-            buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel)
+        showFinalResults()
+          
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
     }
-    
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(title: result.title,
-                                      message: result.text,
-                                      preferredStyle: .alert)
-        // константа с кнопкой для системного алерта
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-            self.currentQuestionIndex = 0 // 1
-            
-            self.correctAnswers = 0
-           
-              self.questionFactory?.requestNextQuestion()
-        }
-        
-        alert.addAction(action)
-        self.present(alert, animated: true)
+    private func showFinalResults() {
+        statisticService?.store(correct: correctAnswers, total: questionsCount)
+                
+                
+        let alertModel = AlertModel(
+            title: " Игра окончена ",
+            message: makeResultMassage(),
+            buttonText: "OK",
+            buttonAction: { [ weak self] in
+                self?.currentQuestionIndex = 0
+                self?.correctAnswers = 0
+                self?.questionFactory?.requestNextQuestion()
+            }
+        )
+        alertPresenter?.show(alertModel: alertModel)
     }
+    private func makeResultMassage() -> String {
+        
+        guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
+            assertionFailure("error message")
+            return " "
+        }
+
+    let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+    let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+    let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsCount)"
+    let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
+    + " (\(bestGame.date.dateTimeString))"
+    let averageAccuracyLine = " Средняя точность: \(accuracy))%"
+        
+        
+        let components: [ String ] = [ currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine]
+        let resultMasage = components.joined(separator: "\n")
+        return resultMasage
+        
+    }
+    
 }
+
 extension MovieQuizViewController: QuestionFactoryDelegate {
     func didReceiveQuestion(_ question: QuizQuestion) {
         self.currentQuestion = question
