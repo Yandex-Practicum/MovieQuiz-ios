@@ -44,11 +44,12 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - IBAction
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
-        let currectQuestion = question[currentQuestionIndex]
+        let currectQuestion = self.question[self.currentQuestionIndex]
         let giveAnswer = false
-        
-        showAnswerResult(isCorrect: giveAnswer == currectQuestion.correctAnswer)
-    }
+            
+        self.showAnswerResult(isCorrect: giveAnswer == currectQuestion.correctAnswer)
+        }
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currectQuestion = question[currentQuestionIndex]
         let giveAnswer = true
@@ -62,7 +63,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textView: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
+    @IBOutlet private var noButton: UIButton!
     
+    @IBOutlet private var yesButton: UIButton!
     
     // MARK: - Lifecycle
     
@@ -121,6 +124,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.image = step.image
         textView.text = step.question
         counterLabel.text = step.questionNumber
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -144,7 +148,6 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
-            
         } else {
             currentQuestionIndex += 1
             let firstQuestion = question[currentQuestionIndex]
@@ -154,8 +157,6 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    // приватный метод для показа результатов раунда квиза
-    // принимает вью модель QuizResultsViewModel и ничего не возвращает
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
