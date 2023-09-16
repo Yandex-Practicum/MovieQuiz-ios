@@ -90,8 +90,6 @@ extension StatisticServiceImpl: StatisticService {
             self.correct += correct
             self.total += total
             self.gamesCount += 1
-            
-            
             let date = dateProvider()
             let currentBestGame = BestGame(correct: correct, total: total, date: date)
             
