@@ -25,6 +25,7 @@ class MovieQuizViewController: UIViewController {
         alertPresenter = AlertPresenterImpl(viewController: self)
         statisticService = StatisticServiceImpl()
         questionFactory?.requestNextQuestion()
+        imageView.layer.cornerRadius = 8.0
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let givenAnswer = false // 2

@@ -19,9 +19,10 @@ extension BestGame: Comparable {
         guard total != 0 else {
             return 0
         }
-        return Double(correct / total)
+        
+        return Double(correct) / Double(total)
     }
-    static func < (Ihs: BestGame, rhs: BestGame) -> Bool {
-        Ihs.accuracy < rhs.accuracy
+    static func < (lhs: BestGame, rhs: BestGame) -> Bool {
+        lhs.accuracy < rhs.accuracy
     }
 }
