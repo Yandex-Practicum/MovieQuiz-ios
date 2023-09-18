@@ -1,9 +1,7 @@
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
-
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
@@ -11,7 +9,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard (scene as? UIWindowScene) != nil else { return }
     }
-
     func sceneDidDisconnect(_ scene: UIScene) {}
     func sceneDidBecomeActive(_ scene: UIScene) {}
     func sceneWillResignActive(_ scene: UIScene) {}
