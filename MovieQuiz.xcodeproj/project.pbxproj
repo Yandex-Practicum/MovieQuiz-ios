@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040F3DA92ABA006800626A93 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040F3DA82ABA006800626A93 /* StatisticService.swift */; };
 		042171D02AAF56450053C8A0 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042171CF2AAF56450053C8A0 /* QuestionFactory.swift */; };
 		042171D32AAF589E0053C8A0 /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042171D22AAF589E0053C8A0 /* QuizStepViewModel.swift */; };
 		042171D52AAF58AC0053C8A0 /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042171D42AAF58AC0053C8A0 /* QuizResultsViewModel.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040F3DA82ABA006800626A93 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		042171CF2AAF56450053C8A0 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		042171D22AAF589E0053C8A0 /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
 		042171D42AAF58AC0053C8A0 /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				042171CF2AAF56450053C8A0 /* QuestionFactory.swift */,
 				042171D92AAF66FD0053C8A0 /* QuestionFactoryProtocol.swift */,
 				04E25FAE2AB0BA0B00893AB7 /* QuestionFactoryDelegate.swift */,
+				040F3DA82ABA006800626A93 /* StatisticService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				04E25FAF2AB0BA0B00893AB7 /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				042171D32AAF589E0053C8A0 /* QuizStepViewModel.swift in Sources */,
+				040F3DA92ABA006800626A93 /* StatisticService.swift in Sources */,
 				042171D72AAF58BA0053C8A0 /* QuizQuestion.swift in Sources */,
 				04E25FB12AB0C2FB00893AB7 /* AlertPresenter.swift in Sources */,
 				042171D02AAF56450053C8A0 /* QuestionFactory.swift in Sources */,

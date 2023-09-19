@@ -17,9 +17,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var statisticService = StatisticServiceImplementation()
+   
     
     // MARK: - QuestionFactoryDelegate
-
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -40,6 +42,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         
         questionFactory?.requestNextQuestion()
+        
+        
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        print(documentsURL)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -84,9 +90,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             title: "Результат квиза",
             message: """
 Ваш результат: \(correctAnswers)/10
-Количество сыграных квизов:
-Рекорд:
-Средняя точность:
+Количество сыграных квизов: 
+Рекорд: \(GameRecord.self) \(DateFormatter())
+Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
 """,
             preferredStyle: .alert)
         
@@ -139,10 +145,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else { // 2
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
-            self.questionFactory?.requestNextQuestion() 
-            }
+            self.questionFactory?.requestNextQuestion()
         }
     }
+}
+    
+   
     
     
     
