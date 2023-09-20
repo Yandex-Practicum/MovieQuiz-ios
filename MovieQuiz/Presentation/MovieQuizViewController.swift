@@ -18,7 +18,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var statisticService = StatisticServiceImplementation()
-   
+    
     
     // MARK: - QuestionFactoryDelegate
     
@@ -46,6 +46,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         print(documentsURL)
+        
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -90,8 +91,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             title: "Результат квиза",
             message: """
 Ваш результат: \(correctAnswers)/10
-Количество сыграных квизов: 
-Рекорд: \(GameRecord.self) \(DateFormatter())
+Количество сыграных квизов: \(statisticService.gamesCount)
+Рекорд: \(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
 Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
 """,
             preferredStyle: .alert)
@@ -117,6 +118,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if isCorrect == true {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor // делаем рамку зеленой
             correctAnswers += 1
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
             
         } else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor // делаем рамку красной
