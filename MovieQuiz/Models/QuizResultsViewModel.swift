@@ -19,6 +19,7 @@ struct QuizResultsViewModel {
 final class StatisticServiceImplementation: StatisticService {
     
     private let userDefaults = UserDefaults.standard
+   
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
@@ -31,17 +32,15 @@ final class StatisticServiceImplementation: StatisticService {
         if newGameRecord.isBetterThan(currentBestGame) {
             // Если новый результат лучше, сохраняем его в UserDefaults
             userDefaults.set(try? JSONEncoder().encode(newGameRecord), forKey: Keys.bestGame.rawValue)
+
         }
-        let currentGameCount = gamesCount + 1
-        gamesCount = currentGameCount
         
-        let currentTotalAccuracy = totalAccuracy
-        if amount > 0 {
-            let newAccuracy = Double(amount)
-            let newTotalAccuracy = (currentTotalAccuracy + newAccuracy) / Double(currentGameCount)
-                totalAccuracy = newTotalAccuracy
-                }
- 
+        let newTotalAccuracy = Double(count) / Double(amount) * 100.0
+        totalAccuracy = newTotalAccuracy
+        
+        let newGamesCount = gamesCount + 1
+        gamesCount = newGamesCount
+                
     }
 
     
@@ -58,6 +57,7 @@ final class StatisticServiceImplementation: StatisticService {
                 print("Невозможно сохранить totalAccuracy")
                 return
             }
+
             userDefaults.set(data, forKey: Keys.correct.rawValue)
         }
     }
@@ -66,18 +66,21 @@ final class StatisticServiceImplementation: StatisticService {
     
     var gamesCount: Int {
         get {
-            if let data = userDefaults.data(forKey: Keys.gamesCount.rawValue),
-                let count = try? JSONDecoder().decode(Int.self, from: data)  {
-                return count
+            guard let data = userDefaults.data(forKey: Keys.gamesCount.rawValue),
+                let count = try? JSONDecoder().decode(Int.self, from: data) else {
+                return 0
             }
-            return 0
+            return count
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
                 print("Невозможно сохранить gamesCount")
                 return
             }
+
             userDefaults.set(data, forKey: Keys.gamesCount.rawValue)
+            //userDefaults.removeObject(forKey: Keys.gamesCount.rawValue)
+            //userDefaults.synchronize()
         }
     }
     
@@ -98,6 +101,7 @@ final class StatisticServiceImplementation: StatisticService {
             }
 
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
+
         }
     }
 }
