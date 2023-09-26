@@ -19,7 +19,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         let question = questions[safe: index]
         delegate?.didReceiveNextQuestion(question: question)
     }
-    
+}
     
     //массив мок вопросов
     private let questions: [QuizQuestion] = [
@@ -64,4 +64,3 @@ class QuestionFactory: QuestionFactoryProtocol {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-}

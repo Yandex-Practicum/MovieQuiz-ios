@@ -7,20 +7,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory()
         questionFactory?.delegate = self
         
-        
-        //выводим первый вопрос на экран
-        //получаем первый элемент из мок данных
-        //let currentQuestion = questions[currentQuestionIndex]
-        //конвертируем модель вопроса вл вью модель
-        //let firstView = convert(model: currentQuestion)
-        //показываем вопрос на экране
-        //show(quiz: firstView)
-        
-        //if let firstQuestion = questionFactory.requestNextQuestion() {
-        //    currentQuestion = firstQuestion
-        //    let viewModel = convert(model: firstQuestion)
-        //    show(quiz: viewModel)
-        //}
         questionFactory?.requestNextQuestion()
     }
     //MARK: -QuestionFactoryDelegate
@@ -59,6 +45,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
     }
+    
+    // MARK: -Properties
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -113,7 +101,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             // идём в состояние "Результат квиза"
-            let text = correctAnswers == questionsAmount ? "Поздравляем, Вы ответили на 10 из 10!" : "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
+            let text = correctAnswers == questionsAmount ? "Поздравляем, Вы ответили на 10 из 10!" :
+            "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
             
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
@@ -124,20 +113,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
         } else {
             currentQuestionIndex += 1
-            
-            
-            //let nextQuestion = questions[currentQuestionIndex]
-            //let viewModel = convert(model: nextQuestion)
-            //show(quiz: viewModel)
-            ///if let nextQuestion = self.questionFactory.requestNextQuestion() {
-              ///  self.currentQuestion = nextQuestion
-              ///  let viewModel = self.convert(model: nextQuestion)
-                
-             ///   self.show(quiz: viewModel)
-            ///}
-            
-            self.questionFactory?.requestNextQuestion()
-        
+            questionFactory?.requestNextQuestion()
         }
     }
     // константа с кнопкой для системного алерта
@@ -160,19 +136,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.currentQuestionIndex = 0
             // сбрасываем переменную с количеством правильных ответов
             self.correctAnswers = 0
-            
-            // заново показываем первый вопрос
-            //let firstQuestion = self.questions[self.currentQuestionIndex]
-            //let viewModel = self.convert(model: firstQuestion)
-            //self.show(quiz: viewModel)
-            
-            ///if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                ///self.currentQuestion = firstQuestion
-                ///let viewModel = self.convert(model: firstQuestion)
-                
-                ///self.show(quiz: viewModel)
-            
-            ///}
             
             self.questionFactory?.requestNextQuestion()
             
