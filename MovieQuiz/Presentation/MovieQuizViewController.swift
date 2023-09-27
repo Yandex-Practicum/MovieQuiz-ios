@@ -87,6 +87,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // принимает вью модель QuizResultsViewModel и ничего не возвращает
     private func show(quiz result: QuizResultsViewModel) {
         
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
         let alert = UIAlertController(
             title: "Результат квиза",
             message: """
@@ -102,11 +103,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
             self.currentQuestionIndex = 0 // 1
             self.correctAnswers = 0
-            
             questionFactory?.requestNextQuestion()
+            
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
+        
     }
     
     private func showAnswerResult(isCorrect: Bool){
@@ -118,7 +120,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if isCorrect == true {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor // делаем рамку зеленой
             correctAnswers += 1
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
             
         } else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor // делаем рамку красной
