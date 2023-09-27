@@ -4,13 +4,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.delegate = self
         
-        questionFactory?.requestNextQuestion()
+        //questionFactory?.requestNextQuestion()
         
         alertPresenter = AlertPresenterImpl(viewController: self)
         statisticService = StatisticServiceImpl()
+        
+        
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     //MARK: -QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -54,6 +58,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     // переменная с индексом текущего вопроса
     private var currentQuestionIndex = 0
     //переменная со счетчиком правильных ответов
@@ -80,11 +86,42 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
+    
+    //метод состояния индикатора загрузки
+    private func showLoadingIndicator() {
+        //говорит что индикатор загрузки не скрыт
+        activityIndicator.isHidden = false
+        //включаем анимацию
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    //алерт показа ошибки загрузки
+    private func showNetworkError(message: String) {
+        //cкрываем индикатор загрузки
+        hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз",
+                               buttonAction:  { [weak self] in
+            self?.currentQuestionIndex = 0
+            self?.correctAnswers = 0
+            
+            self?.questionFactory?.requestNextQuestion()
+        
+    }
+        )
+        alertPresenter?.show(alertModel: model)
+    }
+    
     //приватный метод который меняет цвет рамки
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
@@ -158,7 +195,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         return resultMessage
     }
-    
+    //методы реализующие сообщения об ошике/успехе загрузки
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    func didFailToLoadData(with error: Error) {
+        //берем в качестве сообщения описание ошибки
+        showNetworkError(message: error.localizedDescription)
+    }
 }
 /*
  Mock-данные
