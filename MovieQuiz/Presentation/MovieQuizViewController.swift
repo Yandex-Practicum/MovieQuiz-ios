@@ -2,25 +2,31 @@ import UIKit
 
 // для состояния "Вопрос показан"
 struct QuizStepViewModel {
-  let image: UIImage
-  let question: String
-  let questionNumber: String
+    // картинка с афишей фильма с типом UIImage
+    let image: UIImage
+    // вопрос о рейтинге квиза
+    let question: String
+    // строка с порядковым номером этого вопроса (ex. "1/10")
+    let questionNumber: String
 }
 
 // для состояния "Результат квиза"
 struct QuizResultsViewModel {
-  let title: String
-  let text: String
-  let buttonText: String
+    // строка с заголовком алерта
+    let title: String
+    // строка с текстом о количестве набранных очков
+    let text: String
+    // текст для кнопки алерта
+    let buttonText: String
 }
 struct QuizQuestion {
-  // строка с названием фильма,
-  // совпадает с названием картинки афиши фильма в Assets
-  let image: String
-  // строка с вопросом о рейтинге фильма
-  let text: String
-  // булевое значение (true, false), правильный ответ на вопрос
-  let correctAnswer: Bool
+    // строка с названием фильма,
+    // совпадает с названием картинки афиши фильма в Assets
+    let image: String
+    // строка с вопросом о рейтинге фильма
+    let text: String
+    // булевое значение (true, false), правильный ответ на вопрос
+    let correctAnswer: Bool
 }
 
 
@@ -108,7 +114,7 @@ final class MovieQuizViewController: UIViewController {
     
     // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        // Попробуйте написать код конвертации самостоятельно
+        
         let image = UIImage(named: model.image) ?? UIImage()
         let questionNumber = "\(currentQuestionIndex + 1)/\(questions.count)"
         return QuizStepViewModel(
@@ -133,7 +139,7 @@ final class MovieQuizViewController: UIViewController {
         }
         // метод красит рамку
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 1 // толщина рамки
+        imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
         
@@ -147,7 +153,7 @@ final class MovieQuizViewController: UIViewController {
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        imageView.layer.borderWidth = 0
+        imageView.layer.borderWidth = 0 //толщина рамки первого вопроса
         if currentQuestionIndex == questions.count - 1 {
             // идём в состояние "Результат квиза"
             let text = "Ваш результат: \(correctAnswers)/\(questions.count)"
@@ -173,16 +179,16 @@ final class MovieQuizViewController: UIViewController {
             message: result.text, // текст во всплывающем окне
             preferredStyle: .alert
         ) // preferredStyle может быть .alert или .actionSheet
-
+        
         // создаём для алерта кнопку с действием
         // в замыкании пишем, что должно происходить при нажатии на кнопку
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             self.restart()
         }
-
+        
         // добавляем в алерт кнопку
         alert.addAction(action)
-
+        
         // показываем всплывающее окно
         self.present(alert, animated: true, completion: nil)
     }
@@ -198,66 +204,66 @@ final class MovieQuizViewController: UIViewController {
 
 
 
-    /*
-     Mock-данные
-     
-     
-     Картинка: The Godfather
-     Настоящий рейтинг: 9,2
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: ДА
-     
-     
-     Картинка: The Dark Knight
-     Настоящий рейтинг: 9
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: ДА
-     
-     
-     Картинка: Kill Bill
-     Настоящий рейтинг: 8,1
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: ДА
-     
-     
-     Картинка: The Avengers
-     Настоящий рейтинг: 8
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: ДА
-     
-     
-     Картинка: Deadpool
-     Настоящий рейтинг: 8
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: ДА
-     
-     
-     Картинка: The Green Knight
-     Настоящий рейтинг: 6,6
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: ДА
-     
-     
-     Картинка: Old
-     Настоящий рейтинг: 5,8
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: НЕТ
-     
-     
-     Картинка: The Ice Age Adventures of Buck Wild
-     Настоящий рейтинг: 4,3
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: НЕТ
-     
-     
-     Картинка: Tesla
-     Настоящий рейтинг: 5,1
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: НЕТ
-     
-     
-     Картинка: Vivarium
-     Настоящий рейтинг: 5,8
-     Вопрос: Рейтинг этого фильма больше чем 6?
-     Ответ: НЕТ
-     */
+/*
+ Mock-данные
+ 
+ 
+ Картинка: The Godfather
+ Настоящий рейтинг: 9,2
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: ДА
+ 
+ 
+ Картинка: The Dark Knight
+ Настоящий рейтинг: 9
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: ДА
+ 
+ 
+ Картинка: Kill Bill
+ Настоящий рейтинг: 8,1
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: ДА
+ 
+ 
+ Картинка: The Avengers
+ Настоящий рейтинг: 8
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: ДА
+ 
+ 
+ Картинка: Deadpool
+ Настоящий рейтинг: 8
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: ДА
+ 
+ 
+ Картинка: The Green Knight
+ Настоящий рейтинг: 6,6
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: ДА
+ 
+ 
+ Картинка: Old
+ Настоящий рейтинг: 5,8
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: НЕТ
+ 
+ 
+ Картинка: The Ice Age Adventures of Buck Wild
+ Настоящий рейтинг: 4,3
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: НЕТ
+ 
+ 
+ Картинка: Tesla
+ Настоящий рейтинг: 5,1
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: НЕТ
+ 
+ 
+ Картинка: Vivarium
+ Настоящий рейтинг: 5,8
+ Вопрос: Рейтинг этого фильма больше чем 6?
+ Ответ: НЕТ
+ */
