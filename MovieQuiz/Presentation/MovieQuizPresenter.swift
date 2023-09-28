@@ -9,7 +9,7 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
   
-    
+    private let statisticService: StatisticService!
     private var currentQuestionIndex: Int = 0
      let questionsAmount: Int = 10
     var currentQuestion: QuizQuestion?
@@ -21,10 +21,34 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
         
+        statisticService = StatisticServiceImplentation(userDefaults: UserDefaults(), decoder: JSONDecoder(), encoder: JSONEncoder())
+        
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
     }
+    
+    func makeResultMessage() -> String {
+        guard let statisticService = statisticService,
+              let bestGame = statisticService.bestGame else {
+            assertionFailure("errroor")
+            return ""
+        }
+        
+        let accuracy = String(format: "%.2f",statisticService.totalAccuracy)
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+         let currentGameResultLine = "Ваш результат, \(correctAnswers)\\ \(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
+        + " (\(bestGame.date.dateTimeString))"
+        let averageAccuracyLine = "Средняя точность: \(accuracy)%"
+        
+        let resultMessage = [
+            currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine
+        ].joined(separator: "\n")
+        return resultMessage
+    }
+    
+    
     
     func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
@@ -74,7 +98,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             let givenAnswer = isYes
             isButtonEnabled = false
             
-            viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
                 guard let self = self else { return }
                 self.isButtonEnabled = true
@@ -105,7 +129,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
      func showNextQuestionOrResults() {
         if self.isLastQuestion() {
-            viewController?.showFinalResults()
+            showFinalResults()
             
         } else {
             self.switchToNextQuestion()
@@ -114,6 +138,41 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
+    private func showFinalResults() {
+        statisticService?.store(correct: correctAnswers, total: questionsAmount)
+       
+       guard (statisticService?.bestGame) != nil else {
+           assertionFailure("error message")
+           return
+       }
+       
+       let alertModel = AlertModel(
+           title: "Игра Окончена",
+           message: makeResultMessage(),
+           buttonText: "OK",
+           completion: { [weak self] in
+               self?.restartGame()
+               //self?.presenter.correctAnswers = 0
+               //self?.questionFactory?.requestNextQuestion()
+               //viewController?.show(quiz: viewModel)
+           }
+       )
+        viewController?.alertPresenter?.show(alertModel: alertModel)
+       
+   }
+    
+    
+    
+    func showAnswerResult(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+        
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.showNextQuestionOrResults()
+        }
+    }
     
     
 }
