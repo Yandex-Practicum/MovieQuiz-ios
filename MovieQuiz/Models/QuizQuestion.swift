@@ -10,7 +10,7 @@ import Foundation
 public struct QuizQuestion {
     // строка с названием фильма
     //совпадает с названием афиши фильма в assets
-    let image: String
+    let image: Data
     // строка с вопросом о рейтинге фильма
     let text: String
     // буллево значение правильный ответ на вопрос
