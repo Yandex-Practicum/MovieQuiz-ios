@@ -27,8 +27,7 @@ extension AlertPresenterImpl: AlertPresenter {
             title: alertModel.title,
             message: alertModel.message,
             preferredStyle: .alert)
-        
-        
+        alert.view?.accessibilityIdentifier = "Game"
         
         let action = UIAlertAction(title: alertModel.buttonText, style: .default) { _ in
             
