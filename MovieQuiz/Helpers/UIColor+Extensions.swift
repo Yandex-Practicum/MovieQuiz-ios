@@ -1,7 +1,7 @@
 import UIKit
 
 extension UIColor {
-     var ypBlack: UIColor { UIColor(named: "YP Black") ?? UIColor.black }
+    var ypBlack: UIColor { UIColor(named: "YP Black") ?? UIColor.black }
     var ypWhite: UIColor { UIColor(named: "YP White") ?? UIColor.white }
     var ypGreen: UIColor { UIColor(named: "YP Green") ?? UIColor.green }
     var ypRed: UIColor { UIColor(named: "YP Red") ?? UIColor.red }

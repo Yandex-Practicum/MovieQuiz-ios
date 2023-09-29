@@ -4,12 +4,11 @@
 //
 //  Created by  Игорь Килеев on 27.09.2023.
 //
-
+import Foundation
 import UIKit
 
 protocol MovieQuizViewControllerProtocol: AnyObject {
     func show(quiz step: QuizStepViewModel)
-    //func show(quiz result: QuizResultsViewModel)
     
     func highLightImageBorder(isCorrectAnswer: Bool)
     
@@ -87,11 +86,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(
+       QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        return questionStep
+        
     }
     func didAnswer(isCorrectAnswer: Bool) {
         if isCorrectAnswer {
