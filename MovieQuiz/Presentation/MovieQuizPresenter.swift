@@ -7,18 +7,32 @@
 
 import UIKit
 
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    func show(quiz step: QuizStepViewModel)
+    //func show(quiz result: QuizResultsViewModel)
+    
+    func highLightImageBorder(isCorrectAnswer: Bool)
+    
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
+    
+    func showNetworkError(message: String)
+    var alertPresenter: AlertPresenter? { get set }
+}
+
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-  
+    
+    var alertPresenter: AlertPresenter?
     private let statisticService: StatisticService!
     private var currentQuestionIndex: Int = 0
-     let questionsAmount: Int = 10
+    let questionsAmount: Int = 10
     var currentQuestion: QuizQuestion?
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private var isButtonEnabled = true
     var correctAnswers: Int = 0
     private var questionFactory: QuestionFactoryProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         statisticService = StatisticServiceImplentation(userDefaults: UserDefaults(), decoder: JSONDecoder(), encoder: JSONEncoder())
@@ -37,7 +51,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
         let accuracy = String(format: "%.2f",statisticService.totalAccuracy)
         let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-         let currentGameResultLine = "Ваш результат, \(correctAnswers)\\ \(questionsAmount)"
+        let currentGameResultLine = "Ваш результат, \(correctAnswers)\\ \(questionsAmount)"
         let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
         + " (\(bestGame.date.dateTimeString))"
         let averageAccuracyLine = "Средняя точность: \(accuracy)%"
@@ -48,8 +62,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         return resultMessage
     }
     
-    
-    
     func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
@@ -59,9 +71,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         let message = error.localizedDescription
         viewController?.showNetworkError(message: message)
     }
-    
-    
-    
     
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -126,47 +135,41 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    
-     func showNextQuestionOrResults() {
+    func showNextQuestionOrResults() {
         if self.isLastQuestion() {
             showFinalResults()
             
         } else {
             self.switchToNextQuestion()
-                questionFactory?.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
             
         }
     }
     
     private func showFinalResults() {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
-       
-       guard (statisticService?.bestGame) != nil else {
-           assertionFailure("error message")
-           return
-       }
-       
-       let alertModel = AlertModel(
-           title: "Игра Окончена",
-           message: makeResultMessage(),
-           buttonText: "OK",
-           completion: { [weak self] in
-               self?.restartGame()
-               //self?.presenter.correctAnswers = 0
-               //self?.questionFactory?.requestNextQuestion()
-               //viewController?.show(quiz: viewModel)
-           }
-       )
+        
+        guard (statisticService?.bestGame) != nil else {
+            assertionFailure("error message")
+            return
+        }
+        
+        let alertModel = AlertModel(
+            title: "Игра Окончена",
+            message: makeResultMessage(),
+            buttonText: "OK",
+            completion: { [weak self] in
+                self?.restartGame()
+            }
+        )
         viewController?.alertPresenter?.show(alertModel: alertModel)
-       
-   }
-    
-    
+        
+    }
     
     func showAnswerResult(isCorrect: Bool) {
         didAnswer(isCorrectAnswer: isCorrect)
         
-        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        viewController?.highLightImageBorder(isCorrectAnswer: isCorrect)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
@@ -176,3 +179,5 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     
 }
+
+
