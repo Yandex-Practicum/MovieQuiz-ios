@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: convert(model: questions[0]))
     }
     
-    struct QuizQuestion {
+    private struct QuizQuestion {
       // строка с названием фильма,
       // совпадает с названием картинки афиши фильма в Assets
       let image: String
@@ -18,7 +18,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // вью модель для состояния "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
       // картинка с афишей фильма с типом UIImage
       let image: UIImage
       // вопрос о рейтинге квиза
@@ -28,7 +28,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // для состояния "Результат квиза"
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
       // строка с заголовком алерта
       let title: String
       // строка с текстом о количестве набранных очков
@@ -37,6 +37,7 @@ final class MovieQuizViewController: UIViewController {
       let buttonText: String
     }
     
+    // мок данные
     private let questions: [QuizQuestion] = [
             QuizQuestion(
                 image: "The Godfather",
