@@ -159,6 +159,9 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // красим рамку в зависимости от корректности ответа
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                // возвращаем обработку нажатий кнопкок "Да/Нет"
+                self.yesButton.isEnabled = true
+                self.noButton.isEnabled = true
                 self.showNextQuestionOrResults()
             }
     }
@@ -166,7 +169,6 @@ final class MovieQuizViewController: UIViewController {
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
         imageView.layer.borderWidth = 0 // убираем толщину рамки
-        imageView.layer.cornerRadius = 0 // убираем скругление
         if currentQuestionIndex == questions.count - 1 {
             currentQuizCount += 1
             if (correctAnswers > bestQuizResult) {
@@ -194,16 +196,27 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet weak private var counterLabel: UILabel!
 
+    @IBOutlet weak private var noButton: UIButton!
+    
+    @IBOutlet weak var yesButton: UIButton!
+    
+    
     // метод вызывается, когда пользователь нажимает на кнопку "Нет"
     @IBAction private func noButtonClicked(_ sender: Any) {
+        // отключаем кнопки до момента обработки результатов
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let getAnswer = false
-
+        
         showAnswerResult(isCorrect: getAnswer == currentQuestion.correctAnswer)
     }
 
     // метод вызывается, когда пользователь нажимает на кнопку "Да"
     @IBAction private func yesButtonClicked(_ sender: Any) {
+        // отключаем кнопки до момента обработки результатов
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
         let getAnswer = true
 
