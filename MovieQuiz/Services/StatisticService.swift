@@ -79,15 +79,12 @@ extension StatisticServiceImplementation: StatisticService {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
                   let record = try? decoder.decode(GameRecord.self, from: data) else {
                 return nil
-                //return .init(correct: 0, total: 0, date: Date())
             }
             
             return record
         }
         
         set {
-            //                let data = try? encoder.encode(newValue)
-            //                userDefaults.set(data, forKey: Keys.bestGame.rawValue)
             guard let data = try? encoder.encode(newValue) else {
                 return
             }
@@ -95,7 +92,7 @@ extension StatisticServiceImplementation: StatisticService {
         }
     }
     
-    func store(correct count: Int, total amount: Int) {
+    func store(correct: Int, total: Int) {
         self.correct += correct
         self.total += total
         self.gamesCount += 1
