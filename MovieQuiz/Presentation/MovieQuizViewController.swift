@@ -37,14 +37,18 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let currentQuestion = questions[currentQuestionIndex]
-        let modelQuestion = convert(model: currentQuestion)
-        show(quiz: modelQuestion)
+        imageView.layer.cornerRadius = 20
+        
+        let firstQuestion = questions[currentQuestionIndex]
+        let firstQuiz = convert(model: firstQuestion)
+        show(quiz: firstQuiz)
     }
     
     // метод вызывается, когда пользователь нажимает на кнопку "Да"
@@ -53,6 +57,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
     }
     
     // метод вызывается, когда пользователь нажимает на кнопку "Нет"
@@ -61,6 +66,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    
     }
     
     // метод принимает моковый вопрос и возвращает вью модель для главного экрана
@@ -115,7 +121,6 @@ final class MovieQuizViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
-        
     }
     
     
