@@ -17,6 +17,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenter?
     private var statisticService = StatisticServiceImplementation()
     
     
@@ -40,7 +41,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20
         
         questionFactory = QuestionFactory(delegate: self)
-        
+        alertPresenter = ResultAlertPresenter(viewController: self)
         questionFactory?.requestNextQuestion()
         
         
@@ -91,12 +92,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let alert = UIAlertController(
             title: "Результат квиза",
             message: """
-Ваш результат: \(correctAnswers)/10
+Ваш результат: \(correctAnswers)/\(questionsAmount)
 Количество сыграных квизов: \(statisticService.gamesCount)
-Рекорд: \(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+Рекорд: \(statisticService.bestGame.total)(\(statisticService.bestGame.date.dateTimeString))
 Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
-""",
-            preferredStyle: .alert)
+""", preferredStyle: .alert)
         
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
             guard let self = self else { return }
