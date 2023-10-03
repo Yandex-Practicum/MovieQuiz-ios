@@ -47,9 +47,7 @@ final class MovieQuizViewController: UIViewController {
         
         imageView.layer.cornerRadius = 20
         
-        let firstQuestion = questions[currentQuestionIndex]
-        let firstQuiz = convert(model: firstQuestion)
-        show(quiz: firstQuiz)
+        show(quiz: convert(model: questions[0]))
     }
     
     // метод вызывается, когда пользователь нажимает на кнопку "Да"
