@@ -14,7 +14,7 @@ final class AlertPresenter: AlertPresenterProtocol {
     private var alert: UIAlertController?
     private var action: UIAlertAction?
     
-    func createAlert(model: AlertModel) {
+    func show(model: AlertModel) {
         alert = UIAlertController(
             title: model.title,
             message: model.message,
