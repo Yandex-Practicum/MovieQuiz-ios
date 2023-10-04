@@ -76,8 +76,8 @@ struct StubNetworkClient: NetworkRouting {
             handler(.success(expectedResponse))
         }
     }
-
-private var expectedResponse: Data {
+    
+    private var expectedResponse: Data {
             """
             {
                "errorMessage" : "",
@@ -109,5 +109,5 @@ private var expectedResponse: Data {
                 ]
               }
             """.data(using: .utf8) ?? Data()
-        }
+    }
 }

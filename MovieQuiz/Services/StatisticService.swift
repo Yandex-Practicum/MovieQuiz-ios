@@ -41,7 +41,7 @@ final class StatisticServiceImpl {
 }
 
 extension StatisticServiceImpl: StatisticService {
-
+    
     var gamesCount: Int {
         get {
             userDefaults.integer(forKey: Keys.gamesCount.rawValue)

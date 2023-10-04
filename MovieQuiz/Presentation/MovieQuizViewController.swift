@@ -6,11 +6,11 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         presenter = MovieQuizPresenter(viewController: self)
         
         alertPresenter = AlertPresenterImpl(viewController: self)
-
+        
         showLoadingIndicator()
     }
     
@@ -66,18 +66,18 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                                buttonText: "Попробовать еще раз",
                                buttonAction:  { [weak self] in
             self?.presenter.restartGame()
-    }
+        }
         )
         alertPresenter?.show(alertModel: model)
-         }
- 
+    }
+    
     func highlightImageBorder(isCorrectAnswer: Bool) {
         
         //метод красит рамку
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        }
+    }
     
     func noImageBorder() {
         //убираем границу рамки
@@ -86,13 +86,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     // константа с кнопкой для системного алерта
     
-   // private let alert = UIAlertController(
-   //     title: "Этот раунд окончен!",
-   //     message: "Ваш результат ???",
-   //     preferredStyle: .alert)
+    // private let alert = UIAlertController(
+    //     title: "Этот раунд окончен!",
+    //     message: "Ваш результат ???",
+    //     preferredStyle: .alert)
     
     func showFinalResults() {
-     
+        
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
             message: presenter.makeResultMessage(),

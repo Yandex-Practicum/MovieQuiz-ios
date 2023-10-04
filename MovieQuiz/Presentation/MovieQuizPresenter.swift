@@ -10,7 +10,7 @@ import UIKit
 
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-
+    
     // -MARK: Properties
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewControllerProtocol?
@@ -34,7 +34,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // -MARK: - QuestionFactoryDelegate
     
-     func didLoadDataFromServer() {
+    func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
@@ -99,7 +99,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         if (isCorrect) { correctAnswers += 1}
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -141,7 +141,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         didAnswer(isCorrect: isCorrect)
         
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
-
+        
         //запускаем следующую задачу через 1 секунду
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
