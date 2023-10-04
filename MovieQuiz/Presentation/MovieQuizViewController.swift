@@ -2,6 +2,7 @@ import UIKit
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 final class MovieQuizViewController: UIViewController {
 =======
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
@@ -32,6 +33,29 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     //если нажал кнопку да
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
 <<<<<<< HEAD
+=======
+final class MovieQuizViewController: UIViewController {
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //выводим первый вопрос на экран
+        //получаем первый элемент из мок данных
+        let currentQuestion = questions[currentQuestionIndex]
+        //конвертируем модель вопроса вл вью модель
+        let firstView = convert(model: currentQuestion)
+        //показываем вопрос на экране
+        show(quiz: firstView)
+    }
+    //если нажал кнопку нет
+    @IBAction private func noButtonClicked(_ sender: UIButton)  {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    //если нажал кнопку да
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+>>>>>>> a205e6cacc79ca29011e91af2e1c3e4eec562a8f
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         
@@ -80,6 +104,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a205e6cacc79ca29011e91af2e1c3e4eec562a8f
     //для состояния вопрос показан
     private struct QuizStepViewModel {
         let image: UIImage
@@ -98,6 +125,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     //переменная со счетчиком правильных ответов
     private var correctAnswers = 0
+<<<<<<< HEAD
 =======
     //вызываем алерт презентер
     private var alertPresenter: AlertPresenter?
@@ -105,6 +133,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     //обьявляем презентер
     private var presenter: MovieQuizPresenter!
 >>>>>>> sprint_5
+=======
+>>>>>>> a205e6cacc79ca29011e91af2e1c3e4eec562a8f
     
     private struct QuizQestion {
         // строка с названием фильма
@@ -115,6 +145,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         // буллево значение правильный ответ на вопрос
         let correctAnswer: Bool
     }
+<<<<<<< HEAD
 =======
     //вызываем алерт презентер
     private var alertPresenter: AlertPresenter?
@@ -123,17 +154,64 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     private var presenter: MovieQuizPresenter!
     
 >>>>>>> sprint_5
+=======
+>>>>>>> a205e6cacc79ca29011e91af2e1c3e4eec562a8f
     
-    //MARK: - private functions
     //приватный метод вывода на экран вопроса который принимает на вход вью модель вопроса и ничего не возвращает
     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
+    //массив мок вопросов
+    private let questions: [QuizQestion] = [
+        QuizQestion(
+            image: "The Godfather",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQestion(
+            image: "The Dark Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQestion(
+            image: "Kill Bill",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQestion(
+            image: "The Avengers",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQestion(
+            image: "Deadpool",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQestion(
+            image: "The Green Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQestion(
+            image: "Old",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQestion(
+            image: "The Ice Age Adventures of Buck Wild",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQestion(
+            image: "Tesla",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQestion(
+            image: "Vivarium",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false)
+    ]
     
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a205e6cacc79ca29011e91af2e1c3e4eec562a8f
     private func convert(model: QuizQestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -210,12 +288,15 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             let viewModel = convert(model: nextQuestion)
             
             show(quiz: viewModel)
+<<<<<<< HEAD
 =======
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
 >>>>>>> sprint_5
 =======
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
 >>>>>>> sprint_5
+=======
+>>>>>>> a205e6cacc79ca29011e91af2e1c3e4eec562a8f
         }
     
     func noImageBorder() {
