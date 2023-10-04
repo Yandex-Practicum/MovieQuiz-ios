@@ -33,19 +33,19 @@ final class StatisticServiceImplementation {
         case correct, total, bestGame, gamesCount
     }
     
-    func store(correct : Int, total : Int) {
+    func store(correct: Int, total: Int) {
         
-        totalAccuracy = Double(correct) / Double(total) * 100.0
+        if total > 0 {
+            totalAccuracy = Double(correct) / Double(total) * 100.0
+        } else {
+            totalAccuracy = 0.0 
+        }
         gamesCount += 1
         
         let currentGame = GameRecord(correct: correct, total: total, date: Date())
         if currentGame.isBetterThan(bestGame) {
             bestGame = currentGame
         }
-        //let currentBestGame = bestGame
-        //let newGameRecord = GameRecord(correct: count, total: amount, date: Date())
-        //if newGameRecord.isBetterThan(currentBestGame) {
-        //userDefaults.set(try? JSONEncoder().encode(newGameRecord), forKey: Keys.bestGame.rawValue) }
     }
     
     var totalAccuracy: Double {
