@@ -27,14 +27,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController.showLoadingIndicator()
     }
     
-    let questionsAmount: Int = 10
+    private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
-    var currentQuestion: QuizQuestion?
-    var correctAnswers: Int = 0
+    private var currentQuestion: QuizQuestion?
+    private var correctAnswers: Int = 0
     
     // -MARK: - QuestionFactoryDelegate
     
-    func didLoadDataFromServer() {
+     func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
@@ -69,11 +69,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // -MARK: Functions
     //действие кнопок да/нет
-    func isLastQuestion() -> Bool {
+    private func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
     
-    func didAnswer(isYes: Bool) {
+    private func didAnswer(isYes: Bool) {
         
         guard let currentQuestion = currentQuestion else {
             return
@@ -91,15 +91,15 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
     
-    func switchToNextQuestion() {
+    private func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     
-    func didAnswer(isCorrect: Bool) {
+    private func didAnswer(isCorrect: Bool) {
         if (isCorrect) { correctAnswers += 1}
     }
     
-    func convert(model: QuizQuestion) -> QuizStepViewModel {
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -109,7 +109,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
-    func proceedToNextQuestionOrResults() {
+    private func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
             
             viewController?.showFinalResults()
@@ -137,7 +137,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         return resultMessage
     }
     //приватный метод который меняет цвет рамки
-    func proceedWithAnswer(isCorrect: Bool) {
+    private func proceedWithAnswer(isCorrect: Bool) {
         didAnswer(isCorrect: isCorrect)
         
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
