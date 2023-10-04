@@ -14,7 +14,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     // -MARK: Properties
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewControllerProtocol?
-    private let statisticService: StatisticService!
+    private let statisticService: StatisticService?
     
     
     init(viewController: MovieQuizViewControllerProtocol)  {
@@ -124,7 +124,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
         guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
             assertionFailure("errror message")
-            return ""
+            return "error"
         }
         
         let totalPlayesCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
