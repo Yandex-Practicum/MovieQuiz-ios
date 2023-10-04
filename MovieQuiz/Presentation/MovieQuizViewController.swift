@@ -13,12 +13,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
 
         showLoadingIndicator()
     }
-    /*
-    //MARK: -QuestionFactoryDelegate
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        presenter.didReceiveNextQuestion(question: question)
-    }
-    */
+    
     //MARK: - actions
     //если нажал кнопку нет
     @IBAction private func noButtonClicked(_ sender: UIButton)  {
