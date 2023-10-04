@@ -1,27 +1,37 @@
 import UIKit
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 final class MovieQuizViewController: UIViewController {
+=======
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
+    
+    
+>>>>>>> sprint_5
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //выводим первый вопрос на экран
-        //получаем первый элемент из мок данных
-        let currentQuestion = questions[currentQuestionIndex]
-        //конвертируем модель вопроса вл вью модель
-        let firstView = convert(model: currentQuestion)
-        //показываем вопрос на экране
-        show(quiz: firstView)
+
+        presenter = MovieQuizPresenter(viewController: self)
+        
+        alertPresenter = AlertPresenterImpl(viewController: self)
+
+        showLoadingIndicator()
     }
+    /*
+    //MARK: -QuestionFactoryDelegate
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        presenter.didReceiveNextQuestion(question: question)
+    }
+    */
+    //MARK: - actions
     //если нажал кнопку нет
     @IBAction private func noButtonClicked(_ sender: UIButton)  {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.noButtonClicked()
     }
     //если нажал кнопку да
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+<<<<<<< HEAD
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         
@@ -57,6 +67,10 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter.yesButtonClicked()
 >>>>>>> sprint_5
     }
+=======
+        presenter.yesButtonClicked()
+    }
+>>>>>>> sprint_5
     
     // MARK: -Properties
     @IBOutlet private weak var imageView: UIImageView!
@@ -64,6 +78,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+<<<<<<< HEAD
 <<<<<<< HEAD
     //для состояния вопрос показан
     private struct QuizStepViewModel {
@@ -100,57 +115,24 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         // буллево значение правильный ответ на вопрос
         let correctAnswer: Bool
     }
+=======
+    //вызываем алерт презентер
+    private var alertPresenter: AlertPresenter?
+    //private var statisticService: StatisticService?
+    //обьявляем презентер
+    private var presenter: MovieQuizPresenter!
     
+>>>>>>> sprint_5
+    
+    //MARK: - private functions
     //приватный метод вывода на экран вопроса который принимает на вход вью модель вопроса и ничего не возвращает
     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
-    //массив мок вопросов
-    private let questions: [QuizQestion] = [
-        QuizQestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false)
-    ]
     
+<<<<<<< HEAD
 <<<<<<< HEAD
     private func convert(model: QuizQestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -159,12 +141,17 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return questionStep
 =======
+=======
+>>>>>>> sprint_5
     //метод состояния индикатора загрузки
     func showLoadingIndicator() {
         //говорит что индикатор загрузки не скрыт
         activityIndicator.isHidden = false
         //включаем анимацию
         activityIndicator.startAnimating()
+<<<<<<< HEAD
+>>>>>>> sprint_5
+=======
 >>>>>>> sprint_5
     }
     
@@ -191,6 +178,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         //метод красит рамку
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
+<<<<<<< HEAD
 <<<<<<< HEAD
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         //запускаем следующую задачу через 1 секунду
@@ -225,6 +213,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
 =======
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
 >>>>>>> sprint_5
+=======
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+>>>>>>> sprint_5
         }
     
     func noImageBorder() {
@@ -252,6 +243,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             self.currentQuestionIndex = 0
@@ -267,6 +259,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
+=======
+        alertPresenter?.show(alertModel: alertModel)
+>>>>>>> sprint_5
 =======
         alertPresenter?.show(alertModel: alertModel)
 >>>>>>> sprint_5
