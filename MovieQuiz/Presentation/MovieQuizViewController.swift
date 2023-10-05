@@ -8,6 +8,10 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    //@IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
+    
     //вызываем алерт презентер
     private var alertPresenter: AlertPresenter?
     //private var statisticService: StatisticService?
@@ -55,6 +59,18 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
+    
+    //методы для скрытия/показа кнопок да и нет
+    func enebleButtons() {
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
+    }
+    
+    func disableButtons() {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+    }
+    
     //алерт показа ошибки загрузки
     func showNetworkError(message: String) {
         //cкрываем индикатор загрузки
@@ -93,8 +109,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                 self?.presenter.restartGame()
             }
         )
-        
-        
+    
         alertPresenter?.show(alertModel: alertModel)
     }
 }

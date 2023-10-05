@@ -14,7 +14,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     // -MARK: Properties
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewControllerProtocol?
-    private let statisticService: StatisticService?
+    private let statisticService: StatisticService!
     
     
     init(viewController: MovieQuizViewControllerProtocol)  {
@@ -54,17 +54,20 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.show(quiz: viewModel)
         }
+        //viewController?.enebleButtons()
     }
     // -MARK: Actons
     
     //если нажал кнопку да
     func yesButtonClicked() {
         didAnswer(isYes: true)
+        viewController?.disableButtons()
     }
     
     //действие кнопки нет
     func noButtonClicked()  {
         didAnswer(isYes: false)
+        viewController?.disableButtons()
     }
     
     // -MARK: Functions
@@ -117,15 +120,15 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         } else {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
+            //viewController?.enebleButtons()
         }
     }
     
     func makeResultMessage() -> String {
         
-        guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
-            assertionFailure("errror message")
-            return "error"
-        }
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        
+        guard let bestGame = statisticService.bestGame else {return "error"}
         
         let totalPlayesCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
         let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
@@ -141,6 +144,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         didAnswer(isCorrect: isCorrect)
         
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+        //viewController?.disableButtons()
         
         //запускаем следующую задачу через 1 секунду
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
@@ -151,6 +155,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             self.correctAnswers = correctAnswers
             //self.presenter.questionFactory = self.questionFactory
             self.proceedToNextQuestionOrResults()
+            viewController?.enebleButtons()
         }
-        
-    }}
+    }
+}
