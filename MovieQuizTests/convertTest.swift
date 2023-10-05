@@ -10,6 +10,14 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
+    func enebleButtons() {
+        
+    }
+    
+    func disableButtons() {
+        
+    }
+    
     func showFinalResults() {
         
     }

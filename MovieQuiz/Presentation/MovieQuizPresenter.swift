@@ -39,6 +39,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
     
+    
+    // -MARK: public func
+    
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
         viewController?.showNetworkError(message: message)
@@ -56,7 +59,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
         //viewController?.enebleButtons()
     }
-    // -MARK: Actons
     
     //если нажал кнопку да
     func yesButtonClicked() {
@@ -70,36 +72,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.disableButtons()
     }
     
-    // -MARK: Functions
-    //действие кнопок да/нет
-    private func isLastQuestion() -> Bool {
-        currentQuestionIndex == questionsAmount - 1
-    }
-    
-    private func didAnswer(isYes: Bool) {
-        
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = isYes
-        
-        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-    }
-    
-    
     func restartGame() {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
-    }
-    
-    private func switchToNextQuestion() {
-        currentQuestionIndex += 1
-    }
-    
-    private func didAnswer(isCorrect: Bool) {
-        if (isCorrect) { correctAnswers += 1}
     }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -110,19 +86,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         return questionStep
     }
     
-    // приватный метод, который содержит логику перехода в один из сценариев
-    // метод ничего не принимает и ничего не возвращает
-    private func proceedToNextQuestionOrResults() {
-        if self.isLastQuestion() {
-            
-            viewController?.showFinalResults()
-            
-        } else {
-            self.switchToNextQuestion()
-            questionFactory?.requestNextQuestion()
-            //viewController?.enebleButtons()
-        }
-    }
     
     func makeResultMessage() -> String {
         
@@ -139,21 +102,58 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
         return resultMessage
     }
-    //приватный метод который меняет цвет рамки
+
+    
+    // -MARK: private func
+    //действие кнопок да/нет
+    private func isLastQuestion() -> Bool {
+        currentQuestionIndex == questionsAmount - 1
+    }
+    
+    private func didAnswer(isYes: Bool) {
+        
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        let givenAnswer = isYes
+        
+        proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
+    }
+ 
+    private func switchToNextQuestion() {
+        currentQuestionIndex += 1
+    }
+    
+    private func didAnswer(isCorrect: Bool) {
+        if (isCorrect) { correctAnswers += 1}
+    }
+    
+    
+    // приватный метод, который содержит логику перехода в один из сценариев
+    // метод ничего не принимает и ничего не возвращает
+    private func proceedToNextQuestionOrResults() {
+        if self.isLastQuestion() {
+            
+            viewController?.showFinalResults()
+            
+        } else {
+            self.switchToNextQuestion()
+            questionFactory?.requestNextQuestion()
+            //viewController?.enebleButtons()
+        }
+    }
+   
     private func proceedWithAnswer(isCorrect: Bool) {
         didAnswer(isCorrect: isCorrect)
         
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
-        //viewController?.disableButtons()
         
         //запускаем следующую задачу через 1 секунду
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
-            //убираем границу рамки
-            //self.imageView.layer.borderWidth = 0
             viewController?.noImageBorder()
             self.correctAnswers = correctAnswers
-            //self.presenter.questionFactory = self.questionFactory
             self.proceedToNextQuestionOrResults()
             viewController?.enebleButtons()
         }

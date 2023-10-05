@@ -7,14 +7,11 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
-    //@IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
     
     //вызываем алерт презентер
     private var alertPresenter: AlertPresenter?
-    //private var statisticService: StatisticService?
     //обьявляем презентер
     private var presenter: MovieQuizPresenter!
     
@@ -39,7 +36,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
     }
-
+    
     //MARK: - private functions
     //приватный метод вывода на экран вопроса который принимает на вход вью модель вопроса и ничего не возвращает
     func show(quiz step: QuizStepViewModel) {
@@ -76,14 +73,17 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         //cкрываем индикатор загрузки
         hideLoadingIndicator()
         
-        let model = AlertModel(title: "Ошибка",
-                               message: message,
-                               buttonText: "Попробовать еще раз",
-                               buttonAction:  { [weak self] in
-            self?.presenter.restartGame()
-        }
+        let model = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать еще один раз",
+            buttonAction:  { [weak self] in
+                self?.presenter.restartGame()
+            }
         )
         alertPresenter?.show(alertModel: model)
+        //TODO: hbkhbjh
+        
     }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
@@ -109,7 +109,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                 self?.presenter.restartGame()
             }
         )
-    
+        
         alertPresenter?.show(alertModel: alertModel)
     }
 }
