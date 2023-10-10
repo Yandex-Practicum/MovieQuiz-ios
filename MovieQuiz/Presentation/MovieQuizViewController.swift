@@ -1,10 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
-    
-    
-    
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -47,26 +43,25 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-    
     private var currentQuestionIndex = 0
     
     private var correctAnswer = 0
-
-    struct QuizQuestion {
+    
+    private struct QuizQuestion {
         let image: String
         let text:  String
         let correctAnswer: Bool
     }
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
-}
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         show(quiz: QuizStepViewModel(image: UIImage(named: "The Godfather") ?? UIImage(), question: "Рейтинг этого фильма больше чем 6?", questionNumber: "1/10"))
@@ -90,24 +85,28 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswer += 1
+
         }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        disableButtons()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.enableButtons()
         }
     }
     
     private func showNextQuestionOrResults(){
+        imageView.layer.borderWidth = 0
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswer)/10"
-                  let viewModel = QuizResultsViewModel(
-                      title: "Этот раунд окончен!",
-                      text: text,
-                      buttonText: "Сыграть ещё раз")
-                  show(quiz: viewModel)
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             
@@ -117,8 +116,15 @@ final class MovieQuizViewController: UIViewController {
             show (quiz: viewModel)
         }
     }
-    // приватный метод для показа результатов раунда квиза
-    // принимает вью модель QuizResultsViewModel и ничего не возвращает
+    private func disableButtons (){
+        yesButtonOutlet.isEnabled = false
+        noButtonOutlet.isEnabled = false
+    }
+    private func enableButtons (){
+        yesButtonOutlet.isEnabled = true
+        noButtonOutlet.isEnabled = true
+    }
+    
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
@@ -153,4 +159,6 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var noButtonOutlet: UIButton!
+    @IBOutlet private var yesButtonOutlet: UIButton!
 }
