@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "TheRoom.png",
+      "filename" : "Schastlivyy konets.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "TheRoom@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
