@@ -85,7 +85,7 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswer += 1
-
+            
         }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
