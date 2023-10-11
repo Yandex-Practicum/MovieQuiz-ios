@@ -4,7 +4,10 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        dudeText.font = UIFont(name: "YSDisplay-Medium", size: 23)
     }
+    @IBOutlet weak var dudeText: UILabel!
 }
 
 /*
