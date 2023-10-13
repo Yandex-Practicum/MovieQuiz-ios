@@ -86,6 +86,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="noButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WND-XX-V7Y"/>
                                             <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ffD-pk-e0k"/>
                                         </connections>
                                     </button>
@@ -125,9 +126,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLabel" destination="twt-Sf-S6i" id="QUe-kp-WFb"/>
-                        <outlet property="imageView" destination="JGi-Yt-Scc" id="pBO-07-3CH"/>
-                        <outlet property="textLabel" destination="z9X-yE-yB3" id="kMy-w7-X0t"/>
+                        <outlet property="indexLabel" destination="twt-Sf-S6i" id="qph-ys-eXx"/>
+                        <outlet property="previewImage" destination="JGi-Yt-Scc" id="RFv-DX-ech"/>
+                        <outlet property="questionLabel" destination="z9X-yE-yB3" id="aDj-dg-Vkd"/>
+                        <outlet property="questionTitle" destination="Asi-be-2DH" id="RKr-PT-48e"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
