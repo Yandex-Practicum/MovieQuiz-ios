@@ -51,6 +51,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="WW2-Fr-njp" secondAttribute="height" multiplier="2:3" id="BML-Rc-6og"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма больше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POs-mu-QKO" userLabel="QuestionLabel">
                                         <rect key="frame" x="0.0" y="593.33333333333337" width="353" height="75.666666666666629"/>
@@ -113,9 +118,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="WW2-Fr-njp" id="41w-G1-ATr"/>
                         <outlet property="indexView" destination="ONH-Y6-auL" id="BDb-lh-msB"/>
                         <outlet property="noButton" destination="wrD-lv-cEi" id="yX3-7T-aOy"/>
+                        <outlet property="posterImageView" destination="WW2-Fr-njp" id="Ndj-d1-348"/>
                         <outlet property="textView" destination="POs-mu-QKO" id="R2l-lT-0EA"/>
                         <outlet property="yesButton" destination="V3s-TO-ibA" id="ChC-er-4hZ"/>
                     </connections>
