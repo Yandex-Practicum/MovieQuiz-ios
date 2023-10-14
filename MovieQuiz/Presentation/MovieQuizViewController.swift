@@ -101,41 +101,45 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Metods
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
-        let isCorrect = currentQuestion.correctAnswer == true
-        showAnswerResult(isCorrect: isCorrect)
+        let givenAnswer = true // 2
+        
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer) // 3
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {sender.isEnabled = true}
     }
+    
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
         let currentQuestion = questions[currentQuestionIndex]
-        let isCorrect = currentQuestion.correctAnswer == false
-        showAnswerResult(isCorrect: isCorrect)
+        let givenAnswer = false // 2
+        
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer) // 3
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {sender.isEnabled = true}
     }
     
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
+    // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        
-        let image = UIImage(named: model.image) ?? UIImage()
-        let questionNumber = "\(currentQuestionIndex + 1)/\(questions.count)"
-        return QuizStepViewModel(
-            image: image,
-            question: model.text,
-            questionNumber: questionNumber
-        )
+        let questionStep = QuizStepViewModel( // 1
+            image: UIImage(named: model.image) ?? UIImage(), // 2
+            question: model.text, // 3
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // 4
+        return questionStep
     }
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
-        counterLabel.text = step.questionNumber
         imageView.image = step.image
         textLabel.text = step.question
+        counterLabel.text = step.questionNumber
     }
     
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
-        if isCorrect {
-            correctAnswers += 1
+        if isCorrect { // 1
+            correctAnswers += 1 // 2
         }
         // метод красит рамку
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
@@ -173,17 +177,21 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        // создаём объекты всплывающего окна
         let alert = UIAlertController(
-            title: result.title, // заголовок всплывающего окна
-            message: result.text, // текст во всплывающем окне
-            preferredStyle: .alert
-        ) // preferredStyle может быть .alert или .actionSheet
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
         
-        // создаём для алерта кнопку с действием
-        // в замыкании пишем, что должно происходить при нажатии на кнопку
+        // константа с кнопкой для системного алерта
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-            self.restart()
+            self.currentQuestionIndex = 0 // 1
+            
+            // сбрасываем переменную с количеством правильных ответов
+            self.correctAnswers = 0
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex] // 2
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
         }
         
         // добавляем в алерт кнопку
@@ -192,78 +200,8 @@ final class MovieQuizViewController: UIViewController {
         // показываем всплывающее окно
         self.present(alert, animated: true, completion: nil)
     }
-    
-    private func restart() {
-        currentQuestionIndex = 0
-        correctAnswers = 0
-        let currentQuestion = questions[currentQuestionIndex]
-        let step = convert(model: currentQuestion)
-        show(quiz: step)
-    }
 }
+    
 
 
 
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
