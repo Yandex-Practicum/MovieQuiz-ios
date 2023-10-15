@@ -62,6 +62,10 @@ final class MovieQuizViewController: UIViewController {
         self.switchOfButtons()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         self.switchOfButtons()
