@@ -64,6 +64,10 @@ final class MovieQuizViewController: UIViewController {
         let title: String
         let text: String
         let buttonText: String
+}
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        show(quiz: QuizStepViewModel(image: UIImage(named: "The Godfather") ?? UIImage(), question: "Рейтинг этого фильма больше чем 6?", questionNumber: "1/10"))
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -90,8 +94,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-           // код, который мы хотим вызвать через 1 секунду
-           self.showNextQuestionOrResults()
+            self.showNextQuestionOrResults()
         }
     }
     
@@ -135,23 +138,16 @@ final class MovieQuizViewController: UIViewController {
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions [currentQuestionIndex]
+        let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
     @IBAction private func noButtonClicked(_ sender: Any) {
-        let currentQuestion = questions [currentQuestionIndex]
+        let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        show(quiz: QuizStepViewModel(image: UIImage(named: "The Godfather") ?? UIImage(), question: "Рейтинг этого фильма больше чем 6?", questionNumber: "1/10"))
-    }
 }
