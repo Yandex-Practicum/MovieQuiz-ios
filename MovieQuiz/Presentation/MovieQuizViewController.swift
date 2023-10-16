@@ -3,6 +3,10 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
+    //    Спасибо, что дал еще одну попытку)
+    //    По поводу 5 пункта в задании трактуется "После выбора ответа на вопрос через 1 секунду автоматически появляется следующий вопрос;",
+    //    поэтому я и подумал, что мы этот баг поправим в следующем спринте
+    
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -49,7 +53,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     
     private var correctAnswer = 0
-
+    
     struct QuizQuestion {
         let image: String
         let text:  String
@@ -64,7 +68,7 @@ final class MovieQuizViewController: UIViewController {
         let title: String
         let text: String
         let buttonText: String
-}
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         show(quiz: QuizStepViewModel(image: UIImage(named: "The Godfather") ?? UIImage(), question: "Рейтинг этого фильма больше чем 6?", questionNumber: "1/10"))
@@ -78,11 +82,11 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-        
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -91,21 +95,27 @@ final class MovieQuizViewController: UIViewController {
         }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
             self.showNextQuestionOrResults()
         }
     }
     
     private func showNextQuestionOrResults(){
+        
+        imageView.layer.borderWidth = 0
+        
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswer)/10"
-                  let viewModel = QuizResultsViewModel(
-                      title: "Этот раунд окончен!",
-                      text: text,
-                      buttonText: "Сыграть ещё раз")
-                  show(quiz: viewModel)
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             
@@ -115,7 +125,7 @@ final class MovieQuizViewController: UIViewController {
             show (quiz: viewModel)
         }
     }
-
+    
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
@@ -138,15 +148,26 @@ final class MovieQuizViewController: UIViewController {
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     @IBAction private func noButtonClicked(_ sender: Any) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
+
+    @IBOutlet weak var yesButton: UIButton!
+    
+    @IBOutlet weak var noButton: UIButton!
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
