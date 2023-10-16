@@ -12,8 +12,8 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactory = QuestionFactory()
-    private var currentQuestion: QuizQuestion?
+    private var questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var currentQuestion: QuizeQuestion?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -51,7 +51,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // метод принимает моковый вопрос и возвращает вью модель для главного экрана
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    private func convert(model: QuizeQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
                     image: UIImage(named: model.image) ?? UIImage(),
                     question: model.text,
