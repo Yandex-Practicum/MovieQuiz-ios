@@ -6,7 +6,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        print("Hello!")
+        print("Hello world for brunch merge!")
+        print("One more bruch request!")
+        print("Once again!")
         return true
     }
 
