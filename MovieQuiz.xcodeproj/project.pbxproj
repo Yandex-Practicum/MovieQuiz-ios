@@ -23,6 +23,7 @@
 		FA96D9182ADD4B15000997E6 /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA96D9172ADD4B15000997E6 /* QuizResultsViewModel.swift */; };
 		FA96D91A2ADD4B23000997E6 /* QuizeQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA96D9192ADD4B23000997E6 /* QuizeQuestion.swift */; };
 		FA96D91C2ADD6FD6000997E6 /* QuestionFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA96D91B2ADD6FD6000997E6 /* QuestionFactoryProtocol.swift */; };
+		FA96D91E2ADD78C0000997E6 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA96D91D2ADD78BF000997E6 /* QuestionFactoryDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		FA96D9172ADD4B15000997E6 /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
 		FA96D9192ADD4B23000997E6 /* QuizeQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizeQuestion.swift; sourceTree = "<group>"; };
 		FA96D91B2ADD6FD6000997E6 /* QuestionFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryProtocol.swift; sourceTree = "<group>"; };
+		FA96D91D2ADD78BF000997E6 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 			children = (
 				FA96D9122ADD4608000997E6 /* QuestionFactory.swift */,
 				FA96D91B2ADD6FD6000997E6 /* QuestionFactoryProtocol.swift */,
+				FA96D91D2ADD78BF000997E6 /* QuestionFactoryDelegate.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				FA96D91C2ADD6FD6000997E6 /* QuestionFactoryProtocol.swift in Sources */,
+				FA96D91E2ADD78C0000997E6 /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				FA96D9162ADD4B03000997E6 /* QuizStepViewModel.swift in Sources */,
 				FA96D91A2ADD4B23000997E6 /* QuizeQuestion.swift in Sources */,

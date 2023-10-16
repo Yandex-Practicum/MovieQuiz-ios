@@ -1,5 +1,5 @@
 import Foundation
 
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion() -> QuizeQuestion?
+    func requestNextQuestion()
 }
