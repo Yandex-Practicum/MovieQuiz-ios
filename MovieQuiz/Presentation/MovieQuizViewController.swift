@@ -14,6 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizeQuestion?
+    private var alertPresenter: AlertPresenter?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -24,6 +25,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self)
         
         questionFactory?.requestNextQuestion()
+        
+        alertPresenter = AlertPresenter(view: self)
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -81,23 +84,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // метод для показа результатов раунда квиза
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
+        let alert = AlertModel(
             title: result.title,
             message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            buttonText: result.buttonText
+        ) { [weak self] in
             guard let self = self else { return }
             
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
-            questionFactory?.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
         }
         
-        alert.addAction(action)
+        alertPresenter?.show(data: alert)
         
-        self.present(alert, animated: true, completion: nil)
     }
     
     // метод, который меняет цвет рамки
