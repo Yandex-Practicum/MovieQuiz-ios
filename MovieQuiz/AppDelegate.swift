@@ -8,6 +8,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         print("Hello world for brunch merge!")
         print("One more bruch request!")
+        print("Once again!")
         return true
     }
 
