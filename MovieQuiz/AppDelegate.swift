@@ -7,6 +7,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         print("Привет! Тест с Git Commit!")
+        print("Ещё один коммит!")
         return true
     }
 
