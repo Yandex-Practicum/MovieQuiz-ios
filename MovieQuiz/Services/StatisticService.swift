@@ -8,14 +8,15 @@
 import Foundation
 
 protocol StatisticService {
+    func store(correct count: Int, total amount: Int)
+    
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
-    var bestGame: BestGame? { get }
+    var bestGame: GameRecord? { get }
     
-    func store(correct: Int, total: Int)
 }
 
-final class StatisticServiceImpl {
+final class StatisticServiceImplementation {
     
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
@@ -39,7 +40,7 @@ final class StatisticServiceImpl {
     }
 }
 
-extension StatisticServiceImpl: StatisticService {
+extension StatisticServiceImplementation: StatisticService {
     
     var gamesCount: Int {
         get {
@@ -67,16 +68,19 @@ extension StatisticServiceImpl: StatisticService {
             userDefaults.set(newValue, forKey: Keys.correct.rawValue)
         }
     }
+    var totalAccuracy: Double {
+        Double(correct) / Double(total) * 100
+    }
     
-    var bestGame: BestGame? {
+    var bestGame: GameRecord? {
         get {
             guard
                 let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
-                let bestGame = try? decoder.decode(BestGame.self, from: data) else {
+                let record = try? decoder.decode(GameRecord.self, from: data) else {
                 return nil
                 }
                     
-            return bestGame
+            return record
         }
         set {
             let data = try? encoder.encode(newValue)
@@ -85,17 +89,12 @@ extension StatisticServiceImpl: StatisticService {
         }
     }
     
-    var totalAccuracy: Double {
-        Double(correct) / Double(total) * 100
-    }
-    
     func store(correct: Int, total: Int) {
         self.correct += correct
         self.total += total
         self.gamesCount += 1
         
-        let date = dateProvider()
-        let currentBestGame = BestGame(correct: correct, total: total, date: date )
+        let currentBestGame = GameRecord(correct: correct, total: total, date: dateProvider())
         
         if let previousBestGame = bestGame {
             if currentBestGame > previousBestGame {

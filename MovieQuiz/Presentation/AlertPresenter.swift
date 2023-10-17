@@ -8,21 +8,21 @@
 import Foundation
 import UIKit
 
-protocol AlertPresenter {
+protocol AlertPresenter: AnyObject {
     
-    func show(alertModel: AlertModel)
+    func show(with alertModel: AlertModel)
 }
 
 final class AlertPresenterImpl {
-    private weak var viewController: UIViewController?
+    private let viewController: UIViewController
     
-    init(viewController: UIViewController? = nil) {
+    init(viewController: UIViewController) {
         self.viewController = viewController
     }
 }
 
 extension AlertPresenterImpl: AlertPresenter {
-    func show(alertModel: AlertModel) {
+    func show(with alertModel: AlertModel) {
         let alert = UIAlertController(
             title: alertModel.title,
             message: alertModel.message,
@@ -34,6 +34,6 @@ extension AlertPresenterImpl: AlertPresenter {
         
         alert.addAction(action)
         
-        viewController?.present(alert, animated: true)
+        viewController.present(alert, animated: true)
     }
 }
