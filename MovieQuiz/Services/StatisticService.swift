@@ -40,7 +40,8 @@ final class StatisticServiceImplementation: StatisticService {
             if userDefaults.double(forKey: Keys.total.rawValue) == 0 {
                 return 0
             }
-            return userDefaults.double(forKey: Keys.correct.rawValue) / userDefaults.double(forKey: Keys.total.rawValue) * 100
+            return userDefaults.double(forKey: Keys.correct.rawValue) / 
+            userDefaults.double(forKey: Keys.total.rawValue) * 100
         }
     }
     var gamesCount: Int {

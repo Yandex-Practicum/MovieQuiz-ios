@@ -131,13 +131,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             var text = "Ваш результат \(correctAnswers)/\(questionsAmount)"
             if let statisticService = statisticService {
-                            statisticService.store(correct: correctAnswers, total: questionsAmount)
-                            text += """
-                            \nКоличество сыгранных квизов: \(statisticService.gamesCount)
-                            Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
-                            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
-                            """
-                        }
+                    statisticService.store(correct: correctAnswers, total: questionsAmount)
+                    text += """
+                    \nКоличество сыгранных квизов: \(statisticService.gamesCount)
+                    Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                    """
+            }
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
