@@ -3,39 +3,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Constants
-    private let question: [QuizeQuestion] = [
-        QuizeQuestion(image: "The Godfather",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: true),
-        QuizeQuestion(image: "The Dark Knight",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: true),
-        QuizeQuestion(image: "Kill Bill",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: true),
-        QuizeQuestion(image: "The Avengers",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: true),
-        QuizeQuestion(image: "Deadpool",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: true),
-        QuizeQuestion(image: "The Green Knight",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: true),
-        QuizeQuestion(image: "Old",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: false),
-        QuizeQuestion(image: "The Ice Age Adventures of Buck Wild",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: false),
-        QuizeQuestion(image: "Tesla",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: false),
-        QuizeQuestion(image: "Vivarium",
-                      text: "Рейтинг этого фильма больше чем 6?",
-                      correctAnswer: false)
     
-    ]
     
     private var currentQuestionIndex = 0             // номер вопроса
     private var correctAnswers = 0                    // счетчик правильных ответов
@@ -87,26 +55,11 @@ final class MovieQuizViewController: UIViewController {
         let questionNumber: String
     }
     
-    // Вопрос показан
-    struct QuizStepViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
     
-    // Результат квиза
-    struct QuizResultsViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
-    }
     
-    // Структура вопроса
-    struct QuizeQuestion {
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
+   
+    
+    
     
 
     
@@ -138,7 +91,8 @@ final class MovieQuizViewController: UIViewController {
         noButton.isEnabled = false
         yesButton.isEnabled = false
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
             self.noButton.isEnabled = true
             self.yesButton.isEnabled = true
             self.showNextQuestionOrResults()
@@ -168,7 +122,8 @@ final class MovieQuizViewController: UIViewController {
             message: result.text,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
