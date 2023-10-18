@@ -1,9 +1,16 @@
 import UIKit
 
 
-final class MovieQuizViewController: UIViewController {
-    // MARK: - Constants
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     
+    
+    
+    // MARK: - Constants
+    weak var delegate: QuestionFactoryDelegate?
+    private let questionsAmount: Int = 10
+    private var questionFactory: QuestionFactoryProtocol?
+    private var currentQuestion: QuizeQuestion?
+    private var alertPresenter: AlertPresenter?
     
     private var currentQuestionIndex = 0             // номер вопроса
     private var correctAnswers = 0                    // счетчик правильных ответов
@@ -12,17 +19,17 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - IBAction
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
-        let currectQuestion = self.question[self.currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else { return }
         let giveAnswer = false
             
-        self.showAnswerResult(isCorrect: giveAnswer == currectQuestion.correctAnswer)
+        self.showAnswerResult(isCorrect: giveAnswer == currentQuestion.correctAnswer)
         }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currectQuestion = question[currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else { return }
         let giveAnswer = true
         
-        showAnswerResult(isCorrect: giveAnswer == currectQuestion.correctAnswer)
+        showAnswerResult(isCorrect: giveAnswer == currentQuestion.correctAnswer)
     }
     
     // MARK: - IBOutlet
@@ -40,13 +47,20 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstQuestion = question[currentQuestionIndex]
-        let model = convert(firstQuestion)
-        self.show(quiz: model)
-        
-        
+        questionFactory?.requestNextQuestion()
     }
     
+    //MARK: - QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizeQuestion?) {
+        guard let question = question else { return }
+        
+        currentQuestion = question
+        let viewModel = convert(question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
     // MARK: - Struct
     
     struct ViewModel {
@@ -55,21 +69,13 @@ final class MovieQuizViewController: UIViewController {
         let questionNumber: String
     }
     
-    
-    
-   
-    
-    
-    
-
-    
     // MARK: - Private Methods
     
     private func convert(_ model: QuizeQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(question.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
 
@@ -100,8 +106,8 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == question.count - 1 {
-            let text = "Ваш результат: \(correctAnswers)/10"
+        if currentQuestionIndex == questionsAmount - 1 {
+            let text = correctAnswers == questionsAmount ? "Поздравляем, вы ответили на 10 из 10!" : "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,
@@ -109,32 +115,21 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            let firstQuestion = question[currentQuestionIndex]
-            let model = convert(firstQuestion)
-            self.show(quiz: model)
+            
+            questionFactory?.requestNextQuestion()
             
         }
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+        let alert = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText) { [weak self] in
             guard let self = self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
-            let firstQuestion = self.question[self.currentQuestionIndex]
-            let viewModel = self.convert(firstQuestion)
-            self.show(quiz: viewModel)
+            self.questionFactory?.requestNextQuestion()
         }
         
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
+        alertPresenter?.show(result: alert)
     }
     
 }
