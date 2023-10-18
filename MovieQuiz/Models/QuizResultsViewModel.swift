@@ -14,4 +14,6 @@ struct QuizResultsViewModel {
     let text: String
     // текст для кнопки алерта
     let buttonText: String
+    
 }
+

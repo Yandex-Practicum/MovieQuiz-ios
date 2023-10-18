@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     
     
@@ -15,20 +15,39 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenter?
+    private var statisticService = StatisticServiceImplementation()
     
+    
+    // MARK: - QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
         
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        questionFactory = QuestionFactory(delegate: self)
+        alertPresenter = ResultAlertPresenter(viewController: self)
+        questionFactory?.requestNextQuestion()
+        
+        
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        print(documentsURL)
+        
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -69,26 +88,29 @@ final class MovieQuizViewController: UIViewController {
     // принимает вью модель QuizResultsViewModel и ничего не возвращает
     private func show(quiz result: QuizResultsViewModel) {
         
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
         let alert = UIAlertController(
             title: "Результат квиза",
-            message: "Ваш результат: \(correctAnswers)/10",
-            preferredStyle: .alert)
+            message: """
+Ваш результат: \(correctAnswers)/\(questionsAmount)
+Количество сыграных квизов: \(statisticService.gamesCount)
+Рекорд: \(statisticService.bestGame.correct)/\(questionsAmount)(\(statisticService.bestGame.date.dateTimeString))
+Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+""", preferredStyle: .alert)
         
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
             guard let self = self else { return }
             
             self.currentQuestionIndex = 0 // 1
             self.correctAnswers = 0
+            questionFactory?.requestNextQuestion()
             
-            if let firstQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = firstQuestion
-                let viewModel = convert(model: firstQuestion)
-                show(quiz: viewModel)
-            }
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
+        
     }
+    
     private func showAnswerResult(isCorrect: Bool){
         
         // imageView.layer.masksToBounds = true  даём разрешение на рисование рамки
@@ -126,13 +148,12 @@ final class MovieQuizViewController: UIViewController {
         } else { // 2
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-                show(quiz: viewModel)
-            }
+            self.questionFactory?.requestNextQuestion()
         }
     }
+}
+    
+   
     
     
     
@@ -264,4 +285,4 @@ final class MovieQuizViewController: UIViewController {
      Вопрос: Рейтинг этого фильма больше чем 6?
      Ответ: НЕТ
      */
-}
+
