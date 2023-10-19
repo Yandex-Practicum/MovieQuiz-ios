@@ -16,23 +16,7 @@ final class MovieQuizViewController: UIViewController {
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23.0)
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
-        
-        // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
-        func convert(model: QuizQuestion) -> QuizStepViewModel {
-            let questionStep = QuizStepViewModel(
-                image: UIImage(named: model.image) ?? UIImage(),
-                question: model.text,
-                questionNumber: "\(currentQuestionIndex) / \(questions.count)")
-            return questionStep
-        }
-        
-        // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
-        func show(quiz step: QuizStepViewModel) {
-            imageView.image = step.image
-            textLabel.text = step.question
-            counterLabel.text = step.questionNumber
-        }
-}
+    }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
     }
@@ -95,15 +79,38 @@ final class MovieQuizViewController: UIViewController {
 
     // вью модель для состояния "Вопрос показан"
     struct QuizStepViewModel {
-      // картинка с афишей фильма с типом UIImage
-      let image: UIImage
-      // вопрос о рейтинге квиза
-      let question: String
-      // строка с порядковым номером этого вопроса (ex. "1/10")
-      let questionNumber: String
+        // картинка с афишей фильма с типом UIImage
+        let image: UIImage
+        // вопрос о рейтинге квиза
+        let question: String
+        // строка с порядковым номером этого вопроса (ex. "1/10")
+        let questionNumber: String
     }
-}
-
+        // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
+       private func convert(model: QuizQuestion) -> QuizStepViewModel {
+            let questionStep = QuizStepViewModel(
+                image: UIImage(named: model.image) ?? UIImage(),
+                question: model.text,
+                questionNumber:
+                    "\(currentQuestionIndex) / \(questions.count)")
+        return questionStep
+        }
+        
+        // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+       private func show(quiz step: QuizStepViewModel) {
+            imageView.image = step.image
+            textLabel.text = step.question
+            counterLabel.text = step.questionNumber
+           
+           guard let firstQuestionModel = questions.first else {
+               print("Не удалось извлечь из массива первый вопрос")
+               return
+           }
+           
+           let firstQuestionViewModel = convert(model: firstQuestionModel)
+           self.show(quiz: firstQuestionViewModel)
+        }
+    }
 /*
  Mock-данные
  
