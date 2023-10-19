@@ -68,6 +68,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mns-3w-cPh"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nzx-Em-PWa" userLabel="Yes Button">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
@@ -81,6 +84,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vIs-3j-XoG"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -99,10 +105,11 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="indexLabel" destination="w8l-Bh-wQ7" id="4GU-AP-dcc"/>
+                        <outlet property="counterLabel" destination="w8l-Bh-wQ7" id="JV6-Tn-14f"/>
+                        <outlet property="imageView" destination="vxR-yj-9YI" id="Esm-j3-xhm"/>
                         <outlet property="noButton" destination="mVb-x4-vmB" id="yB4-R2-eqX"/>
-                        <outlet property="questionLabel" destination="ukd-fS-Xe1" id="OQY-fH-Cjq"/>
-                        <outlet property="questionTitleLabel" destination="w8l-Bh-wQ7" id="m22-9Y-xI3"/>
+                        <outlet property="questionTitleLabel" destination="XNd-0B-SXb" id="HHu-ao-kQ8"/>
+                        <outlet property="textLabel" destination="ukd-fS-Xe1" id="OW8-I6-AS1"/>
                         <outlet property="yesButton" destination="Nzx-Em-PWa" id="fMD-Ji-NvM"/>
                     </connections>
                 </viewController>
@@ -120,7 +127,7 @@
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
