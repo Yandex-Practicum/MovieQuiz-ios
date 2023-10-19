@@ -7,7 +7,6 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var questionTitleLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var counterLabel: UILabel!
-    
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +15,14 @@ final class MovieQuizViewController: UIViewController {
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23.0)
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
+        
+        guard let firstQuestionModel = questions.first else {
+            print("Не удалось извлечь из массива первый вопрос")
+            return
+        }
+        
+        let firstQuestionViewModel = convert(model: firstQuestionModel)
+        self.show(quiz: firstQuestionViewModel)
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
@@ -92,7 +99,7 @@ final class MovieQuizViewController: UIViewController {
                 image: UIImage(named: model.image) ?? UIImage(),
                 question: model.text,
                 questionNumber:
-                    "\(currentQuestionIndex) / \(questions.count)")
+                    "\(currentQuestionIndex + 1) / \(questions.count)")
         return questionStep
         }
         
@@ -101,14 +108,6 @@ final class MovieQuizViewController: UIViewController {
             imageView.image = step.image
             textLabel.text = step.question
             counterLabel.text = step.questionNumber
-           
-           guard let firstQuestionModel = questions.first else {
-               print("Не удалось извлечь из массива первый вопрос")
-               return
-           }
-           
-           let firstQuestionViewModel = convert(model: firstQuestionModel)
-           self.show(quiz: firstQuestionViewModel)
         }
     }
 /*
