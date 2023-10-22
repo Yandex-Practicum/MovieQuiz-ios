@@ -2,6 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
+    // MARK: - IB Outlets
     @IBOutlet weak private var yesButton: UIButton!
     @IBOutlet weak private var noButton: UIButton!
     @IBOutlet weak private var questionTitleLabel: UILabel!
@@ -9,60 +10,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak private var counterLabel: UILabel!
     @IBOutlet weak private var imageView: UIImageView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
-        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
-        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23.0)
-        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
-        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
-        
-        guard let firstQuestionModel = questions.first else {
-            print("Не удалось извлечь из массива первый вопрос")
-            return
-        }
-        
-        let firstQuestionViewModel = convert(model: firstQuestionModel)
-        self.show(quiz: firstQuestionViewModel)
-    }
-    
-    
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-    }
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
-    
-    // структура для преобразования моков во вью модель
-    struct QuizQuestion {
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
-    
-    // вью модель для состояния "Вопрос показан"
-    struct QuizStepViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-    
-    // вью модель для состояния "Результат квиза"
-    struct QuizResultsViewModel {
-      // строка с заголовком алерта
-      let title: String
-      // строка с текстом о количестве набранных очков
-      let text: String
-      // текст для кнопки алерта
-      let buttonText: String
-    }
-    
+    // MARK: - Private Properties
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -106,10 +54,68 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false)
     ]
     
-    
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
+    // MARK: - View Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
+        noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
+        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23.0)
+        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
+        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
+        
+        guard let firstQuestionModel = questions.first else {
+            print("Не удалось извлечь из массива первый вопрос")
+            return
+        }
+        
+        let firstQuestionViewModel = convert(model: firstQuestionModel)
+        self.show(quiz: firstQuestionViewModel)
+    }
+    
+    // MARK: - IB Actions
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
+    }
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    // MARK: - Some structures
+    
+    // структура для преобразования моков во вью модель
+    struct QuizQuestion {
+        let image: String
+        let text: String
+        let correctAnswer: Bool
+    }
+    
+    // вью модель для состояния "Вопрос показан"
+    struct QuizStepViewModel {
+        let image: UIImage
+        let question: String
+        let questionNumber: String
+    }
+    
+    // вью модель для состояния "Результат квиза"
+    struct QuizResultsViewModel {
+      // строка с заголовком алерта
+      let title: String
+      // строка с текстом о количестве набранных очков
+      let text: String
+      // текст для кнопки алерта
+      let buttonText: String
+    }
+    
+    
+    // MARK: - Private Methods
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
