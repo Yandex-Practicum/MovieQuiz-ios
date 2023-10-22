@@ -60,6 +60,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+
         yesButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
         noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20.0)
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23.0)
@@ -73,6 +74,9 @@ final class MovieQuizViewController: UIViewController {
         
         let firstQuestionViewModel = convert(model: firstQuestionModel)
         self.show(quiz: firstQuestionViewModel)
+        
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     // MARK: - IB Actions
@@ -80,13 +84,13 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-    }
+        }
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
+        }
     
     // MARK: - Some structures
     
@@ -106,12 +110,12 @@ final class MovieQuizViewController: UIViewController {
     
     // вью модель для состояния "Результат квиза"
     struct QuizResultsViewModel {
-      // строка с заголовком алерта
-      let title: String
-      // строка с текстом о количестве набранных очков
-      let text: String
-      // текст для кнопки алерта
-      let buttonText: String
+        // строка с заголовком алерта
+        let title: String
+        // строка с текстом о количестве набранных очков
+        let text: String
+        // текст для кнопки алерта
+        let buttonText: String
     }
     
     
@@ -153,14 +157,18 @@ final class MovieQuizViewController: UIViewController {
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // 1
+        if currentQuestionIndex == questions.count - 1 {
             // идём в состояние "Результат квиза"
-            let text = "Ваш результат: \(correctAnswers)/10" // 1
-                    let viewModel = QuizResultsViewModel( // 2
-                        title: "Этот раунд окончен!",
-                        text: text,
-                        buttonText: "Сыграть ещё раз")
-                    show(quiz: viewModel) // 3
+            let text = "Ваш результат: \(correctAnswers)/10"
+            let viewModel = QuizResultsViewModel( // 2
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            
+            show(quiz: viewModel)
+            
+            imageView.layer.borderWidth = 0
+            imageView.layer.borderColor = UIColor.clear.cgColor
         } else { // 2
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
@@ -171,6 +179,7 @@ final class MovieQuizViewController: UIViewController {
             
             imageView.layer.borderWidth = 0
             imageView.layer.borderColor = UIColor.clear.cgColor
+
         }
     }
     
@@ -195,6 +204,11 @@ final class MovieQuizViewController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
+    private func stopButton() {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+    }
 }
 /*
  Mock-данные
@@ -204,56 +218,56 @@ final class MovieQuizViewController: UIViewController {
  Настоящий рейтинг: 9,2
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: The Dark Knight
  Настоящий рейтинг: 9
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: Kill Bill
  Настоящий рейтинг: 8,1
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: The Avengers
  Настоящий рейтинг: 8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: Deadpool
  Настоящий рейтинг: 8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: The Green Knight
  Настоящий рейтинг: 6,6
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: Old
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
-
-
+ 
+ 
  Картинка: The Ice Age Adventures of Buck Wild
  Настоящий рейтинг: 4,3
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
-
-
+ 
+ 
  Картинка: Tesla
  Настоящий рейтинг: 5,1
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
-
-
+ 
+ 
  Картинка: Vivarium
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?
