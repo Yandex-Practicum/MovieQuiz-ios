@@ -74,9 +74,6 @@ final class MovieQuizViewController: UIViewController {
         
         let firstQuestionViewModel = convert(model: firstQuestionModel)
         self.show(quiz: firstQuestionViewModel)
-        
-        yesButton.isEnabled = true
-        noButton.isEnabled = true
     }
     
     // MARK: - IB Actions
@@ -203,11 +200,6 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    private func stopButton() {
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
     }
 }
 /*
