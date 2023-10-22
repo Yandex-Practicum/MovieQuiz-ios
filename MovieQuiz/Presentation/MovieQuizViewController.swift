@@ -168,6 +168,9 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             
             show(quiz: viewModel)
+            
+            imageView.layer.borderWidth = 0
+            imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
     
