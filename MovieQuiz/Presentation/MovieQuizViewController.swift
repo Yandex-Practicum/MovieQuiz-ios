@@ -51,8 +51,8 @@ final class MovieQuizViewController: UIViewController {
     ]
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -77,8 +77,13 @@ final class MovieQuizViewController: UIViewController {
         let viewModel = convert(model: questions[currentQuestionIndex])
         show(quiz: viewModel)
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+        let image = UIImage(named: model.image) ?? UIImage()
+        let questionNumber = "\(currentQuestionIndex + 1)/\(questions.count)"
+        let questionStep = QuizStepViewModel(image: image, question: model.text, questionNumber: questionNumber)
         return questionStep
     }
     private func show(quiz step: QuizStepViewModel) {
