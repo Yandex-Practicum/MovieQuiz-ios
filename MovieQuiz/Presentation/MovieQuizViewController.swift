@@ -1,149 +1,13 @@
 import UIKit
 
-// GameRecord(Model) -> BinaryObject(JSON) -> UserDefaults
-// UserDefaults -> BinaryObject(JSON) -> GameRecord(Model)
-
-struct GameRecord: Codable {
-    var gameCount: Int = 1
-    var questionsCount: Int = 10 //kolichestvo igr
-    var validCount: Int = 6 //kolichestvo pravilnih
-    var date: Date = Date()
-    
-    var record: String {
-        return "\(validCount)/\(questionsCount)"
-    }
-    
-    var percent: Double {
-        return Double(questionsCount) / 100 //0.1
-    }
-    
-    var averageAccuracy: String {
-        
-        let average = Double(validCount) / percent
-        
-        let formatted = String(format: "%.2f", average)
-        return formatted + "%"
-    }
-    
-    var currentDate: String {
-        return Date().dateTimeString
-    }
-    
-    func isBetterThan(_ another: GameRecord) -> Bool {
-        validCount > another.validCount
-    }
-    
-}
-
-class StatisticServiceImplementation {
-    
-    var object: GameRecord?
-   
-    var message: String {
-        guard let object else { return "" }
-        
-        var recordObject = recordObject ?? object
-        
-        if object.isBetterThan(recordObject) {
-            recordObject = object
-        }
-        
-        var value = """
-        Ваш результат: \(object.record)
-        Количество сыграных квизов: \(object.gameCount)
-        Рекорд: \(recordObject.record) (\(recordObject.currentDate))
-        Средняя точность: \(object.averageAccuracy)
-        """
-        
-        return value
-    }
-    
-    func update(model: GameRecord) {
-        self.object = model
-    }
-    
-    var recordObject: GameRecord? {
-        
-        if let recordData = UserDefaults.standard.data(forKey: "Record") {
-            
-            let decoder = JSONDecoder()
-            do {
-                let record = try decoder.decode(GameRecord.self, from: recordData)
-                return record
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        return nil
-    }
-
-    func store() {
-        //1. Model -> Binary
-        let jsonEncoder = JSONEncoder()
-        
-        guard let currentObject = object else { return }
-        
-        do {
-    
-            if let recordObject = recordObject {
-                //if record > current -> break
-                if recordObject.isBetterThan(currentObject) {
-                    return
-                }
-            }
-            
-            //Binary
-            let currentData = try jsonEncoder.encode(object)
-            
-            //2. Binary -> UserDefaults
-            UserDefaults.standard.set(currentData, forKey: "Record")
-            
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-}
-
-struct AlertModel {
-    var title: String
-    var message: String
-    var buttonText: String
-    //var completion: ()->()
-}
-
-class AlertPresenter {
-    
-    var completion: (()->())?
-    
-    func showQuizResult(model: AlertModel, controller: UIViewController) {
-        
-        let alert = UIAlertController(
-            title: model.title, //"Раунд окончен!",
-            message: model.message, //"Ваш результат: \(count)/10",
-            preferredStyle: .alert)
-        
-        let continueAction = UIAlertAction.init(
-            title: model.buttonText, //"Сыграть ещё раз",
-            style: .default) { action in
-                
-                print(action, #line)
-                
-                self.completion?()
-                
-                //self.restartGame()
-            }
-        
-        alert.addAction(continueAction)
-        controller.present(alert, animated: true)
-    }
-}
-
 final class MovieQuizViewController: UIViewController {
     
     //Services
     private let questionFactory = QuestionFactory()
     private let alertPresenter = AlertPresenter()
-    private let statisticsService = StatisticServiceImplementation()
+    private var statisticsService: StatisticService = StatisticServiceImplementation()
+    
+    
     
     private lazy var movies = questionFactory.questions
     
@@ -152,35 +16,30 @@ final class MovieQuizViewController: UIViewController {
     private lazy var moviesCount = movies.count
     
     private var count = 0 //Count of valid answers
-    
-    private var gameCount = 0 //Count of games
-    
-    private lazy var copyMovies = movies
-    
-    
+
     //MARK: - Business Logic
     
     private func restartGame() {
-        
+ 
         moviesCount = movies.count //setup all questions
         
-        copyMovies = movies //setup all movies in array
+        questionFactory.copyMovies = movies //setup all movies in array
         
         count = 0 //count make null
         
-        gameCount += 1
+        statisticsService.gameCount += 1
         
         statisticsService.store()
-        
         
         nextQuestion() //start 1 question
     }
     
     private func nextQuestion() {
         
-        if copyMovies.isEmpty {
+
+        if questionFactory.copyMovies.isEmpty {
             
-            let model = GameRecord.init(gameCount: gameCount, questionsCount: moviesCount, validCount: count)
+            let model = GameRecord.init(questionsCount: moviesCount, validCount: count)
             statisticsService.update(model: model)
             
             let alertModel = AlertModel.init(
@@ -191,14 +50,16 @@ final class MovieQuizViewController: UIViewController {
             
             alertPresenter.showQuizResult(model: alertModel, controller: self)
             
-            alertPresenter.completion = {
-                self.restartGame()
+            alertPresenter.completion = { [weak self] in
+                self?.restartGame()
             }
             return
         }
         
-        scoreLabel.text = "\(moviesCount - copyMovies.count + 1)/\(moviesCount)"
-        currentMovie = copyMovies.removeFirst()
+        
+        scoreLabel.text = "\(moviesCount - questionFactory.copyMovies.count + 1)/\(moviesCount)"
+        
+        currentMovie = questionFactory.requestNextQuestion()
         update()
     }
     
@@ -252,7 +113,7 @@ final class MovieQuizViewController: UIViewController {
         setupViews()
         setupConstraints()
         
-        gameCount = 1
+        statisticsService.gameCount += 1
         
         nextQuestion()
     }
@@ -299,7 +160,7 @@ final class MovieQuizViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        button.addTarget(self, action: #selector(checkQuestionTapped(sender:)), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(checkQuestionTapped(sender:)), for: .touchUpInside)
         
         return button
     }()
@@ -313,7 +174,7 @@ final class MovieQuizViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        button.addTarget(self, action: #selector(checkQuestionTapped(sender:)), for: .touchUpInside)
+         button.addTarget(nil, action: #selector(checkQuestionTapped(sender:)), for: .touchUpInside)
         
         return button
     }()
