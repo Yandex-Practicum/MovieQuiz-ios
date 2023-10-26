@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
     
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
@@ -14,6 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private let questionAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
+    private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
     private var currentQuestion: QuizQuestion?
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
@@ -23,6 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         questionFactory?.delegate = self
+        alertPresenter?.delegate = self
         questionFactory?.requestNextQuestion()
     }
     
@@ -42,11 +44,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: currentQuestion.answer == true)
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.filmName) ?? UIImage(), question: model.text,
-                                 questionNumber: "\(currentQuestionIndex + 1)/\(questionAmount)")
-    }
-    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let firstQuestion = question else { return }
             currentQuestion = firstQuestion
@@ -54,6 +51,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             DispatchQueue.main.async { [weak self] in
                 self?.show(quiz: viewModel)
             }
+    }
+    
+    func showResults() {
+        print("Showing results")
+        let alert = UIAlertController(
+            title: "Этот раунд окончен!",
+            message: "Ваш результат \(correctAnswers) из \(questionAmount)",
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
+            self.questionFactory?.requestNextQuestion()
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(image: UIImage(named: model.filmName) ?? UIImage(), question: model.text,
+                                 questionNumber: "\(currentQuestionIndex + 1)/\(questionAmount)")
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -79,21 +100,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults(){
         if currentQuestionIndex == questionAmount - 1{
-            let alert = UIAlertController(
-                title: "Этот раунд окончен!",
-                message: "Ваш результат \(correctAnswers) из \(questionAmount)",
-                preferredStyle: .alert)
-            
-            let action = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                self.yesButton.isEnabled = true
-                self.noButton.isEnabled = true
-                self.questionFactory?.requestNextQuestion()
-            }
-            alert.addAction(action)
-            self.present(alert, animated: true, completion: nil)
+            alertPresenter?.alertSignal()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion() 
