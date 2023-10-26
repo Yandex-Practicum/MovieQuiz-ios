@@ -8,5 +8,5 @@
 import Foundation
 
 protocol AlertPresenterDelegate: AnyObject {
-    func showResults()
+    func showResults(title: String, message: String, buttonText: String)
 }

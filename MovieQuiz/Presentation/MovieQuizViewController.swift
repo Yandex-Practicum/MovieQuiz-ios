@@ -53,14 +53,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             }
     }
     
-    func showResults() {
+    func showResults(title: String, message: String, buttonText: String) {
         print("Showing results")
         let alert = UIAlertController(
-            title: "Этот раунд окончен!",
-            message: "Ваш результат \(correctAnswers) из \(questionAmount)",
+            title: title,
+            message: message,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+        let action = UIAlertAction(title: buttonText, style: .default) { [weak self] _ in
             guard let self = self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
@@ -100,7 +100,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     private func showNextQuestionOrResults(){
         if currentQuestionIndex == questionAmount - 1{
-            alertPresenter?.alertSignal()
+            let alert: AlertModel = AlertModel(title: "Этот раунд окончен!", message: "Ваш результат \(correctAnswers) из \(questionAmount)", buttonText: "OK")
+            alertPresenter?.alertSignal(alertModel: alert)
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion() 
