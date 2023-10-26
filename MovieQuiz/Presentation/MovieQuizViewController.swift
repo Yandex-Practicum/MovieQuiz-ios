@@ -16,8 +16,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
     private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
     private var currentQuestion: QuizQuestion?
-    private var correctAnswers: Int = 0
-    private var currentQuestionIndex: Int = 0
+    internal var correctAnswers: Int = 0
+    internal var currentQuestionIndex: Int = 0
     
     // MARK: - Lifecycle
     
@@ -53,23 +53,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             }
     }
     
-    func showResults(title: String, message: String, buttonText: String) {
+    func showResults(alert: UIAlertController, action: UIAlertAction) {
         print("Showing results")
-        let alert = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
-            self.questionFactory?.requestNextQuestion()
-        }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
+        self.yesButton.isEnabled = true
+        self.noButton.isEnabled = true
+        self.questionFactory?.requestNextQuestion()
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {

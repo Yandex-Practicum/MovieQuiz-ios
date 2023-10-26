@@ -13,10 +13,16 @@ class AlertPresenter: AlertPresenterProtocol {
     
     func alertSignal(alertModel: AlertModel) {
         print("We passed through AlertPresenter class")
-        print(alertModel.title)
-        print(alertModel.message)
-        print(alertModel.buttonText)
         guard let delegate = delegate else { return }
-        delegate.showResults(title: alertModel.title, message: alertModel.message, buttonText: alertModel.buttonText)
+        let alert = UIAlertController(
+            title: alertModel.title,
+            message: alertModel.message,
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: alertModel.buttonText, style: .default) { [weak delegate] _ in
+            guard let delegate = delegate else { return }
+            delegate.currentQuestionIndex = 0
+            delegate.correctAnswers = 0
+        }
+        delegate.showResults(alert: alert, action: action)
     }
 }
