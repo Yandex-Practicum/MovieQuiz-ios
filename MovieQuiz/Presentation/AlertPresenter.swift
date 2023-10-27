@@ -4,7 +4,7 @@ class AlertPresenter {
     
     weak var view: UIViewController?
     
-    init(view: UIViewController? = nil) {
+    init(view: UIViewController) {
         self.view = view
     }
 
