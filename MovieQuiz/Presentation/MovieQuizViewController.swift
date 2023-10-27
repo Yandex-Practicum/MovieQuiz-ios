@@ -25,13 +25,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         imageView.layer.cornerRadius = 20
         
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         
         questionFactory?.requestNextQuestion()
         
         alertPresenter = AlertPresenter(view: self)
         
         statisticService = StatisticServiceImplementation()
+        
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -71,13 +74,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
     }
     
-    // метод принимает моковый вопрос и возвращает вью модель для главного экрана
+    // метод принимает вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizeQuestion) -> QuizStepViewModel {
-        QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
+        return QuizStepViewModel(
+                image: UIImage(data: model.image) ?? UIImage(),
+                question: model.text,
+                questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        }
     
     // метод вывода на экран вопроса
     private func show(quiz step: QuizStepViewModel) {
@@ -162,6 +165,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.startAnimating()
     }
     
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
         
@@ -175,5 +182,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         
         alertPresenter?.show(data: model)
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
     }
 }
