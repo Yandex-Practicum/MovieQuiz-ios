@@ -22,5 +22,5 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         didDiscardSceneSessions sceneSessions: Set<UISceneSession>
-    ) {}
+    ) {print("Hi, it's me")}
 }
