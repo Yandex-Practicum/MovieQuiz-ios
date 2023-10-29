@@ -65,6 +65,7 @@ final class MovieQuizViewController: UIViewController {
         guard let firstQuestion = questions.first else {
             return
         }
+        imageView.layer.cornerRadius = 20
         let firstQuestionView = convert(model: firstQuestion)
         self.showQuestion(quiz: firstQuestionView)
     }
@@ -122,6 +123,7 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             countOfCorrectAnswers+=1
         }
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 8
         imageView.layer.masksToBounds = true
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
