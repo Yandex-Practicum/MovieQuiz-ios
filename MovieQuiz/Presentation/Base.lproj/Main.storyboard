@@ -49,7 +49,7 @@
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="GLD-JY-YQr" secondAttribute="height" multiplier="2:3" id="KD0-kc-GZs"/>
+                                            <constraint firstAttribute="width" secondItem="GLD-JY-YQr" secondAttribute="height" multiplier="2:3" priority="750" id="KD0-kc-GZs"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
