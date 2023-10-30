@@ -11,17 +11,13 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        showNextQuestion()
+        showQuestion()
     }
     
-    @IBAction private func noButtonClicked(_ sender: Any) {
+    @IBAction private func answerButtonClicked(_ sender: UIButton) {
+        let isYesClicked = sender.titleLabel?.text == "Да"
         let currentQuestion = questions[currentQuestionIndex]
-        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
-    }
-    
-    @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == isYesClicked)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -46,17 +42,21 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
-            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswers)/10", buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel)
+            let result = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: "Ваш результат: \(correctAnswers)/10",
+                buttonText: "Сыграть ещё раз"
+            )
+            show(quiz: result)
         } else {
             currentQuestionIndex += 1
-            showNextQuestion()
+            showQuestion()
         }
     }
     
-    private func showNextQuestion() {
-        let nextQuestion = questions[currentQuestionIndex]
-        let viewModel = convert(model: nextQuestion)
+    private func showQuestion() {
+        let question = questions[currentQuestionIndex]
+        let viewModel = convert(model: question)
         show(quiz: viewModel)
     }
     
@@ -72,7 +72,7 @@ final class MovieQuizViewController: UIViewController {
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            self.showNextQuestion()
+            self.showQuestion()
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)

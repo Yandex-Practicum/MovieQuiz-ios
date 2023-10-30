@@ -10,7 +10,7 @@ import Foundation
 struct QuizQuestion {
   let image: String
   let text: String
-let correctAnswer: Bool
+  let correctAnswer: Bool
 }
 
 private let question = "Рейтинг этого фильма больше чем 6?"
