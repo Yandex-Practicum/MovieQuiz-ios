@@ -15,7 +15,7 @@ final class MovieQuizViewController: UIViewController {
             
                 let questionStep = QuizStepViewModel(
                     image: UIImage(named: model.image) ?? UIImage(),
-                    question: model.text, // 3
+                    question: model.text,
                     questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
                 return questionStep
             }
