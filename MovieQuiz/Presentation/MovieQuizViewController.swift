@@ -1,5 +1,38 @@
 import UIKit
 
+private struct QuizStepViewModel {
+  let image: UIImage
+  let question: String
+  let questionNumber: String
+}
+
+private struct QuizResultsViewModel {
+  let title: String
+  let text: String
+  let buttonText: String
+}
+
+private struct QuizQuestion {
+  let image: String
+  let text: String
+  let correctAnswer: Bool
+}
+
+private let question = "Рейтинг этого фильма больше чем 6?"
+
+private let questionsMock: [QuizQuestion] = [
+    QuizQuestion(image: "The Godfather", text: question, correctAnswer: true),
+    QuizQuestion(image: "The Dark Knight", text: question, correctAnswer: true),
+    QuizQuestion(image: "Kill Bill", text: question, correctAnswer: true),
+    QuizQuestion(image: "The Avengers", text: question, correctAnswer: true),
+    QuizQuestion(image: "Deadpool", text: question, correctAnswer: true),
+    QuizQuestion(image: "The Green Knight", text: question, correctAnswer: true),
+    QuizQuestion(image: "Old", text: question, correctAnswer: false),
+    QuizQuestion(image: "The Ice Age Adventures of Buck Wild", text: question, correctAnswer: false),
+    QuizQuestion(image: "Tesla", text: question, correctAnswer: false),
+    QuizQuestion(image: "Vivarium", text: question, correctAnswer: false)
+]
+
 final class MovieQuizViewController: UIViewController {
     private let questions: [QuizQuestion] = questionsMock
     private var currentQuestionIndex = 0
@@ -8,6 +41,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +64,11 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
+        //глобально, в приложении есть баг: если быстро нажимать на кнопку "Да", то можно пройти игру без ошибок
+        //это происходит потому что первые вопросы имеют ответ да, и инкрементирование счетчика происходит быстрее чем переключение вопросов (там ожидание в 1 сек)
+        //ну у меня возникла идея, пока вопрос не переключился - блокировать кнопки. Лучше чем это пока не придумал)
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -37,6 +77,8 @@ final class MovieQuizViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
         }
     }
     
@@ -44,7 +86,7 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == questions.count - 1 {
             let result = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: "Ваш результат: \(correctAnswers)/10",
+                text: "Ваш результат: \(correctAnswers)/\(questionsMock.count)",
                 buttonText: "Сыграть ещё раз"
             )
             show(quiz: result)

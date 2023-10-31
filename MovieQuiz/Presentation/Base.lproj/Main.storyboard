@@ -29,27 +29,27 @@
                                 <rect key="frame" x="20" y="10" width="280" height="558"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LNf-kj-4gg">
-                                        <rect key="frame" x="0.0" y="0.0" width="280" height="23.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="18"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fq-no-hlm" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="244" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="244" height="18"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <color key="highlightedColor" name="YP White"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndE-p4-Ye6" userLabel="Index Label">
-                                                <rect key="frame" x="244" y="0.0" width="36" height="23.5"/>
+                                                <rect key="frame" x="244" y="0.0" width="36" height="18"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <color key="highlightedColor" name="YP White"/>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="GLD-JY-YQr" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="280" height="360.5"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GLD-JY-YQr" userLabel="Preview Image">
+                                        <rect key="frame" x="0.0" y="38" width="280" height="420"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="GLD-JY-YQr" secondAttribute="height" multiplier="2:3" priority="250" id="KD0-kc-GZs"/>
+                                            <constraint firstAttribute="width" secondItem="GLD-JY-YQr" secondAttribute="height" multiplier="2:3" id="KD0-kc-GZs"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -58,7 +58,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MT4-aI-fz8" userLabel="Question Label">
-                                        <rect key="frame" x="0.0" y="424" width="280" height="54"/>
+                                        <rect key="frame" x="0.0" y="478" width="280" height="0.0"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
                                         <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -120,7 +120,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="ndE-p4-Ye6" id="80o-a1-q30"/>
                         <outlet property="imageView" destination="GLD-JY-YQr" id="vro-6O-RsG"/>
+                        <outlet property="noButton" destination="qa8-dL-bc8" id="sLR-7q-W2o"/>
                         <outlet property="textLabel" destination="MT4-aI-fz8" id="S1L-Yd-Cc8"/>
+                        <outlet property="yesButton" destination="eCY-QY-Fhd" id="r1i-V9-ID9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
