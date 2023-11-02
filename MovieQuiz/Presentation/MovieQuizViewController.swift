@@ -51,11 +51,13 @@ final class MovieQuizViewController: UIViewController {
                  correctAnswer: false)
     ]
     
+    private var currentQuestionIndex = 0
+    
+    private var correctAnswers = 0
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
@@ -71,24 +73,6 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            
-            self.showNextQuestionOrResults()
-        }
-    }
-    
-    
-    private var currentQuestionIndex = 0
-    
-    private var correctAnswers = 0
-    
-    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel (image: UIImage(named: model.image) ?? UIImage(),
                                               question: model.text,
@@ -96,15 +80,29 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
-    
-    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     
-    
+    private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            correctAnswers += 1
+        }
+        
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 6
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            
+            self.showNextQuestionOrResults()
+        }
+        
+    }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
@@ -119,37 +117,23 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-//    let alert = UIAlertController(title: "Этот раунд окончен!",
-//                                  message: "Ваш результат ???",
-//                                  preferredStyle: .alert)
-//    
-//    let action = UIAlertAction(title: "Сыграть ещё раз", style: .default) { _ in
-//        self.currentQuestionIndex = 0
-//        
-//        self.correctAnswer = 0
-//
-//        let firstQuestion = self.questions[self.currentQuestionIndex]
-//        let viewModel = self.convert(model: firstQuestion)
-//        self.show(quiz: viewModel)
-//    }
-//    
-//    alert.addAction(action)
-//
-//    self.present(alert, animated: true, completion: nil)
-
-
+    let alert = UIAlertController(title: "Этот раунд окончен!",
+                                  message: "Ваш результат ???",
+                                  preferredStyle: .alert)
     
-//    let alert = UIAlertController(title: "My alert",
-//                                  message: "This is an alert",
-//                                  preferredStyle: .alert)
-//    
-//    let action = UIAlertAction(title: "OK", style: .default) { _ in
-//        print("OK button is clicked!")
-//    }
-//    
-//    alert.addAction(action)
-//
-//    self.present(alert, animated: true, completion: nil)
+    let action = UIAlertAction(title: "Сыграть ешё раз", style: .default) { _ in
+        self.currentQuestionIndex = 0
+        
+        self.correctAnswers = 0
+        
+        var firstQuestion = self.questions[self.currentQuestionIndex]
+        let viewModel = self.convert(model: firstQuestion)
+        self.show(quiz: viewModel)
+    }
+    
+    alert.addAction(action)
+    
+    self.present(alert, animated: true, completion: nil)
     
 }
 
