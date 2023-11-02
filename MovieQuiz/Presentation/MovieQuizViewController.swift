@@ -1,4 +1,5 @@
 import UIKit
+
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
@@ -14,6 +15,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var statisticService: StatisticService?
     private var alertPresenter: AlertPresenter?
     
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.switchOfButtons()
     }
     
+
     // MARK: - QuestionFactoryDelegate
 
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -38,6 +41,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self?.show(quiz: viewModel)
             }
     }
+
     
     // MARK: - Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -99,6 +103,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion(currentQuestionIndex)
         }
     }
+
     
     private func showFinalResult() {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
@@ -138,6 +143,4 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
 }
 
-    
-    
-
+ 
