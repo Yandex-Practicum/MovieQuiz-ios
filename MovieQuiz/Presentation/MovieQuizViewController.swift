@@ -70,7 +70,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
    
-    func showAnswerResult(isCorrect: Bool) {
+    private func showAnswerResult(isCorrect: Bool) {
         yesButton.isEnabled = false
         noButton.isEnabled = false
         if isCorrect {
