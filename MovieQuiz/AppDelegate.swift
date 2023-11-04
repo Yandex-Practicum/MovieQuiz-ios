@@ -7,10 +7,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         return true
+        
     }
 
     // MARK: UISceneSession Lifecycle
-
+ 
     func application(
         _ application: UIApplication,
         configurationForConnecting connectingSceneSession: UISceneSession,
