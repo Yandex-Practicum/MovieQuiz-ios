@@ -1,8 +1,11 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    @IBOutlet weak var LabelQuestion: UILabel!
+    @IBOutlet weak var QuestionLabel: UILabel!
+    @IBOutlet weak var QuestionTitleLabel: UILabel!
     @IBOutlet weak var NoButton: UIButton!
+    @IBOutlet weak var IndexLabel: UILabel!
+    @IBOutlet weak var PreviewImage: UIImageView!
     @IBOutlet weak var YesButton: UIButton!
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -22,10 +25,19 @@ final class MovieQuizViewController: UIViewController {
         YesButton.layer.cornerRadius = 15
         YesButton.frame.size = CGSize(width: 157, height: 60)
         
-        LabelQuestion.text = "Вопрос:"
-        LabelQuestion.textColor = UIColor.ypWhite
-        LabelQuestion.frame.size = CGSize(width: 72, height: 24)
-        LabelQuestion.font = UIFont(name: "YS Display", size: 20)
+        QuestionTitleLabel.text = "Вопрос:"
+        QuestionTitleLabel.textColor = UIColor.ypWhite
+        QuestionTitleLabel.frame.size = CGSize(width: 72, height: 24)
+        QuestionTitleLabel.font = UIFont(name: "YS Display", size: 20)
+        
+        IndexLabel.text = "1/10"
+        IndexLabel.textColor = UIColor.ypWhite
+        IndexLabel.frame.size = CGSize(width: 72, height: 24)
+        IndexLabel.font = UIFont(name: "YS Display", size: 20)
+        QuestionLabel.textColor = UIColor.ypWhite
+        QuestionLabel.frame.size = CGSize(width: 72, height: 24)
+        QuestionLabel.font = UIFont(name: "YS Display", size: 23)
+        QuestionLabel.text = "Рейтинг этого фильма меньше 5?"
     }
 }
 
