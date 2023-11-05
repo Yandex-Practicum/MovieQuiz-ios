@@ -1,4 +1,5 @@
 import UIKit
+
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
@@ -99,7 +100,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion(currentQuestionIndex)
         }
     }
-    
+  
     private func showFinalResult() {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
         let alertModel = AlertModel(
@@ -137,7 +138,4 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
 }
-
-    
-    
 

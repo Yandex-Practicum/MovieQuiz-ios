@@ -29,6 +29,7 @@
 		FDA7CC1E2AC89B1D00033EC8 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDA7CC1D2AC89B1D00033EC8 /* YS Display-Medium.ttf */; };
 		FDA7CC202AC89B3400033EC8 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDA7CC1F2AC89B3400033EC8 /* YS Display-Bold.ttf */; };
 		FDB6FFCB2AEE756F006838D4 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB6FFCA2AEE756F006838D4 /* StatisticService.swift */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+
 		FD7591172ADDB507004F3B71 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		FD75911A2ADDBAFC004F3B71 /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
 		FD75911C2ADDBB15004F3B71 /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
@@ -56,6 +58,8 @@
 		FDA7CC1D2AC89B1D00033EC8 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		FDA7CC1F2AC89B3400033EC8 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		FDB6FFCA2AEE756F006838D4 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
+
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,8 +86,6 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FDA7CC1F2AC89B3400033EC8 /* YS Display-Bold.ttf */,
-				FDA7CC1D2AC89B1D00033EC8 /* YS Display-Medium.ttf */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
@@ -215,8 +217,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
-				FDA7CC1E2AC89B1D00033EC8 /* YS Display-Medium.ttf in Resources */,
-				FDA7CC202AC89B3400033EC8 /* YS Display-Bold.ttf in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
 			);
