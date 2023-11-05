@@ -1,9 +1,23 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    @IBOutlet weak var NoButton: UIButton!
+    @IBOutlet weak var YesButton: UIButton!
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.ypBlack
+        NoButton.setTitle("Нет", for: .normal)
+        YesButton.setTitle("Да", for: .normal)
+        NoButton.setTitleColor(UIColor.ypBlack, for: .normal)
+        YesButton.setTitleColor(UIColor.ypBlack, for: .normal)
+        NoButton.backgroundColor = UIColor.ypWhite
+        YesButton.backgroundColor = UIColor.ypWhite
+        NoButton.layer.cornerRadius = 15
+        YesButton.layer.cornerRadius = 15
+        NoButton.frame.size = CGSize(width: 157, height: 60)
+
+        YesButton.frame.size = CGSize(width: 157, height: 60)
     }
 }
 
