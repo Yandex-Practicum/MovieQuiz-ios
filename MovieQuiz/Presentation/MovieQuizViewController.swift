@@ -4,6 +4,21 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    private struct QuizQuestion {
+        let image: String
+        let text: String
+        let correctAnswer: Bool
+    }
+    private struct QuizStepViewModel {
+        let image: UIImage
+        let question: String
+        let questionNumber: String
+    }
+    private struct QuizResultsViewModel {
+      let title: String
+      let text: String
+      let buttonText: String
+    }
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -115,21 +130,6 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func yesButtonClicked(_ sender: Any) {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
     }
-}
-struct QuizQuestion {
-    let image: String
-    let text: String
-    let correctAnswer: Bool
-}
-struct QuizStepViewModel {
-    let image: UIImage
-    let question: String
-    let questionNumber: String
-}
-struct QuizResultsViewModel {
-  let title: String
-  let text: String
-  let buttonText: String
 }
 /*
  Mock-данные
