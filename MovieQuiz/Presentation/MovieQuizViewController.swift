@@ -15,9 +15,9 @@ final class MovieQuizViewController: UIViewController {
         let questionNumber: String
     }
     private struct QuizResultsViewModel {
-      let title: String
-      let text: String
-      let buttonText: String
+        let title: String
+        let text: String
+        let buttonText: String
     }
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -87,7 +87,7 @@ final class MovieQuizViewController: UIViewController {
         
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-           self.showNextQuestionOrResults()
+            self.showNextQuestionOrResults()
         }
     }
     private func showNextQuestionOrResults() {
