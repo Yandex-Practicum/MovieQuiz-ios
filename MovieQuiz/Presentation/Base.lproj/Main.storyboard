@@ -36,20 +36,30 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="YesButton"/>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAC-wM-pMy">
+                                <rect key="frame" x="20" y="102" width="113" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="PAC-wM-pMy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="6TU-CO-pAQ"/>
                             <constraint firstItem="xgA-TQ-Vj6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="8Y3-ec-Vbc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YM5-15-iaN" secondAttribute="bottom" id="O7e-PU-Tpw"/>
                             <constraint firstItem="xgA-TQ-Vj6" firstAttribute="width" secondItem="YM5-15-iaN" secondAttribute="width" id="Pil-6Y-zoJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xgA-TQ-Vj6" secondAttribute="bottom" id="Piq-ja-TBU"/>
                             <constraint firstItem="YM5-15-iaN" firstAttribute="leading" secondItem="xgA-TQ-Vj6" secondAttribute="trailing" constant="20" id="hk2-jy-RcL"/>
                             <constraint firstItem="xgA-TQ-Vj6" firstAttribute="height" secondItem="YM5-15-iaN" secondAttribute="height" id="iau-N0-aen"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PAC-wM-pMy" secondAttribute="trailing" constant="281" id="njH-m3-g1g"/>
+                            <constraint firstItem="PAC-wM-pMy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="54" id="oYg-se-YBY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YM5-15-iaN" secondAttribute="trailing" constant="20" id="tdL-Br-MmG"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="LabelQuestion" destination="PAC-wM-pMy" id="3bw-fd-KJU"/>
                         <outlet property="NoButton" destination="xgA-TQ-Vj6" id="bCr-u1-J87"/>
                         <outlet property="YesButton" destination="YM5-15-iaN" id="F50-pL-b3k"/>
                     </connections>
