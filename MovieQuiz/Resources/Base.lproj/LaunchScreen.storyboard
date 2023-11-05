@@ -3,7 +3,7 @@
     <device id="retina6_72" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,8 +24,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="xTD-cE-gD3" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="34" id="6A4-ze-YQa"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xTD-cE-gD3" secondAttribute="trailing" id="BgU-Fz-a7Z"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="xTD-cE-gD3" secondAttribute="top" constant="59" id="Xzn-fy-dko"/>
+                            <constraint firstAttribute="trailing" secondItem="xTD-cE-gD3" secondAttribute="trailing" id="BgU-Fz-a7Z"/>
+                            <constraint firstAttribute="top" secondItem="xTD-cE-gD3" secondAttribute="top" id="Xzn-fy-dko"/>
                             <constraint firstItem="xTD-cE-gD3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vJg-yE-uC9"/>
                         </constraints>
                     </view>
