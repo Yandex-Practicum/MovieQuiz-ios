@@ -12,8 +12,15 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var YesButton: UIButton!
     @IBAction private func yesButtonPressed(_ sender: Any) {
-    }
+       let currentQuestion = questions[currentQuestionIndex]
+        let givenAnswer = true
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+                         }
     @IBAction private func noButtonPressed(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+         let givenAnswer = false
+         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+
     }
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -131,5 +138,20 @@ final class MovieQuizViewController: UIViewController {
         imageView.image = step.image
         questionLabel.text = step.question
         counterLabel.text = step.questionNumber
+    }
+    private func showAnswerResult(isCorrect: Bool) {
+
+        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+        imageView.layer.borderWidth = 8 // толщина рамки
+        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor: UIColor.ypRed.cgColor
+    }
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 { // 1
+            // идём в состояние "Результат квиза"
+        } else { // 2
+            currentQuestionIndex += 1
+            // идём в состояние "Вопрос показан"
+        }
     }
 }
