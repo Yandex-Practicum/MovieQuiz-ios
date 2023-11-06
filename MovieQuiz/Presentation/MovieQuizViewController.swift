@@ -13,16 +13,19 @@ final class MovieQuizViewController: UIViewController {
         let text: String
         let correctAnswer: Bool
     }
+    
     private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
+    
     private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
+    
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -65,6 +68,7 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
+    
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
@@ -74,8 +78,11 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
-        return questionStep
+        return QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
+        )
     }
     
     private func show(quiz step: QuizStepViewModel) {
