@@ -141,8 +141,12 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypgreen.cgColor : UIColor.ypred.cgColor
-        correctAnswers = isCorrect ? correctAnswers + 1 : correctAnswers
+        if isCorrect {
+            correctAnswers += 1
+            imageView.layer.borderColor = UIColor.ypgreen.cgColor
+        } else {
+            imageView.layer.borderColor = UIColor.ypred.cgColor
+        }
         
         //Делаем задержку перед отобрадение следующего вопрос
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
