@@ -1,9 +1,13 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+    
     private struct QuizQuestion {
         let image: String
         let text: String
@@ -63,33 +67,40 @@ final class MovieQuizViewController: UIViewController {
     ]
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         show(quiz: convert(model: questions[currentQuestionIndex]))
     }
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return questionStep
     }
+    
     private func show(quiz step: QuizStepViewModel) {
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-        imageView.layer.borderColor = UIColor.ypGray.cgColor
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderWidth = 0
     }
+    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 20
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
     }
+    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
@@ -105,6 +116,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
+    
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
@@ -124,10 +136,16 @@ final class MovieQuizViewController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
     @IBAction private func noButtonClicked(_ sender: Any) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == false)
     }
+    
     @IBAction private func yesButtonClicked(_ sender: Any) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
     }
 }
