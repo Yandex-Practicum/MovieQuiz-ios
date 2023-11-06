@@ -1,7 +1,7 @@
 import UIKit
 
 //Структура вопроса квиза
-struct QuizQuestion {
+private struct QuizQuestion {
     //Строка с названием фильма
     //Совпадает с названием картинки афиши фильма в Assets
     var image: String
@@ -14,7 +14,7 @@ struct QuizQuestion {
 }
 
 //Структура модели вопроса нашего квиза
-struct QuizStepViewModel {
+private struct QuizStepViewModel {
     //картинка с постером фильма
     var image: UIImage
     
@@ -27,7 +27,7 @@ struct QuizStepViewModel {
 }
 
 //Структура состояния "результат квиза"
-struct QuizResultViewModel {
+private struct QuizResultViewModel {
     //Строка с заголовком alert
     var title: String
     
@@ -40,25 +40,25 @@ struct QuizResultViewModel {
 
 //Моки данные для заполнения массива вопросов квиза
 
-var theGodfather: QuizQuestion = QuizQuestion(image: "The Godfather", text: "Рейтин этого фильма больше чем 6?", correctAnswer: true)
+private var theGodfather = QuizQuestion(image: "The Godfather", text: "Рейтин этого фильма больше чем 6?", correctAnswer: true)
 
-var theDarkKnight: QuizQuestion = QuizQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
+private var theDarkKnight = QuizQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
 
-var killBill = QuizQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
+private var killBill = QuizQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
 
-var theAvengers = QuizQuestion(image: "The Avengers", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
+private var theAvengers = QuizQuestion(image: "The Avengers", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
 
-var deadpool = QuizQuestion(image: "Deadpool", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
+private var deadpool = QuizQuestion(image: "Deadpool", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
 
-var theGreenKnight = QuizQuestion(image: "The Green Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
+private var theGreenKnight = QuizQuestion(image: "The Green Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true)
 
-var old = QuizQuestion(image: "Old", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
+private var old = QuizQuestion(image: "Old", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
 
-var theIceAgeAdvanturesOfBuckWild = QuizQuestion(image: "The Ice Age Adventures of Buck Wild", text: "Рейтинг этого фильма больше 6?", correctAnswer: false)
+private var theIceAgeAdvanturesOfBuckWild = QuizQuestion(image: "The Ice Age Adventures of Buck Wild", text: "Рейтинг этого фильма больше 6?", correctAnswer: false)
 
-var tesla = QuizQuestion(image: "Tesla", text: "Рейтинг этого фильма больше 6?", correctAnswer: false)
+private var tesla = QuizQuestion(image: "Tesla", text: "Рейтинг этого фильма больше 6?", correctAnswer: false)
 
-var vivarium = QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше 6?", correctAnswer: false)
+private var vivarium = QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше 6?", correctAnswer: false)
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
