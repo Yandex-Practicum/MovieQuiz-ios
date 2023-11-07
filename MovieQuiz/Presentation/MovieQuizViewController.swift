@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    
+
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
@@ -25,6 +25,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let currentQuestion = questions[currentQuestionIndex]
         let quizStep = convert(model: currentQuestion)
         show(quiz: quizStep)
@@ -140,18 +141,25 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     private func showAnswerResult(isCorrect: Bool) {
-
+        
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor: UIColor.ypRed.cgColor
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+        }
     }
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // 1
-            // идём в состояние "Результат квиза"
-        } else { // 2
+        if currentQuestionIndex == questions.count - 1 {
+          // идём в состояние "Результат квиза"
+        } else {
             currentQuestionIndex += 1
-            // идём в состояние "Вопрос показан"
+            
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            show(quiz: viewModel)
         }
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
 }
