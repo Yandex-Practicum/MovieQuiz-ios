@@ -4,15 +4,24 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        let currentQuestion = questions[currentQuestionIndex]
+        let firstQuestionView = convert(model: currentQuestion)
+        self.show(quiz: firstQuestionView)
     }
     
-    struct QuizQuestion {
+    private struct QuizResultsViewModel {
+        let title: String
+        let text: String
+        let buttonText: String
+    }
+    
+    private struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
     }
     
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
@@ -107,6 +116,29 @@ final class MovieQuizViewController: UIViewController {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             
+            let text = "Ваш результат \(correctAnswers)/10"
+            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
+                                                 text: text,
+                                                 buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel)
+            
+            let alert = UIAlertController(title: "Этот раунд окончен!",
+                                          message: "Ваш результат ???",
+                                          preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Сыграть ешё раз", style: .default) { _ in
+                self.currentQuestionIndex = 0
+                
+                self.correctAnswers = 0
+                
+                let firstQuestion = self.questions[self.currentQuestionIndex]
+                let viewModel = self.convert(model: firstQuestion)
+                self.show(quiz: viewModel)
+            }
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true, completion: nil)
         } else {
             currentQuestionIndex += 1
             
@@ -117,23 +149,22 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    let alert = UIAlertController(title: "Этот раунд окончен!",
-                                  message: "Ваш результат ???",
-                                  preferredStyle: .alert)
-    
-    let action = UIAlertAction(title: "Сыграть ешё раз", style: .default) { _ in
-        self.currentQuestionIndex = 0
+    private func show(quiz result: QuizResultsViewModel) {
+        let alert = UIAlertController(title: result.title,
+                                      message: result.text,
+                                      preferredStyle: .alert)
         
-        self.correctAnswers = 0
-        
-        var firstQuestion = self.questions[self.currentQuestionIndex]
-        let viewModel = self.convert(model: firstQuestion)
-        self.show(quiz: viewModel)
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
     }
-    
-    alert.addAction(action)
-    
-    self.present(alert, animated: true, completion: nil)
     
 }
 
