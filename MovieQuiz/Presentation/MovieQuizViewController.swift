@@ -108,7 +108,7 @@ final class MovieQuizViewController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.setNeedsStatusBarAppearanceUpdate()
         }
-
+        
     }
     
     //Метод осуществляющий преобразования структуру модели вопроса QuizQuestiion в структур модели отображения на экране QuizStepViewModel
@@ -123,9 +123,14 @@ final class MovieQuizViewController: UIViewController {
     
     //Метод загружающий внешний вид модели QuizStepViewModel на экран
     private func show(quiz step: QuizStepViewModel) {
-        counterLabel.text = step.questionNumber
-        imageView.image = step.image
+        UIView.transition(with: imageView,
+                          duration: 0.25,
+                          options: .transitionCrossDissolve,
+                          animations: {
+                          self.imageView.image = step.image},
+                          completion: nil)
         textLabel.text = step.question
+        counterLabel.text = step.questionNumber
         imageView.layer.borderWidth = 0 //Скраваем рамку
         yesButton.isEnabled = true // Разрешаем действие кнопки "Да"
         noButton.isEnabled = true // Разрешаме действие кнопки "Нет"
@@ -157,7 +162,7 @@ final class MovieQuizViewController: UIViewController {
     
     //Метод который меняе цвет рамки и вызывает метод перехода
     //метод принимает на въод булево значение и ничего не возвращает
-   
+    
     private func showAnswerResult(isCorrect: Bool) {
         
         yesButton.isEnabled = false // Запрещаем действие кнопки "Да"
