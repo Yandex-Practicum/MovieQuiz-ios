@@ -4,6 +4,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageLabel: UIImageView!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private let questions: [QuizQuestion] = [
@@ -35,6 +37,8 @@ final class MovieQuizViewController: UIViewController {
         let correctAnswer: Bool
     }
     private func showAnswerResult(isCorrect: Bool) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         if isCorrect {
             correctAnswers += 1
         }
@@ -43,6 +47,8 @@ final class MovieQuizViewController: UIViewController {
         imageLabel.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
         }
     }
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -53,11 +59,13 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     private func show(quiz step: QuizStepViewModel) {
+        imageLabel.layer.cornerRadius = 20
         imageLabel.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     private func showNextQuestionOrResults() {
+        imageLabel.layer.borderWidth = 0
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
             let viewModel = QuizResultsViewModel(
@@ -67,7 +75,6 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             imageLabel.layer.masksToBounds = true
-            imageLabel.layer.borderWidth = 0
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
