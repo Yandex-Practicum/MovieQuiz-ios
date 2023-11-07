@@ -61,7 +61,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="No">
+                                                <state key="normal" title="Нет">
                                                     <color key="titleColor" name="YP Black"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -78,7 +78,7 @@
                                                 <color key="backgroundColor" name="YP White"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Yes">
+                                                <state key="normal" title="Да">
                                                     <color key="titleColor" name="YP Black"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -107,7 +107,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="iWM-JB-riQ" id="GMd-gx-g7i"/>
                         <outlet property="imageView" destination="leT-Yu-KHr" id="WD6-xe-UB4"/>
+                        <outlet property="noButton" destination="nwt-eU-JUf" id="fLz-SC-y2C"/>
                         <outlet property="textLabel" destination="NxD-LU-Kvj" id="Ee9-GM-ZJj"/>
+                        <outlet property="yesButton" destination="edZ-BU-Ry6" id="gQj-ga-j34"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
