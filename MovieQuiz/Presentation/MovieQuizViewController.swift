@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-
+    
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
@@ -12,15 +12,36 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var YesButton: UIButton!
     @IBAction private func yesButtonPressed(_ sender: Any) {
-       let currentQuestion = questions[currentQuestionIndex]
+        let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-                         }
+    } // Расскажите пожалуйста куда положить функции и структуры, чтобы код был более читабельный
+    private func show(quiz result: QuizResultsViewModel) {
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+        }
+        
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    
     @IBAction private func noButtonPressed(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
-         let givenAnswer = false
-         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-
+        let givenAnswer = false
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
     }
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -29,9 +50,9 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let quizStep = convert(model: currentQuestion)
         show(quiz: quizStep)
-
         
         
+        //Куда это лучше убрать?
         view.backgroundColor = UIColor.ypBlack
         
         noButton.setTitle("Нет", for: .normal)
@@ -51,16 +72,25 @@ final class MovieQuizViewController: UIViewController {
         textLabel.frame.size = CGSize(width: 72, height: 24)
         textLabel.font = UIFont(name: "YS Display", size: 20)
         
-       
+        
         counterLabel.textColor = UIColor.ypWhite
         counterLabel.frame.size = CGSize(width: 72, height: 24)
         counterLabel.font = UIFont(name: "YS Display", size: 20)
         questionLabel.textColor = UIColor.ypWhite
         questionLabel.frame.size = CGSize(width: 72, height: 24)
         questionLabel.font = UIFont(name: "YS Display", size: 23)
-      
         
         
+        
+    }
+  
+    struct QuizResultsViewModel {
+      // строка с заголовком алерта
+      let title: String
+      // строка с текстом о количестве набранных очков
+      let text: String
+      // текст для кнопки алерта
+      let buttonText: String
     }
     
     struct QuizQuestion {
@@ -125,7 +155,7 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-
+    
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel( // 1
@@ -141,25 +171,33 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect { // 1
+            correctAnswers += 1 // 2
+        }
         
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 8 // толщина рамки
-        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor: UIColor.ypRed.cgColor
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
     }
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
-          // идём в состояние "Результат квиза"
+            let text = "Ваш результат: \(correctAnswers)/10" // 1
+            let viewModel = QuizResultsViewModel( // 2
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel) // 3
         } else {
             currentQuestionIndex += 1
-            
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
+            
             show(quiz: viewModel)
         }
-        imageView.layer.borderColor = UIColor.clear.cgColor
     }
-}
+    }
+
