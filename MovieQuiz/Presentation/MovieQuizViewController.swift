@@ -72,6 +72,12 @@ final class MovieQuizViewController: UIViewController {
     //Привязываем этикетку текста вопроса
     @IBOutlet private weak var textLabel: UILabel!
     
+    //Привязываем кнопку "Да" к коду
+    @IBOutlet private weak var yesButton: UIButton!
+    
+    //Привязываем кнопку "Нет" к коду
+    @IBOutlet private weak var noButton: UIButton!
+    
     private let questions: [QuizQuestion] = [theGodfather, theDarkKnight, killBill, theAvengers, deadpool, theGreenKnight, old, theIceAgeAdvanturesOfBuckWild, tesla, vivarium]
     
     //Создаем прееменную текущего индекса вопроса
@@ -79,6 +85,12 @@ final class MovieQuizViewController: UIViewController {
     
     //Создаем переменную отслеживающую текущее количество правильных ответов
     private var correctAnswers = 0
+    
+    //Определяем внешний вид статус бара в приложении
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,14 +104,19 @@ final class MovieQuizViewController: UIViewController {
         let viewModel = convert(model: firstQuestion)
         show(quiz: viewModel)
         
+        //Загружаем необходимый вид статус бара
+        UIView.animate(withDuration: 0.3) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+
     }
     
     //Метод осуществляющий преобразования структуру модели вопроса QuizQuestiion в структур модели отображения на экране QuizStepViewModel
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         
-        var image = UIImage(named: model.image) ?? UIImage()
-        var questionText: String = model.text
-        var questionNumber: String = "\(currentQuestionIndex + 1)/\(questions.count)"
+        let image = UIImage(named: model.image) ?? UIImage()
+        let questionText: String = model.text
+        let questionNumber: String = "\(currentQuestionIndex + 1)/\(questions.count)"
         
         return QuizStepViewModel(image: image, question: questionText, questionNumber: questionNumber)
     }
@@ -109,7 +126,9 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
         imageView.image = step.image
         textLabel.text = step.question
-        imageView.layer.borderColor = .none
+        imageView.layer.borderWidth = 0 //Скраваем рамку
+        yesButton.isEnabled = true // Разрешаем действие кнопки "Да"
+        noButton.isEnabled = true // Разрешаме действие кнопки "Нет"
     }
     
     //Приватный метод для показа алерта с результатами раунда квиза
@@ -138,9 +157,13 @@ final class MovieQuizViewController: UIViewController {
     
     //Метод который меняе цвет рамки и вызывает метод перехода
     //метод принимает на въод булево значение и ничего не возвращает
+   
     private func showAnswerResult(isCorrect: Bool) {
         
-        imageView.layer.borderWidth = 8
+        yesButton.isEnabled = false // Запрещаем действие кнопки "Да"
+        noButton.isEnabled = false // Запрещаем действие кнопки "Нет"
+        imageView.layer.borderWidth = 8 // Показываем рамку
+        
         if isCorrect {
             correctAnswers += 1
             imageView.layer.borderColor = UIColor.ypgreen.cgColor
@@ -151,6 +174,7 @@ final class MovieQuizViewController: UIViewController {
         //Делаем задержку перед отобрадение следующего вопрос
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.showNextQuestionOrResult()
+            
         }
     }
     
@@ -164,18 +188,19 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
-            show(quiz: convert(model: nextQuestion))
+            show(quiz: viewModel)
         }
     }
     
-    
+    //Определяем действие кнопки "Да"
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        var givenAnswer = true
+        let givenAnswer = true
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == givenAnswer)
     }
     
+    //Определяем действие кнопки "Нет"
     @IBAction private func noButtonClicked(_ sender: Any) {
-        var givenAnswer = false
+        let givenAnswer = false
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == givenAnswer)
     }
 }
