@@ -54,7 +54,7 @@ final class MovieQuizViewController: UIViewController {
         
         //Куда это лучше убрать?
         view.backgroundColor = UIColor.ypBlack
-        
+  
         noButton.setTitle("Нет", for: .normal)
         noButton.setTitleColor(UIColor.ypBlack, for: .normal)
         noButton.backgroundColor = UIColor.ypWhite
