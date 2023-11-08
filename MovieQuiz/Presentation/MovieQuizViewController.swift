@@ -7,6 +7,8 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let firstQuestionView = convert(model: currentQuestion)
         self.show(quiz: firstQuestionView)
+        
+        imageView.layer.cornerRadius = 20
     }
     
     private struct QuizResultsViewModel {
@@ -102,8 +104,8 @@ final class MovieQuizViewController: UIViewController {
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderColor = isCorrect ? UIColor.ysGreen.cgColor : UIColor.ysRed.cgColor
         
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -139,6 +141,8 @@ final class MovieQuizViewController: UIViewController {
             alert.addAction(action)
             
             self.present(alert, animated: true, completion: nil)
+            
+            
         } else {
             currentQuestionIndex += 1
             
@@ -147,6 +151,7 @@ final class MovieQuizViewController: UIViewController {
             
             show(quiz: viewModel)
         }
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
     private func show(quiz result: QuizResultsViewModel) {

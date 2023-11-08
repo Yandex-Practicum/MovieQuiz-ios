@@ -59,6 +59,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="Pch-Y3-aNX" firstAttribute="top" secondItem="shQ-Ap-BVj" secondAttribute="bottom" constant="33" id="Aej-mO-nXZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="Pch-Y3-aNX" secondAttribute="bottom" constant="33" id="nEc-fS-YEw"/>
+                                </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="hqA-8d-MjL">
                                 <rect key="frame" x="20" y="802" width="374" height="60"/>
