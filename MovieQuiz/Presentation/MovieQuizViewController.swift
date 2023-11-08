@@ -132,7 +132,6 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
-
         self.show(quiz: convert(model: questions[0]))
         super.viewDidLoad()
         
