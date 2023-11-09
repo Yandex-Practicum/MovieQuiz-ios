@@ -10,6 +10,9 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet var counterLabel: UILabel!
     
+    @IBOutlet var noButtonClicked: UIButton!
+    
+    @IBOutlet var yesButtonClicked: UIButton!
     
     @IBAction func yesButtonClicked(_ sender: UIButton) {
         let givenAnswer = true
@@ -21,26 +24,23 @@ final class MovieQuizViewController: UIViewController {
     @IBAction func noButtonClicked(_ sender: UIButton) {
         let givenAnswer = false
         
-        
         showAnswerResult(isCorrect: givenAnswer ==  questions[currentQuestionIndex].correctAnswer)
     }
     
     
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
     
-    struct QuestionResultsViewModel {
+    private struct QuestionResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
     
-    var resultOfAnswer: Bool = true
-    
-    struct QuizQuestion {
+    private struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
@@ -118,9 +118,8 @@ final class MovieQuizViewController: UIViewController {
     
     private func resetImageBorederColor() {
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.cornerRadius = 6
+        imageView.layer.borderWidth = 0
+        imageView.layer.cornerRadius = 20
     }
     
     
@@ -148,6 +147,9 @@ final class MovieQuizViewController: UIViewController {
             correctAnswers += 1
         }
         
+        noButtonClicked.isEnabled = false
+        yesButtonClicked.isEnabled = false
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
@@ -174,6 +176,8 @@ final class MovieQuizViewController: UIViewController {
             
             resetImageBorederColor()
         }
+        noButtonClicked.isEnabled = true
+        yesButtonClicked.isEnabled = true
     }
     
     
@@ -183,6 +187,9 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        resetImageBorederColor()
+        
         currentQuestionIndex = 0
         
         let currentQuestion = questions[0]
