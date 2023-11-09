@@ -1,7 +1,9 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-  
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     @IBOutlet private var imageView: UIImageView!
@@ -43,10 +45,11 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.cornerRadius = 20
+        self.view.backgroundColor = UIColor.ypBlack
         let currentQuestion = questions[currentQuestionIndex]
         let currentQuestionConverted = convert(model: currentQuestion)
         show(quiz: currentQuestionConverted)
-        
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -66,7 +69,6 @@ final class MovieQuizViewController: UIViewController {
         noButton.isEnabled = false
         
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6
         if isCorrect == true {
             if isCorrect {
                 correctAnswers += 1
