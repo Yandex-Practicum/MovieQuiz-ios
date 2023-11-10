@@ -81,13 +81,13 @@ final class MovieQuizViewController: UIViewController {
         noButton.setTitle("Нет", for: .normal)
         noButton.setTitleColor(UIColor.ypBlack, for: .normal)
         noButton.backgroundColor = UIColor.ypWhite
-        noButton.layer.cornerRadius = 15
+        noButton.layer.cornerRadius = 20
         noButton.frame.size = CGSize(width: 157, height: 60)
         
         YesButton.setTitle("Да", for: .normal)
         YesButton.setTitleColor(UIColor.ypBlack, for: .normal)
         YesButton.backgroundColor = UIColor.ypWhite
-        YesButton.layer.cornerRadius = 15
+        YesButton.layer.cornerRadius = 20
         YesButton.frame.size = CGSize(width: 157, height: 60)
         
         textLabel.text = "Вопрос:"
@@ -107,7 +107,7 @@ final class MovieQuizViewController: UIViewController {
         
     }
   
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
       // строка с заголовком алерта
       let title: String
       // строка с текстом о количестве набранных очков
@@ -116,7 +116,7 @@ final class MovieQuizViewController: UIViewController {
       let buttonText: String
     }
     
-    struct QuizQuestion {
+   private struct QuizQuestion {
         // строка с названием фильма,
         // совпадает с названием картинки афиши фильма в Assets
         let image: String
@@ -127,7 +127,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // вью модель для состояния "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         // картинка с афишей фильма с типом UIImage
         let image: UIImage
         // вопрос о рейтинге квиза
