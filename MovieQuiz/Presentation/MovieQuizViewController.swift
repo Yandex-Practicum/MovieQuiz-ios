@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
- // Расскажите пожалуйста куда положить функции и структуры, чтобы код был более читабельный
+    // Расскажите пожалуйста куда положить функции и структуры, чтобы код был более читабельный
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
@@ -44,6 +44,7 @@ final class MovieQuizViewController: UIViewController {
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -75,48 +76,44 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: quizStep)
         
         
-        //Куда это лучше убрать?
         view.backgroundColor = UIColor.ypBlack
-  
+        
         noButton.setTitle("Нет", for: .normal)
         noButton.setTitleColor(UIColor.ypBlack, for: .normal)
         noButton.backgroundColor = UIColor.ypWhite
-        noButton.layer.cornerRadius = 20
+        noButton.layer.cornerRadius = 15
         noButton.frame.size = CGSize(width: 157, height: 60)
         
-        YesButton.setTitle("Да", for: .normal)
-        YesButton.setTitleColor(UIColor.ypBlack, for: .normal)
-        YesButton.backgroundColor = UIColor.ypWhite
-        YesButton.layer.cornerRadius = 20
-        YesButton.frame.size = CGSize(width: 157, height: 60)
+        yesButton.setTitle("Да", for: .normal)
+        yesButton.setTitleColor(UIColor.ypBlack, for: .normal)
+        yesButton.backgroundColor = UIColor.ypWhite
+        yesButton.layer.cornerRadius = 15
+        yesButton.frame.size = CGSize(width: 157, height: 60)
         
         textLabel.text = "Вопрос:"
         textLabel.textColor = UIColor.ypWhite
         textLabel.frame.size = CGSize(width: 72, height: 24)
-        textLabel.font = UIFont(name: "YS Display", size: 20)
         
         
         counterLabel.textColor = UIColor.ypWhite
         counterLabel.frame.size = CGSize(width: 72, height: 24)
-        counterLabel.font = UIFont(name: "YS Display", size: 20)
         questionLabel.textColor = UIColor.ypWhite
         questionLabel.frame.size = CGSize(width: 72, height: 24)
-        questionLabel.font = UIFont(name: "YS Display", size: 23)
         
         
         
-    }
-  
-    private struct QuizResultsViewModel {
-      // строка с заголовком алерта
-      let title: String
-      // строка с текстом о количестве набранных очков
-      let text: String
-      // текст для кнопки алерта
-      let buttonText: String
     }
     
-   private struct QuizQuestion {
+    private struct QuizResultsViewModel {
+        // строка с заголовком алерта
+        let title: String
+        // строка с текстом о количестве набранных очков
+        let text: String
+        // текст для кнопки алерта
+        let buttonText: String
+    }
+    
+    private struct QuizQuestion {
         // строка с названием фильма,
         // совпадает с названием картинки афиши фильма в Assets
         let image: String
@@ -180,13 +177,13 @@ final class MovieQuizViewController: UIViewController {
     ]
     
     
-  
+    
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var YesButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     @IBAction private func yesButtonPressed(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
@@ -198,5 +195,5 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
         
     }
-    }
+}
 
