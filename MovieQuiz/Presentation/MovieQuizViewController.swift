@@ -5,6 +5,33 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     // Расскажите пожалуйста куда положить функции и структуры, чтобы код был более читабельный
+    private func customizationUI(){
+        view.backgroundColor = UIColor.ypBlack
+        
+        noButton.setTitle("Нет", for: .normal)
+        noButton.setTitleColor(UIColor.ypBlack, for: .normal)
+        noButton.backgroundColor = UIColor.ypWhite
+        noButton.layer.cornerRadius = 15
+        noButton.frame.size = CGSize(width: 157, height: 60)
+        
+        yesButton.setTitle("Да", for: .normal)
+        yesButton.setTitleColor(UIColor.ypBlack, for: .normal)
+        yesButton.backgroundColor = UIColor.ypWhite
+        yesButton.layer.cornerRadius = 15
+        yesButton.frame.size = CGSize(width: 157, height: 60)
+        
+        textLabel.text = "Вопрос:"
+        textLabel.textColor = UIColor.ypWhite
+        textLabel.frame.size = CGSize(width: 72, height: 24)
+        
+        
+        counterLabel.textColor = UIColor.ypWhite
+        counterLabel.frame.size = CGSize(width: 72, height: 24)
+        questionLabel.textColor = UIColor.ypWhite
+        questionLabel.frame.size = CGSize(width: 72, height: 24)
+        
+        imageView.layer.cornerRadius = 20
+    }
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
@@ -25,10 +52,10 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel( // 1
-            image: UIImage(named: model.image) ?? UIImage(), // 2
-            question: model.text, // 3
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // 4
+        let questionStep = QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") 
         return questionStep
     }
     
@@ -74,34 +101,7 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         let quizStep = convert(model: currentQuestion)
         show(quiz: quizStep)
-        
-        
-        view.backgroundColor = UIColor.ypBlack
-        
-        noButton.setTitle("Нет", for: .normal)
-        noButton.setTitleColor(UIColor.ypBlack, for: .normal)
-        noButton.backgroundColor = UIColor.ypWhite
-        noButton.layer.cornerRadius = 15
-        noButton.frame.size = CGSize(width: 157, height: 60)
-        
-        yesButton.setTitle("Да", for: .normal)
-        yesButton.setTitleColor(UIColor.ypBlack, for: .normal)
-        yesButton.backgroundColor = UIColor.ypWhite
-        yesButton.layer.cornerRadius = 15
-        yesButton.frame.size = CGSize(width: 157, height: 60)
-        
-        textLabel.text = "Вопрос:"
-        textLabel.textColor = UIColor.ypWhite
-        textLabel.frame.size = CGSize(width: 72, height: 24)
-        
-        
-        counterLabel.textColor = UIColor.ypWhite
-        counterLabel.frame.size = CGSize(width: 72, height: 24)
-        questionLabel.textColor = UIColor.ypWhite
-        questionLabel.frame.size = CGSize(width: 72, height: 24)
-        
-        
-        
+        customizationUI()
     }
     
     private struct QuizResultsViewModel {
