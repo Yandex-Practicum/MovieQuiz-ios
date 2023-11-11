@@ -7,6 +7,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         print("Testing github")
+        print("Testing branch functionality")
         return true
     }
 
