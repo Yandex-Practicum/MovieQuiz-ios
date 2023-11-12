@@ -6,5 +6,6 @@ import Foundation
 
 protocol QuestionFactoryProtocol {
     var delegate: QuestionFactoryDelegate? {get set}
-    func requestNextQuestion(_ index: Int)
+    func requestNextQuestion()
+    func loadData()
 }
