@@ -15,9 +15,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private let questionAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
     private var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
+    private var statisticService: StatisticService = StatisticServiceImplementation()
     private var currentQuestion: QuizQuestion?
-    internal var correctAnswers: Int = 0
-    internal var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
+    private var currentQuestionIndex: Int = 0
     
     // MARK: - Lifecycle
     
@@ -53,13 +54,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             }
     }
     
-    func showResults(alert: UIAlertController, action: UIAlertAction) {
-        print("Showing results")
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-        self.yesButton.isEnabled = true
-        self.noButton.isEnabled = true
-        self.questionFactory?.requestNextQuestion()
+    func showResults() {
+        let alertModel = AlertModel(
+            title: "Раунд окончен",
+            message: """
+            Ваш результат \(correctAnswers) из \(questionAmount).\n
+            Рекорд: \(statisticService.bestGame.correct) из \(statisticService.bestGame.total).\n
+            Всего было игр: \(statisticService.gamesCount).\n
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%.
+            """,
+            buttonText: "Ок",
+            buttonAction: { [weak self] in
+                self?.currentQuestionIndex = 0
+                self?.correctAnswers = 0
+                self?.yesButton.isEnabled = true
+                self?.noButton.isEnabled = true
+                self?.questionFactory?.requestNextQuestion()
+            }
+        )
+        statisticService.store(correct: correctAnswers, total: questionAmount)
+        alertPresenter?.alertSignal(alertModel: alertModel)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -90,8 +104,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     private func showNextQuestionOrResults(){
         if currentQuestionIndex == questionAmount - 1{
-            let alert: AlertModel = AlertModel(title: "Этот раунд окончен!", message: "Ваш результат \(correctAnswers) из \(questionAmount)", buttonText: "OK")
-            alertPresenter?.alertSignal(alertModel: alert)
+            showResults()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion() 

@@ -9,8 +9,5 @@ import Foundation
 import UIKit
 
 protocol AlertPresenterDelegate: AnyObject {
-    var currentQuestionIndex: Int { get set }
-    var correctAnswers: Int { get set }
-    
-    func showResults(alert: UIAlertController, action: UIAlertAction)
+    func showResults() -> Void
 }

@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 protocol AlertPresenterProtocol {
-    var delegate: AlertPresenterDelegate? { get set }
+    var delegate: UIViewController? { get set }
     
     func alertSignal(alertModel: AlertModel)
 }

@@ -9,20 +9,17 @@ import Foundation
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {
-    weak var delegate: AlertPresenterDelegate?
+    weak var delegate: UIViewController?
     
     func alertSignal(alertModel: AlertModel) {
-        print("We passed through AlertPresenter class")
-        guard let delegate = delegate else { return }
         let alert = UIAlertController(
             title: alertModel.title,
             message: alertModel.message,
             preferredStyle: .alert)
-        let action = UIAlertAction(title: alertModel.buttonText, style: .default) { [weak delegate] _ in
-            guard let delegate = delegate else { return }
-            delegate.currentQuestionIndex = 0
-            delegate.correctAnswers = 0
+        let action = UIAlertAction(title: alertModel.buttonText, style: .default) { _ in
+            alertModel.buttonAction()
         }
-        delegate.showResults(alert: alert, action: action)
+        alert.addAction(action)
+        delegate?.present(alert, animated: true)
     }
 }
