@@ -24,6 +24,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(controller: self)
         
+        imageView.layer.backgroundColor = UIColor.clear.cgColor
+        activityIndicator.hidesWhenStopped = true
         questionFactory?.loadData()
         showLoadingIndicator()
         self.switchOfButtons()
@@ -70,6 +72,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz step: QuizStepViewModel) {
+        hideLoadingIndicator()
         imageView.layer.borderWidth = 0
         imageView.image = step.image
         textLabel.text = step.question
@@ -95,6 +98,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             showFinalResult()
         } else {
             currentQuestionIndex += 1
+            showLoadingIndicator()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -109,6 +113,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
+                self.showLoadingIndicator()
                 self.questionFactory?.requestNextQuestion()
             }
         )
@@ -134,35 +139,54 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return message
     }
     
-    private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-    }
-    
     private func showNetworkError(message: String) {
-        showLoadingIndicator()
         let alertModel = AlertModel(
             title: "Ошибка",
             message: message,
             buttonText: "Попробовать еще раз",
             completion: { [weak self] in
                 guard let self = self else { return }
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                self.questionFactory?.requestNextQuestion()
+                self.questionFactory?.loadData()
+                self.showLoadingIndicator()
             }
         )
         alertPresenter?.show(result: alertModel)
     }
     
+    private func showImageError(message: String) {
+        let alertModel = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Загрузить другой вопрос",
+            completion: { [weak self] in
+                guard let self = self else { return }
+                self.questionFactory?.requestNextQuestion()
+                self.showLoadingIndicator()
+            }
+        )
+        alertPresenter?.show(result: alertModel)
+    }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.stopAnimating()
+    }
+    
+    
     // MARK: - Internal functions
     func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
         questionFactory?.requestNextQuestion()
     }
     
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
+    func didFailToLoadData(with errorMessage: String) {
+        showNetworkError(message: errorMessage)
+    }
+    
+    func didFailToLoadImage() {
+        showImageError(message: "Failed to load image")
     }
     
 }
