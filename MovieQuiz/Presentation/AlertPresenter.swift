@@ -2,9 +2,9 @@ import UIKit
 
 class AlertPresenter {
     
-    weak var view: UIViewController?
+     var view: UIViewController
     
-    init(view: UIViewController? = nil) {
+    init(view: UIViewController) {
         self.view = view
     }
     
@@ -20,7 +20,7 @@ class AlertPresenter {
         
         alert.addAction(action)
         
-        view?.present(alert, animated: true, completion: nil)
+        view.present(alert, animated: true, completion: nil)
     }   
 }
 
