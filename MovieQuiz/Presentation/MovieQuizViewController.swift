@@ -85,7 +85,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 text: """
                            Ваш результат: \(correctAnswer)/10
                            Количество сыгранных квизов: \(statisticService.gamesCount)
-                           Рекорд: \(statisticService.bestGame.toString())
+                           Рекорд: \(statisticService.bestGame.toString()))
                            Средняя точность: \(Int(statisticService.totalAccuracy))%
                            """,
                 buttonText: "Сыграть еще раз"))
@@ -104,7 +104,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         yesButtonOutlet.isEnabled = true
         noButtonOutlet.isEnabled = true
     }
-    
+    private func showLoadingIndicator(){
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    private func showNetworkError (message: String) {
+        hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else {return}
+            self.currentQuestionIndex = 0
+            self.correctAnswer = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        alertPresenter.show(in: self, model: model)
+    }
     // MARK: - Actions
     @IBAction private func yesButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {
@@ -121,6 +138,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     // MARK: - IBOutlet
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
