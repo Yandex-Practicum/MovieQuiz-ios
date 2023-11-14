@@ -1,25 +1,25 @@
 import UIKit
 
-
+private struct QuizStepViewModel {
+        let image: UIImage
+        let question: String
+        let questionNumber: String
+    }
+    
+    private struct QuestionResultsViewModel {
+        let title: String
+        let text: String
+        let buttonText: String
+    }
+    
+    private struct QuizQuestion {
+        let image: String
+        let text: String
+        let correctAnswer: Bool
+    }
 
 final class MovieQuizViewController: UIViewController {
-    private struct QuizStepViewModel {
-            let image: UIImage
-            let question: String
-            let questionNumber: String
-        }
-        
-        private struct QuestionResultsViewModel {
-            let title: String
-            let text: String
-            let buttonText: String
-        }
-        
-        private struct QuizQuestion {
-            let image: String
-            let text: String
-            let correctAnswer: Bool
-        }
+    
     private let questions: [QuizQuestion] = [
             QuizQuestion(
                 image: "The Godfather",
