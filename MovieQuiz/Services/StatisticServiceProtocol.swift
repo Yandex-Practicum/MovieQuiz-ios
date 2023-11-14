@@ -17,7 +17,7 @@ protocol StatisticService {
 struct GameRecord: Codable {
     let correct: Int
     let total: Int
-    let date: Date
+    let date: String
     
     func compareTwo(prevRec: GameRecord) -> Bool {
         if self.correct > prevRec.correct { return true }

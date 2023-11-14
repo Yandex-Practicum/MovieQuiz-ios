@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
-    @IBOutlet weak var posterImageView: UIImageView!
+    @IBOutlet private weak var posterImageView: UIImageView!
     @IBOutlet private weak var textView: UILabel!
     @IBOutlet private weak var indexView: UILabel!
     
@@ -29,22 +29,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         questionFactory?.requestNextQuestion()
     }
     
-    @IBAction private func noButton(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            print("No signal")
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.answer == false)
-    }
-    
-    @IBAction private func yesButton(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            print("No signal")
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.answer == true)
-    }
-    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let firstQuestion = question else { return }
             currentQuestion = firstQuestion
@@ -55,13 +39,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     func showResults() {
+        statisticService.store(correct: correctAnswers, total: questionAmount)
         let alertModel = AlertModel(
-            title: "Раунд окончен",
+            title: "Этот раунд окончен!",
             message: """
-            Ваш результат \(correctAnswers) из \(questionAmount).\n
-            Рекорд: \(statisticService.bestGame.correct) из \(statisticService.bestGame.total).\n
-            Всего было игр: \(statisticService.gamesCount).\n
-            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%.
+            Ваш результат: \(correctAnswers)/\(questionAmount)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date))
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
             """,
             buttonText: "Ок",
             buttonAction: { [weak self] in
@@ -72,8 +57,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 self?.questionFactory?.requestNextQuestion()
             }
         )
-        statisticService.store(correct: correctAnswers, total: questionAmount)
-        alertPresenter?.alertSignal(alertModel: alertModel)
+        alertPresenter?.showAlert(with: alertModel)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -111,6 +95,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             yesButton.isEnabled = true
             noButton.isEnabled = true
         }
+    }
+    
+    @IBAction private func noButton(_ sender: Any) {
+        guard let currentQuestion = currentQuestion else {
+            print("No signal")
+            return
+        }
+        showAnswerResult(isCorrect: currentQuestion.answer == false)
+    }
+    
+    @IBAction private func yesButton(_ sender: Any) {
+        guard let currentQuestion = currentQuestion else {
+            print("No signal")
+            return
+        }
+        showAnswerResult(isCorrect: currentQuestion.answer == true)
     }
 }
 

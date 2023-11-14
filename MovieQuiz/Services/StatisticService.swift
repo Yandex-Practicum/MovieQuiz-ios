@@ -14,6 +14,7 @@ final class StatisticServiceImplementation: StatisticService {
     
     var totalAccuracy: Double {
         get {
+            if total == 0 { return 0.0 }
             return Double(correct) / Double(total) * 100
         }
     }
@@ -75,7 +76,7 @@ final class StatisticServiceImplementation: StatisticService {
         get {
             guard let data = UserDefaults.standard.data(forKey: Keys.bestGame.rawValue),
                   let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
-                return .init(correct: 0, total: 0, date: Date()) }
+                return .init(correct: 0, total: 0, date: getDate()) }
             return record
         }
         set {
@@ -88,12 +89,22 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     func store(correct count: Int, total amount: Int) {
-        let currentGame = GameRecord(correct: count, total: amount, date: Date())
+        let currentGame = GameRecord(correct: count, total: amount, date: getDate())
         if currentGame.compareTwo(prevRec: bestGame) {
             bestGame = currentGame
         }
         gamesCount += 1
         self.correct += count
         self.total += amount
+    }
+    
+    // ДЛЯ РЕВЬЮЕРА. Я не понял как пользоваться dateTimeString из раздела Helpers, поэтому сделал отдельную функцию
+    // Если вы мне объясните, буду очень признателен ^^
+    func getDate() -> String {
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yy HH:mm"
+        let dateString = dateFormatter.string(from: currentDate)
+        return dateString
     }
 }

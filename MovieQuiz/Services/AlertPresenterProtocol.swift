@@ -11,5 +11,5 @@ import UIKit
 protocol AlertPresenterProtocol {
     var delegate: UIViewController? { get set }
     
-    func alertSignal(alertModel: AlertModel)
+    func showAlert(with alertModel: AlertModel)
 }
