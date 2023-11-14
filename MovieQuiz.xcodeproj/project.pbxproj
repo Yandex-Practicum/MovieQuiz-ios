@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27D617A62AF80FA000DD7797 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27D617A42AF80FA000DD7797 /* YS Display-Bold.ttf */; };
-		27D617A72AF80FA000DD7797 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27D617A52AF80FA000DD7797 /* YS Display-Medium.ttf */; };
+		2748ACB72B03BB0600803FA1 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2748ACB52B03BB0600803FA1 /* YS Display-Medium.ttf */; };
+		2748ACB82B03BB0600803FA1 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2748ACB62B03BB0600803FA1 /* YS Display-Bold.ttf */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -21,8 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		27D617A42AF80FA000DD7797 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		27D617A52AF80FA000DD7797 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		2748ACB52B03BB0600803FA1 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Medium.ttf"; path = "../../../../Desktop/YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		2748ACB62B03BB0600803FA1 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "YS Display-Bold.ttf"; path = "../../../../Desktop/YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,16 +47,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		27D617A32AF80FA000DD7797 /* MovieQuizFonts */ = {
-			isa = PBXGroup;
-			children = (
-				27D617A42AF80FA000DD7797 /* YS Display-Bold.ttf */,
-				27D617A52AF80FA000DD7797 /* YS Display-Medium.ttf */,
-			);
-			name = MovieQuizFonts;
-			path = ../../../../Desktop/MovieQuizFonts;
-			sourceTree = "<group>";
-		};
 		8F4738322848DE2A005DF65E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,7 +59,8 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				27D617A32AF80FA000DD7797 /* MovieQuizFonts */,
+				2748ACB62B03BB0600803FA1 /* YS Display-Bold.ttf */,
+				2748ACB52B03BB0600803FA1 /* YS Display-Medium.ttf */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
@@ -175,10 +166,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
+				2748ACB72B03BB0600803FA1 /* YS Display-Medium.ttf in Resources */,
+				2748ACB82B03BB0600803FA1 /* YS Display-Bold.ttf in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
-				27D617A62AF80FA000DD7797 /* YS Display-Bold.ttf in Resources */,
-				27D617A72AF80FA000DD7797 /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

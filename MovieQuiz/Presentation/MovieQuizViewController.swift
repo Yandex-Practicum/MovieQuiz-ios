@@ -1,24 +1,24 @@
 import UIKit
 
-struct QuizQuestion {
+private struct QuizQuestion {
     let image: String
     let text: String
     let correctAnswer: Bool
 }
 
-struct ViewModel {
+private struct ViewModel {
   let image: UIImage
   let question: String
   let questionNumber: String
 }
 
-struct QuizStepViewModel {
+private struct QuizStepViewModel {
     let image: UIImage
     let question: String
     let questionNumber: String
 }
 
-struct QuizResultsViewModel {
+private struct QuizResultsViewModel {
     let title: String
     let text: String
     let buttonText: String
@@ -83,6 +83,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     
+    
     @IBOutlet private var yesButton: UIButton!
     
     @IBOutlet private var noButton: UIButton!
@@ -98,12 +99,13 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         show(quiz: convert(model: questions[0]))
+        imageView.layer.cornerRadius = 20
         
  
         super.viewDidLoad()
     }
     
-   
+
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -131,7 +133,7 @@ final class MovieQuizViewController: UIViewController {
         
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
             
@@ -152,6 +154,7 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть еще раз")
             show(quiz: viewModel)
+            imageView.layer.borderWidth = 0
         } else { // 2
             currentQuestionIndex += 1
             
