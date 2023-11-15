@@ -6,3 +6,8 @@
 //
 
 import Foundation
+struct QuizQuestion: Equatable {
+    let image: String
+    let text: String
+    let correctAnswer: Bool
+}
