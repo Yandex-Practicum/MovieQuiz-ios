@@ -46,6 +46,9 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = convert(model: questions[currentQuestionIndex])
         show(quiz: currentQuestion)
         
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
+        
         super.viewDidLoad()
     }
     
@@ -125,10 +128,8 @@ final class MovieQuizViewController: UIViewController {
         }
         UIView.animate(withDuration: 0.5) { [weak self] in
             guard let self = self else { return }
-            self.imageView.layer.masksToBounds = true
             self.imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
             self.imageView.layer.borderWidth = 8
-            self.imageView.layer.cornerRadius = 8
         }
         
         // запускаем задачу через 1 секунду c помощью диспетчера задач
