@@ -43,6 +43,9 @@ extension QuestionFactoryImplementation: QuestionFactory {
         
         delegate?.didReceiveQuestion(question)
     }
+    func updateAvailableQuestions() {
+            availableQuestions = questions
+        }
 }
 
 private let questions: [QuizQuestion] = [

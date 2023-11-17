@@ -9,13 +9,11 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var yesButton: UIButton!
     
     private var correctAnswers: Int = 0
-    
-    
     private var currentQuestionIndex: Int = 0
     private var currentQuestion: QuizQuestion?
     private let questionsCount: Int = 10
     
-    private var questionFactory: QuestionFactory?
+    private var questionFactory: QuestionFactoryImplementation?
     private var resultAlertPresenter: ResultAlertPresenter?
     private var statisticService: StatisticService?
     
@@ -106,12 +104,13 @@ final class MovieQuizViewController: UIViewController {
         statisticService?.store(correct: correctAnswers, total: questionsCount)
         
         let alertModel = AlertModel(
-            tittle: "Игра окончена!",
+            tittle: "Этот раунд окончен!",
             message: makeResultMessage(),
-            buttonText: "OK",
+            buttonText: "Сыграть еще раз",
             buttonAction: { [weak self] in
                 self?.currentQuestionIndex = 0
                 self?.correctAnswers = 0
+                self?.questionFactory?.updateAvailableQuestions()
                 self?.questionFactory?.requestNextQuestion()
             }
         )
@@ -126,8 +125,8 @@ final class MovieQuizViewController: UIViewController {
         
         let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
         let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-        let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsCount)"
-        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsCount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)/\(bestGame.total)"
         + " (\(bestGame.date.dateTimeString))"
         let averageAccuracyLine = "Средняя точность: \(accuracy)%"
         
