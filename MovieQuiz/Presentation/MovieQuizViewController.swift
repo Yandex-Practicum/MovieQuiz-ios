@@ -1,5 +1,7 @@
 import UIKit
 
+
+
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     
@@ -32,35 +34,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     
-    private var currentQuestionIndex = 0
+    var currentQuestionIndex = 0
     
-    private var correctAnswers = 0
+    var correctAnswers = 0
     
     private var questionsAmount: Int = 10
-    private lazy var questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    lazy var questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     
+    var alertPresenter: AlertPresenter = AlertPresenter()
     
-    private func endOfGame(quiz result: QuestionResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            
-            guard let self = self else {return}
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-
-            self.questionFactory.requestNextQuestion()
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
-    }
     
     private func resetImageBorederColor() {
         imageView.layer.masksToBounds = true
@@ -105,13 +88,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ? "Поздравляем, вы ответили на 10 из 10!" : "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuestionResultsViewModel(
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз")
+
             
-            endOfGame(quiz: viewModel)
+            let text = correctAnswers == questionsAmount ? "Поздравляем, вы ответили на 10 из 10!" : "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+                        let viewModel = QuestionResultsViewModel(
+                            title: "Этот раунд окончен!",
+                            text: text,
+                            buttonText: "Сыграть ещё раз")
+            
+            let someVar = AlertModel(title: "Этот раунд окончен!", message: text, buttonText: "Сыграть ещё раз")
+            
+            alertPresenter.controller = self
+            alertPresenter.show2(quiz: someVar)
+            
+
             resetImageBorederColor()
             
         } else {
@@ -156,6 +146,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
 }
+
 
 
 /*
@@ -221,3 +212,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
  */
+
+
+
+//let text = correctAnswers == questionsAmount ? "Поздравляем, вы ответили на 10 из 10!" : "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+//            let viewModel = QuestionResultsViewModel(
+//                title: "Этот раунд окончен!",
+//                text: text,
+//                buttonText: "Сыграть ещё раз")
