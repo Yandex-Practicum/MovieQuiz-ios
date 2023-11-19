@@ -83,7 +83,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     }
     
     //Метод блокировки кнопок экрана
-    
     private func isButtonsBlocked(state: Bool) {
         if state {
             yesButton.isEnabled = false // Запрещаем действие кнопки "Да"
