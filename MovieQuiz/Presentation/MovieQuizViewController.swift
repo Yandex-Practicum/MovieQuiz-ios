@@ -22,7 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     private var currentQuestionIndex = 0
     
     //Создаем переменную отслеживающую текущее количество правильных ответов
-    private var correctAnswers = 0
+    var correctAnswers = 0
     
     //Определяем переменны необходимые для связи MobieQuizViewController c "Фабрикой вопросов"
     //Определяем максимальное количество вопросов
@@ -34,6 +34,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     //Вопрос, который видит пользователь
     private var currentQuestion: QuizQuestion?
     
+    //Определяем клас работы с Алертом
+    private var alertPresenter = AlertPresenter()
+    
+//    //Определяем модель Алерта
+//    private var alertView: AlertModel?
     
     //Определяем внешний вид статус бара в приложении
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -160,9 +165,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     private func showNextQuestionOrResult() {
         if currentQuestionIndex == questionAmount - 1 {
             //выводим результаты нашего квиза
-            let titleInfoText = correctAnswers == questionAmount ? "Поздрвляем вы ответели на 10 и 10!" : "Вы ответели на \(correctAnswers) из \(questionAmount), попробуйте ещё раз!"
+            var titleInfoText = correctAnswers == questionAmount ? "Поздрвляем вы ответели на 10 и 10!" : "Вы ответели на \(correctAnswers) из \(questionAmount), попробуйте ещё раз!"
             let quizResultView = QuizResultViewModel(title: "Этот раунд окончен!", text: titleInfoText, buttonText: "Сыграть ещё раз")
-            showAlert(quiz: quizResultView)
+            
+            var alertModel = AlertModel(title: "Этот раунд окончен!", message: titleInfoText, buttonText: "Сыграть ещё раз", completion: {
+                let action = UIAlertAction(title: "Сыграть ещё раз", style: .default) { [weak self] _ in
+                    
+                    guard let selfAction = self else { return }
+                    // обнуляем счетчик вопросов
+                    selfAction.correctAnswers = 0
+                    
+                    // обнуляем счетчик правильных вопросов
+                    selfAction.currentQuestionIndex = 0
+                    
+                    //Загружаем на экран первый вопрос
+                    selfAction.questionFactory.requestNextQuestion()
+                }
+            })
+            alertPresenter.showAlert(quiz: alertModel)
         } else {
             currentQuestionIndex += 1
             questionFactory.requestNextQuestion()

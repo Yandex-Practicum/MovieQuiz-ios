@@ -5,15 +5,16 @@
 //  Created by Федор Завьялов on 19.11.2023.
 //
 
-import Foundation
+import UIKit
 
 class AlertPresenter {
     
     var alert: AlertModel?
     
-    private func showAlert(quiz result: QuizResultViewModel){
+    func showAlert(quiz result: AlertModel?){
+        guard let result else { return }
         //Создаем Alert
-        let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
+        let alert = UIAlertController(title: result.title, message: result.message, preferredStyle: .alert)
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
             
             guard let selfAction = self else { return }
@@ -28,7 +29,7 @@ class AlertPresenter {
         }
         
         //Создаем действие Alert и выводим его на экран
-        alert.addAction(action)
+        alert.addAction(result.completion)
         self.present(alert, animated: true, completion: nil)
         
     }
