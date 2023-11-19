@@ -1,10 +1,10 @@
 import UIKit
-
-extension UIColor {
-    static var ypGreenColor: UIColor { UIColor(named: "YP Green") ?? UIColor.green }
-    static var ypRedColor: UIColor { UIColor(named: "YP Red") ?? UIColor.red }
-    static var ypBlackColor: UIColor { UIColor(named: "YP Black") ?? UIColor.black}
-    static var ypBackgroundColor: UIColor { UIColor(named: "YP Background") ?? UIColor.darkGray }
-    static var ypGrayColor: UIColor { UIColor(named: "YP Gray") ?? UIColor.gray }
-    static var ypWhiteColor: UIColor { UIColor(named: "YP White") ?? UIColor.white}
-}
+// Использую XCode с генерацией цветов, в extension не нуждаюсь
+//extension UIColor {
+//    static var ypGreen: UIColor { UIColor(named: "YP Green") ?? UIColor.green }
+//    static var ypRed: UIColor { UIColor(named: "YP Red") ?? UIColor.red }
+//    static var ypBlack: UIColor { UIColor(named: "YP Black") ?? UIColor.black}
+//    static var ypBackground: UIColor { UIColor(named: "YP Background") ?? UIColor.darkGray }
+//    static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor.gray }
+//    static var ypWhite: UIColor { UIColor(named: "YP White") ?? UIColor.white}
+//}

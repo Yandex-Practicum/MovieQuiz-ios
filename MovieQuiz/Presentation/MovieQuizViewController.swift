@@ -13,7 +13,7 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestion: QuizQuestion?
     private let questionsCount: Int = 10
     
-    private var questionFactory: QuestionFactoryImplementation?
+    private var questionFactory: QuestionFactory?
     private var resultAlertPresenter: ResultAlertPresenter?
     private var statisticService: StatisticService?
     

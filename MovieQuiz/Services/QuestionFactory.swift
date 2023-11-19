@@ -13,6 +13,7 @@ protocol QuestionFactoryDelegate: AnyObject {
 
 protocol QuestionFactory {
     func requestNextQuestion()
+    func updateAvailableQuestions()
 }
 
 final class QuestionFactoryImplementation {
@@ -44,8 +45,8 @@ extension QuestionFactoryImplementation: QuestionFactory {
         delegate?.didReceiveQuestion(question)
     }
     func updateAvailableQuestions() {
-            availableQuestions = questions
-        }
+        availableQuestions = questions
+    }
 }
 
 private let questions: [QuizQuestion] = [
