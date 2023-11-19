@@ -82,6 +82,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         return QuizStepViewModel(image: image, question: questionText, questionNumber: questionNumber)
     }
     
+    //Метод блокировки кнопок экрана
+    
+    private func isButtonsBlocked(state: Bool) {
+        if state {
+            yesButton.isEnabled = false // Запрещаем действие кнопки "Да"
+            noButton.isEnabled = false // Запрещаем действие кнопки "Нет"
+        } else {
+            yesButton.isEnabled = true // Разрешаем действие кнопки "Да"
+            noButton.isEnabled = true // Разрешаме действие кнопки "Нет"
+        }
+    }
+    
     //Метод загружающий внешний вид модели QuizStepViewModel на экран
     private func show(quiz step: QuizStepViewModel) {
         
@@ -90,15 +102,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
                           options: .transitionCrossDissolve,
                           animations: {
             self.imageView.image = step.image},
-                          completion: nil)
-        textLabel.text = step.question
-        counterLabel.text = step.questionNumber
-        imageView.layer.borderWidth = 0 //Скраваем рамку
-        
-        
-        
-        yesButton.isEnabled = true // Разрешаем действие кнопки "Да"
-        noButton.isEnabled = true // Разрешаме действие кнопки "Нет"
+                          completion: { _ in
+            self.textLabel.text = step.question
+            self.counterLabel.text = step.questionNumber
+            self.imageView.layer.borderWidth = 0 //Скраваем рамку
+            self.isButtonsBlocked(state: false) // Разрешаем действе действие кнопок
+        })
     }
     
     //Приватный метод для показа алерта с результатами раунда квиза
@@ -130,8 +139,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
     private func showAnswerResult(isCorrect: Bool) {
         
-        yesButton.isEnabled = false // Запрещаем действие кнопки "Да"
-        noButton.isEnabled = false // Запрещаем действие кнопки "Нет"
+        isButtonsBlocked(state: true) // Запрещаем действие кнопок
         imageView.layer.borderWidth = 8 // Показываем рамку
         
         if isCorrect {
