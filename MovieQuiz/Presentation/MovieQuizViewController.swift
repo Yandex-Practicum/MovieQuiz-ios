@@ -101,11 +101,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
                           duration: 0.25,
                           options: .transitionCrossDissolve,
                           animations: {
-            self.imageView.image = step.image},
+            self.imageView.image = step.image
+            self.imageView.layer.borderWidth = 0 //Скраваем рамку
+        },
                           completion: { _ in
             self.textLabel.text = step.question
             self.counterLabel.text = step.questionNumber
-            self.imageView.layer.borderWidth = 0 //Скраваем рамку
             self.isButtonsBlocked(state: false) // Разрешаем действе действие кнопок
         })
     }
