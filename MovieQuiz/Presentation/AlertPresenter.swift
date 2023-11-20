@@ -17,17 +17,18 @@ class AlertPresenter: UIViewController {
         
         guard let result else { return }
         //Создаем Alert
-        
         let alert = UIAlertController(title: result.title, message: result.message, preferredStyle: .alert)
         
-        //Создаем действие Alert и выводим его на экран
+        //Добавляем действие Alert и выводим его на экран
         if let action = result.completion {
             alert.addAction(action())
             
         }
+        //Отображаем Alert на главном контроллере
         if let controller {
             controller.present(alert, animated: true, completion: nil)
         }
+        
     }
     
 }
