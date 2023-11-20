@@ -51,6 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         
         //инъекция зависимости для определения делегата
         questionFactory.delegate = self
+        alertPresenter.controller = self
         
         //Загружаем внешинй вид изображения ImageView в соответствии с моделью в Figma
         imageView.layer.masksToBounds = true
@@ -66,6 +67,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         
     }
     
+    
     func didFinishReceiveQuestion(question: QuizQuestion?) {
         guard let question else { return }
         
@@ -74,7 +76,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
-        show(quiz: viewModel)
     }
     
     //Метод осуществляющий преобразования структуру модели вопроса QuizQuestiion в структур модели отображения на экране QuizStepViewModel
@@ -117,6 +118,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
     //Приватный метод для показа алерта с результатами раунда квиза
     //Принимает модель QuizResultViewModel и ничего не возвращает
+    /*
     private func showAlert(quiz result: QuizResultViewModel){
         //Создаем Alert
         let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
@@ -138,6 +140,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         self.present(alert, animated: true, completion: nil)
         
     }
+    */
     
     //Метод который меняе цвет рамки и вызывает метод перехода
     //метод принимает на въод булево значение и ничего не возвращает
@@ -165,24 +168,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     private func showNextQuestionOrResult() {
         if currentQuestionIndex == questionAmount - 1 {
             //выводим результаты нашего квиза
-            var titleInfoText = correctAnswers == questionAmount ? "Поздрвляем вы ответели на 10 и 10!" : "Вы ответели на \(correctAnswers) из \(questionAmount), попробуйте ещё раз!"
-            let quizResultView = QuizResultViewModel(title: "Этот раунд окончен!", text: titleInfoText, buttonText: "Сыграть ещё раз")
+            let alerTitle = "Этот раунд окончен!"
+            let alertMessage = correctAnswers == questionAmount ? "Поздрвляем вы ответели на 10 и 10!" : "Вы ответели на \(correctAnswers) из \(questionAmount), попробуйте ещё раз!"
+            let alertButtonText = "Сыграть ещё раз"
+//            let quizResultView = QuizResultViewModel(title: "Этот раунд окончен!", text: titleInfoText, buttonText: "Сыграть ещё раз")
+            let alertModel = AlertModel(title: alerTitle, message: alertMessage, buttonText: alertButtonText) { [ weak self ] in
             
-            var alertModel = AlertModel(title: "Этот раунд окончен!", message: titleInfoText, buttonText: "Сыграть ещё раз", completion: {
-                let action = UIAlertAction(title: "Сыграть ещё раз", style: .default) { [weak self] _ in
+                    let action = UIAlertAction(title: alertButtonText, style: .default) { [weak self] _ in
+                        
+                        guard let selfAction = self else { return }
+                        // обнуляем счетчик вопросов
+                        selfAction.correctAnswers = 0
+                        
+                        // обнуляем счетчик правильных вопросов
+                        selfAction.currentQuestionIndex = 0
+                        
+                        //Загружаем на экран первый вопрос
+                        selfAction.questionFactory.requestNextQuestion()
+                    }
                     
-                    guard let selfAction = self else { return }
-                    // обнуляем счетчик вопросов
-                    selfAction.correctAnswers = 0
-                    
-                    // обнуляем счетчик правильных вопросов
-                    selfAction.currentQuestionIndex = 0
-                    
-                    //Загружаем на экран первый вопрос
-                    selfAction.questionFactory.requestNextQuestion()
-                }
-            })
+                return action
+            }
+            
             alertPresenter.showAlert(quiz: alertModel)
+            
         } else {
             currentQuestionIndex += 1
             questionFactory.requestNextQuestion()

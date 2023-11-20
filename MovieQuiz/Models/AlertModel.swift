@@ -16,19 +16,6 @@ struct AlertModel {
     
     var buttonText: String
     
-    var completion: () -> Void {
-        let action = UIAlertAction(title: self.buttonText, style: .default) { [weak MovieQuizViewController] _ in
-            
-            guard let selfAction = MovieQuizViewController else { return }
-            // обнуляем счетчик вопросов
-            selfAction.correctAnswers = 0
-            
-            // обнуляем счетчик правильных вопросов
-            selfAction.currentQuestionIndex = 0
-            
-            //Загружаем на экран первый вопрос
-            selfAction.questionFactory.requestNextQuestion()
-        }
-    }
+    var completion: (() -> UIAlertAction)?
     
 }
