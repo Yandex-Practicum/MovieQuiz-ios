@@ -16,6 +16,6 @@ struct AlertModel {
     
     var buttonText: String
     
-    var completion: (() -> UIAlertAction)?
+    var completion: (() -> Void)?
     
 }

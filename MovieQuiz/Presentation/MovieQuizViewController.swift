@@ -171,28 +171,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
             let alerTitle = "Этот раунд окончен!"
             let alertMessage = correctAnswers == questionAmount ? "Поздрвляем вы ответели на 10 и 10!" : "Вы ответели на \(correctAnswers) из \(questionAmount), попробуйте ещё раз!"
             let alertButtonText = "Сыграть ещё раз"
-//            let quizResultView = QuizResultViewModel(title: "Этот раунд окончен!", text: titleInfoText, buttonText: "Сыграть ещё раз")
-            let alertModel = AlertModel(title: alerTitle, message: alertMessage, buttonText: alertButtonText) { [ weak self ] in
             
-                    let action = UIAlertAction(title: alertButtonText, style: .default) { [weak self] _ in
-                        
-                        guard let selfAction = self else { return }
-                        // обнуляем счетчик вопросов
-                        selfAction.correctAnswers = 0
-                        
-                        // обнуляем счетчик правильных вопросов
-                        selfAction.currentQuestionIndex = 0
-                        
-                        //Загружаем на экран первый вопрос
-                        selfAction.questionFactory.requestNextQuestion()
-                    }
-                    
-                return action
+//            let quizResultView = QuizResultViewModel(title: "Этот раунд окончен!", text: titleInfoText, buttonText: "Сыграть ещё раз")
+            
+            let alertModel = AlertModel(title: alerTitle, message: alertMessage, buttonText: alertButtonText) { [ weak self ] in
+                
+                if let selfAction = self {
+                // обнуляем счетчик вопросов
+                selfAction.correctAnswers = 0
+                
+                // обнуляем счетчик правильных вопросов
+                selfAction.currentQuestionIndex = 0
+                
+                //Загружаем на экран первый вопрос
+                selfAction.questionFactory.requestNextQuestion()
             }
             
-            alertPresenter.showAlert(quiz: alertModel)
-            
-        } else {
+        }
+        
+        alertPresenter.showAlert(quiz: alertModel)
+        
+    } else {
             currentQuestionIndex += 1
             questionFactory.requestNextQuestion()
         }
