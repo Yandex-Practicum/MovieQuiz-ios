@@ -63,11 +63,11 @@ extension StatisticServiceImpl: StatisticService {
     var bestGame: BestGame?{
         get {
             guard
-                let data = userDefaults.data(forKey: Keys.gamesCount.rawValue),
-                let _ = try? decoder.decode(BestGame.self, from: data) else { // bestGame
+                let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
+                let game = try? decoder.decode(BestGame.self, from: data) else {
                 return nil
             }
-            return self.bestGame
+            return game
         }
         set {
             let data = try? encoder.encode(newValue)

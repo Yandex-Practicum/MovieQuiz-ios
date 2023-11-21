@@ -27,7 +27,7 @@ extension AlertPresenterImpl: AlertPresenter {
             title: alertModel.title,
             message: alertModel.message,
             preferredStyle: .alert
-            )
+        )
         let action = UIAlertAction(title: alertModel.buttonText, style: .default) {_ in
             alertModel.buttonAction()
         }
