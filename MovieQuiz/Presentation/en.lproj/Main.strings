@@ -1,0 +1,15 @@
+
+/* Class = "UIButton"; normalTitle = "Да"; ObjectID = "3FO-ix-KLI"; */
+"3FO-ix-KLI.normalTitle" = "Да";
+
+/* Class = "UILabel"; text = "1/10"; ObjectID = "8Sh-ft-GFv"; */
+"8Sh-ft-GFv.text" = "1/10";
+
+/* Class = "UILabel"; text = "Рейтинг этого фильма меньше чем 5?"; ObjectID = "eZq-dS-9gu"; */
+"eZq-dS-9gu.text" = "Рейтинг этого фильма меньше чем 5?";
+
+/* Class = "UILabel"; text = "Вопрос:"; ObjectID = "ec7-zG-RcC"; */
+"ec7-zG-RcC.text" = "Вопрос:";
+
+/* Class = "UIButton"; normalTitle = "Нет"; ObjectID = "jsM-TX-n27"; */
+"jsM-TX-n27.normalTitle" = "Нет";
