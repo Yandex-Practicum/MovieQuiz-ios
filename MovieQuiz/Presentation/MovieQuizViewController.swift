@@ -13,7 +13,6 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
     }
     
     @IBAction private func YesButtonClicked(_ sender: UIButton) {
@@ -51,9 +50,8 @@ final class MovieQuizViewController: UIViewController {
         let correctAnswer: Bool
     }
     
-    
-    
     override func viewDidLoad() {
+        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
         show(quiz: convert(model: questions[currentQuestionIndex]))
     }
     
@@ -72,7 +70,6 @@ final class MovieQuizViewController: UIViewController {
         QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
     ]
     
-    
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -84,7 +81,6 @@ final class MovieQuizViewController: UIViewController {
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
-        // попробуйте написать код показа на экран самостоятельно
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -96,7 +92,8 @@ final class MovieQuizViewController: UIViewController {
             message: result.text,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self = self else {return}
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
@@ -120,12 +117,13 @@ final class MovieQuizViewController: UIViewController {
         // метод красит рамку
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor// делаем рамку зеленой
-        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
-        
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor// красим рамку
+
         // запускаем задачу через 1 секунду c помощью диспетчера задач
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else {return}
             self.showNextQuestionOrResults()
+            self.imageView.layer.borderWidth = 0
         }
     }
     
@@ -147,5 +145,4 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-    
 }
