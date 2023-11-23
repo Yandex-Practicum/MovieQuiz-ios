@@ -15,7 +15,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
@@ -105,7 +105,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
-
+    
     private func showNetworkError (message: String) {
         hideLoadingIndicator()
         
@@ -117,7 +117,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.currentQuestionIndex = 0
             self.correctAnswer = 0
             
-            self.questionFactory?.requestNextQuestion()
+            self.questionFactory?.loadData()
         }
         alertPresenter?.show(data: model)
     }
@@ -125,7 +125,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 0
         if currentQuestionIndex == questionsAmount - 1 {
             statisticService.store(correct: correctAnswer, total: questionsAmount)
-    
+            
             showAlert (quizResult: QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: """
