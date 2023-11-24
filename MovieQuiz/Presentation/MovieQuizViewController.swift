@@ -169,8 +169,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
     private func showNextQuestionOrResult() {
         if currentQuestionIndex == questionAmount - 1 {
-            //выводим результаты нашего квиза
+            //Анализируем лучший счет игры
             statisticImplementation.store(correct: correctAnswers, total: questionAmount)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.YY HH:mm"
+            let formattedDate = dateFormatter.string(from: Date())
+            //выводим результаты нашего квиза
             //Этот раун окончен!
             //Ваш результат: 6/10
             //Количество сыгранных квизов: 1
@@ -180,7 +185,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
             let alertMessage = """
             Ваш результат: \(correctAnswers) / \(questionAmount)
             Количество сыгранных квизов: \(statisticImplementation.gamesCount)
-            Рекорд: \(statisticImplementation.bestGame.correct) /\(statisticImplementation.bestGame.total)
+            Рекорд: \(statisticImplementation.bestGame.correct) /\(statisticImplementation.bestGame.total) (\(formattedDate))
             """
             let alertButtonText = "Сыграть ещё раз"
             
