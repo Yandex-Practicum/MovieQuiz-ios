@@ -40,6 +40,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
 //    //Определяем модель Алерта
 //    private var alertView: AlertModel?
     
+    private var statisticImplementation: StatisticServiceProtocol = StatisticServiceImplementation()
+    
     //Определяем внешний вид статус бара в приложении
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -168,8 +170,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     private func showNextQuestionOrResult() {
         if currentQuestionIndex == questionAmount - 1 {
             //выводим результаты нашего квиза
+            statisticImplementation.store(correct: correctAnswers, total: questionAmount)
+            //Этот раун окончен!
+            //Ваш результат: 6/10
+            //Количество сыгранных квизов: 1
+            //Рекорд: 6/10 (03.06.22 03:22)
+            //Средняя точность: 60.00%
             let alerTitle = "Этот раунд окончен!"
-            let alertMessage = correctAnswers == questionAmount ? "Поздрвляем вы ответели на 10 и 10!" : "Вы ответели на \(correctAnswers) из \(questionAmount), попробуйте ещё раз!"
+            let alertMessage = """
+            Ваш результат: \(correctAnswers) / \(questionAmount)
+            Количество сыгранных квизов: \(statisticImplementation.gamesCount)
+            Рекорд: \(statisticImplementation.bestGame.correct) /\(statisticImplementation.bestGame.total)
+            """
             let alertButtonText = "Сыграть ещё раз"
             
 //            let quizResultView = QuizResultViewModel(title: "Этот раунд окончен!", text: titleInfoText, buttonText: "Сыграть ещё раз")
