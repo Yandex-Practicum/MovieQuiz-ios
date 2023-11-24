@@ -12,5 +12,5 @@ struct AlertModel {
     var message: String
     var buttonText: String
     
-    var comletion: (UIAlertAction) -> Void = {_ in }
+    var comletion: () -> Void 
 }

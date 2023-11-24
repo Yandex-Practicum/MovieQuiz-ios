@@ -19,48 +19,16 @@ class AlertPresenter {
             message: result.message,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             
-
-            guard let self = self else {return}
-            self.controller?.currentQuestionIndex = 0
-            self.controller?.correctAnswers = 0
-            
-            self.controller?.questionFactory.requestNextQuestion()
+            result.comletion()
         }
         
         alert.addAction(action)
-        
-        self.controller?.present(alert, animated: true, completion: nil)
+
+        self.controller?.present(alert, animated: true)
+        //        , completion: nil
     }
     
     
 }
-
-
-
-
-//        let alert = UIAlertController(
-//            title: result.title,
-//            message: result.text,
-//            preferredStyle: .alert)
-
-
-//        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak controller] _ in
-
-
-
-//var currentQuestionIndex: Int = 1 {
-//        didSet {
-//            if currentQuestionIndex == 0 {
-//                controller?.currentQuestionIndex = 0
-//            }
-//        }
-//    }
-//    var correctAnswers: Int = 1 {
-//        didSet {
-//            if correctAnswers == 0 {
-//                controller?.correctAnswers = 0
-//            }
-//        }
-//    }
