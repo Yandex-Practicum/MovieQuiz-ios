@@ -183,9 +183,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
             //Средняя точность: 60.00%
             let alerTitle = "Этот раунд окончен!"
             let alertMessage = """
-            Ваш результат: \(correctAnswers) / \(questionAmount)
+            Ваш результат: \(correctAnswers)/\(questionAmount)
             Количество сыгранных квизов: \(statisticImplementation.gamesCount)
             Рекорд: \(statisticImplementation.bestGame.correct) /\(statisticImplementation.bestGame.total) (\(formattedDate))
+            Средняя точность: \(String(format: "%.2f", statisticImplementation.totalAccurancy * 100))%
             """
             let alertButtonText = "Сыграть ещё раз"
             

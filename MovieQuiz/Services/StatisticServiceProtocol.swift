@@ -14,7 +14,7 @@ protocol StatisticServiceProtocol {
     //Общий счетчик игр
     var gamesCount: Int { get }
     //Лучшая игра
-    var bestGame: GameRecord { get set }
+    var bestGame: GameRecord { get }
     
     func store(correct count: Int, total amount: Int)
     

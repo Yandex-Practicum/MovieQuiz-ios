@@ -11,6 +11,7 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
     
     private var userDefaults = UserDefaults.standard
     
+    
     var totalAccurancy: Double {
         get {
             guard let dataAccurancy = userDefaults.data(forKey: Keys.totalAccurancy.rawValue),
@@ -69,12 +70,33 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         
     }
     
+    var totalCorrect: Int {
+        get{
+            userDefaults.integer(forKey: Keys.correct.rawValue)
+        }
+        set{
+            userDefaults.set(newValue, forKey: Keys.correct.rawValue)
+        }
+    }
+    var totalAmount: Int {
+        get{
+            userDefaults.integer(forKey: Keys.total.rawValue)
+        }
+        set{
+            userDefaults.set(newValue, forKey: Keys.total.rawValue)
+        }
+        
+    }
     //Реализуем метод сохранения лучшего значения и общего количетсва сыгранных игр
     func store(correct count: Int, total amount: Int) {
+        totalCorrect += count
+        print(totalCorrect)
+        totalAmount += amount
+        print(totalAmount)
         if bestGame.isBetterResult(currentResult: GameRecord(correct: count, total: amount, date: Date())) {
             bestGame = GameRecord(correct: count, total: amount, date: Date())
         }
-        totalAccurancy = (totalAccurancy + Double(count) / Double(amount)) / 2
+        totalAccurancy = Double(totalCorrect) / Double(totalAmount)
         gamesCount += 1
     }
     
