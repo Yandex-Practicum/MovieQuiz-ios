@@ -142,7 +142,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
             //Определяем формат даты в виде 03.06.22 03:22
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd.MM.YY HH:mm"
-            let formattedDate = dateFormatter.string(from: Date())
+            let formattedDate = dateFormatter.string(from: statisticImplementation.bestGame.date)
             
             //Данные для модели Алерта
             let alerTitle = "Этот раунд окончен!"
