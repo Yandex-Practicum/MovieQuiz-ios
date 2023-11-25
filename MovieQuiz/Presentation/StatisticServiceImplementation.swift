@@ -9,47 +9,34 @@ import Foundation
 
 class StatisticServiceImplementation:StatisticServiceProtocol {
     
-    private var userDefaults = UserDefaults.standard
+    private lazy var userDefaults = UserDefaults.standard
     
+    //Перечесление с именами сохраняемых переменных (общее количество правильных ответов, общее количество ответов, количество сыгранных партий, структура лучшей игры.
+    enum Keys: String {
+        case correct, total, gameCount, bestGame
+    }
     
+    //Переменная оперделяющая общую статистику игры
     var totalAccurancy: Double {
         get {
-            guard let dataAccurancy = userDefaults.data(forKey: Keys.totalAccurancy.rawValue),
-                  let accurancy = try? JSONDecoder().decode(Double.self, from: dataAccurancy) else {
-                return 0
-            }
-            return accurancy
+            Double(totalCorrect) / Double(totalAmount)
         }
-        set{
-            guard let dataAccurancy = try? JSONEncoder().encode((newValue)) else { print("Невозможно устаовить значение среднего счета")
-                return
-            }
-            userDefaults.set(dataAccurancy, forKey: Keys.totalAccurancy.rawValue)
+        set {
+            print("Установлено новое значение \(newValue)")
         }
     }
     
+    // Переменная оперделяющая общее количество сыгранных игр после установки приложения
     var gamesCount: Int {
         get{
-            guard let data = userDefaults.data(forKey: Keys.gameCount.rawValue),
-                  let count = try? JSONDecoder().decode(Int.self, from: data) else {
-                return 0
-            }
-            return count
+            userDefaults.integer(forKey: Keys.gameCount.rawValue)
         }
         set{
-            guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно установить значение счета")
-                return
-            }
-            userDefaults.set(data, forKey: Keys.gameCount.rawValue)
+            userDefaults.set(newValue, forKey: Keys.gameCount.rawValue)
         }
     }
     
-    
-    enum Keys: String {
-        case correct, total, gameCount, bestGame, totalAccurancy
-    }
-    
+    //Структура лучшей игры
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -70,7 +57,8 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         
     }
     
-    var totalCorrect: Int {
+    //Общее количество правильных ответов сохраненное в памяти за все партии
+    private var totalCorrect: Int {
         get{
             userDefaults.integer(forKey: Keys.correct.rawValue)
         }
@@ -78,7 +66,9 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
             userDefaults.set(newValue, forKey: Keys.correct.rawValue)
         }
     }
-    var totalAmount: Int {
+    
+    //Обще количество вопросов заданных за все партии
+    private var totalAmount: Int {
         get{
             userDefaults.integer(forKey: Keys.total.rawValue)
         }
@@ -87,6 +77,7 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         }
         
     }
+    
     //Реализуем метод сохранения лучшего значения и общего количетсва сыгранных игр
     func store(correct count: Int, total amount: Int) {
         totalCorrect += count
@@ -99,7 +90,6 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         totalAccurancy = Double(totalCorrect) / Double(totalAmount)
         gamesCount += 1
     }
-    
     
 }
 

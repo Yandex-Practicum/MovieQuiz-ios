@@ -37,15 +37,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     //Определяем клас работы с Алертом
     private var alertPresenter = AlertPresenter()
     
-//    //Определяем модель Алерта
-//    private var alertView: AlertModel?
-    
+    //Определяем класс обработки общей статистики квиза
     private var statisticImplementation: StatisticServiceProtocol = StatisticServiceImplementation()
     
     //Определяем внешний вид статус бара в приложении
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-        
     }
     
     override func viewDidLoad() {
@@ -66,9 +63,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         UIView.animate(withDuration: 0.3) {
             self.setNeedsStatusBarAppearanceUpdate()
         }
-        
     }
-    
     
     func didFinishReceiveQuestion(question: QuizQuestion?) {
         guard let question else { return }
@@ -118,35 +113,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         })
     }
     
-    //Приватный метод для показа алерта с результатами раунда квиза
-    //Принимает модель QuizResultViewModel и ничего не возвращает
-    /*
-    private func showAlert(quiz result: QuizResultViewModel){
-        //Создаем Alert
-        let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            
-            guard let selfAction = self else { return }
-            // обнуляем счетчик вопросов
-            selfAction.correctAnswers = 0
-            
-            // обнуляем счетчик правильных вопросов
-            selfAction.currentQuestionIndex = 0
-            
-            //Загружаем на экран первый вопрос
-            selfAction.questionFactory.requestNextQuestion()
-        }
-        
-        //Создаем действие Alert и выводим его на экран
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-        
-    }
-    */
-    
     //Метод который меняе цвет рамки и вызывает метод перехода
     //метод принимает на въод булево значение и ничего не возвращает
-    
     private func showAnswerResult(isCorrect: Bool) {
         
         isButtonsBlocked(state: true) // Запрещаем действие кнопок
@@ -163,53 +131,48 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {[weak self] in
             guard let dispatch = self else { return }
             dispatch.showNextQuestionOrResult()
-            
         }
     }
     
     private func showNextQuestionOrResult() {
         if currentQuestionIndex == questionAmount - 1 {
-            //Анализируем лучший счет игры
+            //Анализируем лучшую сыгранную партию
             statisticImplementation.store(correct: correctAnswers, total: questionAmount)
             
+            //Определяем формат даты в виде 03.06.22 03:22
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd.MM.YY HH:mm"
             let formattedDate = dateFormatter.string(from: Date())
-            //выводим результаты нашего квиза
-            //Этот раун окончен!
-            //Ваш результат: 6/10
-            //Количество сыгранных квизов: 1
-            //Рекорд: 6/10 (03.06.22 03:22)
-            //Средняя точность: 60.00%
+            
+            //Данные для модели Алерта
             let alerTitle = "Этот раунд окончен!"
             let alertMessage = """
             Ваш результат: \(correctAnswers)/\(questionAmount)
             Количество сыгранных квизов: \(statisticImplementation.gamesCount)
-            Рекорд: \(statisticImplementation.bestGame.correct) /\(statisticImplementation.bestGame.total) (\(formattedDate))
+            Рекорд: \(statisticImplementation.bestGame.correct)/\(statisticImplementation.bestGame.total) (\(formattedDate))
             Средняя точность: \(String(format: "%.2f", statisticImplementation.totalAccurancy * 100))%
             """
             let alertButtonText = "Сыграть ещё раз"
             
-//            let quizResultView = QuizResultViewModel(title: "Этот раунд окончен!", text: titleInfoText, buttonText: "Сыграть ещё раз")
-            
+            //Подготавливаем модель Алерта
             let alertModel = AlertModel(title: alerTitle, message: alertMessage, buttonText: alertButtonText) { [ weak self ] in
                 
+                //В замыкании определяем начальное состояние игры после завершения партии
                 if let selfAction = self {
-                // обнуляем счетчик вопросов
-                selfAction.correctAnswers = 0
-                
-                // обнуляем счетчик правильных вопросов
-                selfAction.currentQuestionIndex = 0
-                
-                //Загружаем на экран первый вопрос
-                selfAction.questionFactory.requestNextQuestion()
+                    // обнуляем счетчик вопросов
+                    selfAction.correctAnswers = 0
+                    
+                    // обнуляем счетчик правильных вопросов
+                    selfAction.currentQuestionIndex = 0
+                    
+                    //Загружаем на экран первый вопрос
+                    selfAction.questionFactory.requestNextQuestion()
+                }
             }
             
-        }
-        
-        alertPresenter.showAlert(quiz: alertModel)
-        
-    } else {
+            alertPresenter.showAlert(quiz: alertModel)
+            
+        } else {
             currentQuestionIndex += 1
             questionFactory.requestNextQuestion()
         }
@@ -229,67 +192,3 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
     }
 }
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
