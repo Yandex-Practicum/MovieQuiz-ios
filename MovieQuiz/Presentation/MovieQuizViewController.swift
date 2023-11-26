@@ -74,7 +74,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         }
     }
     
-    //Метод осуществляющий преобразования структуру модели вопроса QuizQuestiion в структур модели отображения на экране QuizStepViewModel
+    ///Метод осуществляющий преобразования структуры модели вопроса QuizQuestiion в структур модели отображения на экране QuizStepViewModel
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         
         let image = UIImage(named: model.image) ?? UIImage()
@@ -176,6 +176,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
             questionFactory.requestNextQuestion()
         }
     }
+    
+    // MARK: - ActionButtons
     
     //Определяем действие кнопки "Да"
     @IBAction private func yesButtonClicked(_ sender: Any) {
