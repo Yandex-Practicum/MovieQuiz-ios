@@ -50,7 +50,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         
         //инъекция зависимости для определения делегата
         questionFactory.delegate = self
-        alertPresenter.controller = self
         
         //Загружаем внешинй вид изображения ImageView в соответствии с моделью в Figma
         imageView.layer.masksToBounds = true
@@ -88,11 +87,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     //Метод блокировки кнопок экрана
     private func isButtonsBlocked(state: Bool) {
         if state {
-            yesButton.isEnabled = false // Запрещаем действие кнопки "Да"
-            noButton.isEnabled = false // Запрещаем действие кнопки "Нет"
+            yesButton.isEnabled = false
+            noButton.isEnabled = false
         } else {
-            yesButton.isEnabled = true // Разрешаем действие кнопки "Да"
-            noButton.isEnabled = true // Разрешаме действие кнопки "Нет"
+            yesButton.isEnabled = true
+            noButton.isEnabled = true
         }
     }
     
@@ -170,7 +169,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
                 }
             }
             
-            alertPresenter.showAlert(quiz: alertModel)
+            alertPresenter.showAlert(quiz: alertModel, controller: self)
             
         } else {
             currentQuestionIndex += 1
