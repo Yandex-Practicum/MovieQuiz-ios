@@ -10,7 +10,7 @@ import UIKit
 
 protocol ResultAlertPresenter {
     
-    func show(alertModel: AlertModel)
+    func show(result: AlertModel)
 }
 
 final class ResultAlertPresenterImplementation {
@@ -22,19 +22,15 @@ final class ResultAlertPresenterImplementation {
 }
 
 extension ResultAlertPresenterImplementation: ResultAlertPresenter {
-    func show(alertModel: AlertModel) {
+    func show(result: AlertModel) {
         let alert = UIAlertController(
             title: alertModel.tittle,
             message: alertModel.message,
             preferredStyle: .alert)
-        
         let action = UIAlertAction(title: alertModel.buttonText, style: .default) { _ in
-            
             alertModel.buttonAction()
         }
-        
         alert.addAction(action)
-        
         viewController?.present(alert, animated: true)
     }
 }
