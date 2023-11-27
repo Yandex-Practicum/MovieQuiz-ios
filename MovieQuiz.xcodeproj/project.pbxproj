@@ -69,9 +69,9 @@
 			isa = PBXGroup;
 			children = (
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
-				1ABA97CB2B13A2E900007C84 /* Fonts */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
+				1ABA97CB2B13A2E900007C84 /* Fonts */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
