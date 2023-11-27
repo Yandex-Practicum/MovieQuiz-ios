@@ -1,12 +1,17 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  {
+    
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactory = QuestionFactory()
+    private lazy var questionFactory: QuestionFactoryProtocol = {
+        let factory = QuestionFactory()
+        factory.delegate = self
+        return factory
+    }()
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    // Расскажите пожалуйста куда положить функции и структуры, чтобы код был более читабельный
+    // MARK: - Private functions
     private func customizationUI(){
         view.backgroundColor = UIColor.ypBlack
         
@@ -45,17 +50,14 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.imageView.layer.borderColor = UIColor.clear.cgColor
-            if let firstQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = firstQuestion
-                let viewModel = convert(model: firstQuestion)
-                show(quiz: viewModel)
-            }
+            questionFactory.requestNextQuestion()
         }
         
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
     }
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -69,6 +71,7 @@ final class MovieQuizViewController: UIViewController {
         questionLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
+    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect { // 1
             correctAnswers += 1 // 2
@@ -84,6 +87,7 @@ final class MovieQuizViewController: UIViewController {
             self.showNextQuestionOrResults()
         }
     }
+    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             let text = correctAnswers == questionsAmount ?
@@ -96,38 +100,30 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel) // 3
         } else {
             currentQuestionIndex += 1
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-
-                show(quiz: viewModel)
-            }
+            self.questionFactory.requestNextQuestion()
             imageView.layer.borderColor = UIColor.clear.cgColor
+        }
+    }
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
         }
     }
     // MARK: - Lifecycle
     override final func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let firstQuestion = self.questionFactory.requestNextQuestion() {
-            self.currentQuestion = firstQuestion
-            let viewModel = self.convert(model: firstQuestion)
-
-            self.show(quiz: viewModel)
-        } 
+        questionFactory.delegate = self
+        questionFactory.requestNextQuestion()
         customizationUI()
     }
-    
-
-    
-
-    
-
-    
-    
-    
-    
-    
+    // MARK: - IBOutlet
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
@@ -141,6 +137,7 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
+    
     @IBAction private func noButtonPressed(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {
             return
