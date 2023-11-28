@@ -45,7 +45,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mRX-vb-i6E" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mRX-vb-i6E" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
@@ -115,7 +115,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="fZc-Hi-5nZ" id="V96-RF-Bxm"/>
                         <outlet property="imageView" destination="mRX-vb-i6E" id="F37-7Y-bkx"/>
+                        <outlet property="noButton" destination="Cu5-fH-GfG" id="Wtp-8V-eMd"/>
                         <outlet property="textLabel" destination="WIX-MD-XEJ" id="zWf-SC-vvB"/>
+                        <outlet property="yesButton" destination="nZG-eT-GAu" id="9It-sV-uWi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -8,7 +8,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
     // MARK: Structures
     
     struct ViewModel {
@@ -77,15 +78,20 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false)]
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    
-    // MARK: Override func
+
+    // MARK: Overrides funcs
     
     override func viewDidLoad(){
         super.viewDidLoad()
         let firstQuestion = questions[currentQuestionIndex]
         let defaultviewModel = convert(model: firstQuestion)
         show(quiz: defaultviewModel)
+        imageView.layer.cornerRadius = 20
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return.lightContent
+    }
+    
     
     // MARK: Private funcs
     
@@ -114,6 +120,8 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         if isCorrect {
             correctAnswers += 1
         }
@@ -130,6 +138,8 @@ final class MovieQuizViewController: UIViewController {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
         
     }
     
