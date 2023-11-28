@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BestGame: Comparable, Codable {
+struct GameRecord: Comparable, Codable {
     var correct: Int  // количество правильных ответов
     var total: Int  // количество вопросов квиза
     var date: Date // дата завершения раунда
@@ -19,7 +19,7 @@ struct BestGame: Comparable, Codable {
         }
         return Double(correct) / Double(total)
     }
-    static func < (lhs: BestGame, rhs: BestGame) -> Bool {
+    static func < (lhs: GameRecord, rhs: GameRecord) -> Bool {
         lhs.accuracy < rhs.accuracy
     }
 }

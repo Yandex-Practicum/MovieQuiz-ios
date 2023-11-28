@@ -12,41 +12,14 @@ import Foundation
 protocol StatisticService {
     var totalAccuracy: Double {get}  //В первой строке выводится результат текущей игры.
     var gamesCount: Int {get set}  // Второй — количество завершённых игр
-    var bestGame: BestGame? {get set} //Третьей — информация о лучшей попытке.
+    var gameRecord: GameRecord? {get set} //Третьей — информация о лучшей попытке.
     
     func store(correct: Int,total: Int)
 }
 
 
-
-//
-//struct GameRecord: Codable {
-//    
-//    let correct: Int
-//    let total: Int
-//    let date: Int
-//    
-//    struct GameRecord: Codable {
-//        let correct: Int
-//        let total: Int
-//        let date: Date
-//
-//        
-//        func isBetterThan(_ another: GameRecord) -> Bool {
-//            correct > another.correct
-//        }
-//    }
-//}
-//
-//
 class StatisticServiceImplementation: StatisticService {
     
-//    private let userDefaults: UserDefaults
-//    
-//    init(userDefaults: UserDefaults = .standard) {
-//        self.userDefaults = userDefaults
-//        
-//    }
     
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
@@ -80,21 +53,21 @@ class StatisticServiceImplementation: StatisticService {
     }
     
     
-    var bestGame: BestGame? {
+    var gameRecord: GameRecord? {
         get {
             guard let data = UserDefaults.standard.data(forKey: Keys.bestGame.rawValue),
-            var bestGame = try? JSONDecoder().decode(BestGame.self, from: data) else {
+                  let gameRecord = try? JSONDecoder().decode(GameRecord.self, from: data) else {
                 return .init(correct: 0, total: 0, date: Date())
             }
 
-            return bestGame
+            return gameRecord
         }
 
         set {
-            var data = try? JSONEncoder().encode(newValue) // else {
-//                print("Невозможно сохранить результат")
-//                return
-          //  }
+            guard let data = try? JSONEncoder().encode(newValue)  else {
+                print("Невозможно сохранить результат")
+                return
+            }
 
             UserDefaults.standard.set(data, forKey: Keys.bestGame.rawValue)
         }
@@ -105,18 +78,18 @@ class StatisticServiceImplementation: StatisticService {
     }
     
     func store(correct: Int, total: Int) {
-        self.correct += 7
-        self.total += 7
+        self.correct += correct
+        self.total += total
         self.gamesCount += 1
         
-        let currentBestGame = BestGame(correct: self.correct, total: self.total, date: Date())
+        let currentGame = GameRecord(correct: correct, total: total, date: Date())
         
-        if let previousBestGame = bestGame {
-            if currentBestGame > previousBestGame {
-                bestGame = currentBestGame
+        if let previousBestGame = gameRecord {
+            if currentGame > previousBestGame {
+                gameRecord = currentGame
             }
         } else {
-            bestGame = currentBestGame
+            gameRecord = currentGame
         }
     }
 }
