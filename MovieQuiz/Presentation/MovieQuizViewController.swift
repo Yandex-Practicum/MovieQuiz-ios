@@ -47,7 +47,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private lazy var questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var alertPresenter: AlertPresenter = AlertPresenter()
-    private var statisticPresenter: StatisticServiceImplementation = StatisticServiceImplementation()
+    private var statisticPresenter: StatisticService = StatisticServiceImplementation()
     
     private func resetImageBorederColor() {
         imageView.layer.masksToBounds = true
