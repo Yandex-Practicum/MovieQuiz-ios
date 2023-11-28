@@ -10,9 +10,9 @@ import Foundation
 
 
 protocol StatisticService {
-    var totalAccuracy: Double {get}  //В первой строке выводится результат текущей игры.
-    var gamesCount: Int {get set}  // Второй — количество завершённых игр
-    var gameRecord: GameRecord? {get set} //Третьей — информация о лучшей попытке.
+    var totalAccuracy: Double {get}
+    var gamesCount: Int {get set}
+    var gameRecord: GameRecord? {get set} 
     
     func store(correct: Int,total: Int)
 }

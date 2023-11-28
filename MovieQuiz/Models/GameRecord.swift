@@ -8,9 +8,9 @@
 import Foundation
 
 struct GameRecord: Comparable, Codable {
-    var correct: Int  // количество правильных ответов
-    var total: Int  // количество вопросов квиза
-    var date: Date // дата завершения раунда
+    var correct: Int
+    var total: Int
+    var date: Date 
     
     
     private var accuracy: Double {
