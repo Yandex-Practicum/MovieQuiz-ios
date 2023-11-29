@@ -18,20 +18,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet var yesButtonClicked: UIButton!
     
     @IBAction func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {return}
-        
-        let givenAnswer = true
-        
-        
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        buttonClicked(givenAnswer: true)
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {return}
-        
-        let givenAnswer = false
-        
-        showAnswerResult(isCorrect: givenAnswer ==  currentQuestion.correctAnswer)
+        buttonClicked(givenAnswer: false)
     }
     
     
@@ -39,7 +30,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         case fileDoesntExist
     }
     
-
+    
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var questionsAmount = 10
@@ -94,7 +85,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticPresenter.store(correct: correctAnswers, total: questionsAmount)
         
         guard let bestGame = statisticPresenter.gameRecord else {return}
-
+        
         
         let TotalGamesString = "количество сыгранных квизов: \(statisticPresenter.gamesCount)"
         let bestGameString = "рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
@@ -118,7 +109,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-
+            
             showAlertPresenter()
             
         } else {
@@ -142,6 +133,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return try String(contentsOf: documentsURL)
     }
     
+    private func buttonClicked(givenAnswer: Bool) {
+        guard let currentQuestion = currentQuestion else {return}
+        
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
     
     
     override func viewDidLoad() {
