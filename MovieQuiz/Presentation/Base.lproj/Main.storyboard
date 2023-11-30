@@ -51,6 +51,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="lj6-qy-80y" secondAttribute="height" multiplier="2:3" id="jJS-da-js2"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To be or not to be, that is the question" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g98-Yc-sfF" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="643" width="374" height="78"/>
@@ -92,6 +97,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eWO-G2-mCb"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CuU-aQ-zk8">
                                                 <rect key="frame" x="197" y="0.0" width="177" height="60"/>
@@ -117,6 +125,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4NC-bN-ObK"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -143,6 +154,11 @@
                             <constraint firstItem="KJI-T4-sdv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="xRh-rW-odk"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="0ts-7L-Vc5" id="7cZ-ch-USu"/>
+                        <outlet property="previewImageView" destination="lj6-qy-80y" id="Aw7-Ds-D1U"/>
+                        <outlet property="questionLabel" destination="g98-Yc-sfF" id="tVj-qa-ZSU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
