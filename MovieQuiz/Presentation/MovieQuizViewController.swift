@@ -4,7 +4,6 @@ final class MovieQuizViewController: UIViewController {
    
     //Properties
     private var currentQuestionIndex = 0
-   
     private var correctAnswers = 0
    
     private let questions: [QuizQuestion] = [
@@ -49,27 +48,29 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.layer.borderWidth = 2
+        imageView.layer.borderWidth = 5
         imageView.layer.borderColor = UIColor.ypWhite.cgColor
         imageView.layer.cornerRadius = 6
         
-        showNextQuestion()
+        showNextQuestionOrResults()
     }
     
     //actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        showAnswerResult(answer: false)}
+        showAnswerResult(isCorrect: false)}
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        showAnswerResult(answer: true)}
+        showAnswerResult(isCorrect: true)}
     
     //private methods
+    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         questionTextLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel { //метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
+    // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),//Инициализируем картинку с помощью конструктора UIImage(named: )
             question: model.text, //забираем уже готовый вопрос из мокового вопроса
@@ -77,33 +78,35 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
-    private func showNextQuestion() {
-        guard currentQuestionIndex < questions.count else { //Если условие currentQuestionIndex < questions.count не выполняется, то это означает, что все вопросы уже                                                      были показаны, и выполнение метода завершится
+    private func showNextQuestionOrResults() {
+        guard currentQuestionIndex < questions.count else { //Если условие currentQuestionIndex < questions.count не выполняется, то это означает, что все вопросы                                                       уже были показаны, и выполнение метода завершится
             return
         }
-//        imageView.layer.borderColor = UIColor.ypWhite.cgColor
+
         let question = questions[currentQuestionIndex]
         let questionStep = convert(model: question)
         show(quiz: questionStep)
-        
     }
     
-    
-    private func showAnswerResult(answer: Bool) {
+    // приватный метод, который меняет цвет рамки
+    // принимает на вход булевое значение и ничего не возвращает
+    private func showAnswerResult(isCorrect: Bool) {
         let currentQuestion = questions[currentQuestionIndex]
-        let isCorrect = answer == currentQuestion.correctAnswer
+        let isCorrect = isCorrect == currentQuestion.correctAnswer
         
         if isCorrect {
+            correctAnswers += 1
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
         } else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
         currentQuestionIndex += 1
-        showNextQuestion()
+        showNextQuestionOrResults()
+        print("кол-во правильных ответов \(correctAnswers)") //понимаю что логика работает
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in //добавил задержку
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in //добавил задержку
             self?.imageView.layer.borderColor = UIColor.white.cgColor // Сброс цвета рамки перед отображением следующего вопроса
-            self?.showNextQuestion()
+            self?.showNextQuestionOrResults()
         }
     }
 }
