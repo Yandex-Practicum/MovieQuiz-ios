@@ -16,6 +16,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     
     // переменная с индексом текущего вопроса, начальное значение 0
     // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
@@ -71,6 +73,7 @@ final class MovieQuizViewController: UIViewController {
     private func startNewRound() {
         currentQuestionIndex = 0
         correctAnswers = 0
+        enableAnswerButtons()
         show(quiz: convert(model: self.questions[currentQuestionIndex]))
     }
     
@@ -81,6 +84,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: QuizResultsViewModel(title: "Этот раунд окночен!", text: "Ваш результат \(correctAnswers) / 10", buttonText: "Сыграть еще раз"))
         } else {
             currentQuestionIndex += 1
+            enableAnswerButtons()
             show(quiz: convert(model: questions[currentQuestionIndex]))
             // идём в состояние "Вопрос показан"
         }
@@ -158,11 +162,25 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    // приватный метод отключения кнопок
+    private func disableAnswerButtons() {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+    }
+    
+    // приватный метод включения кнопок
+    private func enableAnswerButtons() {
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
+    }
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        disableAnswerButtons()
         showAnswerResult(isCorrect: checkResultAnswer(isCorrect: false))
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        disableAnswerButtons()
         showAnswerResult(isCorrect: checkResultAnswer(isCorrect: true))
     }
 }
