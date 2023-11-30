@@ -1,5 +1,7 @@
 import UIKit
 
-protocol QuestionFactoryDelegate: AnyObject {              
+weak var delegate: QuestionFactoryDelegate?
+
+protocol QuestionFactoryDelegate: AnyObject {
     func didReceiveNextQuestion(question: QuizQuestion?)
 }
