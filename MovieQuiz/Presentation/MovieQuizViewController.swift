@@ -1,7 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,23 +19,36 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var yesButton: UIButton!
     
     // переменная с индексом текущего вопроса, начальное значение 0
-    // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
     private var currentQuestionIndex = 0
     // переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
-    // запускаем задачу через 1 секунду c помощью диспетчера задач
-    
-    // MARK: Входные параметры
-    
+
     // структура самого вопроса
     private struct QuizQuestion {
-      // строка с названием фильма,
-      // совпадает с названием картинки афиши фильма в Assets
       let image: String
-      // строка с вопросом о рейтинге фильма
       let text: String
-      // булевое значение (true, false), правильный ответ на вопрос
       let correctAnswer: Bool
+    }
+    
+    // вью модель для состояния "Вопрос показан"
+    private struct QuizStepViewModel {
+        let image: UIImage
+        let question: String
+        let questionNumber: String
+    }
+    
+    // вью модель для состояния "Результат квиза показан"
+    private struct QuizResultsViewModel {
+        let title: String
+        let text: String
+        let buttonText: String
+    }
+    
+    // вью модель для состояния "Результат ошибки показан"
+    private struct QuizErrorViewModel {
+        let title: String
+        let text: String
+        let buttonText: String
     }
     
     // массив вопросов "mock-данные"
@@ -73,47 +85,23 @@ final class MovieQuizViewController: UIViewController {
     private func startNewRound() {
         currentQuestionIndex = 0
         correctAnswers = 0
-        enableAnswerButtons()
+        setAnswerButtonsEnabled(true)
         show(quiz: convert(model: self.questions[currentQuestionIndex]))
     }
     
     // приватный метод, который содержит логику перехода в один из сценариев
-    // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
-            show(quiz: QuizResultsViewModel(title: "Этот раунд окночен!", text: "Ваш результат \(correctAnswers) / 10", buttonText: "Сыграть еще раз"))
+            // Если это последний вопрос, показываем результаты
+            show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат \(correctAnswers) / 10", buttonText: "Сыграть еще раз"))
         } else {
-            currentQuestionIndex += 1
-            enableAnswerButtons()
-            show(quiz: convert(model: questions[currentQuestionIndex]))
-            // идём в состояние "Вопрос показан"
+            // Плавный переход к следующему вопросу + анимация
+            UIView.transition(with: self.view, duration: 2.0, options: .transitionCurlUp, animations: {
+                self.currentQuestionIndex += 1
+                self.setAnswerButtonsEnabled(true) // Включаем кнопки перед показом нового вопроса
+                self.show(quiz: self.convert(model: self.questions[self.currentQuestionIndex]))
+            }, completion: nil)
         }
-    }
-    
-    // MARK: Обработка визуализации
-    
-    // вью модель для состояния "Вопрос показан"
-    private struct QuizStepViewModel {
-        // картинка с афишей фильма с типом UIImage
-        let image: UIImage
-        // вопрос о рейтинге квиза
-        let question: String
-        // строка с порядковым номером этого вопроса (ex. "1/10")
-        let questionNumber: String
-    }
-    
-    // вью модель для состояния "Результат квиза показан"
-    private struct QuizResultsViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
-    }
-    
-    // вью модель для состояния "Результат ошибки показан"
-    private struct QuizErrorViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
     }
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
@@ -125,62 +113,46 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // приватный метод для показа результатов раунда квиза
-    // принимает вью модель QuizResultsViewModel и ничего не возвращает
     private func show(quiz result: QuizResultsViewModel) {
         showAlert(title: result.title, message: result.text, textButton: result.buttonText)
     }
     
-    // приватный метод, который меняет цвет рамки
-    // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
-        // изменение свойств imageView
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        UIView.animate(withDuration: 0.5, animations: {
+            self.imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        })
         
-        // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-           // код, который мы хотим вызвать через 1 секунду
-           self.showNextQuestionOrResults()
+            self.showNextQuestionOrResults()
         }
     }
 
+    // метод для показа алерта
     private func showAlert(title p1: String, message p2: String, textButton p3: String) {
-        // создаём объекты всплывающего окна
-        let alert = UIAlertController(title: p1, // заголовок всплывающего окна
-                                      message: p2, // текст во всплывающем окне
-                                      preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
+        let alert = UIAlertController(title: p1,
+                                      message: p2,
+                                      preferredStyle: .alert)
 
-        // создаём для алерта кнопку с действием
-        // в замыкании пишем, что должно происходить при нажатии на кнопку
         let action = UIAlertAction(title: p3, style: .default) { _ in
             self.startNewRound()
         }
-
-        // добавляем в алерт кнопку
         alert.addAction(action)
-
-        // показываем всплывающее окно
         self.present(alert, animated: true, completion: nil)
     }
     
-    // приватный метод отключения кнопок
-    private func disableAnswerButtons() {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
-    }
-    
-    // приватный метод включения кнопок
-    private func enableAnswerButtons() {
-        noButton.isEnabled = true
-        yesButton.isEnabled = true
+    // приватный метод отключения/включения кнопок
+    private func setAnswerButtonsEnabled(_ enabled: Bool) {
+        noButton.isEnabled = enabled
+        yesButton.isEnabled = enabled
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        disableAnswerButtons()
+        setAnswerButtonsEnabled(false)
         showAnswerResult(isCorrect: checkResultAnswer(isCorrect: false))
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        disableAnswerButtons()
+        setAnswerButtonsEnabled(false)
         showAnswerResult(isCorrect: checkResultAnswer(isCorrect: true))
     }
 }
