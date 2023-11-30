@@ -2,7 +2,7 @@
 //  MovieQuizUITestsLaunchTests.swift
 //  MovieQuizUITests
 //
-//  Created by user on 26.11.2023.
+//  Created by user on 27.11.2023.
 //
 
 import XCTest
