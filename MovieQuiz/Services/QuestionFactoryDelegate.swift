@@ -1,8 +1,5 @@
-//
-//  QuestionFactoryDelegate.swift
-//  MovieQuiz
-//
-//  Created by Андрей Мухин on 29.11.2023.
-//
+import UIKit
 
-import Foundation
+protocol QuestionFactoryDelegate: AnyObject {              
+    func didReceiveNextQuestion(question: QuizQuestion?)
+}
