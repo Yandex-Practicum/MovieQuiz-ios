@@ -43,18 +43,24 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var questionTextLabel: UILabel!
     @IBOutlet weak private var counterLabel: UILabel!
-
+    @IBOutlet weak private var noButton: UIButton!
+    @IBOutlet weak private var yesButton: UIButton!
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.ypWhite.cgColor
+        imageView.layer.cornerRadius = 6
+        
         showNextQuestion()
     }
     
     //actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-    checkAnswerAndShowNextQuestion(answer: false)}
+        showAnswerResult(answer: false)}
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-    checkAnswerAndShowNextQuestion(answer: true)}
+        showAnswerResult(answer: true)}
     
     //private methods
     private func show(quiz step: QuizStepViewModel) {
@@ -75,19 +81,30 @@ final class MovieQuizViewController: UIViewController {
         guard currentQuestionIndex < questions.count else { //Если условие currentQuestionIndex < questions.count не выполняется, то это означает, что все вопросы уже                                                      были показаны, и выполнение метода завершится
             return
         }
+//        imageView.layer.borderColor = UIColor.ypWhite.cgColor
         let question = questions[currentQuestionIndex]
         let questionStep = convert(model: question)
         show(quiz: questionStep)
+        
     }
     
     
-    private func checkAnswerAndShowNextQuestion(answer: Bool) {
+    private func showAnswerResult(answer: Bool) {
         let currentQuestion = questions[currentQuestionIndex]
-        if answer == currentQuestion.correctAnswer {
-            correctAnswers += 1
+        let isCorrect = answer == currentQuestion.correctAnswer
+        
+        if isCorrect {
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor
+        } else {
+            imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
         currentQuestionIndex += 1
         showNextQuestion()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in //добавил задержку
+            self?.imageView.layer.borderColor = UIColor.white.cgColor // Сброс цвета рамки перед отображением следующего вопроса
+            self?.showNextQuestion()
+        }
     }
 }
 
