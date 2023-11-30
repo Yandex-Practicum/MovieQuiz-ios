@@ -12,10 +12,22 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: convert(model: questions[currentQuestionIndex]))
     }
     
+    // связь объектов из main с контроллером
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var textLabel: UILabel!
+    
+    // переменная с индексом текущего вопроса, начальное значение 0
+    // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
+    private var currentQuestionIndex = 0
+    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
+    private var correctAnswers = 0
+    // запускаем задачу через 1 секунду c помощью диспетчера задач
+    
     // MARK: Входные параметры
     
     // структура самого вопроса
-    struct QuizQuestion {
+    private struct QuizQuestion {
       // строка с названием фильма,
       // совпадает с названием картинки афиши фильма в Assets
       let image: String
@@ -40,19 +52,7 @@ final class MovieQuizViewController: UIViewController {
     ]
     
     // MARK: Обработка логики
-    
-    // связь объектов из main с контроллером
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet private var textLabel: UILabel!
-    
-    // переменная с индексом текущего вопроса, начальное значение 0
-    // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
-    private var currentQuestionIndex = 0
-    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
-    private var correctAnswers = 0
-    // запускаем задачу через 1 секунду c помощью диспетчера задач
-    
+        
     // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1) / 10")
@@ -89,7 +89,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: Обработка визуализации
     
     // вью модель для состояния "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         // картинка с афишей фильма с типом UIImage
         let image: UIImage
         // вопрос о рейтинге квиза
@@ -99,14 +99,14 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // вью модель для состояния "Результат квиза показан"
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
     
     // вью модель для состояния "Результат ошибки показан"
-    struct QuizErrorViewModel {
+    private struct QuizErrorViewModel {
         let title: String
         let text: String
         let buttonText: String
