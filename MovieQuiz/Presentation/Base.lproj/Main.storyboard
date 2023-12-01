@@ -78,7 +78,7 @@
                                             <fragment content="To be or not to be, that is the question">
                                                 <attributes>
                                                     <color key="NSColor" name="YP White"/>
-                                                    <font key="NSFont" size="23" name="YSDisplay-Bold"/>
+                                                    <font key="NSFont" size="23" name="YSDisplay-Medium"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
