@@ -11,6 +11,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    private var alertPresenter: AlertPresenter?
+    private var statisticSetvice: StatisticService?
+    
+    // MARK: - Lifecycle
+    override final func viewDidLoad() {
+        super.viewDidLoad()
+        questionFactory.delegate = self
+        questionFactory.requestNextQuestion()
+        alertPresenter = AlertPresenterImpl(viewController:self)
+        statisticSetvice = StatisticServiceImpl()
+        customizationUI()
+    }
+    
     // MARK: - Private functions
     private func customizationUI(){
         view.backgroundColor = UIColor.ypBlack
@@ -40,30 +53,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         imageView.layer.cornerRadius = 20
     }
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self]_ in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.imageView.layer.borderColor = UIColor.clear.cgColor
-            questionFactory.requestNextQuestion()
-        }
-        
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
-                        question: model.text,
-                        questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
     
@@ -90,15 +87,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     }
     
     private func showNextQuestionOrResults() {
+        
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-                    "Поздравляем, вы ответили на 10 из 10!" :
-                    "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuizResultsViewModel( // 2
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel) // 3
+            showFinalResults()
+            imageView.layer.borderColor = UIColor.clear.cgColor
         } else {
             currentQuestionIndex += 1
             self.questionFactory.requestNextQuestion()
@@ -106,6 +98,39 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         }
     }
     
+    private func showFinalResults(){
+        statisticSetvice?.store(correct: correctAnswers, total: questionsAmount)
+        let alertModel = AlertModel(
+            title: "Игра окончена!",
+            message: makeResultMessage(),
+            buttonText: "OK",
+            buttonAction: {[weak self] in
+                self?.currentQuestionIndex = 0
+                self?.correctAnswers = 0
+                self?.questionFactory.requestNextQuestion()
+            }
+        )
+        alertPresenter?.show(alertModel: alertModel)
+    }
+    
+    private func makeResultMessage() -> String {
+        guard let statisticService = statisticSetvice, let bestGame = statisticSetvice?.bestGame else{
+            assertionFailure("Error")
+            return ""
+        }
+        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+        let totalPlaysCount = "Количество сыгранных квизов:\(statisticService.gamesCount)"
+        let currentGameResult = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
+        let bestGameInfo = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" +
+        " (\(bestGame.date)"
+        let averageAccuracy = "Средняя точность: \(accuracy)%"
+        let resultMessage = [
+            currentGameResult, totalPlaysCount, bestGameInfo, averageAccuracy
+        ].joined(separator: "\n")
+        return resultMessage
+    }
+
+
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
@@ -117,13 +142,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
             self?.show(quiz: viewModel)
         }
     }
-    // MARK: - Lifecycle
-    override final func viewDidLoad() {
-        super.viewDidLoad()
-        questionFactory.delegate = self
-        questionFactory.requestNextQuestion()
-        customizationUI()
-    }
+    
     // MARK: - IBOutlet
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
