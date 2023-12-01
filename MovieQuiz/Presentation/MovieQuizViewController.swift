@@ -81,6 +81,10 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private weak var questionLabel: UILabel!
     
+    @IBOutlet weak var noAnswerButton: UIButton!
+    
+    @IBOutlet weak var yesAnswerButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         currentQuizQuestion = questions[currentQuestionIndex]
@@ -102,11 +106,16 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func presentNextQuizStepQuestion(){
-        UIView.animate(withDuration: 1.5){
+        UIView.animate(withDuration: 1){
             self.currentQuizQuestion = self.questions[self.currentQuestionIndex]
             let quizStepViewModel = self.convert(model: self.currentQuizQuestion)
             self.show(quizStepViewModel: quizStepViewModel)
         }
+    }
+    
+    private func handleEnableAnswersButtons(){
+        noAnswerButton.isEnabled.toggle()
+        yesAnswerButton.isEnabled.toggle()
     }
     
     private func showQuizResults(){
@@ -134,10 +143,12 @@ final class MovieQuizViewController: UIViewController {
             color = UIColor(resource: .ypGreen).cgColor
         }
        configureImageFrame(color: color)
+       handleEnableAnswersButtons()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.configureImageFrame(color: (UIColor(resource: .ypGray).withAlphaComponent(0)).cgColor)
             self.showNextQuestionOrResults()
+            self.handleEnableAnswersButtons()
         }
     }
     
