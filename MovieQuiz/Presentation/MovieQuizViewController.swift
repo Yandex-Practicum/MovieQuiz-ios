@@ -53,6 +53,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
             questionFactory.requestNextQuestion()
         }
         
+        
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
