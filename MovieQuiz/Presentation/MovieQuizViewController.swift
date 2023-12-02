@@ -73,22 +73,22 @@ final class MovieQuizViewController: UIViewController {
                 correctAnswer: false)
         ]
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var counterLabel: UILabel!
-    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var textLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         showCurrentQuestion()
     }
     
-    @IBAction func noButtonClicked(_ sender: Any) {
+    @IBAction private func noButtonClicked(_ sender: Any) {
         handleUserAnswer(answer: false)
     }
     
-    @IBAction func yesButtonClicked(_ sender: Any) {
+    @IBAction private func yesButtonClicked(_ sender: Any) {
         handleUserAnswer(answer: true)
     }
     
@@ -102,10 +102,10 @@ final class MovieQuizViewController: UIViewController {
         
         correctAnswers = isCorrect ? correctAnswers + 1 : correctAnswers
         
-        self.disableButtons()
+        self.disableOrEnableButtons(isEnabled: false)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
-            self.enableButtons()
+            self.disableOrEnableButtons(isEnabled: true)
         }
     }
     
@@ -124,10 +124,10 @@ final class MovieQuizViewController: UIViewController {
                                           message: "Ваш результат: \(correctAnswers)/\(questions.count).",
                                           preferredStyle: .alert)
 
-            let action = UIAlertAction(title: "Сыграем еще раз?", style: .default) { _ in
-                self.correctAnswers = 0
-                self.currentQuestionIndex = 0
-                self.showCurrentQuestion()
+            let action = UIAlertAction(title: "Сыграем еще раз?", style: .default) { [weak self] _ in
+                self?.correctAnswers = 0
+                self?.currentQuestionIndex = 0
+                self?.showCurrentQuestion()
             }
 
             alert.addAction(action)
@@ -139,14 +139,9 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    private func disableButtons() {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
-    }
-    
-    private func enableButtons() {
-        noButton.isEnabled = true
-        yesButton.isEnabled = true
+    private func disableOrEnableButtons(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
