@@ -119,7 +119,6 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.borderWidth = 0
         previewImage.layer.cornerRadius = 0
         previewImage.image = step.image
-        questionLabel.textColor = UIColor.ypWhite
         questionLabel.text = step.question
     }
     
@@ -134,10 +133,8 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.borderWidth = 8
         previewImage.layer.cornerRadius = 6
         previewImage.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        questionLabel.textColor = isCorrect ? UIColor.ypGreen : UIColor.ypRed
-        questionLabel.text = isCorrect ? "Правильно 😃" : "Неверно ☹️"
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {// многозначительная пауза перед показом следующего вопроса (или результата квиза)
             self.showNextQuestionOrResults()
         }
     }
