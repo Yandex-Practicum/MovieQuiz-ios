@@ -21,6 +21,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     //Создаем прееменную текущего индекса вопроса
     private var currentQuestionIndex = 0
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     //Создаем переменную отслеживающую текущее количество правильных ответов
     var correctAnswers = 0
     
@@ -63,6 +65,38 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
+    
+    //MARK: Начало описания методов
+    
+    private func showLoadingIndictor(){
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator(){
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    private func showNetworkError (){
+        hideLoadingIndicator()
+        
+        let networkConnectionAlert = AlertModel(title: "Ошибка", message: "", buttonText: "Попробовать ещё раз"){ [weak self] in
+            guard let selfAction = self else {return}
+            
+            selfAction.correctAnswers = 0
+            
+            selfAction.currentQuestionIndex = 0
+            
+            selfAction.questionFactory.requestNextQuestion()
+            
+        }
+        
+        alertPresenter.showAlert(quiz: networkConnectionAlert, controller: self)
+        
+    }
+    
+    
     
     func didFinishReceiveQuestion(question: QuizQuestion?) {
         guard let question else { return }

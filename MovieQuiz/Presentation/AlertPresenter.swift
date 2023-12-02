@@ -29,4 +29,13 @@ class AlertPresenter: UIViewController {
         
     }
     
+//    func networkErrorAlert(model: AlertModel, controller: MovieQuizViewController) {
+//        
+//        let alert = UIAlertController(title: model.title, message: model.message, preferredStyle: .alert)
+//        let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
+//            //инициализируем повторную загрузку данных
+//        }
+//        alert.addAction(action)
+//        controller.present(alert, animated: true, completion: nil)
+//    }
 }
