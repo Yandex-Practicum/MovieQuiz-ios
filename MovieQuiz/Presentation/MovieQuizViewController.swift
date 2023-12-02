@@ -77,6 +77,8 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private weak var counterLabel: UILabel!
     
+    @IBOutlet weak var questionTitleLabel: UILabel!
+    
     @IBOutlet private weak var previewImageView: UIImageView!
     
     @IBOutlet private weak var questionLabel: UILabel!
@@ -90,6 +92,13 @@ final class MovieQuizViewController: UIViewController {
         currentQuizQuestion = questions[currentQuestionIndex]
         let quizStepViewModel = convert(model: currentQuizQuestion)
         show(quizStepViewModel: quizStepViewModel)
+        
+        counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        yesAnswerButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        noAnswerButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        
+        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
