@@ -1,72 +1,184 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
+    @IBOutlet private weak var questionCountLabel: UILabel!
+    @IBOutlet private weak var movieImage: UIImageView!
+    @IBOutlet private weak var questionLabel: UILabel!
+    
+    private var correctCount = 0
+    
+    private var currentQuestionIndex = 0
+    
+    private var currentQuestion: QuizQuestion {
+        return questions[currentQuestionIndex]
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        showQuestion(quiz: convert(model: questions[currentQuestionIndex]))
+    }
+    
+    
+    @IBAction private func onTapNo() {
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
+    }
+    
+    @IBAction private func onTapYes() {
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
+    }
+    
+    private func showQuestion(quiz step: QuizStepViewModel) {
+        movieImage.image = step.image
+        questionLabel.text = step.question
+        questionCountLabel.text = step.questionNumber
+    }
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let questionStep = QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+        return questionStep
+    }
+    
+    private func triggerHapticFeedback(_ notificationType: UINotificationFeedbackGenerator.FeedbackType) {
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
+            generator.notificationOccurred(notificationType)
+        }
+    
+    private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            correctCount += 1;
+            triggerHapticFeedback(.success)
+        } else {
+            triggerHapticFeedback(.error)
+        }
+        paintBorder(isCorrect)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+        }
+    }
+    
+    private func paintBorder(_ isCorrect: Bool) {
+        let layer = movieImage.layer
+        layer.masksToBounds = true
+        layer.borderWidth = 1
+        layer.borderColor = (isCorrect ? UIColor.green : UIColor.red).cgColor
+        layer.cornerRadius = 6
+    }
+    
+    private func showNextQuestionOrResults() {
+        movieImage.layer.borderWidth = 0 // Убрать border
+        if currentQuestionIndex == questions.count - 1 {
+            showResults(
+                QuizResultsViewModel(
+                title: "Неплохой результат",
+                text: "Результат: \(correctCount)/\(questions.count)",
+                buttonText: "По новой")
+            )
+        } else {
+            currentQuestionIndex += 1
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            
+            showQuestion(quiz: viewModel)
+        }
+    }
+    
+    
+    private func showResults(_ result: QuizResultsViewModel) {
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            self.currentQuestionIndex = 0
+            self.correctCount = 0
+            
+            let firstQuestion = questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.showQuestion(quiz: viewModel)
+        }
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
 
+struct QuizQuestion {
+    // строка с названием фильма,
+    // совпадает с названием картинки афиши фильма в Assets
+    let image: String
+    // строка с вопросом о рейтинге фильма
+    let text: String
+    // булевое значение (true, false), правильный ответ на вопрос
+    let correctAnswer: Bool
+}
 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
+// вью модель для состояния "Вопрос показан"
+struct QuizStepViewModel {
+    // картинка с афишей фильма с типом UIImage
+    let image: UIImage
+    // вопрос о рейтинге квиза
+    let question: String
+    // строка с порядковым номером этого вопроса (ex. "1/10")
+    let questionNumber: String
+}
 
+// для состояния "Результат квиза"
+struct QuizResultsViewModel {
+    // строка с заголовком алерта
+    let title: String
+    // строка с текстом о количестве набранных очков
+    let text: String
+    // текст для кнопки алерта
+    let buttonText: String
+}
 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
+private let questions: [QuizQuestion] = [
+    QuizQuestion(
+        image: "The Godfather",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "The Dark Knight",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "Kill Bill",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "The Avengers",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "Deadpool",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "The Green Knight",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "Old",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false),
+    QuizQuestion(
+        image: "The Ice Age Adventures of Buck Wild",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false),
+    QuizQuestion(
+        image: "Tesla",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false),
+    QuizQuestion(
+        image: "Vivarium",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false)
+]
