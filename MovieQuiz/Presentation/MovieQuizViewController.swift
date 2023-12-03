@@ -70,6 +70,7 @@ final class MovieQuizViewController: UIViewController {
             correctAnswers += 1
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.imageView.layer.borderWidth = 0
                 self.showNextQuestionOrResults()
             }
         }
@@ -79,6 +80,7 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.imageView.layer.borderWidth = 0
                 self.showNextQuestionOrResults()
             }
         }
