@@ -2,13 +2,7 @@
 //  QF Protocol.swift
 //  MovieQuiz
 //
-//  Created by Иван Корнев on 22.11.2023.
+//  Created by Иван Корнев on 04.12.2023.
 //
 
 import Foundation
-
-protocol QuestionFactoryProtocol {
-    func requestNextQuestion()
-    var delegate: QuestionFactoryDelegate? {get set}
-}
-
