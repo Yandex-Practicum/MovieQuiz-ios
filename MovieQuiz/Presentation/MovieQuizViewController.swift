@@ -82,7 +82,7 @@ final class MovieQuizViewController: UIViewController {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count  {
             // идём в состояние "Результат квиза"
-            showQuizResultsAlert(buttonTitle: "Ok")
+            showQuizResultsAlert(buttonTitle: "Сыграть ещё раз")
         } else {
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
@@ -113,9 +113,21 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showQuizResultsAlert(buttonTitle: String) {
+        let currentDate = Date() // текущая дата и время
+        let dateFormatter = DateFormatter() // форматтер для преобразования даты в строку
+        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
+        let formattedDate = dateFormatter.string(from: currentDate) // преобразуем текущую дату в строку
+        
+        var averagePercentage: Int //средний процент правильных ответов
+        if questions.count > 0 {
+            averagePercentage = correctAnswers * 100 / questions.count
+        } else {
+            averagePercentage = 0
+        }
+        
         let alert = UIAlertController(
             title: "Этот раунд окончен!",
-            message: "Ваш результат: \(correctAnswers) из \(questions.count)",
+            message: "Ваш результат: \(correctAnswers) из \(questions.count)\nТочность: \(averagePercentage)% \nВремя: \(formattedDate)",
             preferredStyle: .alert)
         
         let action = UIAlertAction(title: buttonTitle, style: .default) { _ in
