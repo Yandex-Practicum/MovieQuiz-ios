@@ -1,42 +1,42 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-   
+    
     //Properties
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-   
+    
     private let questions: [QuizQuestion] = [
-    QuizQuestion(image: "The Godfather",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: true),
-    QuizQuestion(image: "The Dark Knight",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: true),
-    QuizQuestion(image: "Kill Bill",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: true),
-    QuizQuestion(image: "The Avengers",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: true),
-    QuizQuestion(image: "Deadpool",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: true),
-    QuizQuestion(image: "The Green Knight",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: true),
-    QuizQuestion(image: "Old",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: false),
-    QuizQuestion(image: "The Ice Age Adventures of Buck Wild",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: false),
-    QuizQuestion(image: "Tesla",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: false),
-    QuizQuestion(image: "Vivarium",
-                 text: "Рейтинг этого фильма больше чем 6?",
-                 correctAnswer: false)]
+        QuizQuestion(image: "The Godfather",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "The Dark Knight",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "Kill Bill",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "The Avengers",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "Deadpool",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "The Green Knight",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "Old",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false),
+        QuizQuestion(image: "The Ice Age Adventures of Buck Wild",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false),
+        QuizQuestion(image: "Tesla",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false),
+        QuizQuestion(image: "Vivarium",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false)]
     
     //outlets
     @IBOutlet weak private var imageView: UIImageView!
@@ -72,22 +72,24 @@ final class MovieQuizViewController: UIViewController {
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),//Инициализируем картинку с помощью конструктора UIImage(named: )
+            image: UIImage(named: model.image) ?? UIImage(),//Инициализирую картинку с помощью конструктора UIImage(named: )
             question: model.text, //забираем уже готовый вопрос из мокового вопроса
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") //Высчитываем номер вопроса с помощью переменной текущего вопроса currentQuestionIndex
         return questionStep
     }
     
-    private func showNextQuestionOrResults() {
-        guard currentQuestionIndex < questions.count else { //Если условие currentQuestionIndex < questions.count не выполняется, то это означает, что все вопросы                                                       уже были показаны, и выполнение метода завершится
-            return
-        }
-
-        let question = questions[currentQuestionIndex]
-        let questionStep = convert(model: question)
-        show(quiz: questionStep)
-    }
     
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count  {
+            // идём в состояние "Результат квиза"
+            showQuizResultsAlert(buttonTitle: "Ok")
+        } else {
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            show(quiz: viewModel)
+//            correctAnswers = 0 // Здесь обнуляем correctAnswers перед переходом на новый раунд
+        }
+    }
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
@@ -101,7 +103,7 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
         currentQuestionIndex += 1
-        showNextQuestionOrResults()
+        //        showNextQuestionOrResults()
         print("кол-во правильных ответов \(correctAnswers)") //понимаю что логика работает
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in //добавил задержку
@@ -109,9 +111,27 @@ final class MovieQuizViewController: UIViewController {
             self?.showNextQuestionOrResults()
         }
     }
+    
+    private func showQuizResultsAlert(buttonTitle: String) {
+        let alert = UIAlertController(
+            title: "Этот раунд окончен!",
+            message: "Ваш результат: \(correctAnswers) из \(questions.count)",
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: buttonTitle, style: .default) { _ in
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0 // Здесь обнуляем correctAnswers перед переходом на новый раунд
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex] // заново показываем первый вопрос
+            let viewModel = self.convert(model: firstQuestion) // заново показываем первый вопрос
+            self.show(quiz: viewModel) // заново показываем первый вопрос
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
-struct QuizQuestion {
+struct QuizQuestion { //преобразование данных из структуры вопроса QuizQuestion во вью модель для экрана QuizStepViewModel.
     let image: String
     let text: String
     let correctAnswer: Bool
@@ -128,98 +148,3 @@ struct QuizResultsViewModel { // для состояния "Результат �
     let buttonText: String
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
