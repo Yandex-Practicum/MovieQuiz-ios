@@ -78,18 +78,17 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
-    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count  {
-            // идём в состояние "Результат квиза"
+            // идём в состояние Результат квиза
             showQuizResultsAlert(buttonTitle: "Сыграть ещё раз")
         } else {
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
-//            correctAnswers = 0 // Здесь обнуляем correctAnswers перед переходом на новый раунд
         }
     }
+    
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
@@ -103,7 +102,6 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
         currentQuestionIndex += 1
-        //        showNextQuestionOrResults()
         print("кол-во правильных ответов \(correctAnswers)") //понимаю что логика работает
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in //добавил задержку
