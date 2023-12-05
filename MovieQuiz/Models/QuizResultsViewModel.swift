@@ -1,8 +1,8 @@
-//
-//  QuizResultsViewModel.swift
-//  MovieQuiz
-//
-//  Created by Мария Малышева on 16.11.2023.
-//
-
 import Foundation
+import UIKit
+
+struct QuizResultsViewModel {
+    let title: String
+    let text: String
+    let buttonText: String
+}

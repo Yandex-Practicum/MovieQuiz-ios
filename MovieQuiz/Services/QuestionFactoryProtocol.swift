@@ -1,8 +1,6 @@
-//
-//  QuestionFactoryProtocol.swift
-//  MovieQuiz
-//
-//  Created by Мария Малышева on 20.11.2023.
-//
+import UIKit
 
-import Foundation
+protocol QuestionFactoryProtocol {
+    func requestNextQuestion()
+    var delegate: QuestionFactoryDelegate? {get set}
+}

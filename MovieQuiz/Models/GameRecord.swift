@@ -1,8 +1,11 @@
-//
-//  GameRecord.swift
-//  MovieQuiz
-//
-//  Created by Мария Малышева on 01.12.2023.
-//
+import UIKit
 
-import Foundation
+struct GameRecord: Codable {
+    let correct: Int
+    let total: Int
+    let date: Date
+    
+    func isBetterThan (_ another: GameRecord) -> Bool {
+        correct > another.correct
+    }
+}
