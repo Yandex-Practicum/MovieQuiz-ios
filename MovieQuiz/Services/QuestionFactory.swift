@@ -33,7 +33,14 @@ class QuestionFactory: QuestionFactoryProtocol {
     private let questions: [QuizQuestion] = [theGodfather, theDarkKnight, killBill, theAvengers, deadpool, theGreenKnight, old, theIceAgeAdvanturesOfBuckWild, tesla, vivarium]
     
     //Определяем делегата для фабрики вопросов
+    private let movieLoader: MoviesLoaderProtocol
     weak var delegate: QuestionFactoryDelegatePrototocol?
+    private var movies: [MostPopularMovie] = []
+    
+    init(movieLoader: MoviesLoaderProtocol, delegate: QuestionFactoryDelegatePrototocol? = nil) {
+        self.movieLoader = movieLoader
+        self.delegate = delegate
+    }
     
     func requestNextQuestion() {
 

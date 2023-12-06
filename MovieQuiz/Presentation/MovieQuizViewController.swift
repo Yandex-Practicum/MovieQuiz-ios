@@ -1,6 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePrototocol {
+
     // MARK: - Lifecycle
     
     //Привязываем этикетку со значение счетчика вопросов
@@ -96,7 +97,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         
     }
     
-    
+    //MARK: Описание метдов Делегата
     
     func didFinishReceiveQuestion(question: QuizQuestion?) {
         guard let question else { return }
@@ -106,6 +107,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
     }
     
     ///Метод осуществляющий преобразования структуры модели вопроса QuizQuestiion в структур модели отображения на экране QuizStepViewModel
