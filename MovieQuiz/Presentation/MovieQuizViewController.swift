@@ -8,7 +8,7 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var questionTextView: UILabel!
-    @IBOutlet private var counterLable: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
     
     override func viewDidLoad() {
         let curretnQuestion = question[currentQuestionIndex]
@@ -41,13 +41,13 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: question[currentQuestionIndex].correntAnswer == answerResult)
     }
     
-    private func show(quiz result: QuizResultViewModel) {
+    private func showResult(quiz resultViewModel: QuizResultViewModel) {
         let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
+            title: resultViewModel.title,
+            message: resultViewModel.text,
             preferredStyle: .alert)
 
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: resultViewModel.buttonText, style: .default) { _ in
             self.currentQuestionIndex = 0
             self.correctAnswer = 0
             
@@ -76,17 +76,16 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func convert(model : QuizQuestion) -> QuizStepViewModel {
-        let quizQuestionStep = QuizStepViewModel(
+        QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(question.count)")
-        return quizQuestionStep
     }
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         questionTextView.text = step.question
-        counterLable.text = step.questionNumber
+        counterLabel.text = step.questionNumber
     }
     
     private func showNextQuestionOrResults() {
@@ -98,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
                         text: text,
                         buttonText: "Сыграть ещё раз")
             
-            show(quiz: viewModel)
+            showResult(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             

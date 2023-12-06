@@ -113,7 +113,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLable" destination="qip-SU-Bt8" id="jKc-bp-3yh"/>
+                        <outlet property="counterLabel" destination="qip-SU-Bt8" id="DNw-QD-Z6u"/>
                         <outlet property="imageView" destination="RfK-SS-dj2" id="ocn-Ju-L4b"/>
                         <outlet property="questionTextView" destination="HqO-Pw-62G" id="tNf-Nj-sul"/>
                     </connections>
