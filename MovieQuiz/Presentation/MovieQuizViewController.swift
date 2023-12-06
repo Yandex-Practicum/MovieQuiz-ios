@@ -9,6 +9,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var questionTextView: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     
     override func viewDidLoad() {
         let curretnQuestion = question[currentQuestionIndex]
@@ -70,7 +72,10 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 5
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
+        enableButtons(isEnable: false)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.enableButtons(isEnable: true)
            self.showNextQuestionOrResults()
         }
     }
@@ -114,7 +119,8 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func enableButtons(isEnable: Bool) {
-        
+        yesButton.isEnabled = isEnable
+        noButton.isEnabled = isEnable
     }
 }
 
