@@ -24,7 +24,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
         QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
     ]
     
-    func requestNextQuestion() {                       // request - запрос
+    func requestNextQuestion() {                       // request - запрос. Фабрика должна уметь создавать вопросы
         guard let index = (0..<questions.count).randomElement() else {
             delelgate?.didReceiveNextQuestion(question: nil)
             return
