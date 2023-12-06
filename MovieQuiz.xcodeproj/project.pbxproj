@@ -73,8 +73,7 @@
 				8703739E2AFD7C0800554CEF /* YS Display-Bold.ttf */,
 				8703739F2AFD7C0800554CEF /* YS Display-Medium.ttf */,
 			);
-			name = MovieQuizFonts;
-			path = ../../../../Downloads/MovieQuizFonts;
+			path = MovieQuizFonts;
 			sourceTree = "<group>";
 		};
 		871B6F802B14EEB000026207 /* Services */ = {
