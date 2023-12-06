@@ -7,6 +7,8 @@
               <string>YS Display-Bold.ttf</string>
               <string>YS Display-Medium.ttf</string>
          </array>
+         <key>UIViewControllerBasedStatusBarApperance</key>
+         <true/>
     <key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
