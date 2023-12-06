@@ -112,6 +112,10 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.cornerRadius = 20
         }
     }
+    
+    private func enableButtons(isEnable: Bool) {
+        
+    }
 }
 
 struct QuizQuestion {
