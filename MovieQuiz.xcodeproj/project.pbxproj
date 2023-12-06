@@ -77,8 +77,8 @@
 				190DDFC22B06202C005CF13C /* QuestionFactory.swift */,
 				19583CB92B0B9FA20015C623 /* QuestionFactoryProtocol.swift */,
 				19602EDC2B0CFA82002DC980 /* QuestionFactoryDelegate.swift */,
-				19602EE22B0F8A65002DC980 /* AlertPresenterProtocol.swift */,
 				19602EE62B1A2A27002DC980 /* StatisticService.swift */,
+				19602EEA2B1A2D11002DC980 /* StatisticServiceImplementation.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -100,8 +100,8 @@
 			children = (
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
+				19602EE22B0F8A65002DC980 /* AlertPresenterProtocol.swift */,
 				19602EE02B0F62DB002DC980 /* AlertPresenter.swift */,
-				19602EEA2B1A2D11002DC980 /* StatisticServiceImplementation.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

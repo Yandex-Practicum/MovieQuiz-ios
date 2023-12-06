@@ -1,6 +1,6 @@
 import UIKit
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
      let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
