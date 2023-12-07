@@ -2,45 +2,33 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
-    private var answerResult : Bool = true
     private var currentQuestionIndex = 0
     private var correctAnswer = 0
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var questionTextView: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         let curretnQuestion = question[currentQuestionIndex]
         let resaltOfConvert = convert(model: curretnQuestion)
         show(quiz: resaltOfConvert)
-        
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 1 // толщина рамки
-        imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
-        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-        
-        super.viewDidLoad()
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        if question[currentQuestionIndex].correntAnswer == true {
-            answerResult = true
-        } else {
-            answerResult = false
-        }
-        showAnswerResult(isCorrect: question[currentQuestionIndex].correntAnswer == answerResult)
+        answerGived(answer: true)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        if question[currentQuestionIndex].correntAnswer == false {
-            answerResult = true
-        } else {
-            answerResult = false
-        }
-        showAnswerResult(isCorrect: question[currentQuestionIndex].correntAnswer == answerResult)
+        answerGived(answer: false)
+    }
+    
+    private func answerGived(answer: Bool) {
+        showAnswerResult(isCorrect: question[currentQuestionIndex].correntAnswer == answer)
     }
     
     private func showResult(quiz resultViewModel: QuizResultViewModel) {
@@ -49,7 +37,9 @@ final class MovieQuizViewController: UIViewController {
             message: resultViewModel.text,
             preferredStyle: .alert)
 
-        let action = UIAlertAction(title: resultViewModel.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: resultViewModel.buttonText, style: .default) { [weak self] _ in
+            guard let self else { return }
+            
             self.currentQuestionIndex = 0
             self.correctAnswer = 0
             
@@ -69,14 +59,15 @@ final class MovieQuizViewController: UIViewController {
         }
         
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 5
+        imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         enableButtons(isEnable: false)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.enableButtons(isEnable: true)
-           self.showNextQuestionOrResults()
+            self.imageView.layer.borderWidth = 0
+            self.showNextQuestionOrResults()
         }
     }
     
@@ -95,7 +86,6 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == question.count - 1 {
-            
             let text = "Ваш результат: \(correctAnswer)/10"
             let viewModel = QuizResultViewModel(
                         title: "Этот раунд окончен!",
@@ -110,11 +100,6 @@ final class MovieQuizViewController: UIViewController {
             let goToConvert = convert(model: nextQuestion)
             
             show(quiz: goToConvert)
-            
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 1
-            imageView.layer.borderColor = UIColor.white.cgColor
-            imageView.layer.cornerRadius = 20
         }
     }
     
