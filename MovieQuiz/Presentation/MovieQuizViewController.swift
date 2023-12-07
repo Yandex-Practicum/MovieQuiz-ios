@@ -32,7 +32,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     private var questionAmount: Int = 10
     
     //Определяем "Фабрику впоросов"
-    private lazy var questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader(), delegate: self)
     
     //Вопрос, который видит пользователь
     private var currentQuestion: QuizQuestion?
@@ -52,14 +52,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         super.viewDidLoad()
         
         //инъекция зависимости для определения делегата
-        questionFactory.delegate = self
+//        questionFactory.delegate = self
         
         //Загружаем внешинй вид изображения ImageView в соответствии с моделью в Figma
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
         
-        //Загружаем отобрадение первого вопросана экран
-        questionFactory.requestNextQuestion()
+        showLoadingIndictor()
+        questionFactory.loadData()
         
         //Загружаем необходимый вид статус бара
         UIView.animate(withDuration: 0.3) {
@@ -79,22 +79,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         activityIndicator.stopAnimating()
     }
     
-    private func showNetworkError (){
+    private func showNetworkError (message: String){
         hideLoadingIndicator()
         
-        let networkConnectionAlert = AlertModel(title: "Ошибка", message: "", buttonText: "Попробовать ещё раз"){ [weak self] in
+        let networkConnectionAlert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
             guard let selfAction = self else {return}
             
             selfAction.correctAnswers = 0
-            
             selfAction.currentQuestionIndex = 0
-            
             selfAction.questionFactory.requestNextQuestion()
             
         }
-        
         alertPresenter.showAlert(quiz: networkConnectionAlert, controller: self)
-        
     }
     
     //MARK: Описание метдов Делегата
@@ -110,7 +106,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     }
     
     func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
+        hideLoadingIndicator()
         questionFactory.requestNextQuestion()
     }
     
@@ -121,7 +117,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     ///Метод осуществляющий преобразования структуры модели вопроса QuizQuestiion в структур модели отображения на экране QuizStepViewModel
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         
-        let image = UIImage(named: model.image) ?? UIImage()
+        let image = UIImage(data: model.image) ?? UIImage()
         let questionText: String = model.text
         let questionNumber: String = "\(currentQuestionIndex + 1)/\(questionAmount)"
         

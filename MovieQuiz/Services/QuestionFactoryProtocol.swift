@@ -13,4 +13,6 @@ protocol QuestionFactoryProtocol {
     
     func requestNextQuestion() -> Void
     
+    func loadData() -> Void
+    
 }

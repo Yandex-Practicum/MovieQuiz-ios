@@ -11,7 +11,7 @@ import Foundation
 struct QuizQuestion {
     //Строка с названием фильма
     //Совпадает с названием картинки афиши фильма в Assets
-    var image: String
+    var image: Data//String
     
     //Строка с названием вопроса о фильме
     var text: String

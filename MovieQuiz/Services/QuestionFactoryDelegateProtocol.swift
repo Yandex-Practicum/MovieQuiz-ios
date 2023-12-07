@@ -10,7 +10,7 @@ import Foundation
 protocol QuestionFactoryDelegatePrototocol: AnyObject {
     
     func didFinishReceiveQuestion (question: QuizQuestion?) -> Void
-    func didLoadDataFromServer()
+    func didLoadDataFromServer() -> Void
     func didFailToLoadData(with error: Error)   
 }
 
