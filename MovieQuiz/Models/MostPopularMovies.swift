@@ -17,7 +17,7 @@ struct MostPopularMovie:Codable {
     let rating: String
     let imageURL: URL
     
-    private enum Keys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         
         case title = "fullTitle"
         case rating = "imDbRating"

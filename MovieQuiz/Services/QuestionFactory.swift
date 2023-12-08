@@ -33,13 +33,12 @@ class QuestionFactory: QuestionFactoryProtocol {
 //    private let questions: [QuizQuestion] = [theGodfather, theDarkKnight, killBill, theAvengers, deadpool, theGreenKnight, old, theIceAgeAdvanturesOfBuckWild, tesla, vivarium]
     
     //Определяем делегата для фабрики вопросов
-    private let movieLoader: MoviesLoaderProtocol
+    var movieLoader: MoviesLoaderProtocol
     weak var delegate: QuestionFactoryDelegatePrototocol?
     private var movies: [MostPopularMovie] = []
     
-    init(movieLoader: MoviesLoaderProtocol, delegate: QuestionFactoryDelegatePrototocol?) {
+    init(movieLoader: MoviesLoaderProtocol) {
         self.movieLoader = movieLoader
-        self.delegate = delegate
     }
     
     func loadData() {
@@ -68,7 +67,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         
         DispatchQueue.global().async { [weak self] in
             
-            guard let self else { return }
+            guard let self = self else { return }
             guard let index  = (0..<self.movies.count).randomElement() else {
                 self.delegate?.didFinishReceiveQuestion(question: nil)
                 return
@@ -84,9 +83,9 @@ class QuestionFactory: QuestionFactoryProtocol {
                 print("изображение не загружено")
             }
             
-            guard let questionRating: Int = (1...9).randomElement() else { return }
+            guard let questionRating = (1...9).randomElement() else { return }
             let text = "Рейтинг этого фильма больше, чем \(questionRating)?"
-            
+            print(text)
             let rating: Double = Double(movie.rating) ?? 0
             let correctAnswer = rating > Double(questionRating)
             

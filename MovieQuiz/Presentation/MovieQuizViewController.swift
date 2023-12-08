@@ -32,7 +32,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     private var questionAmount: Int = 10
     
     //Определяем "Фабрику впоросов"
-    private lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader(), delegate: self)
+    private lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader())
     
     //Вопрос, который видит пользователь
     private var currentQuestion: QuizQuestion?
@@ -52,7 +52,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         super.viewDidLoad()
         
         //инъекция зависимости для определения делегата
-//        questionFactory.delegate = self
+        questionFactory.delegate = self
         
         //Загружаем внешинй вид изображения ImageView в соответствии с моделью в Figma
         imageView.layer.masksToBounds = true
