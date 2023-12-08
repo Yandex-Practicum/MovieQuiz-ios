@@ -77,7 +77,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             guard let movie = self.movies[safe: index] else { return }
             do {
-                imageData = try Data(contentsOf: movie.imageURL)
+                imageData = try Data(contentsOf: movie.finalImageUrl)
                 
             } catch{
                 print("изображение не загружено")

@@ -17,6 +17,13 @@ struct MostPopularMovie:Codable {
     let rating: String
     let imageURL: URL
     
+    var finalImageUrl: URL {
+        let modifiedUrlString = imageURL.absoluteString
+        let updatedUrlString = modifiedUrlString.components(separatedBy: "._")[0] + "._V0_UX600_.jpg"
+        guard let url = URL(string: updatedUrlString) else { return imageURL }
+        return url
+    }
+    
     private enum CodingKeys: String, CodingKey {
         
         case title = "fullTitle"
