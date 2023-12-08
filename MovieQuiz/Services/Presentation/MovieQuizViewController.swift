@@ -2,6 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
+    
     // MARK: - Lifecycle
     @IBOutlet weak var noButton: UIButton!
     
@@ -15,6 +16,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private var indexLabel: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     private var currentQuestionIndex = 0 //текущий индекс
     private var correctAnswers = 0
     
@@ -23,11 +26,48 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion? //текущий вопрос который будет видеть пользователь
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticServiceImplementation?
+   
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включили анимацию
+    }
     
-
+    func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    private func showNetworkError (message: String) { // network - сеть Т.е. это ошибка сети
+       hideLoadingIndicator() // скрываем индикатор загрузки
+        
+        let model = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать еще раз") { [weak self] in guard let self = self else {return}
+                
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                
+                self.questionFactory?.requestNextQuestion()
+            }
+        alertPresenter?.show(alertModel: model)
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+           questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) { // сообщение об ошибке загрузки
+        showNetworkError(message: error.localizedDescription)
+    }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel{
-        let questionStep = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+      
+        
+        let questionStep = QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         
         return questionStep
     }
@@ -119,13 +159,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader().self, delegate: self)
         alertPresenter = AlertPresenter(alertDelegate: self)
-        questionFactory?.requestNextQuestion()
+        questionFactory?.loadData()
+        showLoadingIndicator()
         statisticService = StatisticServiceImplementation().self
-        print(NSHomeDirectory())
-        print(Bundle.main.bundlePath)
-
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+        }
     }
         
         // MARK: - QuestionFactoryDelegate
