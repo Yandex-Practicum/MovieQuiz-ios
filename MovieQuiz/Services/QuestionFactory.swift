@@ -30,7 +30,7 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     
-//    private let questions: [QuizQuestion] = [theGodfather, theDarkKnight, killBill, theAvengers, deadpool, theGreenKnight, old, theIceAgeAdvanturesOfBuckWild, tesla, vivarium]
+    //    private let questions: [QuizQuestion] = [theGodfather, theDarkKnight, killBill, theAvengers, deadpool, theGreenKnight, old, theIceAgeAdvanturesOfBuckWild, tesla, vivarium]
     
     //Определяем делегата для фабрики вопросов
     var movieLoader: MoviesLoaderProtocol
@@ -84,10 +84,18 @@ class QuestionFactory: QuestionFactoryProtocol {
             }
             
             guard let questionRating = (1...9).randomElement() else { return }
-            let text = "Рейтинг этого фильма больше, чем \(questionRating)?"
-            print(text)
+            let randomComparison = Bool.random()
+            var text = ""
             let rating: Double = Double(movie.rating) ?? 0
-            let correctAnswer = rating > Double(questionRating)
+            var correctAnswer = true
+            if randomComparison == true {
+                text = "Рейтинг этого фильма больше, чем \(questionRating)?"
+                correctAnswer = rating > Double(questionRating)
+                print(text)
+            } else {
+                text = "Рейтинг этого фильма меньше, чем \(questionRating)?"
+                correctAnswer = rating < Double(questionRating)
+            }
             
             let question = QuizQuestion(
                 image: imageData,
