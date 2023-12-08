@@ -5,8 +5,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        questionFactory?.delegate = self
+        questionFactory = QuestionFactory(delegate: self)
+        //questionFactory?.delegate = self
         //questionFactory = QuestionFactory()
         questionFactory?.requestNextQuestion()
     }
