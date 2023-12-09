@@ -61,7 +61,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
-        imageView.layer.borderColor = UIColor.ypBlack.cgColor
+        imageView.layer.borderColor = UIColor.clear.cgColor
         
     }
     
