@@ -116,6 +116,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     self?.questionFactory?.requestNextQuestion()
                 } )
                 alertPresenter?.show(alertModel: alertModel)
+            
                 }
                 
                 func makeMessage () -> String {
