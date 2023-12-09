@@ -13,12 +13,14 @@ final class MovieQuizViewController: UIViewController {
         return questions[currentQuestionIndex]
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         showQuestion(quiz: convert(model: questions[currentQuestionIndex]))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        movieImage.layer.cornerRadius = 20
+    }
     
     @IBAction private func onTapNo() {
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
@@ -64,9 +66,9 @@ final class MovieQuizViewController: UIViewController {
     private func paintBorder(_ isCorrect: Bool) {
         let layer = movieImage.layer
         layer.masksToBounds = true
-        layer.borderWidth = 1
-        layer.borderColor = (isCorrect ? UIColor.green : UIColor.red).cgColor
-        layer.cornerRadius = 6
+        layer.borderWidth = 8
+        layer.borderColor = (isCorrect ? UIColor.greenBorder : UIColor.redBorder)?.cgColor
+        layer.cornerRadius = 20
     }
     
     private func showNextQuestionOrResults() {
@@ -74,9 +76,9 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == questions.count - 1 {
             showResults(
                 QuizResultsViewModel(
-                title: "Неплохой результат",
-                text: "Результат: \(correctCount)/\(questions.count)",
-                buttonText: "По новой")
+                title: "Раунд окончен!",
+                text: "Ваш результат: \(correctCount)/\(questions.count)",
+                buttonText: "Сыграть еще раз")
             )
         } else {
             currentQuestionIndex += 1
