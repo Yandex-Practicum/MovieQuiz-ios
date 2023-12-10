@@ -17,11 +17,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     // MARK: - Lifecycle
     override final func viewDidLoad() {
         super.viewDidLoad()
+        customizationUI()
         questionFactory.delegate = self
         questionFactory.requestNextQuestion()
         alertPresenter = AlertPresenterImpl(viewController:self)
         statisticSetvice = StatisticServiceImpl()
-        customizationUI()
+
     }
     
     // MARK: - Private functions
@@ -162,7 +163,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
             self.questionFactory.requestNextQuestion()
         }
         
-        alertPresenter.show(alertModel: model)
+        alertPresenter?.show(alertModel: model)
     }
     
     func didLoadDataFromServer() {
