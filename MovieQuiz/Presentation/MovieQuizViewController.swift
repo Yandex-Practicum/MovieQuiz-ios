@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     
     private let questionsAmount: Int = 10
     private lazy var questionFactory: QuestionFactoryProtocol = {
-        let factory = QuestionFactory()
+        let factory = QuestionFactory(moviesLoader:  MoviesLoader(), delegate: self)
         factory.delegate = self
         return factory
     }()
@@ -146,9 +146,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
         activityIndicator.startAnimating() // включаем анимацию
     }
-    
+    private func hideLoadingIndicator(){
+        activityIndicator.isHidden = true
+    }
     private func showNetworkError(message: String) {
-        
+        hideLoadingIndicator()
         let model = AlertModel(title: "Ошибка",
                                message: message,
                                buttonText: "Попробовать еще раз") { [weak self] in
@@ -157,16 +159,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            self.questionFactory?.requestNextQuestion()
+            self.questionFactory.requestNextQuestion()
         }
         
-        alertPresenter.show(in: self, model: model)
+        alertPresenter.show(alertModel: model)
     }
     
     func didLoadDataFromServer() {
         activityIndicator.isHidden = true // скрываем индикатор загрузки
-        questionFactory?.requestNextQuestion()
-    } 
+        questionFactory.requestNextQuestion()
+    }
 
     func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
