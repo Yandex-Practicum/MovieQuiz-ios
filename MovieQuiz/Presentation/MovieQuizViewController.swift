@@ -97,7 +97,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
             
             selfAction.correctAnswers = 0
             selfAction.currentQuestionIndex = 0
-            selfAction.questionFactory.requestNextQuestion()
+            selfAction.questionFactory.loadData()
             
         }
         alertPresenter.showAlert(quiz: networkConnectionAlert, controller: self)
