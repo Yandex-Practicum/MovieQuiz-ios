@@ -104,7 +104,7 @@
                                 </subviews>
                             </stackView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="8ce-Xm-Lc9">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <rect key="frame" x="197" y="370.66666666666669" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -113,10 +113,16 @@
                             <constraint firstItem="wg3-Ss-qGt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="9RN-0B-w8v"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wg3-Ss-qGt" secondAttribute="trailing" constant="20" id="UH2-F9-XgZ"/>
                             <constraint firstItem="wg3-Ss-qGt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="VdR-av-7Gi"/>
-                            <constraint firstItem="8ce-Xm-Lc9" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eJG-pe-CsY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wg3-Ss-qGt" secondAttribute="bottom" id="laD-ww-Ssc"/>
                             <constraint firstItem="8ce-Xm-Lc9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="tJK-RD-0h2"/>
+                            <constraint firstItem="8ce-Xm-Lc9" firstAttribute="centerY" secondItem="wg3-Ss-qGt" secondAttribute="centerY" id="wIE-ub-e9T"/>
+                            <constraint firstItem="8ce-Xm-Lc9" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" multiplier="0.84" id="z8R-fG-BFU"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="wIE-ub-e9T"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="8ce-Xm-Lc9" id="EsY-iJ-NpJ"/>

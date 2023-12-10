@@ -9,13 +9,8 @@ import Foundation
 
 //Структура вопроса квиза
 struct QuizQuestion {
-    //Строка с названием фильма
-    //Совпадает с названием картинки афиши фильма в Assets
-    var image: Data//String
-    
-    //Строка с названием вопроса о фильме
+
+    var image: Data
     var text: String
-    
-    //Будевое значение (true, false), дающее правильный ответ на вопрос
     var correctAnswer: Bool
 }

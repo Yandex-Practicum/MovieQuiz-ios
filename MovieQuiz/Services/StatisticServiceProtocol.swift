@@ -9,13 +9,10 @@ import Foundation
 
 protocol StatisticServiceProtocol {
     
-    //Общее общая статистика игры
     var totalAccurancy: Double { get }
-    //Общий счетчик игр
     var gamesCount: Int { get }
-    //Лучшая игра
     var bestGame: GameRecord { get }
-    
+
     func store(correct count: Int, total amount: Int)
     
 }

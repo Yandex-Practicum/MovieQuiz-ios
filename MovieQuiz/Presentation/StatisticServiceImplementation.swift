@@ -11,12 +11,10 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
     
     private lazy var userDefaults = UserDefaults.standard
     
-    //Перечесление с именами сохраняемых переменных (общее количество правильных ответов, общее количество ответов, количество сыгранных партий, структура лучшей игры.
     enum Keys: String {
         case correct, total, gameCount, bestGame
     }
     
-    //Переменная оперделяющая общую статистику игры
     var totalAccurancy: Double {
         get {
             Double(totalCorrect) / Double(totalAmount)
@@ -26,7 +24,6 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         }
     }
     
-    // Переменная оперделяющая общее количество сыгранных игр после установки приложения
     var gamesCount: Int {
         get{
             userDefaults.integer(forKey: Keys.gameCount.rawValue)
@@ -36,7 +33,6 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         }
     }
     
-    //Структура лучшей игры
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -57,7 +53,6 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         
     }
     
-    //Общее количество правильных ответов сохраненное в памяти за все партии
     private var totalCorrect: Int {
         get{
             userDefaults.integer(forKey: Keys.correct.rawValue)
@@ -67,7 +62,6 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
         }
     }
     
-    //Обще количество вопросов заданных за все партии
     private var totalAmount: Int {
         get{
             userDefaults.integer(forKey: Keys.total.rawValue)
@@ -85,14 +79,18 @@ class StatisticServiceImplementation:StatisticServiceProtocol {
     ///- Parameters:
     ///     - count: Количество правильных ответов в текущей партии квиза
     ///     - amount: Общее количество вопросов в партии квиза
+
     func store(correct count: Int, total amount: Int) {
+        
         totalCorrect += count
         print(totalCorrect)
         totalAmount += amount
         print(totalAmount)
+        
         if bestGame.isBetterResult(currentResult: GameRecord(correct: count, total: amount, date: Date())) {
             bestGame = GameRecord(correct: count, total: amount, date: Date())
         }
+        
         totalAccurancy = Double(totalCorrect) / Double(totalAmount)
         gamesCount += 1
     }

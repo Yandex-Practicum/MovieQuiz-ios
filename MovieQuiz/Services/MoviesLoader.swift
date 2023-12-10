@@ -19,9 +19,8 @@ struct MovieLoader: MoviesLoaderProtocol {
     private var mostPopularMoviesUrl: URL {
         
         guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_zcuw1ytf") else{
-            preconditionFailure("Невозможно сформировать ссылку mostPopularMoviesUrl")
+            preconditionFailure("Невозможно сформировать ссылку mostPopularMoviesUrlf")
         }
-        
         return url
     }
     
@@ -42,6 +41,5 @@ struct MovieLoader: MoviesLoaderProtocol {
             }
         }
     }
-    
-    
+        
 }
