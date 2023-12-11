@@ -1,13 +1,13 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  {
-    
-    private let questionsAmount: Int = 10
+
     private lazy var questionFactory: QuestionFactoryProtocol = {
         let factory = QuestionFactory(moviesLoader:  MoviesLoader(), delegate: self)
         factory.delegate = self
         return factory
     }()
+    private let questionsAmount: Int = 10
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -18,11 +18,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     override final func viewDidLoad() {
         super.viewDidLoad()
         customizationUI()
-        questionFactory.delegate = self
-        questionFactory.requestNextQuestion()
-        alertPresenter = AlertPresenterImpl(viewController:self)
-        statisticSetvice = StatisticServiceImpl()
+        imageView.layer.cornerRadius = 20
+         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+         let statisticService = StatisticServiceImpl()
 
+         showLoadingIndicator()
+         questionFactory.loadData()
+        
     }
     
     // MARK: - Private functions
@@ -144,11 +146,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     }
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.isHidden = false //
         activityIndicator.startAnimating() // включаем анимацию
     }
     private func hideLoadingIndicator(){
         activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
     }
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
