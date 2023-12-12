@@ -32,13 +32,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="вуауа" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAC-wM-pMy">
-                                                <rect key="frame" x="0.0" y="0.0" width="298.5" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="313.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White "/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="ауафа" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gDe-gp-FOM">
-                                                <rect key="frame" x="318.5" y="0.0" width="55.5" height="23.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="0/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gDe-gp-FOM">
+                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White "/>
                                                 <nil key="highlightedColor"/>
@@ -52,7 +52,7 @@
                                             <constraint firstAttribute="width" secondItem="aRT-Ib-Xtn" secondAttribute="height" multiplier="2:3" id="rBk-Ux-3Zu"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unj-dH-L0d">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Готовим для вас вопрос" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unj-dH-L0d">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White "/>
@@ -90,17 +90,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="08f-SW-Jxb">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="08f-SW-Jxb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="84E-a0-vQh"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="i11-fC-dyL" secondAttribute="trailing" constant="20" id="O2U-Qs-E6Z"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="i11-fC-dyL" secondAttribute="bottom" id="OAs-8q-ikc"/>
                             <constraint firstItem="i11-fC-dyL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Tju-E9-lOG"/>
                             <constraint firstItem="i11-fC-dyL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="m6m-Hy-bNj"/>
+                            <constraint firstItem="08f-SW-Jxb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pmd-2e-HzS"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="08f-SW-Jxb" id="6Gv-7i-KAe"/>
                         <outlet property="counterLabel" destination="gDe-gp-FOM" id="tVU-p3-xiC"/>
                         <outlet property="imageView" destination="aRT-Ib-Xtn" id="sSx-Z3-nHb"/>
                         <outlet property="noButton" destination="xgA-TQ-Vj6" id="bCr-u1-J87"/>
