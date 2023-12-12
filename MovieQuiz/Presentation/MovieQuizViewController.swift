@@ -11,7 +11,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     @IBOutlet private weak var yesButton: UIButton!
     
     // MARK: - IB Actions
-    @IBAction private func yesButtonPressed(_ sender: UIButton) {
+    @IBAction private func yesButtonPressed(_ sender: Any) {
         self.updateButtonStates(buttonsEnabled: false)
         guard let currentQuestion = currentQuestion else {
             self.updateButtonStates(buttonsEnabled: true)
@@ -26,7 +26,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         }
     }
     
-    @IBAction private func noButtonPressed(_ sender: UIButton) {
+    @IBAction private func noButtonPressed(_ sender: Any) {
         self.updateButtonStates(buttonsEnabled: false)
         guard let currentQuestion = currentQuestion else {
             self.updateButtonStates(buttonsEnabled: true)
