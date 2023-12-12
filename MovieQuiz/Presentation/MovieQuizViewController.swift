@@ -33,7 +33,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         view.backgroundColor = UIColor.ypBlack
         
         activityIndicator.color = UIColor.ypBlack
-        activityIndicator.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        activityIndicator.transform = CGAffineTransform(scaleX: 3, y: 3)
         
         noButton.setTitle("Нет", for: .normal)
         noButton.setTitleColor(UIColor.ypBlack, for: .normal)
@@ -181,9 +181,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         showNetworkError(message: error.localizedDescription)
     }
     
-//    func didFailNextQuestion(with error: Error) {
-//    //    showNetworkError(message: error.localizedDescription)
-//    }
+    func didFailNextQuestion(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
     private func loadMovies(_: UIAlertAction){
         showLoadingIndicator()
         questionFactory.loadData()
