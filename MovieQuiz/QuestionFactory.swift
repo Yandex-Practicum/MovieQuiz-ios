@@ -28,33 +28,25 @@ class QuestionFactory:QuestionFactoryProtocol {
     }
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
-            
-            guard let movie = self.movies[safe: index] else { return }
-            
-            var imageData = Data()
-            
+            guard let self, let movie = self.movies.randomElement() else { return }
             do {
-                imageData = try Data(contentsOf: movie.resizedImageURL)
+                let imageData = try Data(contentsOf: movie.resizedImageURL)
+                let rating = Float(movie.rating) ?? 0
+                let ratingQuestion = Float.random(in: 7.9..<9.4)
+                let text = String(format: "Рейтинг этого фильма больше чем %.2f?", ratingQuestion)
+                let correctAnswer = rating > ratingQuestion
+                let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                    guard let self else { return }
+                    self.delegate?.didReceiveNextQuestion(question: question)
+                }
             } catch {
-                print("Failed to load image")
-            } 
-            
-            let rating = Float(movie.rating) ?? 0
-            
-            let text = "Рейтинг этого фильма больше чем 7?"
-            let correctAnswer = rating > 7
-            
-            let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.didReceiveNextQuestion(question: question)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.delegate?.didFailNextQuestion(with: error)
+                }
             }
         }
     }
+    
 }
-
