@@ -11,6 +11,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion =  questions[currentQuestionIndex]
@@ -75,8 +77,12 @@ final class MovieQuizViewController: UIViewController {
         } else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
            self.showNextQuestionOrResult()
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
         }
     }
     
