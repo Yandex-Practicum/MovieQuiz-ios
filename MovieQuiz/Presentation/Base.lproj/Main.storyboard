@@ -53,7 +53,7 @@
                                         <rect key="frame" x="0.0" y="655" width="374" height="54"/>
                                         <color key="tintColor" name="YP White"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" name="YP White"/>
                                         <color key="highlightedColor" name="YP White"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="dMQ-Zq-vkt" userLabel="Buttons Stack View">
