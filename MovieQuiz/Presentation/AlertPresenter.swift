@@ -43,11 +43,8 @@ class AlertPresenter: AlertPresenterProtocol{
             message: alertModel.text,
             preferredStyle: .alert)
         
-        let completion = alertModel.completion
-        
-        let action = UIAlertAction(title: alertModel.buttonText, style: .default){ [weak self] _ in
-            guard let self = self else { return  }
-            self.delegate?.didTappedAlertButton()
+        let action = UIAlertAction(title: alertModel.buttonText, style: .default){ _ in
+            alertModel.completion()
         }
         alert.addAction(action)
          

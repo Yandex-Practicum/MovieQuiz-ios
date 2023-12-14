@@ -13,8 +13,6 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     private var userAnswer = false
     
-    //private let quizResultViewModel =
-    
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet weak var questionTitleLabel: UILabel!
     @IBOutlet private weak var previewImageView: UIImageView!
@@ -27,8 +25,7 @@ final class MovieQuizViewController: UIViewController {
         
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
-        
-        questionFactory?.requestNextQuestion()
+        presentNextQuizStepQuestion()
 
         
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
@@ -55,6 +52,7 @@ final class MovieQuizViewController: UIViewController {
     private func presentNextQuizStepQuestion(){
         UIView.animate(withDuration: 1){
             self.questionFactory?.requestNextQuestion()
+            self.currentQuestionIndex += 1
         }
     }
     
@@ -64,9 +62,12 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showQuizResults(){
-        let alertModel = AlertModel(title: "Этот раунд окончен!", text: "Ваш результат:\(correctAnswers)/\(questionsAmount)", buttonText: "Сыграть ещё раз"){
-            
-        }
+        let alertModel = AlertModel(title: "Этот раунд окончен!", text: "Ваш результат:\(correctAnswers)/\(questionsAmount)", buttonText: "Сыграть ещё раз",completion: 
+            {
+            self.correctAnswers = 0
+            self.currentQuestionIndex = 0
+            self.presentNextQuizStepQuestion()
+        })
         self.alertPresenter?.showAlert(alertModel: alertModel)
     }
     
@@ -100,9 +101,7 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == questionsAmount {
             showQuizResults()
         } else {
-            currentQuestionIndex += 1
             presentNextQuizStepQuestion()
-            
         }
     }
     
@@ -143,16 +142,8 @@ extension MovieQuizViewController : QuestionFactoryDelegate {
 
 extension MovieQuizViewController : AlertPresenterDelegate {
     // MARK: - AlertPresenterDelegate
-    func didTappedAlertButton() {
-        self.correctAnswers = 0
-        self.currentQuestionIndex = 0
-        self.presentNextQuizStepQuestion()
-    }
-    
-   
     func willShowAlert(alert: UIViewController) {
         self.present(alert, animated: true){
-           
         }
     }
     

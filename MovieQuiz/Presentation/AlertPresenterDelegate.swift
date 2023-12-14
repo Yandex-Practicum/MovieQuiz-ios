@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 protocol AlertPresenterDelegate: AnyObject{
-    func didTappedAlertButton()
     
     func willShowAlert(alert: UIViewController)
 }
