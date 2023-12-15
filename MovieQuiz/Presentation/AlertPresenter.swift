@@ -13,7 +13,7 @@ class AlertPresenter: UIViewController {
         
         //Создаем Alert
         let alert = UIAlertController(title: result.title, message: result.message, preferredStyle: .alert)
-        
+        alert.view.accessibilityIdentifier = "alertId"
         //Создаем действие для Alert
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             
