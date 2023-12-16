@@ -26,8 +26,24 @@ class MoviesLoaderTest: XCTestCase {
         }
         waitForExpectations(timeout: 1)
     }
+    
+    
+    func testFailureLoading() throws {
+        let stubClient = StubNetworkClient(emulateError: true)
+        let loader = MoviesLoader(networkClient: stubClient)
+        let expectation = expectation(description: "Loading")
+        loader.loadMovies{ result in
+            switch result{
+            case.success(_):
+                XCTFail("Unexpected failure")
+            case.failure(let error):
+                XCTAssertNotNil(error)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }
-
 struct StubNetworkClient: NetworkRouting {
     
     enum TestError: Error { // тестовая ошибка
