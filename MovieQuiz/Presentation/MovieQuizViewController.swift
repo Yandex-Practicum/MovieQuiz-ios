@@ -32,11 +32,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
             self.updateButtonStates(buttonsEnabled: true)
             return
         }
-
+        
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.updateButtonStates(buttonsEnabled: true)
         }
@@ -171,12 +169,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         let alertModel = AlertModel(
             title: "Игра окончена!",
             message: makeResultMessage(),
-            buttonText: "OK",
+            buttonText: "Сыграть ещё раз",
             buttonAction: {[weak self] in
                 self?.currentQuestionIndex = 0
                 self?.correctAnswers = 0
                 self?.questionFactory.requestNextQuestion()
-            }
+            },
+            accessibilityIdentifier: "AlertResult"
         )
         alertPresenter?.show(alertModel: alertModel)
     }
@@ -209,19 +208,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     }
     
     private func showNetworkError(message: String) {
-        let model = AlertModel(title: "Ошибка",
-                               message: message,
-                               buttonText: "Попробовать еще раз") { [weak self] in
-            guard let self = self else { return }
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            self.questionFactory.requestNextQuestion()
-        }
-        
+        let model = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать еще раз",
+            buttonAction: { [weak self] in
+                guard let self = self else { return }
+                
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                
+                self.questionFactory.requestNextQuestion()
+            },
+            accessibilityIdentifier: "errorAlert"
+        )
+
+        // Теперь вызовите метод для отображения алерта
         alertPresenter?.show(alertModel: model)
     }
+
     
     private func loadMovies(){
         showLoadingIndicator()

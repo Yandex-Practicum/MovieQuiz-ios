@@ -7,4 +7,5 @@ struct AlertModel {
     let message: String
     let buttonText: String
     let buttonAction: () -> Void
+    let accessibilityIdentifier: String?
 }
