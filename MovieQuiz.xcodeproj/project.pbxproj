@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1260A59C2B2EF1FB00E5451C /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260A59B2B2EF1FB00E5451C /* AlertModel.swift */; };
+		1260A59E2B2EF37B00E5451C /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260A59D2B2EF37B00E5451C /* AlertPresenter.swift */; };
+		1260A5A02B2F261200E5451C /* AlertPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260A59F2B2F261200E5451C /* AlertPresenterDelegate.swift */; };
+		1260A5A22B2F45CF00E5451C /* AlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260A5A12B2F45CF00E5451C /* AlertPresenterProtocol.swift */; };
 		12D052AE2B29FAFE0060D5F1 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12D052AC2B29FAFE0060D5F1 /* YS Display-Medium.ttf */; };
 		12D052AF2B29FAFE0060D5F1 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12D052AD2B29FAFE0060D5F1 /* YS Display-Bold.ttf */; };
 		12D052B22B2B05AF0060D5F1 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D052B12B2B05AF0060D5F1 /* QuestionFactory.swift */; };
@@ -27,6 +31,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1260A59B2B2EF1FB00E5451C /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
+		1260A59D2B2EF37B00E5451C /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+		1260A59F2B2F261200E5451C /* AlertPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterDelegate.swift; sourceTree = "<group>"; };
+		1260A5A12B2F45CF00E5451C /* AlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterProtocol.swift; sourceTree = "<group>"; };
 		12D052AC2B29FAFE0060D5F1 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		12D052AD2B29FAFE0060D5F1 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		12D052B12B2B05AF0060D5F1 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
@@ -75,6 +83,7 @@
 				12D052B42B2B0A4D0060D5F1 /* QuizQuestion.swift */,
 				12D052B62B2B0A5F0060D5F1 /* QuizStepViewModel.swift */,
 				12D052B82B2B0A6F0060D5F1 /* QuizResultViewModel.swift */,
+				1260A59B2B2EF1FB00E5451C /* AlertModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -84,6 +93,9 @@
 			children = (
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
+				1260A59D2B2EF37B00E5451C /* AlertPresenter.swift */,
+				1260A59F2B2F261200E5451C /* AlertPresenterDelegate.swift */,
+				1260A5A12B2F45CF00E5451C /* AlertPresenterProtocol.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -215,11 +227,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
+				1260A59E2B2EF37B00E5451C /* AlertPresenter.swift in Sources */,
+				1260A59C2B2EF1FB00E5451C /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				12D052BB2B2B20540060D5F1 /* QuestionFactoryProtocol.swift in Sources */,
+				1260A5A02B2F261200E5451C /* AlertPresenterDelegate.swift in Sources */,
 				12D052BD2B2B2F4E0060D5F1 /* QuestionFactoryDelegate.swift in Sources */,
 				12D052B72B2B0A5F0060D5F1 /* QuizStepViewModel.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
+				1260A5A22B2F45CF00E5451C /* AlertPresenterProtocol.swift in Sources */,
 				12D052B22B2B05AF0060D5F1 /* QuestionFactory.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,

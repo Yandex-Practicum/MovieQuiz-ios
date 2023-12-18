@@ -6,3 +6,8 @@
 //
 
 import Foundation
+import UIKit
+
+protocol AlertPresenterProtocol: AnyObject {
+    func createAlert(alertModel: AlertModel?)
+}
