@@ -5,4 +5,11 @@
 //  Created by Илья Дышлюк on 09.12.2023.
 //
 
-import Foundation
+import UIKit
+
+struct AlertModel{
+    var title: String
+    var message: String
+    var buttontext: String
+    var completion: (() -> Void)
+}
