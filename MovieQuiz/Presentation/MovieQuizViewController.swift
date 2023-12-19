@@ -21,6 +21,10 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet weak var noAnswerButton: UIButton!
     @IBOutlet weak var yesAnswerButton: UIButton!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,7 +74,7 @@ final class MovieQuizViewController: UIViewController {
         guard let recordTotalQuestions = recordToShow?.totalQuestions else {return "0"}
         guard let accuracy = statisticService?.totalAccuracy else {return "0"}
         guard let date = recordToShow?.date.dateTimeString else {return Date().dateTimeString}
-    
+        
         let messageToShow = """
         Ваш результат: \(correctAnswers)/\(questionsAmount)
         Количесвто сыгранных квизов: \(gamesCount)
@@ -82,13 +86,12 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showQuizResults(){
-         let messageToShow = createMessageToShowInAlert()
+        let messageToShow = createMessageToShowInAlert()
         
-        let alertModel = AlertModel(title: "Этот раунд окончен!", text: messageToShow, buttonText: "Сыграть ещё раз",completion:
-                                        {
-            self.correctAnswers = 0
-            self.currentQuestionIndex = 0
-            self.presentNextQuizStepQuestion()
+        let alertModel = AlertModel(title: "Этот раунд окончен!", text: messageToShow, buttonText: "Сыграть ещё раз",completion: { [weak self] in
+            self?.correctAnswers = 0
+            self?.currentQuestionIndex = 0
+            self?.presentNextQuizStepQuestion()
         })
         self.alertPresenter?.showAlert(alertModel: alertModel)
     }
@@ -110,12 +113,12 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    private func configureImageFrame(color: CGColor){
-        UIView.animate(withDuration: 0.68) {
-            self.previewImageView.layer.masksToBounds = true
-            self.previewImageView.layer.borderWidth = 8
-            self.previewImageView.layer.cornerRadius = 20
-            self.previewImageView.layer.borderColor = color
+    private func configureImageFrame(color: CGColor) {
+        UIView.animate(withDuration: 0.68) { [weak self] in
+            self?.previewImageView.layer.masksToBounds = true
+            self?.previewImageView.layer.borderWidth = 8
+            self?.previewImageView.layer.cornerRadius = 20
+            self?.previewImageView.layer.borderColor = color
         }
     }
     

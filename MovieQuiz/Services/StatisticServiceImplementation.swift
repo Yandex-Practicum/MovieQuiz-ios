@@ -26,7 +26,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    var totalAmmuntQuestions : Int{
+    var totalAmountQuestions : Int {
         get{
             let totalAmountQuestions = userDefaults.integer(forKey: Keys.totalAmountQuestions.rawValue)
             return totalAmountQuestions
@@ -39,11 +39,16 @@ final class StatisticServiceImplementation: StatisticService {
     
     var totalAccuracy: Double {
         get{
-        Double(totalCorrectAnswers) / Double(totalAmmuntQuestions) * 100
+            if totalAmountQuestions > 0 {
+                return Double(totalCorrectAnswers) / Double(totalAmountQuestions) * 100
+            }else{
+                return Double(0)
+            }
+            
         }
     }
     
-    var gamesCount: Int{
+    var gamesCount: Int {
         get{
             let gamesAmmount = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
             return gamesAmmount
@@ -53,7 +58,7 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
-    var bestGame: GameRecord{
+    var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
                   let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
@@ -75,13 +80,13 @@ final class StatisticServiceImplementation: StatisticService {
         let newRecord = GameRecord(correctAnswers: count, totalQuestions: amount, date: Date())
         isNewRecord(isNewRecord: newRecord)
         totalCorrectAnswers += count
-        totalAmmuntQuestions += amount
+        totalAmountQuestions += amount
         gamesCount += 1
     }
     
-    func isNewRecord(isNewRecord: GameRecord){
+    func isNewRecord(isNewRecord: GameRecord) {
         if bestGame < isNewRecord {
-          bestGame = isNewRecord
+            bestGame = isNewRecord
         }
     }
 }
