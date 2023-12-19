@@ -6,6 +6,7 @@ final class MovieQuizViewController: UIViewController {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter : AlertPresenterProtocol?
+    private var statisticService : StatisticService?
     
     
     private var currentQuestion: QuizQuestion?
@@ -25,8 +26,9 @@ final class MovieQuizViewController: UIViewController {
         
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
+        statisticService = StatisticServiceImplementation()
+        
         presentNextQuizStepQuestion()
-
         
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
@@ -61,9 +63,29 @@ final class MovieQuizViewController: UIViewController {
         yesAnswerButton.isEnabled.toggle()
     }
     
+    private func createMessageToShowInAlert() -> String{
+        let recordToShow = statisticService?.bestGame
+        guard let gamesCount = statisticService?.gamesCount else {return "0"}
+        guard let recordCorrectAnswers = recordToShow?.correctAnswers else {return "0"}
+        guard let recordTotalQuestions = recordToShow?.totalQuestions else {return "0"}
+        guard let accuracy = statisticService?.totalAccuracy else {return "0"}
+        guard let date = recordToShow?.date.dateTimeString else {return Date().dateTimeString}
+    
+        let messageToShow = """
+        Ваш результат: \(correctAnswers)/\(questionsAmount)
+        Количесвто сыгранных квизов: \(gamesCount)
+        Рекорд: \(recordCorrectAnswers.description)/\(recordTotalQuestions) (\(date))
+        Средняя точность: \(String(format: "%.2f",accuracy))%
+        """
+        
+        return messageToShow
+    }
+    
     private func showQuizResults(){
-        let alertModel = AlertModel(title: "Этот раунд окончен!", text: "Ваш результат:\(correctAnswers)/\(questionsAmount)", buttonText: "Сыграть ещё раз",completion: 
-            {
+         let messageToShow = createMessageToShowInAlert()
+        
+        let alertModel = AlertModel(title: "Этот раунд окончен!", text: messageToShow, buttonText: "Сыграть ещё раз",completion:
+                                        {
             self.correctAnswers = 0
             self.currentQuestionIndex = 0
             self.presentNextQuizStepQuestion()
@@ -77,8 +99,8 @@ final class MovieQuizViewController: UIViewController {
             correctAnswers += 1
             color = UIColor(resource: .ypGreen).cgColor
         }
-       configureImageFrame(color: color)
-       handleEnableAnswersButtons()
+        configureImageFrame(color: color)
+        handleEnableAnswersButtons()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
@@ -99,6 +121,7 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount {
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
             showQuizResults()
         } else {
             presentNextQuizStepQuestion()
@@ -111,7 +134,7 @@ final class MovieQuizViewController: UIViewController {
         }
         userAnswer = true
         showAnswerResult(isCorrect: userAnswer == currentQuestion.correctAnswer)
-
+        
     }
     
     @IBAction private func noButtonTapped(_ sender: Any) {
@@ -126,16 +149,16 @@ final class MovieQuizViewController: UIViewController {
 
 extension MovieQuizViewController : QuestionFactoryDelegate {
     // MARK: - QuestionFactoryDelegate
-
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {return}
         
-            currentQuestion = question
-            let quizStepViewModel = convert(model: question)
+        currentQuestion = question
+        let quizStepViewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quizStepViewModel: quizStepViewModel)
         }
-           
+        
         
     }
 }
@@ -146,6 +169,7 @@ extension MovieQuizViewController : AlertPresenterDelegate {
         self.present(alert, animated: true){
         }
     }
+    
     
     
 }

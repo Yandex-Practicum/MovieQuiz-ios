@@ -29,15 +29,11 @@ class AlertPresenter: AlertPresenterProtocol{
         self.alertModel?.title = alertModel.title
         self.alertModel?.buttonText = alertModel.buttonText
        self.alertModel?.completion = {
-         //  self.delegate?.didTappedAlertButton()
        }
     }
 
     func showAlert(alertModel : AlertModel) {
-        
-      // aqui tiener que ir la funcion del delegate
-      //  setAlertModel(alertModel: alertModel)
-        
+
         let alert = UIAlertController(
             title: alertModel.title,
             message: alertModel.text,
