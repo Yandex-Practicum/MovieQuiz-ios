@@ -52,7 +52,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     private var correctAnswers = 0
     private var alertPresenter: AlertPresenter?
     private var statisticSetvice: StatisticServiceImpl?
-    
+    private let presenter = MovieQuizPresenter()
     // MARK: - Lifecycle
     override final func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +69,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
              return
          }
          currentQuestion = question
-         let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
          DispatchQueue.main.async { [weak self] in
              self?.show(quiz: viewModel)
              self?.hideLoadingIndicator()
@@ -119,13 +119,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         questionLabel.frame.size = CGSize(width: 72, height: 24)
         
         imageView.layer.cornerRadius = 20
-    }
-    
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     private func show(quiz step: QuizStepViewModel) {
