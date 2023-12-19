@@ -46,9 +46,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         factory.delegate = self
         return factory
     }()
-    private let questionsAmount: Int = 10
     private var currentQuestion: QuizQuestion?
-    private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var alertPresenter: AlertPresenter?
     private var statisticSetvice: StatisticServiceImpl?
