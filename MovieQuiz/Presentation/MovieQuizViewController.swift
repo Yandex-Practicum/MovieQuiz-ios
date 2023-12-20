@@ -13,18 +13,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     // MARK: - IB Actions
     @IBAction private func yesButtonPressed(_ sender: Any) {
         self.updateButtonStates(buttonsEnabled: false)
-        guard let currentQuestion = currentQuestion else {
-            self.updateButtonStates(buttonsEnabled: true)
-            return
-        }
-
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.updateButtonStates(buttonsEnabled: true)
         }
     }
+    
     
     @IBAction private func noButtonPressed(_ sender: Any) {
         self.updateButtonStates(buttonsEnabled: false)
@@ -46,7 +41,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         factory.delegate = self
         return factory
     }()
-    private var currentQuestion: QuizQuestion?
+
     private var correctAnswers = 0
     private var alertPresenter: AlertPresenter?
     private var statisticSetvice: StatisticServiceImpl?
@@ -56,6 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     override final func viewDidLoad() {
         super.viewDidLoad()
         customizationUI()
+        presenter.viewController = self
         alertPresenter = AlertPresenterImpl(viewController:self)
         statisticSetvice = StatisticServiceImpl()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -126,7 +122,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         counterLabel.text = step.questionNumber
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect { // 1
             correctAnswers += 1 // 2
         }
