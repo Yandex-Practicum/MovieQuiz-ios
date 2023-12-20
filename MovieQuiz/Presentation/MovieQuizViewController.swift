@@ -1,6 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  {
+    
     // MARK: - IBOutlet
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
@@ -13,7 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     // MARK: - IB Actions
     @IBAction private func yesButtonPressed(_ sender: Any) {
         self.updateButtonStates(buttonsEnabled: false)
-        presenter.currentQuestion = currentQuestion
+        presenter.currentQuestion = presenter.currentQuestion
         presenter.yesButtonClicked()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.updateButtonStates(buttonsEnabled: true)
@@ -22,14 +23,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     
     
     @IBAction private func noButtonPressed(_ sender: Any) {
-        self.updateButtonStates(buttonsEnabled: false)
-        guard let currentQuestion = currentQuestion else {
-            self.updateButtonStates(buttonsEnabled: true)
-            return
-        }
         
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = presenter.currentQuestion
+        presenter.noButtonClicked()
+        self.updateButtonStates(buttonsEnabled: false)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.updateButtonStates(buttonsEnabled: true)
         }
@@ -41,7 +38,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         factory.delegate = self
         return factory
     }()
-
+    
     private var correctAnswers = 0
     private var alertPresenter: AlertPresenter?
     private var statisticSetvice: StatisticServiceImpl?
@@ -60,17 +57,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     
     // MARK: - Public Methods
     func didReceiveNextQuestion(question: QuizQuestion?) {
-         guard let question = question else {
-             return
-         }
-         currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-         DispatchQueue.main.async { [weak self] in
-             self?.show(quiz: viewModel)
-             self?.hideLoadingIndicator()
-         }
-     }
-    
+        presenter.didRecieveNextQuestion(question: question)
+    }
+
     func didLoadDataFromServer() {
         activityIndicator.isHidden = true
         questionFactory.requestNextQuestion()
@@ -116,7 +105,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         imageView.layer.cornerRadius = 20
     }
     
-    private func show(quiz step: QuizStepViewModel) {
+   func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         questionLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -184,13 +173,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         ].joined(separator: "\n")
         return resultMessage
     }
+    
+
 
     private func showLoadingIndicator() {
         activityIndicator.isHidden = false //
         activityIndicator.startAnimating() // включаем анимацию
     }
     
-    private func hideLoadingIndicator(){
+    func hideLoadingIndicator(){
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
