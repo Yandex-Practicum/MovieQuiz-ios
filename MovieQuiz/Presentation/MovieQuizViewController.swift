@@ -56,9 +56,9 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func presentNextQuizStepQuestion(){
-        UIView.animate(withDuration: 1){
-            self.questionFactory?.requestNextQuestion()
-            self.currentQuestionIndex += 1
+        UIView.animate(withDuration: 1){ [weak self] in
+            self?.questionFactory?.requestNextQuestion()
+            self?.currentQuestionIndex += 1
         }
     }
     
