@@ -33,7 +33,15 @@ class QuestionFactory: QuestionFactoryProtocol {
         delegate?.didReceiveNextQuestion(question: question)
     }
     
-//    init(delegate: QuestionFactoryDelegate?) {
-//        self.delegate = delegate
-//    }
+    // метод возвращающий набор вопросов наугад с конкретным количеством
+    func generateRandomQuestion(limit: Int) -> [QuizQuestion] {
+        var randomQuestions: [QuizQuestion] = []
+        let shuffledQuestions = questions.shuffled()
+        
+        for question in shuffledQuestions.prefix(limit) {
+            randomQuestions.append(question)
+        }
+        
+        return randomQuestions
+    }
 }

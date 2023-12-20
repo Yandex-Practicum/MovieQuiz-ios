@@ -1,16 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // настраиваем внешний вид рамки
-        setupImageView()
-        // запрашиваем первый вопрос
-        questionFactory.delegate = self
-        questionFactory.requestNextQuestion()
-        alertPresenter.delegate = self
-    }
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     
     // связь объектов из main-экрана с контроллером
     @IBOutlet private var imageView: UIImageView!
@@ -19,17 +9,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
     
-    // переменная с индексом текущего вопроса, начальное значение 0
-    private var currentQuestionIndex = 0
-    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
-    private var correctAnswers = 0
-    // константа с количеством вопросов
-    private let questionsAmount: Int = 10
-    // переменная инициализирует создание объекта с вопросами
-    private let questionFactory = QuestionFactory()
-    // переменная с текущим вопросом
-    private var currentQuestion: QuizQuestion?
     private let alertPresenter = AlertPresenter()
+    // переменная с текущим раундом
+    private var currentRound: Round?
+    private var statistics: StatisticServiceImplementation?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // настраиваем внешний вид рамки
+        setupImageView()
+        alertPresenter.delegate = self
+        // стартуем новый раунд
+        startNewRound()
+    }
     
     // MARK: Настройка внешнего вида
     
@@ -50,57 +42,33 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     // MARK: - QuestionFactoryDelegate
 
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
+    // метод отвечающий за старт нового раунда квиза
+    private func startNewRound() {
+        setAnswerButtonsEnabled(true)
+        currentRound = Round(numberOfQuestions: 10)
+        showNextQuestion()
+    }
+    
+    private func showNextQuestion() {
+        guard let question = currentRound?.getCurrentQuestion() else {
+            if let currentGameRecord = currentRound?.getGameRecord() {
+                StatisticServiceImplementationRound(currentGame: currentGameRecord).store()
+                statistics = StatisticServiceImplementation()
+            }
+            
+            showQuizResults()
             return
         }
 
-        currentQuestion = question
         let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
-    }
-    
-    func alertDidDismiss() {
-        startNewRound()
-    }
-    
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1) / \(questionsAmount)")
-    }
-    
-    // метод проверяет как ответил пользователь
-    private func checkResultAnswer(isCorrect: Bool) -> Bool {
-        if let question = currentQuestion, isCorrect == question.correctAnswer {
-            correctAnswers += 1
-            return true
-        }
-        return false
-    }
-    
-    // метод отвечающий за старт нового раунда квиза
-    private func startNewRound() {
-        currentQuestionIndex = 0
-        correctAnswers = 0
+        show(quiz: viewModel)
         setAnswerButtonsEnabled(true)
-        questionFactory.requestNextQuestion()
     }
     
-    // приватный метод, который содержит логику перехода в один из сценариев
-    private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {
-            // Если это последний вопрос, показываем результаты
-            showQuizResults()
-        } else {
-            // Плавный переход к следующему вопросу + анимация
-            UIView.transition(with: self.view, duration: 2.0, options: .transitionCurlUp, animations: {
-                self.currentQuestionIndex += 1
-                self.setAnswerButtonsEnabled(true) // Включаем кнопки перед показом нового вопроса
-                self.questionFactory.requestNextQuestion()
-            }, completion: nil)
-        }
+    private func showQuizResults() {
+        let model1 = statistics
+        let alertModel1 = convert1(model: model1)
+        alertPresenter.present(alertModel: alertModel1, on: self)
     }
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
@@ -111,13 +79,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
-    func showQuizResults() {
-        let alertModel = AlertModel(
-            title: "Этот раунд окончен!",
-            message: "Ваш результат \(correctAnswers) / \(questionsAmount)",
-            buttonText: "Сыграть еще раз"
-        )
-        alertPresenter.present(alertModel: alertModel, on: self)
+    func alertDidDismiss() {
+        startNewRound()
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -126,17 +89,77 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            self?.showNextQuestionOrResults()
+            self?.showNextQuestion()
         }
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         setAnswerButtonsEnabled(false)
-        showAnswerResult(isCorrect: checkResultAnswer(isCorrect: false))
+        let isCorrect = currentRound?.checkAnswer(checkTap: false) ?? false
+        showAnswerResult(isCorrect: isCorrect)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         setAnswerButtonsEnabled(false)
-        showAnswerResult(isCorrect: checkResultAnswer(isCorrect: true))
+        let isCorrect = currentRound?.checkAnswer(checkTap: true) ?? false
+        showAnswerResult(isCorrect: isCorrect)
+    }
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let questionNumber = currentRound?.getNumberCurrentQuestion() ?? 0
+        let totalQuestions = currentRound?.getCountQuestions() ?? 0
+        let displayNumber = questionNumber + 1
+
+        return QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(displayNumber) / \(totalQuestions)"
+        )
+    }
+    
+    private func convert1(model: StatisticServiceImplementation?) -> AlertModel {
+        guard let bestGame = model?.bestGame else {
+            return AlertModel(title: "Ошибка", message: "Данные не доступны!", buttonText: "ОК")
+        }
+        
+        let gamesCount = model?.gamesCount ?? 0
+        let gamesAccuracy = model?.totalAccuracy ?? 0.0
+
+        let correctAnswers = currentRound?.getCorrectCountAnswer() ?? 0
+        let totalQuestions = currentRound?.getCountQuestions() ?? 0
+
+        let recordCorrect = bestGame.correct
+        let recordTotal = bestGame.total
+        let recordDate = bestGame.date
+        
+        let alertModel = AlertModel(
+            title: "Этот раунд окончен!",
+            message: """
+            Ваш результат: \(correctAnswers) / \(totalQuestions)
+            Количество сыгранных квизов: \(gamesCount)
+            Рекорд: \(recordCorrect) / \(recordTotal) (\(recordDate.dateTimeString))
+            Средняя точность: \(gamesAccuracy)%
+            """,
+            buttonText: "Сыграть еще раз"
+        )
+        
+        return alertModel
+    }
+
+    // MARK: сервисные методы
+    // посмотреть все записи
+    fileprivate func printAllUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        print("All UserDefaults:")
+        for (key, value) in userDefaults.dictionaryRepresentation() {
+            print("\(key) = \(value)")
+        }
+    }
+    
+    // удалить все в UserDeafult
+    fileprivate func remove() {
+        if let bundleID = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+        }
     }
 }
