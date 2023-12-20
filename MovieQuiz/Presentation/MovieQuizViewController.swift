@@ -13,23 +13,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
     
     // MARK: - IB Actions
     @IBAction private func yesButtonPressed(_ sender: Any) {
-        self.updateButtonStates(buttonsEnabled: false)
         presenter.currentQuestion = presenter.currentQuestion
         presenter.yesButtonClicked()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.updateButtonStates(buttonsEnabled: true)
-        }
     }
     
     
     @IBAction private func noButtonPressed(_ sender: Any) {
-        
         presenter.currentQuestion = presenter.currentQuestion
         presenter.noButtonClicked()
-        self.updateButtonStates(buttonsEnabled: false)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.updateButtonStates(buttonsEnabled: true)
-        }
     }
     
     // MARK: - Private Properties
@@ -212,7 +203,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate  
         questionFactory.loadData()
     }
     
-    private func updateButtonStates(buttonsEnabled: Bool) {
+    func updateButtonStates(buttonsEnabled: Bool) {
         yesButton.isEnabled = buttonsEnabled
         noButton.isEnabled = buttonsEnabled
     }

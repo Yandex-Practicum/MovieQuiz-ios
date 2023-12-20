@@ -30,10 +30,18 @@ final class MovieQuizPresenter{
     
     func yesButtonClicked(){
         didAnswer(isYes: true)
+        self.viewController?.updateButtonStates(buttonsEnabled: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.viewController?.updateButtonStates(buttonsEnabled: true)
+        }
     }
     
     func noButtonClicked(){
         didAnswer(isYes: false)
+        self.viewController?.updateButtonStates(buttonsEnabled: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.viewController?.updateButtonStates(buttonsEnabled: true)
+        }
     }
     
     private func didAnswer(isYes: Bool) {
