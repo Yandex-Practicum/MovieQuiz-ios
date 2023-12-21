@@ -8,6 +8,7 @@
 import UIKit
 
 class QuestionFactory: QuestionFactoryProtocol {
+    
     weak var delegate: QuestionFactoryDelegate?
     // массив вопросов "mock-данные"
     private let questions: [QuizQuestion] = [
@@ -31,17 +32,5 @@ class QuestionFactory: QuestionFactoryProtocol {
         
         let question = questions[safe: index]
         delegate?.didReceiveNextQuestion(question: question)
-    }
-    
-    // метод возвращающий набор вопросов наугад с конкретным количеством
-    func generateRandomQuestion(limit: Int) -> [QuizQuestion] {
-        var randomQuestions: [QuizQuestion] = []
-        let shuffledQuestions = questions.shuffled()
-        
-        for question in shuffledQuestions.prefix(limit) {
-            randomQuestions.append(question)
-        }
-        
-        return randomQuestions
     }
 }

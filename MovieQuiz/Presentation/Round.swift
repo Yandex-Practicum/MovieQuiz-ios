@@ -7,27 +7,44 @@
 
 import UIKit
 
-class Round {
-    // набор вопросов на раунд
-    private var questions: [QuizQuestion]
+class Round: QuestionFactoryDelegate {
+    
+    weak var delegate: RoundDelegate?
+    // инициализируем фабрику вопросов
+    private let questionFactory = QuestionFactory()
+    // текущий вопрос
+    private var currentQuestion: QuizQuestion?
     // индекс текущего вопроса
     private var currentQuestionIndex: Int = 0
     // количество вопросов с правильным ответом
     private var correctAnswersCount: Int = 0
-    // статус раунда
-    private var isRoundCompleate: Bool = false
+    // количество вопросов всего
+    private var questionCount = 10
     // результат раунда
     private var gameRecord: GameRecord?
 
-    init(numberOfQuestions: Int) {
-        // Получение заданного количества вопросов из фабрики
-        self.questions = QuestionFactory().generateRandomQuestion(limit: numberOfQuestions)
+    init() {
+        questionFactory.delegate = self
+        questionFactory.requestNextQuestion()
     }
 
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        if let question = question {
+            self.currentQuestion = question
+            delegate?.didReceiveNewQuestion(question)
+        } else if isRoundComplete() {
+            finishRound()
+        }
+    }
+    
+    func requestNextQuestion() {
+        questionFactory.requestNextQuestion()
+    }
+    
     // метод возвращающий текущий вопрос
     func getCurrentQuestion() -> QuizQuestion? {
-        if currentQuestionIndex < questions.count {
-            return questions[currentQuestionIndex]
+        if currentQuestionIndex < questionCount {
+            return currentQuestion
         }
         return nil
     }
@@ -39,7 +56,7 @@ class Round {
     
     // метод возвращает кол-во вопросов в раунде
     func getCountQuestions() -> Int {
-        questions.count
+        questionCount
     }
     
     // метод возвращает кол-во правильных ответов на впоросы
@@ -62,6 +79,10 @@ class Round {
         
         if isRoundComplete() {
             finishRound()
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                self?.requestNextQuestion()
+            }
         }
         
         return isCorrect
@@ -77,14 +98,14 @@ class Round {
     
     // приватный метод когда у раунда конец
     private func isRoundComplete() -> Bool {
-        return currentQuestionIndex > questions.count - 1
+        return currentQuestionIndex >= questionCount
     }
 
     // приватный метод завершающий раунд
     private func finishRound() {
-        isRoundCompleate = true
-        let newGameRecord = GameRecord(correct: correctAnswersCount, total: questions.count, date: Date())
+        let newGameRecord = GameRecord(correct: correctAnswersCount, total: questionCount, date: Date())
         gameRecord = newGameRecord
-        StatisticServiceImplementationRound(currentGame: newGameRecord)
+        StatisticServiceImplementation().store(currentRound: self)
+        delegate?.roundDidEnd(self, withResult: newGameRecord)
     }
 }

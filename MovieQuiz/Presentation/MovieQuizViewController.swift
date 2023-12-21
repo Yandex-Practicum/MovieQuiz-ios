@@ -1,7 +1,7 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
-    
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, RoundDelegate {
+
     // связь объектов из main-экрана с контроллером
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var counterLabel: UILabel!
@@ -10,9 +10,8 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     @IBOutlet weak var yesButton: UIButton!
     
     private let alertPresenter = AlertPresenter()
-    // переменная с текущим раундом
     private var currentRound: Round?
-    private var statistics: StatisticServiceImplementation?
+    private var statisticService: StatisticService?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,69 +39,67 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     
     // MARK: Обработка логики
     
-    // MARK: - QuestionFactoryDelegate
-
     // метод отвечающий за старт нового раунда квиза
     private func startNewRound() {
         setAnswerButtonsEnabled(true)
-        currentRound = Round(numberOfQuestions: 10)
-        showNextQuestion()
+        currentRound = Round()
+        currentRound?.delegate = self
+        currentRound?.requestNextQuestion()
     }
     
-    private func showNextQuestion() {
-        guard let question = currentRound?.getCurrentQuestion() else {
-            if let currentGameRecord = currentRound?.getGameRecord() {
-                StatisticServiceImplementationRound(currentGame: currentGameRecord).store()
-                statistics = StatisticServiceImplementation()
-            }
-            
-            showQuizResults()
+    // делаем если вопрос был получен
+    func didReceiveNewQuestion(_ question: QuizQuestion?) {
+        guard let question = question else {
             return
         }
-
-        let viewModel = convert(model: question)
-        show(quiz: viewModel)
+        // показываем вопрос
+        showQuestion(quiz: convert(model: question))
+        // включаем кнопки
         setAnswerButtonsEnabled(true)
     }
     
+    // делаем если раунд был закончен
+    func roundDidEnd(_ round: Round, withResult gameRecord: GameRecord) {
+        statisticService = StatisticServiceImplementation()
+        showQuizResults()
+    }
+    
+    // делаем если алерт был показан
+    func alertDidDismiss() {
+        startNewRound()
+    }
+        
     private func showQuizResults() {
-        let model1 = statistics
+        let model1 = statisticService
         let alertModel1 = convert1(model: model1)
         alertPresenter.present(alertModel: alertModel1, on: self)
     }
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
-    private func show(quiz step: QuizStepViewModel) {
+    private func showQuestion(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         counterLabel.text = step.questionNumber
         textLabel.text = step.question
         imageView.layer.borderColor = UIColor.clear.cgColor
     }
     
-    func alertDidDismiss() {
-        startNewRound()
-    }
-    
-    private func showAnswerResult(isCorrect: Bool) {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    // визуализация рамки
+    private func showQuestionAnswerResult(isCorrect: Bool) {
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            self?.imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         })
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            self?.showNextQuestion()
-        }
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         setAnswerButtonsEnabled(false)
         let isCorrect = currentRound?.checkAnswer(checkTap: false) ?? false
-        showAnswerResult(isCorrect: isCorrect)
+        showQuestionAnswerResult(isCorrect: isCorrect)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         setAnswerButtonsEnabled(false)
         let isCorrect = currentRound?.checkAnswer(checkTap: true) ?? false
-        showAnswerResult(isCorrect: isCorrect)
+        showQuestionAnswerResult(isCorrect: isCorrect)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -117,7 +114,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
         )
     }
     
-    private func convert1(model: StatisticServiceImplementation?) -> AlertModel {
+    private func convert1(model: StatisticService?) -> AlertModel {
         guard let bestGame = model?.bestGame else {
             return AlertModel(title: "Ошибка", message: "Данные не доступны!", buttonText: "ОК")
         }

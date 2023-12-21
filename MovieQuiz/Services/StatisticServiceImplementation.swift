@@ -9,41 +9,80 @@ import UIKit
 
 final class StatisticServiceImplementation: StatisticService {
     
-    var gamesRecords: [GameRecord]?
-    
-    var gamesCount: Int? {
-        gamesRecords?.count
+    private enum Keys: String {
+        case correct, total, bestGame, gamesCount
     }
     
-    var bestGame: GameRecord? {
-        gamesRecords?.max(by: { $0.correct < $1.correct })
-    }
+    private let userDefaults = UserDefaults.standard
     
-    var totalAccuracy: Double? {
-        guard let records = gamesRecords, !records.isEmpty else { return nil }
-        let totalAccuracy = records.reduce(0.0) { (acc, record) in
-            acc + (Double(record.correct) / Double(record.total))
+    private var correct: Int {
+        get {
+            userDefaults.integer(forKey: Keys.correct.rawValue)
         }
-        return (totalAccuracy / Double(records.count)) * 100.0
+        
+        set {
+            userDefaults.set(newValue, forKey: Keys.correct.rawValue)
+        }
     }
     
-    // приватный метод, извлекает записи каждой игры из хранилища
-    private func getAllGameRecords() -> [GameRecord] {
-        let keys = UserDefaults.standard.dictionaryRepresentation().keys
-        let gameRecordKeys = keys.filter { $0.starts(with: "GameRecord_") }
-        var gameRecords = [GameRecord]()
-
-        for key in gameRecordKeys {
-            if let data = UserDefaults.standard.data(forKey: key),
-               let gameRecord = try? JSONDecoder().decode(GameRecord.self, from: data) {
-                gameRecords.append(gameRecord)
+    private var total: Int {
+        get {
+            userDefaults.integer(forKey: Keys.total.rawValue)
+        }
+        
+        set {
+            userDefaults.set(newValue, forKey: Keys.total.rawValue)
+        }
+    }
+    
+    // общая точность
+    var totalAccuracy: Double {
+        Double(correct) / Double(total) * 100
+    }
+    
+    // количество раундов
+    var gamesCount: Int {
+        get {
+            userDefaults.integer(forKey: Keys.gamesCount.rawValue)
+        }
+        
+        set {
+            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
+        }
+    }
+    
+    // лучшая игра
+    var bestGame: GameRecord {
+        get {
+            guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
+                  let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
+                return .init(correct: 0, total: 0, date: Date())
             }
+            
+            return record
         }
-
-        return gameRecords
+        
+        set {
+            guard let data = try? JSONEncoder().encode(newValue) else {
+                print("Невозможно сохранить результат")
+                return
+            }
+            
+            userDefaults.set(data, forKey: Keys.bestGame.rawValue)
+        }
     }
     
-    init() {
-        self.gamesRecords = getAllGameRecords()
+    func store(currentRound: Round) {
+        guard let currentGameRecord = currentRound.getGameRecord() else {
+            return
+        }
+        
+        self.correct += currentGameRecord.correct
+        self.total += currentGameRecord.total
+        self.gamesCount += 1
+        
+        if !bestGame.comparisonCorrect(currentGame: currentGameRecord) {
+            bestGame = currentGameRecord
+        }
     }
 }

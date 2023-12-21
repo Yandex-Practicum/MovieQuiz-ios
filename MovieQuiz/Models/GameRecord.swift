@@ -17,6 +17,6 @@ struct GameRecord: Codable {
     
     // метод сразвнивает текущее значение правильных ответов с другой игрой
     func comparisonCorrect(currentGame: GameRecord) -> Bool {
-        correct > currentGame.correct
+        self.correct > currentGame.correct
     }
 }
