@@ -66,7 +66,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
         }
         let givenAnswer = isYes
         
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -149,5 +149,16 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
             currentGameResult, totalPlaysCount, bestGameInfo, averageAccuracy
         ].joined(separator: "\n")
         return resultMessage
+    }
+    
+    func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            correctAnswers += 1
+        }
+        viewController?.highLightTrueAnswer(isCorrect: isCorrect)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak self] in
+            guard let self = self else { return }
+            showNextQuestionOrResults()
+        }
     }
 }

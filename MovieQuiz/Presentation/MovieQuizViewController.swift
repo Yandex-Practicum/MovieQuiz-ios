@@ -83,22 +83,14 @@ final class MovieQuizViewController: UIViewController{
         counterLabel.text = step.questionNumber
     }
     
-    func showAnswerResult(isCorrect: Bool) {
-        if isCorrect { 
-            presenter.correctAnswers += 1
-        }
-        
+
+    
+    func highLightTrueAnswer(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak self] in
-            guard let self = self else { return }
-            presenter.showNextQuestionOrResults()
-        }
     }
-    
     func showFinalResults(){
         statisticService?.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
         let alertModel = AlertModel(
@@ -114,23 +106,6 @@ final class MovieQuizViewController: UIViewController{
         )
         alertPresenter?.show(alertModel: alertModel)
     }
-    
-//    func makeResultMessage() -> String {
-//        guard let statisticService = statisticSetvice, let bestGame = statisticSetvice?.bestGame else{
-//            assertionFailure("Error")
-//            return ""
-//        }
-//        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
-//        let totalPlaysCount = "Количество сыгранных квизов:\(statisticService.gamesCount)"
-//        let currentGameResult = "Ваш результат: \(presenter.correctAnswers)\\\(presenter.questionsAmount)"
-//        let bestGameInfo = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" +
-//        " (\(bestGame.date.dateTimeString))"
-//        let averageAccuracy = "Средняя точность: \(accuracy)%"
-//        let resultMessage = [
-//            currentGameResult, totalPlaysCount, bestGameInfo, averageAccuracy
-//        ].joined(separator: "\n")
-//        return resultMessage
-//    }
     
     func showLoadingIndicator() {
         activityIndicator.isHidden = false //
