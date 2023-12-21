@@ -25,16 +25,17 @@ final class MovieQuizViewController: UIViewController{
     
     // MARK: - Private Properties
     private var alertPresenter: AlertPresenter?
-    private var statisticSetvice: StatisticServiceImpl?
-    private let presenter = MovieQuizPresenter()
+    private var statisticService: StatisticServiceImpl?
+    private var presenter: MovieQuizPresenter!
     
     // MARK: - Lifecycle
     override final func viewDidLoad() {
         super.viewDidLoad()
         customizationUI()
+        presenter = MovieQuizPresenter(viewController:self)
         presenter.viewController = self
         alertPresenter = AlertPresenterImpl(viewController:self)
-        statisticSetvice = StatisticServiceImpl()
+        statisticService = StatisticServiceImpl()
         showLoadingIndicator()
         presenter.loadMovies()
     }
@@ -99,10 +100,10 @@ final class MovieQuizViewController: UIViewController{
     }
     
     func showFinalResults(){
-        statisticSetvice?.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
+        statisticService?.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
         let alertModel = AlertModel(
             title: "Игра окончена!",
-            message: makeResultMessage(),
+            message: presenter.makeResultMessage(),
             buttonText: "Сыграть ещё раз",
             buttonAction: {[weak self] in
                 self?.presenter.resetQuestionIndex()
@@ -114,24 +115,24 @@ final class MovieQuizViewController: UIViewController{
         alertPresenter?.show(alertModel: alertModel)
     }
     
-    func makeResultMessage() -> String {
-        guard let statisticService = statisticSetvice, let bestGame = statisticSetvice?.bestGame else{
-            assertionFailure("Error")
-            return ""
-        }
-        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
-        let totalPlaysCount = "Количество сыгранных квизов:\(statisticService.gamesCount)"
-        let currentGameResult = "Ваш результат: \(presenter.correctAnswers)\\\(presenter.questionsAmount)"
-        let bestGameInfo = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" +
-        " (\(bestGame.date.dateTimeString))"
-        let averageAccuracy = "Средняя точность: \(accuracy)%"
-        let resultMessage = [
-            currentGameResult, totalPlaysCount, bestGameInfo, averageAccuracy
-        ].joined(separator: "\n")
-        return resultMessage
-    }
+//    func makeResultMessage() -> String {
+//        guard let statisticService = statisticSetvice, let bestGame = statisticSetvice?.bestGame else{
+//            assertionFailure("Error")
+//            return ""
+//        }
+//        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+//        let totalPlaysCount = "Количество сыгранных квизов:\(statisticService.gamesCount)"
+//        let currentGameResult = "Ваш результат: \(presenter.correctAnswers)\\\(presenter.questionsAmount)"
+//        let bestGameInfo = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" +
+//        " (\(bestGame.date.dateTimeString))"
+//        let averageAccuracy = "Средняя точность: \(accuracy)%"
+//        let resultMessage = [
+//            currentGameResult, totalPlaysCount, bestGameInfo, averageAccuracy
+//        ].joined(separator: "\n")
+//        return resultMessage
+//    }
     
-    private func showLoadingIndicator() {
+    func showLoadingIndicator() {
         activityIndicator.isHidden = false //
         activityIndicator.startAnimating() // включаем анимацию
     }

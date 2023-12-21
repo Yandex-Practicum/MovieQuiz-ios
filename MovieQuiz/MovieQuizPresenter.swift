@@ -4,17 +4,25 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate{
     
-    private var alertPresenter: AlertPresenter?
+    
     var correctAnswers = 0
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion?
-    private lazy var questionFactory: QuestionFactoryProtocol = {
-        let factory = QuestionFactory(moviesLoader:  MoviesLoader(), delegate: self)
-        factory.delegate = self
-        return factory
-    }()
+    private var alertPresenter: AlertPresenter?
+    private let statisticService: StatisticService!
+    private var questionFactory: QuestionFactoryProtocol?
     weak var viewController: MovieQuizViewController?
+    
+    init(viewController: MovieQuizViewController) {
+        self.viewController = viewController
+        
+        statisticService = StatisticServiceImpl()
+        
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+    }
     
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -82,18 +90,18 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
             viewController?.activityIndicator.isHidden = false
             viewController?.activityIndicator.startAnimating()
             self.switchToNextQuestion()
-            self.questionFactory.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
             viewController?.imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
   
     func loadMovies(){
-        questionFactory.loadData()
+        questionFactory?.loadData()
     }
     
     func didLoadDataFromServer() {
         viewController?.activityIndicator.isHidden = true
-        questionFactory.requestNextQuestion()
+        questionFactory?.requestNextQuestion()
     }
     
     func didFailToLoadData(with error: Error) {
@@ -115,7 +123,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
                 resetQuestionIndex()
                 correctAnswers = 0
                 
-                questionFactory.requestNextQuestion()
+                questionFactory?.requestNextQuestion()
             },
             accessibilityIdentifier: "errorAlert"
         )
@@ -123,6 +131,23 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     }
     
     func RequestToShowNextQuestion(){
-        questionFactory.requestNextQuestion()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func makeResultMessage() -> String {
+        guard let statisticService = statisticService, let bestGame = statisticService.bestGame else{
+            assertionFailure("Error")
+            return ""
+        }
+        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+        let totalPlaysCount = "Количество сыгранных квизов:\(statisticService.gamesCount)"
+        let currentGameResult = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
+        let bestGameInfo = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" +
+        " (\(bestGame.date.dateTimeString))"
+        let averageAccuracy = "Средняя точность: \(accuracy)%"
+        let resultMessage = [
+            currentGameResult, totalPlaysCount, bestGameInfo, averageAccuracy
+        ].joined(separator: "\n")
+        return resultMessage
     }
 }
