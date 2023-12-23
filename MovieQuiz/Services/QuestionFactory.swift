@@ -100,9 +100,7 @@ class QuestionFactory : QuestionFactoryProtocol{
             let text = "Рейтинг этого фильма больше чем \(randomRating)?"
             let correctAnswer = rating > Float(randomRating)
             
-            let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
+            let question = QuizQuestion(image: imageData,text: text,correctAnswer: correctAnswer)
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }

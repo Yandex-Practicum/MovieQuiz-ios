@@ -11,7 +11,7 @@ import UIKit
 
 
 class AlertPresenter: AlertPresenterProtocol{
-  
+    
     weak var delegate : AlertPresenterDelegate?
     
     private var alertModel : AlertModel?
@@ -21,19 +21,19 @@ class AlertPresenter: AlertPresenterProtocol{
     }
     
     func setDelegate(_ delegate: AlertPresenterDelegate) {
-            self.delegate = delegate
-        }
+        self.delegate = delegate
+    }
     
-   private func setAlertModel(alertModel : AlertModel){
+    private func setAlertModel(alertModel : AlertModel){
         self.alertModel?.text = alertModel.text
         self.alertModel?.title = alertModel.title
         self.alertModel?.buttonText = alertModel.buttonText
-       self.alertModel?.completion = {
-       }
+        self.alertModel?.completion = {
+        }
     }
-
+    
     func showAlert(alertModel : AlertModel) {
-
+        
         let alert = UIAlertController(
             title: alertModel.title,
             message: alertModel.text,
@@ -43,8 +43,8 @@ class AlertPresenter: AlertPresenterProtocol{
             alertModel.completion()
         }
         alert.addAction(action)
-         
-    delegate?.willShowAlert(alert: alert)
+        
+        delegate?.willShowAlert(alert: alert)
     }
 }
 

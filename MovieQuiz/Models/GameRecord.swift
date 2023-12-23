@@ -15,10 +15,10 @@ struct GameRecord: Codable, Comparable {
     
     static func <(lhs: GameRecord, rhs: GameRecord) -> Bool {
         return lhs.correctAnswers < rhs.correctAnswers
-        }
+    }
     
     static func >(lhs: GameRecord, rhs: GameRecord) -> Bool {
         return lhs.correctAnswers > rhs.correctAnswers
-        }
+    }
     
 }

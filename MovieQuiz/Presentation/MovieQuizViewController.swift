@@ -35,7 +35,7 @@ final class MovieQuizViewController: UIViewController {
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
         statisticService = StatisticServiceImplementation()
-    
+        
         showLoadingIndicator()
         questionFactory?.loadData()
         
@@ -50,7 +50,6 @@ final class MovieQuizViewController: UIViewController {
     //MARK: - Sprint 3-5 Functions
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        print("\(currentQuestionIndex) + 😀")
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -65,7 +64,7 @@ final class MovieQuizViewController: UIViewController {
     private func presentNextQuizStepQuestion(){
         UIView.animate(withDuration: 1){ [weak self] in
             self?.questionFactory?.requestNextQuestion()
-
+            
         }
     }
     private func handleEnableAnswersButtons(){
