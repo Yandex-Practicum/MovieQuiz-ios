@@ -149,7 +149,6 @@
 				87432E972B151FCD0084A5B9 /* AlertModel.swift */,
 				87432E9B2B1523A00084A5B9 /* BestGame.swift */,
 				87EFD24C2B25108F00735931 /* MostPopularMovies.swift */,
-				87EFD2892B3247FD00735931 /* MovieQuizPresenter.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -175,6 +174,7 @@
 		8F4738322848DE2A005DF65E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				87EFD2892B3247FD00735931 /* MovieQuizPresenter.swift */,
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				87432E992B1520EC0084A5B9 /* AlertPresenter.swift */,

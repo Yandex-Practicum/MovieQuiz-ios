@@ -1,14 +1,12 @@
 
-import Foundation
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate{
     
-    
+    var currentQuestion: QuizQuestion?
     var correctAnswers = 0
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
-    var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
@@ -23,7 +21,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
     }
-    
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -47,16 +44,16 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     func yesButtonClicked(){
         didAnswer(isYes: true)
         self.viewController?.updateButtonStates(buttonsEnabled: false)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.viewController?.updateButtonStates(buttonsEnabled: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.viewController?.updateButtonStates(buttonsEnabled: true)
         }
     }
     
     func noButtonClicked(){
         didAnswer(isYes: false)
         self.viewController?.updateButtonStates(buttonsEnabled: false)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.viewController?.updateButtonStates(buttonsEnabled: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.viewController?.updateButtonStates(buttonsEnabled: true)
         }
     }
     
@@ -104,9 +101,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
         showNetworkError(message: error.localizedDescription)
     }
     
-    func didFailNextQuestion(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
-    }
     
     private func showNetworkError(message: String) {
         let model = AlertModel(
@@ -137,8 +131,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
         }
         let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
         let totalPlaysCount = "Количество сыгранных квизов:\(statisticService.gamesCount)"
-        let currentGameResult = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
-        let bestGameInfo = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" +
+        let currentGameResult = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+        let bestGameInfo = "Рекорд: \(bestGame.correct)/\(bestGame.total)" +
         " (\(bestGame.date.dateTimeString))"
         let averageAccuracy = "Средняя точность: \(accuracy)%"
         let resultMessage = [

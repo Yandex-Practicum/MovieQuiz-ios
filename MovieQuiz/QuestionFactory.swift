@@ -44,7 +44,7 @@ class QuestionFactory:QuestionFactoryProtocol {
             } catch {
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
-                    self.delegate?.didFailNextQuestion(with: error)
+                    self.delegate?.didFailToLoadData(with: error)
                 }
             }
         }

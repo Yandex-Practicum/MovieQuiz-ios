@@ -66,9 +66,6 @@ final class MovieQuizUITests: XCTestCase {
             sleep(3)
         }
         let alert = app.alerts["AlertResult"]
-//        XCTAssertTrue(alert.waitForExistence(timeout: 5))
-//           XCTAssertTrue(alert.staticTexts.element.label.contains("Игра окончена!"))
-//           XCTAssertTrue(alert.buttons["Сыграть еще раз"].exists)
         XCTAssertTrue(alert.exists)
         XCTAssertTrue(alert.label == "Игра окончена!")
         XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть ещё раз")

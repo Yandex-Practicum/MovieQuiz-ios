@@ -124,7 +124,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func showActivityIndicator() {
-        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
     }
     
     func changeBetweenQuestions() {
