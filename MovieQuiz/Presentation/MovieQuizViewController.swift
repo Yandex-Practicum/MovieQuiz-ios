@@ -84,14 +84,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         counterLabel.text = step.questionNumber
     }
     
-
-    
     func highLightTrueAnswer(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
+    
     func showFinalResults(){
         statisticService?.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
         let alertModel = AlertModel(
