@@ -1,13 +1,6 @@
 import UIKit
 
 
-private struct ViewModel {
-  let image: UIImage
-  let question: String
-  let questionNumber: String
-}
-
-
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
  
     @IBAction private func YesButtonClicked(_ sender: UIButton) {
@@ -19,12 +12,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var noButton: UIButton!
-    
     @IBAction private func noButtonClicked(_ sender: Any) {
         
        guard let currentQuestion = currentQuestion else {
@@ -39,7 +32,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var statisticService: StatisticServiceProtocol?
-    private var questionFactory: QuestionFactoryProtocol?
+    private var questionFactory: QuestionFactory?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: ResultAlertPresenter?
     
@@ -49,11 +42,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory()
-        questionFactory?.delegate = self
-        questionFactory?.requestNextQuestion()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+     //   questionFactory?.delegate = self
+     //   questionFactory?.requestNextQuestion()
         statisticService = StatisticService()
         alertPresenter = ResultAlertPresenter(viewController: self)
+        showLoadingIndicator()
+        questionFactory?.loadData()
         
     }
     
@@ -69,14 +64,44 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     //MARK: - Private functions
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        activityIndicator.isHidden = true
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        alertPresenter?.show(alertModel: model)
+    }
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep =
-        QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        return questionStep
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -145,7 +170,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     title: "Этот раунд окончен!",
                     message: """
                             Ваш результат: \(correctAnswers)/\(questionsAmount)
-                            Колличество сыгранных квизов: \(statService.gamesCount)
+                            Количество сыгранных квизов: \(statService.gamesCount)
                             Рекорд: \(bestGame.correct)/\(bestGame.total) \(bestGame.date.dateTimeString)
                             Средняя точность: \(String(format: "%.2f", statService.totalAccuracy))%
                             """,
