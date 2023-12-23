@@ -26,6 +26,7 @@ class QuestionFactory:QuestionFactoryProtocol {
             }
         }
     }
+    
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self, let movie = self.movies.randomElement() else { return }
@@ -43,7 +44,7 @@ class QuestionFactory:QuestionFactoryProtocol {
             } catch {
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
-                    self.delegate?.didFailNextQuestion(with: error)
+                    self.delegate?.didFailToLoadData(with: error)
                 }
             }
         }

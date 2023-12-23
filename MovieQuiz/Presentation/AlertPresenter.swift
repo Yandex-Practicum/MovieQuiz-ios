@@ -19,7 +19,7 @@ extension AlertPresenterImpl: AlertPresenter{
             title: alertModel.title,
             message: alertModel.message,
             preferredStyle: .alert)
-        
+       alert.view.accessibilityIdentifier = alertModel.accessibilityIdentifier
         let action = UIAlertAction(title: alertModel.buttonText, style: .default) { [weak self]_ in
             guard self != nil else { return }
             
