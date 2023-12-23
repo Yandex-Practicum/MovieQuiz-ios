@@ -38,7 +38,6 @@ final class MovieQuizViewController: UIViewController {
     
         showLoadingIndicator()
         questionFactory?.loadData()
-        //presentNextQuizStepQuestion()
         
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
@@ -51,10 +50,12 @@ final class MovieQuizViewController: UIViewController {
     //MARK: - Sprint 3-5 Functions
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        print("\(currentQuestionIndex) + 😀")
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        
     }
     private func show(quizStepViewModel: QuizStepViewModel) {
         previewImageView.image = quizStepViewModel.image
@@ -64,7 +65,7 @@ final class MovieQuizViewController: UIViewController {
     private func presentNextQuizStepQuestion(){
         UIView.animate(withDuration: 1){ [weak self] in
             self?.questionFactory?.requestNextQuestion()
-            self?.currentQuestionIndex += 1
+
         }
     }
     private func handleEnableAnswersButtons(){
@@ -123,7 +124,8 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex >= (questionsAmount - 1) {
+        self.currentQuestionIndex += 1
+        if currentQuestionIndex >= (questionsAmount) {
             statisticService?.store(correct: correctAnswers, total: questionsAmount)
             showQuizResults()
         } else {
@@ -137,6 +139,7 @@ final class MovieQuizViewController: UIViewController {
         activityIndicator.isHidden = true
     }
     private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     private func showNetworkError(message: String) {
@@ -148,7 +151,6 @@ final class MovieQuizViewController: UIViewController {
             
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
             self.questionFactory?.requestNextQuestion()
         }
         alertPresenter?.showAlert(alertModel: alertModel )
@@ -179,7 +181,7 @@ final class MovieQuizViewController: UIViewController {
 
 extension MovieQuizViewController : QuestionFactoryDelegate {
     func didLoadDataFromServer() {
-        activityIndicator.isHidden = true // скрываем индикатор загрузки
+        activityIndicator.isHidden = true
         questionFactory?.requestNextQuestion()
     }
     

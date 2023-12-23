@@ -118,15 +118,17 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KJI-T4-sdv" secondAttribute="trailing" constant="20" id="0n0-44-mhM"/>
+                            <constraint firstItem="2lY-W4-Nb9" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="14S-NV-eB0"/>
                             <constraint firstItem="2lY-W4-Nb9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="F6W-0h-SWU"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="KJI-T4-sdv" secondAttribute="bottom" id="PO4-WO-C7c"/>
                             <constraint firstItem="2lY-W4-Nb9" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="b6V-U9-j5j"/>
+                            <constraint firstItem="2lY-W4-Nb9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jSn-45-TS0"/>
                             <constraint firstItem="KJI-T4-sdv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="veZ-Jh-rx8"/>
                             <constraint firstItem="KJI-T4-sdv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="xRh-rW-odk"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="activityIndicator" destination="2lY-W4-Nb9" id="GdM-bM-72a"/>
+                        <outlet property="activityIndicator" destination="2lY-W4-Nb9" id="g3Q-0z-cpX"/>
                         <outlet property="counterLabel" destination="0ts-7L-Vc5" id="7cZ-ch-USu"/>
                         <outlet property="noAnswerButton" destination="iRy-jm-yuD" id="DQJ-s8-sui"/>
                         <outlet property="previewImageView" destination="lj6-qy-80y" id="Aw7-Ds-D1U"/>
