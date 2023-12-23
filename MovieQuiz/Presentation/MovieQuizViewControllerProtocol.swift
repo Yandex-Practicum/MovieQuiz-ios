@@ -6,4 +6,8 @@ protocol MovieQuizViewControllerProtocol: AnyObject{
     func highLightTrueAnswer(isCorrect: Bool)
     func showLoadingIndicator()
     func hideLoadingIndicator()
+    func updateButtonStates(buttonsEnabled: Bool)
+    func showFinalResults()
+    func showActivityIndicator()
+    func changeBetweenQuestions ()
 }

@@ -4,6 +4,22 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
+    func updateButtonStates(buttonsEnabled: Bool) {
+        
+    }
+    
+    func showFinalResults() {
+        
+    }
+    
+    func showActivityIndicator() {
+    
+    }
+    
+    func changeBetweenQuestions() {
+        
+    }
+    
     
     func show(quiz step: MovieQuiz.QuizStepViewModel) {
         

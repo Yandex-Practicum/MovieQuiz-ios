@@ -105,6 +105,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             },
             accessibilityIdentifier: "AlertResult"
         )
+        imageView.layer.borderColor = UIColor.clear.cgColor
         alertPresenter?.show(alertModel: alertModel)
     }
     
@@ -121,6 +122,17 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     func updateButtonStates(buttonsEnabled: Bool) {
         yesButton.isEnabled = buttonsEnabled
         noButton.isEnabled = buttonsEnabled
+    }
+    
+    func showActivityIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    func changeBetweenQuestions() {
+        activityIndicator.color = UIColor.white
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        imageView.layer.borderColor = UIColor.clear.cgColor
     }
 }
 

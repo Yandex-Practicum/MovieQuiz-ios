@@ -12,9 +12,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     private var alertPresenter: AlertPresenter?
     private let statisticService: StatisticService!
     private var questionFactory: QuestionFactoryProtocol?
-    weak var viewController: MovieQuizViewController?
+    weak var viewController: MovieQuizViewControllerProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         statisticService = StatisticServiceImpl()
@@ -84,14 +84,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     func showNextQuestionOrResults() {
         if self.isLastQuestion() {
             self.viewController?.showFinalResults()
-            viewController?.imageView.layer.borderColor = UIColor.clear.cgColor
         } else {
-            viewController?.activityIndicator.color = UIColor.white
-            viewController?.activityIndicator.isHidden = false
-            viewController?.activityIndicator.startAnimating()
+            viewController?.changeBetweenQuestions()
             self.switchToNextQuestion()
             self.questionFactory?.requestNextQuestion()
-            viewController?.imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
   
@@ -100,7 +96,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     }
     
     func didLoadDataFromServer() {
-        viewController?.activityIndicator.isHidden = true
+        viewController?.showActivityIndicator()
         questionFactory?.requestNextQuestion()
     }
     
