@@ -31,6 +31,15 @@ final class MovieQuizPresenter {
         viewController?.showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
     }
     
+    func didFinishReceiveQuestion(question: QuizQuestion?) {
+        guard let question else { return }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
         

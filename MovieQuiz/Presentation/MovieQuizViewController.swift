@@ -115,7 +115,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         }
     }
     
-    private func show(quiz step: QuizStepViewModel) {
+    func show(quiz step: QuizStepViewModel) {
         
         UIView.transition(with: imageView,
                           duration: 0.25,
