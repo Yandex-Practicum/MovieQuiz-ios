@@ -6,7 +6,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
     @IBOutlet private weak var counterLabel: UILabel!
     
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     
     @IBOutlet private weak var textLabel: UILabel!
     
@@ -16,11 +16,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var correctAnswers = 0
+//    var correctAnswers = 0
     
     private lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader())
     
-    private var currentQuestion: QuizQuestion?
+//    private var currentQuestion: QuizQuestion?
     
     private var alertPresenter = AlertPresenter()
     
@@ -57,13 +57,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     //MARK: - Описание метдов Делегата
     
     func didFinishReceiveQuestion(question: QuizQuestion?) {
-        guard let question else { return }
-        
-        currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
+        presenter.didFinishReceiveQuestion(question: question)
     }
     
     func didLoadDataFromServer() {
@@ -94,7 +88,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         let networkConnectionAlert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
             guard let selfAction = self else {return}
             
-            selfAction.correctAnswers = 0
+//            selfAction.correctAnswers = 0
             selfAction.presenter.resetQuestionIndex()
             selfAction.questionFactory.loadData()
             
@@ -136,68 +130,68 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         isButtonsBlocked(state: true)
         imageView.layer.borderWidth = 8
         
-        if isCorrect {
-            correctAnswers += 1
-            imageView.layer.borderColor = UIColor.ypgreen.cgColor
-        } else {
-            imageView.layer.borderColor = UIColor.ypred.cgColor
-        }
+        presenter.didAnswerCorrect(isCorrect: isCorrect)
+//        if isCorrect {
+//            correctAnswers += 1
+//            imageView.layer.borderColor = UIColor.ypgreen.cgColor
+//        } else {
+//            imageView.layer.borderColor = UIColor.ypred.cgColor
+//        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {[weak self] in
             guard let dispatch = self else { return }
-            dispatch.showNextQuestionOrResult()
+            dispatch.presenter.questionFactory = dispatch.questionFactory
+            dispatch.presenter.showNextQuestionOrResult()
         }
     }
     
-    private func showNextQuestionOrResult() {
-        if presenter.isLastQuestion() {
-            
-            statisticImplementation.store(correct: correctAnswers, total: presenter.questionAmount)
-            
-            //Определяем формат даты в виде 03.06.22 03:22
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd.MM.YY HH:mm"
-            let formattedDate = dateFormatter.string(from: statisticImplementation.bestGame.date)
-            
-            //Данные для модели Алерта
-            let alerTitle = "Этот раунд окончен!"
-            let alertMessage = """
-            Ваш результат: \(correctAnswers)/\(presenter.questionAmount)
-            Количество сыгранных квизов: \(statisticImplementation.gamesCount)
-            Рекорд: \(statisticImplementation.bestGame.correct)/\(statisticImplementation.bestGame.total) (\(formattedDate))
-            Средняя точность: \(String(format: "%.2f", statisticImplementation.totalAccurancy * 100))%
-            """
-            let alertButtonText = "Сыграть ещё раз"
-            
-            let alertModel = AlertModel(title: alerTitle, message: alertMessage, buttonText: alertButtonText) { [ weak self ] in
-                
-                if let selfAction = self {
-  
-                    selfAction.correctAnswers = 0
-                    selfAction.presenter.resetQuestionIndex()
-                    selfAction.questionFactory.requestNextQuestion()
-                }
-            }
-            
-            alertPresenter.showAlert(quiz: alertModel, controller: self)
-            
-        } else {
-            presenter.switchQuestionIndex()
-            questionFactory.requestNextQuestion()
-        }
-    }
+//    private func showNextQuestionOrResult() {
+//        if presenter.isLastQuestion() {
+//
+//            statisticImplementation.store(correct: correctAnswers, total: presenter.questionAmount)
+//
+//            //Определяем формат даты в виде 03.06.22 03:22
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "dd.MM.YY HH:mm"
+//            let formattedDate = dateFormatter.string(from: statisticImplementation.bestGame.date)
+//
+//            //Данные для модели Алерта
+//            let alerTitle = "Этот раунд окончен!"
+//            let alertMessage = """
+//            Ваш результат: \(correctAnswers)/\(presenter.questionAmount)
+//            Количество сыгранных квизов: \(statisticImplementation.gamesCount)
+//            Рекорд: \(statisticImplementation.bestGame.correct)/\(statisticImplementation.bestGame.total) (\(formattedDate))
+//            Средняя точность: \(String(format: "%.2f", statisticImplementation.totalAccurancy * 100))%
+//            """
+//            let alertButtonText = "Сыграть ещё раз"
+//
+//            let alertModel = AlertModel(title: alerTitle, message: alertMessage, buttonText: alertButtonText) { [ weak self ] in
+//
+//                if let selfAction = self {
+//
+//                    selfAction.correctAnswers = 0
+//                    selfAction.presenter.resetQuestionIndex()
+//                    selfAction.questionFactory.requestNextQuestion()
+//                }
+//            }
+//
+//            alertPresenter.showAlert(quiz: alertModel, controller: self)
+//
+//        } else {
+//            presenter.switchQuestionIndex()
+//            questionFactory.requestNextQuestion()
+//        }
+//    }
     
     // MARK: - ActionButtons
     
     //Определяем действие кнопки "Да"
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        presenter.currentQuestion = currentQuestion
         presenter.yesButtonClicked()
     }
     
     //Определяем действие кнопки "Нет"
     @IBAction private func noButtonClicked(_ sender: Any) {
-        presenter.currentQuestion = currentQuestion
         presenter.noButtonClicked()
     }
 }
