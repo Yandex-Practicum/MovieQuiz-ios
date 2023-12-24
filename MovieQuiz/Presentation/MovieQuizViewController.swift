@@ -1,6 +1,7 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePrototocol {
+final class MovieQuizViewController: UIViewController {
+    
 
     // MARK: - Lifecycle
     
@@ -18,7 +19,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
 //    var correctAnswers = 0
     
-    private lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader())
+//    private lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader())
     
 //    private var currentQuestion: QuizQuestion?
     
@@ -39,14 +40,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         super.viewDidLoad()
         
         //инъекция зависимости для определения делегата
-        questionFactory.delegate = self
+
         presenter.viewController = self
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
         
         showLoadingIndictor()
-        questionFactory.loadData()
+        presenter.questionFactory.loadData()
         
         //Загружаем необходимый вид статус бара
         UIView.animate(withDuration: 0.3) {
@@ -54,48 +55,48 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         }
     }
     
-    //MARK: - Описание метдов Делегата
-    
-    func didFinishReceiveQuestion(question: QuizQuestion?) {
-        presenter.didFinishReceiveQuestion(question: question)
-    }
-    
-    func didLoadDataFromServer() {
-        hideLoadingIndicator()
-        questionFactory.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
-    }
+//    //MARK: - Описание метдов Делегата
+//    
+//    func didFinishReceiveQuestion(question: QuizQuestion?) {
+//        presenter.didFinishReceiveQuestion(question: question)
+//    }
+//    
+//    func didLoadDataFromServer() {
+//        hideLoadingIndicator()
+//        presenter.questionFactory.requestNextQuestion()
+//    }
+//    
+//    func didFailToLoadData(with error: Error) {
+//        showNetworkError(message: error.localizedDescription)
+//    }
     
     
     //MARK: - Работа с индикатором состояни загрузки
     
-    private func showLoadingIndictor(){
+    func showLoadingIndictor(){
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
-    private func hideLoadingIndicator(){
+    func hideLoadingIndicator(){
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
     
-    private func showNetworkError (message: String){
-        hideLoadingIndicator()
-        
-        let networkConnectionAlert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
-            guard let selfAction = self else {return}
-            
-//            selfAction.correctAnswers = 0
-            selfAction.presenter.resetQuestionIndex()
-            selfAction.questionFactory.loadData()
-            
-        }
-        alertPresenter.showAlert(quiz: networkConnectionAlert, controller: self)
-    }
-    
+//    private func showNetworkError (message: String){
+//        hideLoadingIndicator()
+//        
+//        let networkConnectionAlert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
+//            guard let selfAction = self else {return}
+//            
+////            selfAction.correctAnswers = 0
+//            selfAction.presenter.restartGame()
+//            selfAction.presenter.questionFactory.loadData()
+//            
+//        }
+//        alertPresenter.showAlert(quiz: networkConnectionAlert, controller: self)
+//    }
+//    
  
     //MARK: - Основные методы приложения
     
@@ -140,7 +141,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {[weak self] in
             guard let dispatch = self else { return }
-            dispatch.presenter.questionFactory = dispatch.questionFactory
+//            dispatch.presenter.questionFactory = dispatch.questionFactory
             dispatch.presenter.showNextQuestionOrResult()
         }
     }

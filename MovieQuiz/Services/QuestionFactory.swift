@@ -13,8 +13,9 @@ class QuestionFactory: QuestionFactoryProtocol {
     var movieLoader: MoviesLoaderProtocol
     weak var delegate: QuestionFactoryDelegatePrototocol?
 
-    init(movieLoader: MoviesLoaderProtocol) {
+    init(movieLoader: MoviesLoaderProtocol, delegate: QuestionFactoryDelegatePrototocol) {
         self.movieLoader = movieLoader
+        self.delegate = delegate
     }
     
     func loadData() {

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class MovieQuizPresenter {
+final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
     
     var correctAnswers = 0
     var questionAmount = 10
@@ -18,8 +18,12 @@ final class MovieQuizPresenter {
     weak var viewController: MovieQuizViewController?
     private var statisticImplementation: StatisticServiceProtocol = StatisticServiceImplementation()
     private var alertPresenter = AlertPresenter()
-    lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader())
+    private var questionFactory:QuestionFactoryProtocol?
     
+    init(viewController: MovieQuizViewController) {
+        self.viewController = viewController
+        questionFactory = QuestionFactory(movieLoader: MovieLoader(), delegate: self)
+    }
     
     func yesButtonClicked() {
         didAnswer(isYes: true)
@@ -78,8 +82,7 @@ final class MovieQuizPresenter {
                 
                 if let selfAction = self {
   
-                    selfAction.correctAnswers = 0
-                    selfAction.resetQuestionIndex()
+                    selfAction.restartGame()
                     selfAction.questionFactory.requestNextQuestion()
                 }
             }
@@ -96,7 +99,7 @@ final class MovieQuizPresenter {
         currentQuestionIndex == questionAmount - 1
     }
     
-    func resetQuestionIndex () {
+    func restartGame () {
         correctAnswers = 0
         currentQuestionIndex = 0
     }
@@ -112,6 +115,38 @@ final class MovieQuizPresenter {
         } else {
             viewController?.imageView.layer.borderColor = UIColor.ypred.cgColor
         }
+    }
+    
+    //MARK: - Описание метдов Делегата
+    
+    func didFinishReceiveQuestion(question: QuizQuestion?) {
+        didFinishReceiveQuestion(question: question)
+    }
+    
+    func didLoadDataFromServer() {
+        guard let viewController else { return }
+        viewController.hideLoadingIndicator()
+        questionFactory.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
+    private func showNetworkError (message: String){
+        guard let viewController else { return }
+        viewController.hideLoadingIndicator()
+        
+        let networkConnectionAlert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
+            guard let selfAction = self else {return}
+            
+//            selfAction.correctAnswers = 0
+            selfAction.restartGame()
+            selfAction.questionFactory.loadData()
+            
+        }
+        
+        alertPresenter.showAlert(quiz: networkConnectionAlert, controller: viewController)
     }
     
 }
