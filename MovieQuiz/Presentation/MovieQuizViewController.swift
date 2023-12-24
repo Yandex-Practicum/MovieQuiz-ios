@@ -16,11 +16,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-//    private var currentQuestionIndex = 0
-    
     var correctAnswers = 0
-    
-//    private var questionAmount: Int = 10
     
     private lazy var questionFactory = QuestionFactory(movieLoader: MovieLoader())
     
@@ -44,6 +40,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         
         //инъекция зависимости для определения делегата
         questionFactory.delegate = self
+        presenter.viewController = self
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
@@ -134,7 +131,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
         })
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         
         isButtonsBlocked(state: true)
         imageView.layer.borderWidth = 8
@@ -194,15 +191,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegatePr
     
     //Определяем действие кнопки "Да"
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        guard let currentQuestion else { return }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
     //Определяем действие кнопки "Нет"
     @IBAction private func noButtonClicked(_ sender: Any) {
-        guard let currentQuestion else { return }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
 }
