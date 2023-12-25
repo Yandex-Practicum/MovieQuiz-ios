@@ -10,12 +10,11 @@ import UIKit
 
 final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
     
-    var correctAnswers = 0
-    var questionAmount = 10
+    private var correctAnswers = 0
+    private var questionAmount = 10
     private var currentQuestionIndex = 0
-    
-    var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
+    private var currentQuestion: QuizQuestion?
+    private weak var viewController: MovieQuizViewController?
     private var statisticImplementation: StatisticServiceProtocol = StatisticServiceImplementation()
     private var alertPresenter = AlertPresenter()
     private var questionFactory:QuestionFactoryProtocol?
@@ -23,7 +22,11 @@ final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
         questionFactory = QuestionFactory(movieLoader: MovieLoader(), delegate: self)
+        viewController.showLoadingIndictor()
+        questionFactory?.loadData()
     }
+    
+    // MARK: - Action Buttons
     
     func yesButtonClicked() {
         didAnswer(isYes: true)
@@ -36,7 +39,32 @@ final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion else { return }
         let givenAnswer = isYes
-        viewController?.showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
+    }
+    
+    
+    //MARK: - Delegate Functions
+    
+    func didLoadDataFromServer() {
+        guard let viewController else { return }
+        viewController.hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
+    private func showNetworkError (message: String){
+        guard let viewController else { return }
+        viewController.hideLoadingIndicator()
+        
+        let networkConnectionAlert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
+            guard let selfAction = self else {return}
+            selfAction.restartGame()
+            selfAction.questionFactory?.loadData()
+        }
+        alertPresenter.showAlert(quiz: networkConnectionAlert, controller: viewController)
     }
     
     func didFinishReceiveQuestion(question: QuizQuestion?) {
@@ -49,7 +77,9 @@ final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
         }
     }
     
-    func convert(model: QuizQuestion) -> QuizStepViewModel {
+    //MARK: - Private Methods
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
         
         let image = UIImage(data: model.image) ?? UIImage()
         let questionText: String = model.text
@@ -58,7 +88,7 @@ final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
         return QuizStepViewModel(image: image, question: questionText, questionNumber: questionNumber)
     }
     
-    func showNextQuestionOrResult() {
+    private func showNextQuestionOrResult() {
         if self.isLastQuestion() {
             
             statisticImplementation.store(correct: correctAnswers, total: questionAmount)
@@ -79,11 +109,8 @@ final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
             let alertButtonText = "Сыграть ещё раз"
             
             let alertModel = AlertModel(title: alerTitle, message: alertMessage, buttonText: alertButtonText) { [ weak self ] in
-                
                 if let selfAction = self {
-  
                     selfAction.restartGame()
-                    selfAction.questionFactory.requestNextQuestion()
                 }
             }
             guard let viewController = viewController else { return }
@@ -91,24 +118,25 @@ final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
             
         } else {
             self.switchQuestionIndex()
-            questionFactory.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
         }
     }
     
-    func isLastQuestion () -> Bool {
+    private func isLastQuestion () -> Bool {
         currentQuestionIndex == questionAmount - 1
     }
     
-    func restartGame () {
+    private func restartGame () {
         correctAnswers = 0
         currentQuestionIndex = 0
+        questionFactory?.requestNextQuestion()
     }
     
-    func switchQuestionIndex () {
+    private func switchQuestionIndex () {
         currentQuestionIndex += 1
     }
     
-    func didAnswerCorrect(isCorrect: Bool) {
+    private func didAnswerCorrect(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
             viewController?.imageView.layer.borderColor = UIColor.ypgreen.cgColor
@@ -117,36 +145,15 @@ final class MovieQuizPresenter:QuestionFactoryDelegatePrototocol {
         }
     }
     
-    //MARK: - Описание метдов Делегата
-    
-    func didFinishReceiveQuestion(question: QuizQuestion?) {
-        didFinishReceiveQuestion(question: question)
-    }
-    
-    func didLoadDataFromServer() {
-        guard let viewController else { return }
-        viewController.hideLoadingIndicator()
-        questionFactory.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
-    }
-    
-    private func showNetworkError (message: String){
-        guard let viewController else { return }
-        viewController.hideLoadingIndicator()
+    private func showAnswerResult(isCorrect: Bool) {
+        viewController?.isButtonsBlocked(state: true)
+        viewController?.imageView.layer.borderWidth = 8
+        didAnswerCorrect(isCorrect: isCorrect)
         
-        let networkConnectionAlert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
-            guard let selfAction = self else {return}
-            
-//            selfAction.correctAnswers = 0
-            selfAction.restartGame()
-            selfAction.questionFactory.loadData()
-            
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {[weak self] in
+            guard let dispatch = self else { return }
+            dispatch.showNextQuestionOrResult()
         }
-        
-        alertPresenter.showAlert(quiz: networkConnectionAlert, controller: viewController)
     }
-    
+
 }
