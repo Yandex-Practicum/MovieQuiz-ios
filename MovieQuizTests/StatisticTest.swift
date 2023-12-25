@@ -8,17 +8,20 @@
 import XCTest
 @testable import MovieQuiz
 
-final class StatisticTest:XCTestCase {
+
+extension StatisticServiceImplementation {
+    func getCurrentStatistic() -> Double {
+        return totalAccurancy * Double(gamesCount)
+    }
+}
+final class StatisticTest: XCTestCase {
    
     func testTotalStatisticCount() throws {
         let stubStatisticImplimintation = StatisticServiceImplementation()
-        var count = 5
+        let count = 5
         let amount = 10
-        
+        let accurancy = stubStatisticImplimintation.getCurrentStatistic()
         stubStatisticImplimintation.store(correct: count, total: amount)
-        var accurancy = stubStatisticImplimintation.totalAccurancy
-        count = 3
-        stubStatisticImplimintation.store(correct: count, total: amount)
-        XCTAssertEqual(stubStatisticImplimintation.totalAccurancy, ((accurancy + 0.3) / Double(stubStatisticImplimintation.gamesCount)))
+        XCTAssertEqual(stubStatisticImplimintation.totalAccurancy, (accurancy + 0.5) / Double(stubStatisticImplimintation.gamesCount))
     }
 }
