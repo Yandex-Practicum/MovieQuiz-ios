@@ -70,13 +70,29 @@ final class MovieQuizUITests: XCTestCase {
             let questionIndex = app.staticTexts["index"].label
             XCTAssertEqual(questionIndex, "\(index)/10")
             app.buttons["Yes"].tap()
-            sleep(2)
+            sleep(3)
         } while index < 10
         let alert = app.alerts["alertId"]
         XCTAssertTrue(alert.waitForExistence(timeout: 3))
         XCTAssertEqual(alert.label, "Этот раунд окончен!")
         XCTAssertEqual(alert.buttons.firstMatch.label, "Сыграть ещё раз")
-        
+    }
+    
+    func testAlertButtonTest() {
+        var index = 0
+        repeat{
+            index += 1
+            let questionIndex = app.staticTexts["index"].label
+            XCTAssertEqual(questionIndex, "\(index)/10")
+            app.buttons["Yes"].tap()
+            sleep(2)
+        } while index < 10
+        let alert = app.alerts["alertId"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 3))
+        alert.buttons["Сыграть ещё раз"].tap()
+        sleep(3)
+        let questionIndex = app.staticTexts["index"].label
+        XCTAssertEqual(questionIndex, "1/10")
     }
     
 }
