@@ -7,10 +7,10 @@
 
 import Foundation
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
     
     private var movies: [MostPopularMovie] = []
-    var movieLoader: MoviesLoaderProtocol
+    private var movieLoader: MoviesLoaderProtocol
     weak var delegate: QuestionFactoryDelegatePrototocol?
 
     init(movieLoader: MoviesLoaderProtocol, delegate: QuestionFactoryDelegatePrototocol) {

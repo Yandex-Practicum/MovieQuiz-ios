@@ -48,13 +48,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizControllerProtoc
     //MARK: - Main Methods
     
     func isButtonsBlocked(state: Bool) {
-        if state {
-            yesButton.isEnabled = false
-            noButton.isEnabled = false
-        } else {
-            yesButton.isEnabled = true
-            noButton.isEnabled = true
-        }
+        yesButton.isEnabled = !state
+        noButton.isEnabled = !state
     }
     
     func show(quiz step: QuizStepViewModel) {

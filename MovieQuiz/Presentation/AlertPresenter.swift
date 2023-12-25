@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlertPresenter: UIViewController {
+final class AlertPresenter: UIViewController {
     
     func showAlert(quiz result: AlertModel, controller: MovieQuizViewController){
         
@@ -26,7 +26,5 @@ class AlertPresenter: UIViewController {
         
         //Отображаем Alert на главном контроллере
         controller.present(alert, animated: true, completion: nil)
-        
     }
-    
 }
