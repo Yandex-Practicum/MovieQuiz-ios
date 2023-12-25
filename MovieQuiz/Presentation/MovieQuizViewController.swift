@@ -2,7 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
-    // MARK: Outlets
+    // MARK: - Outlets
     
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
@@ -10,7 +10,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var textView: UILabel!
     @IBOutlet private weak var counterView: UILabel!
     
-    // MARK: Properties
+    // MARK: - Properties
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -20,7 +20,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var alertPresenter: AlertPresenterProtocol?
     private lazy var statisticService: StatisticServiceProtocol = StatisticServiceImplementation()
     
-    // MARK: Overrides funcs
+    // MARK: - Overrides funcs
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +37,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return.lightContent
     }
     
-    // MARK: Func
+    // MARK: - Func
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
@@ -50,7 +50,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    // MARK: Private funcs
+    // MARK: - Private funcs
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(

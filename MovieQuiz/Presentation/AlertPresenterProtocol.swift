@@ -23,6 +23,6 @@ extension AlertPresenterImpl: AlertPresenterProtocol {
             AlertModel.buttonAction()
         }
         alert.addAction(action)
-        
         viewController?.present(alert, animated: true)
-    }}
+    }
+}

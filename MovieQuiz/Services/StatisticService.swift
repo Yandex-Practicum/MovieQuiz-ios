@@ -15,7 +15,7 @@ class StatisticServiceImplementation: StatisticServiceProtocol {
     private let userDefaults = UserDefaults.standard
     
     var totalAccuracy: Double {
-
+        
         get {
             return (Double(correct) / Double(total)) * 100
         }
@@ -32,7 +32,7 @@ class StatisticServiceImplementation: StatisticServiceProtocol {
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
-                    let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
+                  let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
                 return .init(correct: 0, total: 0, date: Date())
             }
             
@@ -45,7 +45,7 @@ class StatisticServiceImplementation: StatisticServiceProtocol {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
-
+    
     var correct: Int {
         get {
             userDefaults.integer(forKey: Keys.correct.rawValue)
