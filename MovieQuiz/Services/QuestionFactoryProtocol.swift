@@ -2,7 +2,15 @@
 //  QuestionFactoryProtocol.swift
 //  MovieQuiz
 //
-//  Created by admin on 21.12.2023.
+//  Created by admin on 28.12.2023.
 //
 
 import Foundation
+
+
+protocol QuestionFactoryProtocol {
+    
+    func requestNextQuestion()
+    
+}
+
