@@ -23,8 +23,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - QuestionFactoryDelegate
-    func didResevedNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {return}
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
