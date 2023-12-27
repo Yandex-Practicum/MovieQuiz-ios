@@ -6,6 +6,17 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     private var isTransitioning = false
     
+    private struct QuizQuestion {
+        let image : String
+        let text: String
+        let correctQuestion: Bool
+    }
+    
+    private struct QuizStepViewModel {
+        let image : UIImage
+        let text: String
+        let questionNumber: String
+    }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -17,18 +28,6 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         show(quiz: convert(model: questions[currentQuestionIndex]))
-    }
-    
-    private struct QuizQuestion {
-        let image : String
-        let text: String
-        let correctQuestion: Bool
-    }
-    
-    private struct QuizStepViewModel {
-        let image : UIImage
-        let text: String
-        let questionNumber: String
     }
     
     private let questions : [QuizQuestion] = [
