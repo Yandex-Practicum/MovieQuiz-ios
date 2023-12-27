@@ -16,18 +16,12 @@ final class QuestionFactory: QuestionFactoryProtocol {
     private weak var delegate: QuestionFactoryDelegate?
     
     func requestNextQuestion() {
-        guard let index = (0..<questions.count).randomElement() else {
-            return
-            //TODO можно сохранить уже выпавшие значения в другом массиве и при получении рандомного числа, сравнивать есть ли оно в массиве уже выпавших чисел, если есть - зарандомить еще раз. Во избежание повторяющихся вопросов.
-        }
+        guard let index = (0..<questions.count).randomElement() else { return }
         
         let question = questions[safe: index]
         delegate?.didReceiveNextQuestion(question: question)
     }
-    
-    
 }
-
 
 private let questions: [QuizQuestion] = [
     QuizQuestion(

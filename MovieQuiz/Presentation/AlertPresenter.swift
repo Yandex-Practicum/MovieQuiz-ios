@@ -31,11 +31,4 @@ class AlertPresenter: AlertPresenterProtocol {
         alert.addAction(action)
         delegate?.showAlert(alert: alert)
     }
-    
-    
-    
-    
-    
-    
-    
 }

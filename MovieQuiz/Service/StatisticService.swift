@@ -90,55 +90,21 @@ extension StatisticServiceImp: StatisticService {
         return total != 0 ? Double(correct) / Double(total) * 100 : 0
     }
     
-    
-    
-    /*func store(correct count: Int, total amount: Int) {
+    func store(correct count: Int, total amount: Int) {
         self.correct += count
         self.total += amount
         self.gamesCount += 1
         let date = dateProvider()
         
-        let correntBestGame = GameRecord(correct: correct, total: total, date: date)
+        let currentGame = GameRecord(correct: count, total: amount, date: date)
+        self.currentGame = currentGame
+        
         if let previousBestGame = bestGame {
-            if correntBestGame > previousBestGame {
-                bestGame = correntBestGame
-            } else {
-                bestGame = correntBestGame
-            }
-        }
-    }*/
-
-    /*func store(correct count: Int, total amount: Int) {
-    // Проверяем, является ли текущая игра лучше предыдущей
-        if self.bestGame == nil || count > self.bestGame?.correct ?? 0 || (count == self.bestGame?.correct && amount > self.bestGame?.total ?? 0) {
-            self.correct = count
-            self.total = amount
-
-            let date = dateProvider()
-            self.bestGame = GameRecord(correct: count, total: amount, date: date)
-            }
-
-    // Обновляем gamesCount вне зависимости от результата
-        self.gamesCount += 1
-    }*/
-    
-    func store(correct count: Int, total amount: Int) {
-            self.correct += count
-            self.total += amount
-            self.gamesCount += 1
-            let date = dateProvider()
-
-            let currentGame = GameRecord(correct: count, total: amount, date: date)
-            self.currentGame = currentGame
-
-            if let previousBestGame = bestGame {
-                if currentGame > previousBestGame {
-                    bestGame = currentGame
-                }
-            } else {
+            if currentGame > previousBestGame {
                 bestGame = currentGame
             }
+        } else {
+            bestGame = currentGame
         }
-
-    
+    }
 }

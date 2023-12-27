@@ -11,7 +11,7 @@ import Foundation
 struct GameRecord: Codable {
     let correct: Int
     let total: Int
-    let date: Date 
+    let date: Date
 }
 
 extension GameRecord: Comparable {

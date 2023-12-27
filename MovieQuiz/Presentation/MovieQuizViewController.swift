@@ -100,7 +100,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         
         if currentQuestionIndex == questionAmount - 1 {
-           showFinalResults()
+            showFinalResults()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
@@ -140,7 +140,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 Ваш результат: \(correctAnswer)\\\(questionAmount)
                 Рекорд: \(bestGame.correct)\\\(bestGame.total) \(bestGame.date.dateTimeString)
                 Средняя точность: \(accuracy)%
-            """
+               """
         
     }
     
