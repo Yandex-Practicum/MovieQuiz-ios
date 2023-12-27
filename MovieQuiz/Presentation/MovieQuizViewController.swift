@@ -4,6 +4,8 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    private var isTransitioning = false
+    
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -49,11 +51,19 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctQuestion == false)
+        if !isTransitioning {
+            isTransitioning = true
+            showAnswerResult(isCorrect: questions[currentQuestionIndex].correctQuestion == false)
+        }
+        
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctQuestion == true)
+        if !isTransitioning {
+            isTransitioning = true
+            showAnswerResult(isCorrect: questions[currentQuestionIndex].correctQuestion == true)
+        }
+        
     }
     
     
@@ -75,7 +85,6 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showAnswerResult(isCorrect: Bool) {
-        
         createTheImageBorder()
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         if isCorrect {
@@ -83,6 +92,7 @@ final class MovieQuizViewController: UIViewController {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
+            self.isTransitioning = false
         }
     }
     
