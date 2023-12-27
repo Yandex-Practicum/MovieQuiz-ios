@@ -9,6 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     weak var delegate: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -33,6 +34,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         super.viewDidLoad()
         questionFactory = QuestionFactory(delegate: self)
         alertPresenter = AlertPresenter(delegate: self)
+        statisticService = StatisticServiceImp()
         
         questionFactory?.requestNextQuestion()
     }
@@ -95,24 +97,51 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self.delegate = delegate
         }
         
+        
+        
         if currentQuestionIndex == questionAmount - 1 {
-            let alertModel = AlertModel(
-                title: "Этот раунд окончен!",
-                message: "Ваш результат: \(correctAnswer)/10",
-                buttonText: "Сыграть еще раз",
-                completion: {[weak self] in
-                    guard let self = self else { return }
-                    self.currentQuestionIndex = 0
-                    self.correctAnswer = 0
-                    questionFactory?.requestNextQuestion()
-                })
-            
-            delegate?.createAlert(alertModel: alertModel)
-            self.alertPresenter?.createAlert(alertModel: alertModel)
+           showFinalResults()
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
+    }
+    
+    private func showFinalResults() {
+        statisticService?.store(correct: correctAnswer, total: questionAmount)
+        
+        
+        
+        let alertModel = AlertModel(
+            title: "Этот раунд окончен!",
+            message: makeResultMessage(),
+            buttonText: "Сыграть еще раз",
+            completion: {[weak self] in
+                guard let self = self else { return }
+                self.currentQuestionIndex = 0
+                self.correctAnswer = 0
+                questionFactory?.requestNextQuestion()
+            })
+        
+        delegate?.createAlert(alertModel: alertModel)
+        self.alertPresenter?.createAlert(alertModel: alertModel)
+    }
+    
+    private func makeResultMessage() -> String {
+        guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
+            //Выстреливает ошибка!!!
+            assertionFailure("error message. Данные недоступны")
+            return ""
+        }
+        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+        
+        return """
+                Количество сыгранных квизов: \(statisticService.gamesCount)
+                Ваш результат: \(correctAnswer)\\\(questionAmount)
+                Рекорд: \(bestGame.correct)\\\(bestGame.total) \(bestGame.date.dateTimeString)
+                Средняя точность: \(accuracy)%
+            """
+        
     }
     
     //MARK: - AlertPresenterDelegate

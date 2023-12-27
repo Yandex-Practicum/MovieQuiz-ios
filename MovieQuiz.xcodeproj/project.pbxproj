@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		120D4C132B3ADD650039B8F8 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120D4C122B3ADD650039B8F8 /* StatisticService.swift */; };
+		120D4C152B3ADDF70039B8F8 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120D4C142B3ADDF70039B8F8 /* GameRecord.swift */; };
 		1260A59C2B2EF1FB00E5451C /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260A59B2B2EF1FB00E5451C /* AlertModel.swift */; };
 		1260A59E2B2EF37B00E5451C /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260A59D2B2EF37B00E5451C /* AlertPresenter.swift */; };
 		1260A5A02B2F261200E5451C /* AlertPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260A59F2B2F261200E5451C /* AlertPresenterDelegate.swift */; };
@@ -31,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		120D4C122B3ADD650039B8F8 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
+		120D4C142B3ADDF70039B8F8 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
 		1260A59B2B2EF1FB00E5451C /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		1260A59D2B2EF37B00E5451C /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		1260A59F2B2F261200E5451C /* AlertPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +77,7 @@
 				12D052B12B2B05AF0060D5F1 /* QuestionFactory.swift */,
 				12D052BA2B2B20540060D5F1 /* QuestionFactoryProtocol.swift */,
 				12D052BC2B2B2F4E0060D5F1 /* QuestionFactoryDelegate.swift */,
+				120D4C122B3ADD650039B8F8 /* StatisticService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -84,6 +89,7 @@
 				12D052B62B2B0A5F0060D5F1 /* QuizStepViewModel.swift */,
 				12D052B82B2B0A6F0060D5F1 /* QuizResultViewModel.swift */,
 				1260A59B2B2EF1FB00E5451C /* AlertModel.swift */,
+				120D4C142B3ADDF70039B8F8 /* GameRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,6 +248,8 @@
 				12D052B52B2B0A4D0060D5F1 /* QuizQuestion.swift in Sources */,
 				12D052B92B2B0A6F0060D5F1 /* QuizResultViewModel.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
+				120D4C152B3ADDF70039B8F8 /* GameRecord.swift in Sources */,
+				120D4C132B3ADD650039B8F8 /* StatisticService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
