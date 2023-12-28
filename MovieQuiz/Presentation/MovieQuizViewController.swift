@@ -1,12 +1,13 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
     
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var correctAnswer = 0
+    private var alertPresenter: AlertPresenterProtocol?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var questionTextView: UILabel!
@@ -20,6 +21,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory()
         questionFactory?.delegate = self
         questionFactory?.requestNextQuestion()
+
+        let alertPresenter = AlertPresenter()
+        alertPresenter.delegate = self
+        self.alertPresenter = alertPresenter
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -40,28 +45,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         answerGived(answer: false)
     }
     
+    func showAlert(alert: UIAlertController?) {
+        guard let alert else { return }
+        
+        self.present(alert, animated: true)
+    }
+    
     private func answerGived(answer: Bool) {
         guard let correntAnswer = currentQuestion else {return}
         showAnswerResult(isCorrect: correntAnswer.currentAnswer == answer)
     }
     
     private func showResult(quiz resultViewModel: QuizResultViewModel) {
-        let alert = UIAlertController(
-            title: resultViewModel.title,
-            message: resultViewModel.text,
-            preferredStyle: .alert)
-
-        let action = UIAlertAction(title: resultViewModel.buttonText, style: .default) { [weak self] _ in
-            guard let self else { return }
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswer = 0
-            questionFactory?.requestNextQuestion()
+        
+        let alertModel = AlertModel(title: resultViewModel.title, message: resultViewModel.text, buttonText: resultViewModel.buttonText) { [weak self] in
+            self?.currentQuestionIndex = 0
+            self?.correctAnswer = 0
+            self?.questionFactory?.requestNextQuestion()
         }
-
-        alert.addAction(action)
-
-        self.present(alert, animated: true, completion: nil)
+        
+        alertPresenter?.showResualtAlert(model: alertModel)
     }
     
     private func showAnswerResult(isCorrect: Bool) {
