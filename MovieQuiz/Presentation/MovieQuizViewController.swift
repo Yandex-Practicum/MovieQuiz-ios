@@ -8,6 +8,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var currentQuestionIndex = 0
     private var correctAnswer = 0
     private var alertPresenter: AlertPresenterProtocol?
+    private var staticService: StatisticServiceProtocol?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var questionTextView: UILabel!
@@ -18,6 +19,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        UserDefaults.standard.removeObject(forKey: "bestGame")
+        
         questionFactory = QuestionFactory()
         questionFactory?.delegate = self
         questionFactory?.requestNextQuestion()
@@ -25,12 +28,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         let alertPresenter = AlertPresenter()
         alertPresenter.delegate = self
         self.alertPresenter = alertPresenter
+        
+        staticService = StatisticServiceImplementation()
     }
     
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
+        
         currentQuestion = question
+        
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
@@ -57,8 +64,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     private func showResult(quiz resultViewModel: QuizResultViewModel) {
+        staticService?.store(correct: correctAnswer, total: questionsAmount)
+        let prettyDate = (staticService?.bestGame.date ?? Date()).dateTimeString
+        let message = """
+        \(resultViewModel.text)
+        Колличество сыгранных квизов: \(staticService?.gameCount ?? 0)
+        Рекорд: \(staticService?.bestGame.correct ?? 0) / \(staticService?.bestGame.total ?? 0) (\(prettyDate))
+        Средняя точность: \((staticService?.totalAccuracy ?? 0) * 100)%
+        """
         
-        let alertModel = AlertModel(title: resultViewModel.title, message: resultViewModel.text, buttonText: resultViewModel.buttonText) { [weak self] in
+        let alertModel = AlertModel(title: resultViewModel.title, message: message, buttonText: resultViewModel.buttonText) { [weak self] in
             self?.currentQuestionIndex = 0
             self?.correctAnswer = 0
             self?.questionFactory?.requestNextQuestion()
@@ -85,7 +100,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
-    private func convert(model : QuizQuestion) -> QuizStepViewModel {
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
@@ -109,7 +124,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             showResult(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            questionFactory?.requestNextQuestion().self
+            questionFactory?.requestNextQuestion()
         }
     }
     
