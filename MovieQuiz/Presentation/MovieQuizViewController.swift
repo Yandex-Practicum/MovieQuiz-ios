@@ -1,72 +1,190 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, RoundDelegate {
+    
+    // связь объектов из main-экрана с контроллером
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    private let alertPresenter = AlertPresenter()
+    private var currentRound: Round?
+    private var statisticService: StatisticService?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        // настраиваем внешний вид рамки
+        setupImageView()
+        alertPresenter.delegate = self
+        // стартуем новый раунд
+        startNewRound()
+    }
+    
+    // MARK: Настройка внешнего вида
+    
+    // приватный метод визуализации рамки
+    private func setupImageView() {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
+    }
+    
+    // приватный метод отключения/включения кнопок
+    private func setAnswerButtonsEnabled(_ enabled: Bool) {
+        noButton.isEnabled = enabled
+        yesButton.isEnabled = enabled
+    }
+    
+    // MARK: Обработка логики
+    
+    // метод отвечающий за старт нового раунда квиза
+    private func startNewRound() {
+        showLoadingIndicator()
+        currentRound = Round()
+        setAnswerButtonsEnabled(true)
+        currentRound?.delegate = self
+        currentRound?.requestNextQuestion()
+    }
+    
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
+    }
+    
+    // делаем если вопрос был получен
+    func didReceiveNewQuestion(_ question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        // показываем вопрос
+        showQuestion(quiz: convert(model: question))
+        // включаем кнопки
+        setAnswerButtonsEnabled(true)
+    }
+    
+    // делаем если раунд был закончен
+    func roundDidEnd(_ round: Round, withResult gameRecord: GameRecord) {
+        statisticService = StatisticServiceImplementation()
+        showQuizResults()
+    }
+    
+    // делаем если алерт был показан
+    func alertDidDismiss() {
+        startNewRound()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
+    private func showQuizResults() {
+        let model1 = statisticService
+        let alertModel1 = convert1(model: model1)
+        alertPresenter.present(alertModel: alertModel1, on: self)
+    }
+    
+    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+    private func showQuestion(quiz step: QuizStepViewModel) {
+        imageView.image = step.image
+        counterLabel.text = step.questionNumber
+        textLabel.text = step.question
+        imageView.layer.borderColor = UIColor.clear.cgColor
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator() // скрываем индикатор загрузки
+        
+        let alertModel = AlertModel(title: "Ошибка!", message: message, buttonText: "Попробовать еще раз")
+        alertPresenter.present(alertModel: alertModel, on: self)
+    }
+    
+    // визуализация рамки
+    private func showQuestionAnswerResult(isCorrect: Bool) {
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            self?.imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        })
+    }
+    
+    // визуализация индикатора загрузки
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+        activityIndicator.startAnimating() // включаем анимацию
+    }
+    
+    // визуализация индикатора загрузки
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true // говорим, что индикатор загрузки скрыт
+        activityIndicator.stopAnimating() // выкллючаем анимацию
+    }
+
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        setAnswerButtonsEnabled(false)
+        let isCorrect = currentRound?.checkAnswer(checkTap: false) ?? false
+        showQuestionAnswerResult(isCorrect: isCorrect)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        setAnswerButtonsEnabled(false)
+        let isCorrect = currentRound?.checkAnswer(checkTap: true) ?? false
+        showQuestionAnswerResult(isCorrect: isCorrect)
+    }
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let questionNumber = currentRound?.getNumberCurrentQuestion() ?? 0
+        let totalQuestions = currentRound?.getCountQuestions() ?? 0
+        let displayNumber = questionNumber + 1
+
+        return QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(displayNumber) / \(totalQuestions)"
+        )
+    }
+    
+    private func convert1(model: StatisticService?) -> AlertModel {
+        guard let bestGame = model?.bestGame else {
+            return AlertModel(title: "Ошибка", message: "Данные не доступны!", buttonText: "ОК")
+        }
+        
+        let gamesCount = model?.gamesCount ?? 0
+        let gamesAccuracy = model?.totalAccuracy ?? 0.0
+
+        let correctAnswers = currentRound?.getCorrectCountAnswer() ?? 0
+        let totalQuestions = currentRound?.getCountQuestions() ?? 0
+
+        let recordCorrect = bestGame.correct
+        let recordTotal = bestGame.total
+        let recordDate = bestGame.date
+        
+        let alertModel = AlertModel(
+            title: "Этот раунд окончен!",
+            message: """
+            Ваш результат: \(correctAnswers) / \(totalQuestions)
+            Количество сыгранных квизов: \(gamesCount)
+            Рекорд: \(recordCorrect) / \(recordTotal) (\(recordDate.dateTimeString))
+            Средняя точность: \(gamesAccuracy)%
+            """,
+            buttonText: "Сыграть еще раз"
+        )
+        return alertModel
+    }
+
+    // MARK: сервисные методы
+    // посмотреть все записи
+    fileprivate func printAllUserDefaults() {
+        let userDefaults = UserDefaults.standard
+        print("All UserDefaults:")
+        for (key, value) in userDefaults.dictionaryRepresentation() {
+            print("\(key) = \(value)")
+        }
+    }
+    
+    // удалить все в UserDeafult
+    fileprivate func remove() {
+        if let bundleID = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+        }
     }
 }
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
