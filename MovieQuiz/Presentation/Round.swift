@@ -8,10 +8,10 @@
 import UIKit
 
 class Round: QuestionFactoryDelegate {
-    
+
     weak var delegate: RoundDelegate?
     // инициализируем фабрику вопросов
-    private let questionFactory = QuestionFactory()
+    private let questionFactory = QuestionFactory(moviesLoader: MoviesLoader())
     // текущий вопрос
     private var currentQuestion: QuizQuestion?
     // индекс текущего вопроса
@@ -25,7 +25,7 @@ class Round: QuestionFactoryDelegate {
 
     init() {
         questionFactory.delegate = self
-        questionFactory.requestNextQuestion()
+        questionFactory.loadData()
     }
 
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -35,6 +35,15 @@ class Round: QuestionFactoryDelegate {
         } else if isRoundComplete() {
             finishRound()
         }
+    }
+    
+    func didLoadDataFromServer() {
+        delegate?.didLoadDataFromServer()
+        questionFactory.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        delegate?.didFailToLoadData(with: error)
     }
     
     func requestNextQuestion() {
@@ -84,7 +93,6 @@ class Round: QuestionFactoryDelegate {
                 self?.requestNextQuestion()
             }
         }
-        
         return isCorrect
     }
     
