@@ -1,6 +1,8 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
+    
+    
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -13,17 +15,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
-    
+    private var alertPresenter: AlertPresenter?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        questionFactory.delegate = self
         questionFactory.requestNextQuestion()
-        questionFactory = QuestionFactory(delegate: self)
+        alertPresenter?.delegate = self
+        
     }
     // MARK: - QuestionFactoryDelegate
     
@@ -38,6 +42,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
+    // MARK: - AlertPresenterDelegate
+    func showAlert(alert: UIAlertController) {
+        guard let alert = alert else {
+            return
+        }
+    }
+    
     // MARK: - Metods
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -65,10 +76,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel( // 1
-            image: UIImage(named: model.image) ?? UIImage(), // 2
-            question: model.text, // 3
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)") // 4
+        let questionStep = QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
     
@@ -114,33 +125,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
-            questionFactory.requestNextQuestion()
+            self.questionFactory.requestNextQuestion()
         }
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        
-        // константа с кнопкой для системного алерта
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in // слабая ссылка на self
-            guard let self = self else { return } // разворачиваем слабую ссылку
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            self.questionFactory.requestNextQuestion()
-            
-            // добавляем в алерт кнопку
-            alert.addAction(action)
-            
-            // показываем всплывающее окно
-            self.present(alert, animated: true, completion: nil)
-        }
+        let alertModel = AlertModel(
+            title: "Этот раунд окончен!",
+            message: text,
+            buttonText: "Сыграть ещё раз",
+            buttonAction: { [weak self] in
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                self.questionFactory.requestNextQuestion()
+            }
+        )
+        alertPresenter.show(alertModel: AlertModel)
     }
-    
-}
+        
+    }
+
     
     
     
