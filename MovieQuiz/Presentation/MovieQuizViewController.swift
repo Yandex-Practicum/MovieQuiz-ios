@@ -1,31 +1,21 @@
 import UIKit
 
 struct QuizQuestion {
-    // строка с названием фильма,
-    // совпадает с названием картинки афиши фильма в Assets
     let image: String
-    // строка с вопросом о рейтинге фильма
     let text: String
-    // булевое значение (true, false), правильный ответ на вопрос
     let correctAnswer: Bool
 }
 
 struct QuizStepViewModel {
-    // картинка с афишей фильма с типом UIImage
     let image: UIImage
-    // вопрос о рейтинге квиза
     let question: String
-    // строка с порядковым номером этого вопроса (ex. "1/10")
     let questionNumber: String
 }
 
 struct QuizResultsViewModel {
-  // строка с заголовком алерта
-  let title: String
-  // строка с текстом о количестве набранных очков
-  let text: String
-  // текст для кнопки алерта
-  let buttonText: String
+    let title: String
+    let text: String
+    let buttonText: String
 }
 
 final class MovieQuizViewController: UIViewController {
@@ -101,14 +91,13 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel( // 1
-            image: UIImage(named: model.image) ?? UIImage(), // 2
-            question: model.text, // 3
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)") // 4
+        return QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
     private func show(quiz step: QuizStepViewModel) {
-        
         imageView.image = step.image
         imageView.layer.borderColor = UIColor.ypBlack.cgColor
         questionLabel.text = step.question
@@ -137,30 +126,24 @@ final class MovieQuizViewController: UIViewController {
     
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect { correctAnswers += 1 }
-        
         let borderColor = isCorrect ? UIColor.ypGreen : UIColor.ypRed
         imageView.layer.borderColor = borderColor.cgColor
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            // код, который мы хотим вызвать через 1 секунду
             self.showNextQuestionOrResults()
         }
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // 1
+        if currentQuestionIndex == questions.count - 1 {
             let results = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: "Ваш результат: \(correctAnswers)/\(questions.count)",
                 buttonText: "Сыграть еще раз")
             show(quiz: results)
-        } else { // 2
+        } else {
             currentQuestionIndex += 1
-            // идём в состояние "Вопрос показан"
-            
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
-            
             show(quiz: viewModel)
         }
     }
