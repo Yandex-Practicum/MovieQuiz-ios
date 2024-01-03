@@ -17,8 +17,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private let questionsAmount: Int = 10
     private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
-    private var alertPresenter: AlertPresenter?
-    
+    private let alertPresenter: AlertPresenterProtocol = AlertPresenter()
+
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -26,9 +26,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         questionFactory.delegate = self
         questionFactory.requestNextQuestion()
-        alertPresenter?.delegate = self
+        alertPresenter.delegate = self
         
     }
+    
     // MARK: - QuestionFactoryDelegate
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -42,11 +43,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self?.show(quiz: viewModel)
         }
     }
+    
     // MARK: - AlertPresenterDelegate
+    
     func showAlert(alert: UIAlertController) {
-        guard let alert = alert else {
-            return
-        }
+        self.present(alert, animated: true)
     }
     
     // MARK: - Metods
@@ -121,7 +122,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 text: text,
                 buttonText: "Сыграть ещё раз"
             )
-            self.questionFactory.requestNextQuestion()
+            self.show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
@@ -129,23 +130,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
-    private func show(quiz result: QuizResultsViewModel) {
+    private func show(quiz viewModel: QuizResultsViewModel) {
         let alertModel = AlertModel(
-            title: "Этот раунд окончен!",
-            message: text,
-            buttonText: "Сыграть ещё раз",
+            title: viewModel.title,
+            message: viewModel.text,
+            buttonText: viewModel.buttonText,
             buttonAction: { [weak self] in
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                self.questionFactory.requestNextQuestion()
+                self?.currentQuestionIndex = 0
+                self?.correctAnswers = 0
+                self?.questionFactory.requestNextQuestion()
             }
         )
-        alertPresenter.show(alertModel: AlertModel)
+        alertPresenter.show(alertModel: alertModel)
     }
         
-    }
-
-    
-    
-    
-
+}
