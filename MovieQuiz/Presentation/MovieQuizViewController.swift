@@ -3,9 +3,9 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
-    @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var counterLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
@@ -39,7 +39,7 @@ final class MovieQuizViewController: UIViewController {
         
         show(quiz: convert(model: currentQuestion))
     }
-    func convert(model: QuizQuestion) -> QuizStepViewModel {
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel( // 1
             image: UIImage(named: model.image) ?? UIImage(), // 2
             question: model.text, // 3
@@ -55,14 +55,14 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect == true {
             correctAnswers += 1
             imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 1
-            imageView.layer.borderColor = UIColor.green.cgColor
-            imageView.layer.cornerRadius = 6
+            imageView.layer.borderWidth = 8
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor
+            
         } else {
             imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 1
-            imageView.layer.borderColor = UIColor.red.cgColor
-            imageView.layer.cornerRadius = 6
+            imageView.layer.borderWidth = 8
+            imageView.layer.borderColor = UIColor.ypRed.cgColor
+            
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
@@ -85,6 +85,7 @@ final class MovieQuizViewController: UIViewController {
             
             show(quiz: viewModel)
         }
+        imageView.layer.borderWidth = 0
     }
     private func showQuizResults(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(title: result.title, message: result.text, preferredStyle: .alert)
