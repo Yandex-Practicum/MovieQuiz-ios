@@ -4,23 +4,23 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
     struct ViewModel {
-      let image: UIImage
-      let question: String
-      let questionNumber: String
+        let image: UIImage
+        let question: String
+        let questionNumber: String
     }
     
     // для состояния "Вопрос показан"
     struct QuizStepViewModel {
-      let image: UIImage
-      let question: String
-      let questionNumber: String
+        let image: UIImage
+        let question: String
+        let questionNumber: String
     }
-
+    
     // для состояния "Результат квиза"
     struct QuizResultsViewModel {
-      let title: String
-      let text: String
-      let buttonText: String
+        let title: String
+        let text: String
+        let buttonText: String
     }
     
     struct QuizQuestion {
@@ -32,54 +32,54 @@ final class MovieQuizViewController: UIViewController {
         // булевое значение (true, false), правильный ответ на вопрос
         let correctAnswer: Bool
     }
-
+    
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
     private let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     private let questions: [QuizQuestion] = [
-            QuizQuestion(
-                image: "The Godfather",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Dark Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Kill Bill",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Avengers",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Deadpool",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "The Green Knight",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: true),
-            QuizQuestion(
-                image: "Old",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "The Ice Age Adventures of Buck Wild",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "Tesla",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false),
-            QuizQuestion(
-                image: "Vivarium",
-                text: "Рейтинг этого фильма больше чем 6?",
-                correctAnswer: false)
-        ]
+        QuizQuestion(
+            image: "The Godfather",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Dark Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Kill Bill",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Avengers",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Deadpool",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "The Green Knight",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: true),
+        QuizQuestion(
+            image: "Old",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "The Ice Age Adventures of Buck Wild",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "Tesla",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false),
+        QuizQuestion(
+            image: "Vivarium",
+            text: "Рейтинг этого фильма больше чем 6?",
+            correctAnswer: false)
+    ]
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -92,31 +92,17 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         let currentQuestion = questions[currentQuestionIndex]
         show(quiz: convert(model: currentQuestion))
-     }
+    }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let viewModel = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return viewModel
     }
     
-    // приватный метод, который меняет цвет рамки
-    // принимает на вход булевое значение и ничего не возвращает
-//    private func showAnswerResult(isCorrect: Bool) {
-//       // метод красит рамку
-//        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-//        imageView.layer.borderWidth = 8 // толщина рамки
-//        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // делаем рамку белой
-//        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-//        correctAnswers += isCorrect ? 1 : 0
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//        
-//            self.showNextQuestionOrResults()
-//        }
-//    }
     private func showAnswerResult(isCorrect: Bool) {
         yesButton.isEnabled = false
         noButton.isEnabled = false
-
+        
         // Установка рамки
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
@@ -152,14 +138,14 @@ final class MovieQuizViewController: UIViewController {
                           duration: 0.5, // Длительность анимации в секундах
                           options: .transitionCrossDissolve, // Тип анимации (плавное появление/исчезновение)
                           animations: {
-                              self.imageView.image = newImage
+            self.imageView.image = newImage
             self.imageView.layer.borderWidth = 0
-                          },
+        },
                           completion: nil)
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
-
+    
     
     // приватный метод для показа результатов раунда квиза
     // принимает вью модель QuizResultsViewModel и ничего не возвращает
@@ -167,7 +153,7 @@ final class MovieQuizViewController: UIViewController {
         let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
                                       message: result.text, // текст во всплывающем окне
                                       preferredStyle: .alert)
-
+        
         // создаём для алерта кнопку с действием
         // в замыкании пишем, что должно происходить при нажатии на кнопку
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
@@ -176,10 +162,10 @@ final class MovieQuizViewController: UIViewController {
             let currentQuestion = self.questions[self.currentQuestionIndex]
             self.show(quiz: self.convert(model: currentQuestion))
         }
-
+        
         // добавляем в алерт кнопку
         alert.addAction(action)
-
+        
         // показываем всплывающее окно
         self.present(alert, animated: true, completion: nil)
     }
@@ -204,56 +190,56 @@ final class MovieQuizViewController: UIViewController {
  Настоящий рейтинг: 9,2
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: The Dark Knight
  Настоящий рейтинг: 9
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: Kill Bill
  Настоящий рейтинг: 8,1
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: The Avengers
  Настоящий рейтинг: 8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: Deadpool
  Настоящий рейтинг: 8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: The Green Knight
  Настоящий рейтинг: 6,6
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
-
-
+ 
+ 
  Картинка: Old
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
-
-
+ 
+ 
  Картинка: The Ice Age Adventures of Buck Wild
  Настоящий рейтинг: 4,3
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
-
-
+ 
+ 
  Картинка: Tesla
  Настоящий рейтинг: 5,1
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
-
-
+ 
+ 
  Картинка: Vivarium
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?
