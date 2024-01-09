@@ -102,8 +102,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
-        
+        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
+
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // слабая ссылка на self
             guard let self = self else { return } // разворачиваем слабую ссылку
@@ -120,12 +120,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             // идём в состояние "Результат квиза"
             let quizCount = statisticService.gamesCount
             let bestGame = statisticService.bestGame
-            let totalAccuracy = statisticService.totalAccuracy
+            let formattedAccuracy = String(format: "%.2f%%", statisticService.totalAccuracy * 100)
             let text = """
             Ваш результат: \(correctAnswers)/\(questionsAmount)
             Количество сыгранных квизов: \(quizCount)
-            Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString)
-            Средняя точность: \(totalAccuracy)
+            Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
+            Средняя точность: \(formattedAccuracy)
             """
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
