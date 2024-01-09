@@ -65,7 +65,7 @@ final class StatisticService: IStatisticService {
         }
         gamesCount += 1
 
-        totalAccuracy = totalAccuracy + Double(count) / Double(amount)
+        totalAccuracy = (totalAccuracy + Double(count)) / Double(amount)
 
 
     }
