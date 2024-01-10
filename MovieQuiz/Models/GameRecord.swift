@@ -16,4 +16,7 @@ struct GameRecord: Codable {
     func isBetterThan(_ another: GameRecord) -> Bool {
         correct > another.correct
     }
+    func toString() -> String {
+        return "\(correct)/\(total) (\(date.dateTimeString)"
+    }
 }

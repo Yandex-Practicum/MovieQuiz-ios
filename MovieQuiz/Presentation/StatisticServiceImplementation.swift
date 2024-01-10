@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 final class StatisticServiceImplementation: StatisticService {
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
