@@ -3,6 +3,12 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+
+        let firstQuestion = questions[currentQuestionIndex]
+        let viewmodel = convert(model: firstQuestion)
+        show(quiz: viewmodel)
         super.viewDidLoad()
     }
     private var currentQuestionIndex = 0
