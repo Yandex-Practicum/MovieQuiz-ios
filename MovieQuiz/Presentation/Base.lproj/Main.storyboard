@@ -83,6 +83,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dsU-UT-2Bw"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CAk-o4-jC0">
                                                 <rect key="frame" x="205" y="0.0" width="185" height="60"/>
@@ -97,6 +100,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UBe-UM-a0l"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -119,6 +125,11 @@
                             <constraint firstAttribute="bottomMargin" secondItem="RWF-JV-Vdx" secondAttribute="bottom" id="mNc-p9-6Bc"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="44h-qv-ZJi" id="1y5-9V-xVx"/>
+                        <outlet property="imageView" destination="FnP-q4-OJo" id="YGl-46-Tup"/>
+                        <outlet property="textLabel" destination="D2D-OA-ZRs" id="xPv-Eg-5k3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -128,7 +139,7 @@
     <resources>
         <image name="The Godfather" width="1192" height="1716"/>
         <namedColor name="YP Black">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
