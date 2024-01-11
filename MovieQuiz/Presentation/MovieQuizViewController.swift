@@ -1,6 +1,31 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    
+    // для состояния "Вопрос показан"
+    struct QuizStepViewModel {
+      let image: UIImage
+      let question: String
+      let questionNumber: String
+    }
+
+    // для состояния "Результат квиза"
+    struct QuizResultsViewModel {
+      let title: String
+      let text: String
+      let buttonText: String
+    }
+    
+    struct QuizQuestion {
+      // строка с названием фильма,
+      // совпадает с названием картинки афиши фильма в Assets
+      let image: String
+      // строка с вопросом о рейтинге фильма
+      let text: String
+      // булевое значение (true, false), правильный ответ на вопрос
+      let correctAnswer: Bool
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
