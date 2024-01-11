@@ -12,7 +12,6 @@ struct GameRecord: Codable {
     let total: Int
     let date: Date
 
-    // метод сравнения по количеству верных ответов
     func isBetterThan(_ another: GameRecord) -> Bool {
         correct > another.correct
     }

@@ -7,11 +7,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-    
         statisticService = StatisticServiceImplementation()
-
         showLoadingIndicator()
         questionFactory?.loadData()
+        alertPresenter = AlertPresenter(view: self)
     }
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -26,8 +25,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-        
-    //private var questionFactory: QuestionFactoryProtocol?
     private var questionFactory: QuestionFactory?
     
     private var currentQuestionIndex = 0
@@ -41,8 +38,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     
     private var alertPresenter: AlertPresenter?
-    
-    //private lazy var statisticService: StatisticService = StatisticServiceImplementation()
     
     struct ViewModel {
         let image: UIImage
@@ -119,7 +114,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             } else {
                 currentQuestionIndex += 1
                 
-                questionFactory?.requestNextQuestion()
+                self.questionFactory?.requestNextQuestion()
             }
         }
     
@@ -135,7 +130,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             }
             
             self.currentQuestionIndex = 0
-            questionFactory?.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
             
         }
         alert.addAction(action)
@@ -167,7 +162,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     func didLoadDataFromServer() {
         activityIndicator.isHidden = true // скрываем индикатор загрузки
-        questionFactory?.requestNextQuestion()
+        self.questionFactory?.requestNextQuestion()
     }
     
     private func hideLoadingIndicator() {
