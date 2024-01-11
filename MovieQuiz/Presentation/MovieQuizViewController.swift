@@ -8,7 +8,8 @@ final class MovieQuizViewController: UIViewController {
       let question: String
       let questionNumber: String
     }
-
+ 
+    
     // для состояния "Результат квиза"
     struct QuizResultsViewModel {
       let title: String
