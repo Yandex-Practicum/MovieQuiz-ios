@@ -10,20 +10,20 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // для состояния "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
     
     // для состояния "Результат квиза"
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
     
-    struct QuizQuestion {
+    private struct QuizQuestion {
         // строка с названием фильма,
         // совпадает с названием картинки афиши фильма в Assets
         let image: String
