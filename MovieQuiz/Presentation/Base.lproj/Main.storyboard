@@ -128,6 +128,8 @@
                     <connections>
                         <outlet property="counterLabel" destination="44h-qv-ZJi" id="1y5-9V-xVx"/>
                         <outlet property="imageView" destination="FnP-q4-OJo" id="YGl-46-Tup"/>
+                        <outlet property="isEnabledNoButton" destination="TRh-SJ-aKw" id="FYN-Lb-fvS"/>
+                        <outlet property="isEnabledYesButton" destination="CAk-o4-jC0" id="dh4-iB-UhR"/>
                         <outlet property="textLabel" destination="D2D-OA-ZRs" id="xPv-Eg-5k3"/>
                     </connections>
                 </viewController>

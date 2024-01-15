@@ -79,6 +79,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var isEnabledYesButton: UIButton!
+    @IBOutlet private var isEnabledNoButton: UIButton!
     // MARK: - UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,16 +90,19 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: quizStep)
     }
     //MARK: - IBActions
-    @IBAction private func yesButtonClicked(_ sender: Any) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
+        isEnabledYesButton.isEnabled = false
+        isEnabledNoButton.isEnabled = false
     }
-    @IBAction private func noButtonClicked(_ sender: Any) {
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        isEnabledNoButton.isEnabled = false
+        isEnabledYesButton.isEnabled = false
     }
     //MARK: - Private functions
     // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
@@ -159,11 +164,15 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel) // 3
+            isEnabledNoButton.isEnabled = true
+            isEnabledYesButton.isEnabled = true
         } else {
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
+            isEnabledNoButton.isEnabled = true
+            isEnabledYesButton.isEnabled = true
         }
     }
 }
