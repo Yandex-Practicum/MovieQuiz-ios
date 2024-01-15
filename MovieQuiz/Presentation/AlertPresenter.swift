@@ -8,9 +8,9 @@
 
 import UIKit
 
-class AlertPresenter {
+final class AlertPresenter {
     
-     var view: UIViewController
+    weak var view: UIViewController?
     
     init(view: UIViewController) {
         self.view = view
@@ -28,6 +28,6 @@ class AlertPresenter {
         
         alert.addAction(action)
         
-        view.present(alert, animated: true, completion: nil)
+        view!.present(alert, animated: true, completion: nil)
     }
 }
