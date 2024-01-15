@@ -173,7 +173,6 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
             isEnabledNoButton.isEnabled = true
             isEnabledYesButton.isEnabled = true
-            
         }
     }
 }
