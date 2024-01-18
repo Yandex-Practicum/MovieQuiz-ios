@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Round: QuestionFactoryDelegate {
+final class Round: QuestionFactoryDelegate {
 
     weak var delegate: RoundDelegate?
     // инициализируем фабрику вопросов
