@@ -29,7 +29,7 @@ final class MovieQuizPresenter: RoundDelegate {
         guard let question = question else {
             return
         }
-
+        
         // показываем вопрос
         viewController?.showQuestion(quiz: self.convert(model: question))
         // включаем кнопки
@@ -53,7 +53,7 @@ final class MovieQuizPresenter: RoundDelegate {
         let questionNumber = round?.getNumberCurrentQuestion() ?? 0
         let totalQuestions = round?.getCountQuestions() ?? 0
         let displayNumber = questionNumber + 1
-
+        
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -68,10 +68,10 @@ final class MovieQuizPresenter: RoundDelegate {
         
         let gamesCount = model?.gamesCount ?? 0
         let gamesAccuracy = model?.totalAccuracy ?? 0.0
-
+        
         let correctAnswers = round?.getCorrectCountAnswer() ?? 0
         let totalQuestions = round?.getCountQuestions() ?? 0
-
+        
         let recordCorrect = bestGame.correct
         let recordTotal = bestGame.total
         let recordDate = bestGame.date

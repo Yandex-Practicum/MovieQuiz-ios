@@ -9,7 +9,7 @@
 import UIKit
 
 final class Round: QuestionFactoryDelegate {
-
+    
     weak var delegate: RoundDelegate?
     // инициализируем фабрику вопросов
     private let questionFactory = QuestionFactory(moviesLoader: MoviesLoader())
@@ -23,12 +23,12 @@ final class Round: QuestionFactoryDelegate {
     private var questionCount = 10
     // результат раунда
     private var gameRecord: GameRecord?
-
+    
     init() {
         questionFactory.delegate = self
         questionFactory.loadData()
     }
-
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         if let question = question {
             self.currentQuestion = question
@@ -109,7 +109,7 @@ final class Round: QuestionFactoryDelegate {
     private func isRoundComplete() -> Bool {
         return currentQuestionIndex >= questionCount
     }
-
+    
     // приватный метод завершающий раунд
     private func finishRound() {
         let newGameRecord = GameRecord(correct: correctAnswersCount, total: questionCount, date: Date())
