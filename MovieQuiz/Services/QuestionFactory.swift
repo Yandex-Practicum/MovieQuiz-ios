@@ -5,13 +5,6 @@
 //  Created by Сергей Баскаков on 24.01.2024.
 //
 
-//
-//  QuestionFactory.swift
-//  MovieQuiz
-//
-//  Created by Ярослав Калмыков on 14.12.2023.
-//
-
 import Foundation
 
 final class QuestionFactory: QuestionFactoryProtocol {
