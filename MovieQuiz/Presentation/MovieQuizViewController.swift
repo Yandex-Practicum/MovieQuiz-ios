@@ -8,83 +8,27 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     
-    private struct QuizQuestion {
-        let image: String
-        let text: String
-        let correctAnswer: Bool
-    }
-    
-    private struct QuizStepViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-    
-    private struct QuizResultsViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
-    }
-    
-    private let questions: [QuizQuestion] = [
-        QuizQuestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false)
-    ]
-    
+    private let questionsAmount = 10
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var currentQuestion: QuizQuestion? = nil
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
-        let firstQuestion = questions[currentQuestionIndex]
-        let viewModel = convert(model: firstQuestion)
-        show(quiz: viewModel)
+        if let firstQuestion = questionFactory.requestNextQuestion(){
+            currentQuestion = firstQuestion
+            let viewModel = convert(model: firstQuestion)
+            show(quiz: viewModel)
+        }
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
     }
     
@@ -95,7 +39,6 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.layer.masksToBounds = true
-        //imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 0
     }
     
@@ -113,7 +56,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 {
+        if currentQuestionIndex == questionsAmount - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
@@ -122,9 +65,11 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-            let nextQuestion = questions[currentQuestionIndex]
-            let viewModel = convert(model: nextQuestion)
-            show(quiz: viewModel)
+            if let nextQuestion = questionFactory.requestNextQuestion(){
+                currentQuestion = nextQuestion
+                let viewModel = convert(model: currentQuestion!)
+                show(quiz: viewModel)
+            }
         }
     }
     
@@ -139,9 +84,11 @@ final class MovieQuizViewController: UIViewController {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            let firstQuestion = self.questions[self.currentQuestionIndex]
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
+            if let firstQuestion = questionFactory.requestNextQuestion(){
+                currentQuestion = firstQuestion
+                let viewModel = convert(model: firstQuestion)
+                show(quiz: viewModel)
+            }
         }
         
         alert.addAction(action)
@@ -152,13 +99,19 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func noButtonClicked(_ sender: Any) {
         noButton.isEnabled = false
         yesButton.isEnabled = false
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == false)
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
         noButton.isEnabled = false
         yesButton.isEnabled = false
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
 }
 /*
