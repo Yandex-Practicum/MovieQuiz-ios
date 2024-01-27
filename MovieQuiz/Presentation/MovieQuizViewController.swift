@@ -74,7 +74,10 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        show(quiz: convert(model: questions[currentQuestionIndex]))
+        imageView.layer.cornerRadius = 20
+        let firstQuestion = questions[currentQuestionIndex]
+        let viewModel = convert(model: firstQuestion)
+        show(quiz: viewModel)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -92,7 +95,7 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 20
+        //imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 0
     }
     
