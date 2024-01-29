@@ -90,10 +90,14 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    private func answerButtonLock(_ lock: Bool) {
+        yesButton.isEnabled = lock
+        noButton.isEnabled = lock
+    }
+    
     private func showAnswerResult(isCorrect: Bool) {
         
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+        answerButtonLock(false)
         
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
@@ -101,8 +105,7 @@ final class MovieQuizViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResult()
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
+            self.answerButtonLock(true)
         }
     }
     
