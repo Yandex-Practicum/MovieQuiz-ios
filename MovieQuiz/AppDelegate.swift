@@ -6,7 +6,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        print("Hello world")
+        print("Hello world Second time")
         return true
+        
     }
 
     // MARK: UISceneSession Lifecycle
