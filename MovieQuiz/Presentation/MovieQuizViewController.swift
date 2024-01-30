@@ -4,6 +4,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var counterLabel: UILabel!
     
     private var currentQuestionIndex = 0
@@ -17,10 +18,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        alertPresenter = ResultAlertPresenter(viewController: self)
+        imageView.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
+        
+        showLoadingIndicator()
+        questionFactory?.loadData()
+        alertPresenter = ResultAlertPresenter(viewController: self)
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -28,7 +32,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let question = question else {
             return
         }
-
+        
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
@@ -36,29 +40,77 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
     
     @IBAction func yesButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
+        
         guard let currentQuestion = currentQuestion else{
             return
         }
         let givenAnswer = true
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak sender] in
+            guard let sender = sender else {
+                return
+            }
+            sender.isEnabled = true
+        }
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
+        
         guard let currentQuestion = currentQuestion else {
             return
         }
         let givenAnswer = false
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak sender] in
+            guard let sender = sender else {
+                return
+            }
+            sender.isEnabled = true
+        }
+        
     }
     
+    private func showLoadingIndicator(){
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func showNetworkError(message: String){
+        activityIndicator.stopAnimating()
+        
+        let model = AlertModel(title: "Ошибка!",
+                               message: message,
+                               buttonText: "Попробуйте ещё раз") { [weak self] in
+            guard let self = self else { return }
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        alertPresenter?.show(alertModel: model)
+        
+    }
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
-                                             question: model.text,
-                                             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
+                                 question: model.text,
+                                 questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -119,7 +171,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func makeResultMessage() -> String {
-
+        
         guard let statisticService = statisticService else {
             return ""
         }
