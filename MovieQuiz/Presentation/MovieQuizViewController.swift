@@ -250,7 +250,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
  
- 
+    
  Картинка: Vivarium
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?
