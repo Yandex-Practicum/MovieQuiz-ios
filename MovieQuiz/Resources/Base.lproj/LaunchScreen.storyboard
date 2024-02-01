@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="o6A-L1-84E">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="o6A-L1-84E">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
                         </subviews>
@@ -36,6 +36,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="1125" height="2436"/>
+        <image name="Background" width="393" height="852"/>
     </resources>
 </document>

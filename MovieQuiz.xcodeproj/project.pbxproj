@@ -50,6 +50,8 @@
 		76AA5CFE2B65BD4A009DF32D /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				76AA5D002B65BE61009DF32D /* YS Display-Medium.ttf */,
+				76AA5CFF2B65BE61009DF32D /* YS Display-Bold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -66,8 +68,6 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				76AA5CFF2B65BE61009DF32D /* YS Display-Bold.ttf */,
-				76AA5D002B65BE61009DF32D /* YS Display-Medium.ttf */,
 				76AA5CFE2B65BD4A009DF32D /* Fonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
