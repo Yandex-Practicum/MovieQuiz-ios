@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		330AFD192B6D0AB100FB3C9C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330AFD182B6D0AB100FB3C9C /* CustomButton.swift */; };
+		330AFD1B2B6D0AD500FB3C9C /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330AFD1A2B6D0AD500FB3C9C /* CustomLabel.swift */; };
+		330AFD1D2B6D0AF800FB3C9C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330AFD1C2B6D0AF800FB3C9C /* Constants.swift */; };
 		336B14642B6808E300FAD787 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 336B14622B6808E300FAD787 /* YS Display-Bold.ttf */; };
 		336B14652B6808E300FAD787 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 336B14632B6808E300FAD787 /* YS Display-Medium.ttf */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
@@ -21,6 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		330AFD172B6D0AA100FB3C9C /* MovieQuizViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizViewControllerTest.swift; sourceTree = "<group>"; };
+		330AFD182B6D0AB100FB3C9C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		330AFD1A2B6D0AD500FB3C9C /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
+		330AFD1C2B6D0AF800FB3C9C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		336B14622B6808E300FAD787 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		336B14632B6808E300FAD787 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +54,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		330AFD162B6D0A9700FB3C9C /* Additionally */ = {
+			isa = PBXGroup;
+			children = (
+				330AFD172B6D0AA100FB3C9C /* MovieQuizViewControllerTest.swift */,
+				330AFD182B6D0AB100FB3C9C /* CustomButton.swift */,
+				330AFD1A2B6D0AD500FB3C9C /* CustomLabel.swift */,
+				330AFD1C2B6D0AF800FB3C9C /* Constants.swift */,
+			);
+			path = Additionally;
+			sourceTree = "<group>";
+		};
 		336B14612B6808D500FAD787 /* YS Display */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +113,7 @@
 		AD1ABAB02831907B00B3E448 /* MovieQuiz */ = {
 			isa = PBXGroup;
 			children = (
+				330AFD162B6D0A9700FB3C9C /* Additionally */,
 				8F4738322848DE2A005DF65E /* Presentation */,
 				ADF0CF75283FDAA10075F54D /* Helpers */,
 				8F4738332848DE46005DF65E /* Resources */,
@@ -189,9 +208,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
+				330AFD1B2B6D0AD500FB3C9C /* CustomLabel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
+				330AFD1D2B6D0AF800FB3C9C /* Constants.swift in Sources */,
+				330AFD192B6D0AB100FB3C9C /* CustomButton.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
 			);
