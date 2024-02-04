@@ -25,17 +25,17 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="27i-Bf-zNl" userLabel="Super Stack">
                                 <rect key="frame" x="20" y="69" width="353" height="749"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ffs-GB-Ydg" userLabel="Stack Labels">
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ffs-GB-Ydg" userLabel="Stack Labels">
                                         <rect key="frame" x="0.0" y="0.0" width="353" height="24"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Gs-Uq-DR2">
-                                                <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="24"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Gs-Uq-DR2">
+                                                <rect key="frame" x="0.0" y="0.0" width="71.666666666666671" height="24"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="51U-Sv-Oq3">
-                                                <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="24"/>
+                                                <rect key="frame" x="71.666666666666657" y="0.0" width="281.33333333333337" height="24"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -45,37 +45,44 @@
                                             <constraint firstAttribute="height" constant="24" id="zdg-lw-VmM"/>
                                         </constraints>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="The Dark Knight" translatesAutoresizingMaskIntoConstraints="NO" id="1AD-aQ-rkT" userLabel="Main picture">
-                                        <rect key="frame" x="0.0" y="44" width="353" height="525"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="The Dark Knight" translatesAutoresizingMaskIntoConstraints="NO" id="1AD-aQ-rkT" userLabel="Main picture">
+                                        <rect key="frame" x="0.0" y="44" width="353" height="529.66666666666663"/>
                                         <color key="backgroundColor" name="YP Black"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="1AD-aQ-rkT" secondAttribute="height" multiplier="2:3" id="ege-SA-25V"/>
+                                        </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="20"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xqi-t0-MlR" userLabel="Text container">
-                                        <rect key="frame" x="0.0" y="589" width="353" height="80"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xqi-t0-MlR" userLabel="Text container">
+                                        <rect key="frame" x="0.0" y="593.66666666666663" width="353" height="78"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="clip" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WKw-ZN-P3f">
                                                 <rect key="frame" x="42" y="13" width="269" height="54"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="paragraphStyle.lineSpacing">
+                                                        <integer key="value" value="26"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="WKw-ZN-P3f" secondAttribute="bottom" constant="13" id="2OS-0g-LHZ"/>
                                             <constraint firstAttribute="trailing" secondItem="WKw-ZN-P3f" secondAttribute="trailing" constant="42" id="3Rd-jA-nnK"/>
                                             <constraint firstItem="WKw-ZN-P3f" firstAttribute="leading" secondItem="Xqi-t0-MlR" secondAttribute="leading" constant="42" id="65U-vJ-glP"/>
-                                            <constraint firstItem="WKw-ZN-P3f" firstAttribute="top" secondItem="Xqi-t0-MlR" secondAttribute="top" constant="13" id="XHW-z4-v8a"/>
+                                            <constraint firstAttribute="height" constant="78" id="BcS-TK-IFZ"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="p7K-u2-Mbg" userLabel="Stack Buttons">
-                                        <rect key="frame" x="0.0" y="689" width="353" height="60"/>
+                                        <rect key="frame" x="0.0" y="691.66666666666663" width="353" height="57.333333333333371"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AE-Cq-tUX">
-                                                <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="60"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="57.333333333333336"/>
                                                 <color key="backgroundColor" name="YP White"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="OwE-Ds-8Ce"/>
@@ -90,9 +97,12 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JWe-AP-fbr"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TqD-RO-Qb4">
-                                                <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="60"/>
+                                                <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="57.333333333333336"/>
                                                 <color key="backgroundColor" name="YP White"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="SML-wc-7BU"/>
@@ -107,6 +117,9 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BZw-IX-aae"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -125,6 +138,11 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="27i-Bf-zNl" secondAttribute="bottom" id="tmV-bv-7Ng"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="51U-Sv-Oq3" id="JAK-CV-pSK"/>
+                        <outlet property="imageView" destination="1AD-aQ-rkT" id="D23-9d-oqj"/>
+                        <outlet property="textLabel" destination="WKw-ZN-P3f" id="dOk-rt-UC8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
