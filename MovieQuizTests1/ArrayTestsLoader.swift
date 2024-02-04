@@ -1,6 +1,6 @@
 //
-//  MoviesLoaderTests.swift
-//  MovieQuizTests
+//  ArrayTestsLoader.swift
+//  MovieQuizTests1
 //
 //  Created by Soslan Dzampaev on 05.02.2024.
 //
