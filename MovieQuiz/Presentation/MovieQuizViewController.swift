@@ -1,7 +1,7 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
+
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -10,6 +10,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private let questionsAmount = 10
     private var questionFactory: QuestionFactoryProtocol?
+    private var alertPresenter: AlertPresenter?
     private var currentQuestion: QuizQuestion? 
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -20,6 +21,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory()
+        alertPresenter = AlertPresenter(delegate: self)
         questionFactory?.delegate = self
         questionFactory?.requestNextQuestion()
     }
@@ -85,21 +87,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
+        let alertModel = AlertModel(
             title: result.title,
             message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            questionFactory?.requestNextQuestion()
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
+            buttonText: result.buttonText,
+            buttonAction: { [weak self] in
+                guard let self = self else {return}
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                questionFactory?.requestNextQuestion()
+                        
+            }
+        )
+        alertPresenter?.show(alertModel: alertModel)
     }
     
     // MARK: - Actions
