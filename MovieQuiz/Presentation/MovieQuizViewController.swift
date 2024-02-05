@@ -14,6 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - QuestionFactoryDelegate
+    
     func didReceiveNextQuestion(question: QuizQuestion?){
         guard let question = question else {
             return
@@ -35,6 +37,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    // MARK: - Private questions
+
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -97,6 +101,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
+    // MARK: - Actions
     
     @IBAction private func noButtonClicked(_ sender: Any) {
         noButton.isEnabled = false
