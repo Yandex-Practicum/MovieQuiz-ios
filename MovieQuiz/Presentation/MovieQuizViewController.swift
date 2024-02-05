@@ -3,22 +3,21 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     
     //otlets
-    @IBAction func yesButtonClicked(_ sender: Any) {
-    }
+    //->Buttons
     @IBAction func noButtonClicked(_ sender: Any) {
     }
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var textLabel: UILabel!
+    @IBAction func yesButtonClicked(_ sender: Any) {
+    }
+    //->Display
     @IBOutlet weak var counterLabel: UILabel!
+    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
     
     //structs
-    struct QuizQuestion{
-        let image:String
-        let text:String
-        let correctAnswer:Bool
-    }
     
     //collections
+    
+    /*
     //-->Mock data
     private let questions: [QuizQuestion] = [
             QuizQuestion(
@@ -62,11 +61,11 @@ final class MovieQuizViewController: UIViewController {
                 text: "Рейтинг этого фильма больше чем 6?",
                 correctAnswer: false)
         ]
+     */
     
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    //variables
+    
+    //methods
 }
 
 /*
