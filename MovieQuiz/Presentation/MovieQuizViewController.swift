@@ -11,13 +11,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService = StatisticServiceImplementation()
-    
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var questionTitleLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -31,16 +31,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = UIColor.ypBlack.cgColor
+        imageView.backgroundColor = UIColor.ypBlack
         
         alertPresenter = AlertPresenter(delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        
+        showLoadingIndicator()
+        questionFactory?.loadData()
+
         super.viewDidLoad()
     }
     
     // MARK: - QuestionFactoryDelegate
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
@@ -57,11 +68,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(named: "The Godfather")!,
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
+    func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
     
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        let alertModel = AlertModel(title: "Ошибка",
+                                    message: message,
+                                    buttonText: "Попробовать снова",
+                                    buttonAction: { [weak self] in
+                                        guard let self = self else { return }
+                                        self.currentQuestionIndex = 0
+                                        self.correctAnswers = 0
+                                        self.questionFactory?.loadData()
+                                    }
+        )
+        
+        alertPresenter?.show(alertModel: alertModel)
+    }
     func show(alert: UIAlertController) {
         self.present(alert, animated: true)
     }
@@ -87,7 +117,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 )
                 alertPresenter?.show(alertModel: alertModel)
     }
-    
+    private func hideLoadingIndicator() {
+        
+    }
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect { correctAnswers += 1 }
         let borderColor = isCorrect ? UIColor.ypGreen : UIColor.ypRed
