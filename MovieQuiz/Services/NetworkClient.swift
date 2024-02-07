@@ -10,6 +10,7 @@ import Foundation
 enum NetworkError: Error {
     case codeError
     case apiKeyError
+    case imageError
 }
 
 struct NetworkClient {

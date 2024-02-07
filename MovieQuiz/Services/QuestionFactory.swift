@@ -30,38 +30,6 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 }
             }
         }
-//    private let questions: [QuizQuestion] = [
-//        QuizQuestion(image: "The Godfather",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: true),
-//        QuizQuestion(image: "The Dark Knight",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: true),
-//        QuizQuestion(image: "Kill Bill",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: true),
-//        QuizQuestion(image: "The Avengers",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: true),
-//        QuizQuestion(image: "Deadpool",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: true),
-//        QuizQuestion(image: "The Green Knight",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: true),
-//        QuizQuestion(image: "Old",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: false),
-//        QuizQuestion(image: "The Ice Age Adventures of Buck Wild",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: false),
-//        QuizQuestion(image: "Tesla",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: false),
-//        QuizQuestion(image: "Vivarium",
-//                     text: "Рейтинг этого фильма больше чем 6?",
-//                     correctAnswer: false),
-//    ]
     
     func requestNextQuestion() {
         DispatchQueue.global().async {[weak self] in
@@ -73,7 +41,13 @@ final class QuestionFactory: QuestionFactoryProtocol {
             
             do{
                 imageData = try Data(contentsOf: movie.resizedImageURL)
-            }catch{ print("Failed to load image") }
+            }catch{
+                DispatchQueue.main.async{ [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.didFailToLoadData(with: NetworkError.imageError)
+                }
+                return
+            }
             
             let rating = Float(movie.rating) ?? 0
             
@@ -105,3 +79,39 @@ final class QuestionFactory: QuestionFactoryProtocol {
         self.moviesLoader = moviesLoader
     }
 }
+
+
+/*
+ private let questions: [QuizQuestion] = [
+        QuizQuestion(image: "The Godfather",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "The Dark Knight",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "Kill Bill",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "The Avengers",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "Deadpool",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "The Green Knight",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: true),
+        QuizQuestion(image: "Old",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false),
+        QuizQuestion(image: "The Ice Age Adventures of Buck Wild",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false),
+        QuizQuestion(image: "Tesla",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false),
+        QuizQuestion(image: "Vivarium",
+                     text: "Рейтинг этого фильма больше чем 6?",
+                     correctAnswer: false),
+    ] 
+ */

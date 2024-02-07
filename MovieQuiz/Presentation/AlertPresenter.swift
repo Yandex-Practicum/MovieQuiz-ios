@@ -5,8 +5,6 @@
 //  Created by Сергей Баскаков on 24.01.2024.
 //
 
-import Foundation
-
 import UIKit
 
 final class AlertPresenter: AlertPresenterProtocol {

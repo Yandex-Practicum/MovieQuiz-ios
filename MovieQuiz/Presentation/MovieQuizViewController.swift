@@ -1,16 +1,6 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
-    
-    private var currentQuestionIndex = 0
-    private var correctAnswers = 0
-    
-    private let questionsAmount: Int = 10
-    private var currentQuestion: QuizQuestion?
-    
-    private var questionFactory: QuestionFactoryProtocol?
-    private var alertPresenter: AlertPresenterProtocol?
-    private var statisticService: StatisticService = StatisticServiceImplementation()
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
@@ -18,6 +8,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var questionTitleLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+
+    private let questionsAmount: Int = 10
+    private var currentQuestionIndex = 0
+    private var correctAnswers = 0
+    
+    private var currentQuestion: QuizQuestion?
+    private var questionFactory: QuestionFactoryProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService = StatisticServiceImplementation()
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -43,7 +46,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     // MARK: - QuestionFactoryDelegate
-    
     func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription)
     }
@@ -65,14 +67,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
+    func show(alert: UIAlertController) {
+        hideLoadingIndicator()
+        self.present(alert, animated: true)
+    }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(named: "The Godfather")!,
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
-    func showLoadingIndicator() {
+    
+    private func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
@@ -92,11 +99,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         
         alertPresenter?.show(alertModel: alertModel)
     }
-    func show(alert: UIAlertController) {
-        self.present(alert, animated: true)
-    }
     
     private func show(quiz step: QuizStepViewModel) {
+        hideLoadingIndicator()
         imageView.image = step.image
         imageView.layer.borderColor = UIColor.ypBlack.cgColor
         questionLabel.text = step.question
@@ -115,11 +120,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                         self.questionFactory?.requestNextQuestion()
                     }
                 )
-                alertPresenter?.show(alertModel: alertModel)
+        hideLoadingIndicator()
+        alertPresenter?.show(alertModel: alertModel)
     }
+    
     private func hideLoadingIndicator() {
-        
+        activityIndicator.isHidden = true
     }
+    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect { correctAnswers += 1 }
         let borderColor = isCorrect ? UIColor.ypGreen : UIColor.ypRed
@@ -150,6 +158,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             show(quiz: results)
         } else {
             currentQuestionIndex += 1
+            showLoadingIndicator()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -160,6 +169,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
+    
     @IBAction private func noButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {
             return
