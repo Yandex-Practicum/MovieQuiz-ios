@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
-
+    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -11,7 +11,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     private let questionsAmount = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenter?
-    private var currentQuestion: QuizQuestion? 
+    private var currentQuestion: QuizQuestion?
+    private var statisticService: StatisticService?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
@@ -22,6 +23,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory()
         alertPresenter = AlertPresenter(delegate: self)
+        statisticService = StatisticServiceImplementation()
         questionFactory?.delegate = self
         questionFactory?.requestNextQuestion()
     }
@@ -40,7 +42,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     }
     
     // MARK: - Private questions
-
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -87,16 +89,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     }
     
     private func show(quiz result: QuizResultsViewModel) {
+        guard let statisticService = statisticService else {
+            assertionFailure("statistic service is nil")
+            return
+        }
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        let bestGame = statisticService.bestGame
+        let gamesCountPlayed = "Количество сыгранных игр: \(statisticService.gamesCount)"
+        let bestGameRecord = "Рекорд: \(bestGame.correct)\\\(bestGame.total) (\(bestGame.date.dateTimeString))"
+        let averageAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        let messageText = [result.text, gamesCountPlayed, bestGameRecord, averageAccuracy].joined(separator: "\n")
         let alertModel = AlertModel(
             title: result.title,
-            message: result.text,
+            message: messageText,
             buttonText: result.buttonText,
             buttonAction: { [weak self] in
                 guard let self = self else {return}
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 questionFactory?.requestNextQuestion()
-                        
+                
             }
         )
         alertPresenter?.show(alertModel: alertModel)
