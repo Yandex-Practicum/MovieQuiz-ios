@@ -27,6 +27,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showLoadingIndicator()
         questionFactory?.loadData()
         alertPresenter = AlertPresenter(view: self)
+        presenter.viewController = self
     }
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -65,7 +66,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         
         if isCorrect {
             correctAnswers += 1
@@ -137,20 +138,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     @IBAction private func noButtonClicked(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
+        
     }
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
