@@ -8,18 +8,20 @@
 import UIKit
 
 final class MovieQuizPresenter {
+    var questionFactory: QuestionFactory?
+    var correctAnswers = 0
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     
-    func isLastQuistion() -> Bool{
+    func isLastQuestion() -> Bool{
         currentQuestionIndex == questionsAmount - 1
     }
     
-    func resetQuistionIndex(){
+    func resetQuestionIndex(){
         currentQuestionIndex = 0
     }
     
-    func switchToNextQuistion(){
+    func switchToNextQuestion(){
         currentQuestionIndex += 1
     }
     
@@ -34,20 +36,46 @@ final class MovieQuizPresenter {
     weak var viewController: MovieQuizViewController?
     
     func yesButtonClicked() {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        didAnswer(isYes: true)
     }
     
     func noButtonClicked() {
+        didAnswer(isYes: false)
+    }
+    
+    private func didAnswer(isYes: Bool){
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = false
-
+        let givenAnswer = isYes
         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
+    
+    
+    func showNextQuestionOrResults() {
+        if self.isLastQuestion() {
+            let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!" // ОШИБКА 1: `correctAnswers` не определено
+                
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            viewController?.show(quiz: viewModel) // ОШИБКА 2: `show(quiz:)` не определён
+        } else {
+            self.switchToNextQuestion()
+            questionFactory?.requestNextQuestion() // ОШИБКА 3: `questionFactory` не определено
+        }
     }
 }
