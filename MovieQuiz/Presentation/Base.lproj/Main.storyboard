@@ -28,8 +28,8 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tVt-cU-y6d">
                                 <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="232" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iou-Iz-aBo">
-                                        <rect key="frame" x="0.0" y="0.0" width="340" height="23.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="246" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iou-Iz-aBo">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQH-5h-rJ1" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="72" height="23.5"/>
@@ -38,7 +38,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftK-cT-fSj" userLabel="Index Label">
-                                                <rect key="frame" x="304" y="0.0" width="36" height="23.5"/>
+                                                <rect key="frame" x="318" y="0.0" width="36" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
