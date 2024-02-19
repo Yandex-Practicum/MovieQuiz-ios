@@ -6,7 +6,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        sleep(3)
+        //sleep(3)
         return true
     }
 
