@@ -1,6 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -17,12 +18,29 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
+    //Изменение цвета статусбара на светлый
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     private var currentQuestionIndex:Int = 0
     private var correctAnswers:Int = 0
     //private let currentQuestion = questions[currentQuestionIndex]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Интерлиниж текстового блока с повросом (В макете 26pt,но тут почему-то слишком большой разрыв получается)
+        /*
+        let attributedString = NSMutableAttributedString(string: "Your text goes here")
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 26
+        
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+        
+        questionLabel.attributedText = attributedString
+        */
         
         let currentQuestion = questions[currentQuestionIndex]
         let questionStep = convert(model: currentQuestion)
@@ -102,7 +120,7 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
-    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+    //Загрузка вью викторины с сбросом рамок
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -143,7 +161,7 @@ final class MovieQuizViewController: UIViewController {
         } else{
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
-        
+        //задержка в 1.0 секунду
         DispatchQueue.main.asyncAfter(deadline:.now() + 1.0){
             self.showNextQuestionOrResults()
         }
@@ -171,7 +189,6 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             
             show(quiz: viewModel)
-//            imageView.layer.masksToBounds = false
 //            imageView.layer.borderColor = nil
 //            imageView.layer.borderWidth = 0
             
