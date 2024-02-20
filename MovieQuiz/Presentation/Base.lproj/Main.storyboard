@@ -68,9 +68,6 @@
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма больше, чем 5?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="251" translatesAutoresizingMaskIntoConstraints="NO" id="WKw-ZN-P3f">
                                                 <rect key="frame" x="51" y="0.0" width="251" height="80"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="52" id="85k-lx-p7O"/>
-                                                </constraints>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
