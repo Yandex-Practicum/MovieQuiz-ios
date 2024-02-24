@@ -114,13 +114,25 @@ final class MovieQuizViewController: UIViewController {
         return questionStep
     }
     
+    private func disableButtons(){
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+    }
+    
+    private func enableButtons(){
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
+    }
+    
     @IBAction func noButtonClicked(_ sender: UIButton) {
+        disableButtons()
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        disableButtons()
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
@@ -178,9 +190,11 @@ final class MovieQuizViewController: UIViewController {
         }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.enableButtons()
             self.showNextQuestionOrResults()
         }
+        
     }
 }
