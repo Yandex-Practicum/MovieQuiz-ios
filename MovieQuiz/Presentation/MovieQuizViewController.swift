@@ -12,6 +12,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // Структура экрана "Результан квиза"
+    // ww
     private struct QuizResultsViewModel {
         let title: String
         let text: String
