@@ -5,21 +5,21 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
     // Структура экрана "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
     
     // Структура экрана "Результан квиза"
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
     }
     
     // Структура для Масива question
-    struct QuizQuestion {
+    private struct QuizQuestion {
         let image: String
         let text: String
         // строка с вопросом о рейтинге фильма
@@ -85,7 +85,7 @@ final class MovieQuizViewController: UIViewController {
         let questionStep = QuizStepViewModel (
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1) /\(questions.count)" )
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)" )
         return questionStep
     }
     
@@ -126,36 +126,36 @@ final class MovieQuizViewController: UIViewController {
     
     
     private func show(quiz result: QuizResultsViewModel) {
-               let alert = UIAlertController(
-                   title: result.title,
-                   message: result.text,
-                   preferredStyle: .alert)
-               
-               let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-                   self.currentQuestionIndex = 0
-                   
-                   self.correctAnswers = 0
-                   
-                   let firstQuestion = self.questions[self.currentQuestionIndex]
-                   let viewModel = self.convert(model: firstQuestion)
-                   self.show(quiz: viewModel)
-               }
-               
-               alert.addAction(action)
-               
-               self.present(alert, animated: true, completion: nil)
-           }
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            self.currentQuestionIndex = 0
+            
+            self.correctAnswers = 0
+            
+            let firstQuestion = self.questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+        }
+        
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
     
-    func show(quiz step: QuizStepViewModel) {
+  private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     
     // Оутлеты UI
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var textLabel: UILabel!
-    @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private  var imageView: UIImageView!
+    @IBOutlet private  var textLabel: UILabel!
+    @IBOutlet private  var counterLabel: UILabel!
     
     // Actions кнопки
     @IBAction private func yesButtonClicked(_ sender: Any) {
