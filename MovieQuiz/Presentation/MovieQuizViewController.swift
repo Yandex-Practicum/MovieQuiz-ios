@@ -1,14 +1,11 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Properties
-    // переменная с индексом текущего вопроса, начальное значение 0
-    // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
     private var currentQuestionIndex = 0
-    // переменная со счётчиком правильных ответов, начальное значение закономерно 0
     private var correctAnswers = 0
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactory = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     // MARK: - IBOutlet
     @IBOutlet private var imageView: UIImageView!
@@ -19,11 +16,20 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
-        // берём текущий вопрос из массива вопросов по индексу текущего вопроса
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
+        let questionFactory = QuestionFactory()
+        questionFactory.setup(delegate: self)
+        self.questionFactory = questionFactory
+        questionFactory.requestNextQuestion()
+    }
+    // MARK: - QuestionFactoryDelegate
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+        self?.show(quiz: viewModel)
         }
     }
     //MARK: - IBActions
@@ -71,18 +77,14 @@ final class MovieQuizViewController: UIViewController {
             guard let self = self else {return}
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-
-                self.show(quiz: viewModel)
-            }
+            questionFactory?.requestNextQuestion()
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
+    
     private func showAnswerResult(isCorrect: Bool) {
         if isCorrect { // 1
                 correctAnswers += 1 // 2
@@ -102,6 +104,7 @@ final class MovieQuizViewController: UIViewController {
     }
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
+    
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             let text = correctAnswers == questionsAmount ?
@@ -116,14 +119,11 @@ final class MovieQuizViewController: UIViewController {
             isEnabledYesButton.isEnabled = true
         } else {
             currentQuestionIndex += 1
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-
-                show(quiz: viewModel)
+            self.questionFactory?.requestNextQuestion()
             }
             isEnabledNoButton.isEnabled = true
             isEnabledYesButton.isEnabled = true
         }
     }
-}
+
+
