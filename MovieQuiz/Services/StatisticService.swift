@@ -15,24 +15,19 @@ final class StatisticServiceImplementation: StatisticService {
         case correct, total, bestGame, gamesCount, totalAccuracy
     }
     
-    // Сохранение результата текущей игры и обновление статистики
     func store(correct count: Int, total amount: Int) {
         let currentGame = GameRecord(correct: count, total: amount, date: Date())
-        
-        // Обновление и сохранение количества игр
+    
         gamesCount += 1
         
-        // Обновление и сохранение общей точности
         let newTotalAccuracy = ((totalAccuracy * Double(gamesCount - 1)) + (Double(count) / Double(amount) * 100)) / Double(gamesCount)
         totalAccuracy = newTotalAccuracy
         
-        // Проверка и сохранение лучшей игры
         if currentGame.isBetterThan(bestGame) {
             bestGame = currentGame
         }
     }
     
-    // Получение и сохранение лучшей игры
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -50,13 +45,11 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    // Общая точность по всем играм
     var totalAccuracy: Double {
         get { userDefaults.double(forKey: Keys.totalAccuracy.rawValue) }
         set { userDefaults.set(newValue, forKey: Keys.totalAccuracy.rawValue) }
     }
     
-    // Количество сыгранных игр
     var gamesCount: Int {
         get { userDefaults.integer(forKey: Keys.gamesCount.rawValue) }
         set { userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue) }

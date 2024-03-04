@@ -7,4 +7,3 @@
 
 import Foundation
 
-// Привет!
