@@ -14,6 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
     
     // MARK: - Lifecycle
     
@@ -27,6 +28,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let alertPresenter = AlertPresenter()
         alertPresenter.viewController = self
         self.alertPresenter = alertPresenter
+        
+        statisticService = StatisticServiceImplementation()
         
         self.questionFactory?.requestNextQuestion()
     }
@@ -63,9 +66,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
+        guard let statisticService = statisticService else {
+            return
+        }
+        
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        
+        let message = result.text + "\nКоличество сыгранных квизов: \(statisticService.gamesCount)\n" + "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))\n" + "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        
         let alertModel = AlertModel(
             title: result.title,
-            message: result.text,
+            message: message,
             buttonText: result.buttonText,
             completion: { [weak self] in
                 guard let self = self else { return }
