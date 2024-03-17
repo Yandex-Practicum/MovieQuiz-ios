@@ -1,27 +1,15 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
-    }
     
     // MARK: - Переменные и константы
     
-    private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
-    private let questionsAmount = 10
+    private let presenter = MovieQuizPresenter()
+    private var currentQuestion: QuizQuestion?
     
     // MARK: - UIOutlets
     
@@ -34,44 +22,41 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-       imageView.layer.cornerRadius = 20
+        
+        imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(viewController: self)
         showLoadingIndicator()
         questionFactory?.loadData()
+        presenter.viewController = self
     }
     
     // MARK: - Button Yes
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let checkAnswer = true
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        if checkAnswer == currentQuestion.correctAnswer {
-            correctAnswers += 1
-        }
-        showAnswerResult(isCorrect: checkAnswer == currentQuestion.correctAnswer)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.showNextQuestionOrResults()
-        }
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
     // MARK: - Button No
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let checkAnswer = false
-        guard let currentQuestion = currentQuestion else {
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
+    }
+    
+    // MARK: - Method "DidReceiveNextQuestion"
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
             return
         }
-        if checkAnswer == currentQuestion.correctAnswer {
-            correctAnswers += 1
-        }
-        showAnswerResult(isCorrect: checkAnswer == currentQuestion.correctAnswer)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.showNextQuestionOrResults()
+        
+        currentQuestion = question
+        let viewModel = presenter.convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
         }
     }
     
@@ -83,7 +68,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - Method "DidFailToLoadData"
-
+    
     func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription)
     }
@@ -103,33 +88,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.activityIndicator.isHidden = true
         }
     }
-
+    
     // MARK: - Method "ShowNetworkError"
     
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
         
         let alertModel = AlertModel(title: "Ошибка",
-                               message: message,
-                               buttonText: "Попробовать еще раз") { [weak self] in
+                                    message: message,
+                                    buttonText: "Попробовать еще раз") { [weak self] in
             guard let self = self else { return }
             
-            self.currentQuestionIndex = 0
+            self.presenter.resetQuestionIndex()
             self.correctAnswers = 0
             
             self.questionFactory?.requestNextQuestion()
         }
-        
+        self.questionFactory?.loadData()
         alertPresenter?.showAlert(with: alertModel)
-    }
-    
-    // MARK: - Method "Convert"
-    
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     // MARK: - Method "resetImageViewBorder"
@@ -150,15 +126,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Method "ShowAnswerResult"
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypGreen.cgColor
-        } else {
-            imageView.layer.masksToBounds = true
-            imageView.layer.borderWidth = 8
-            imageView.layer.borderColor = UIColor.ypRed.cgColor
+            correctAnswers += 1
+        }
+
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.showNextQuestionOrResults()
         }
     }
     
@@ -166,10 +145,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         
-        if currentQuestionIndex >= questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             hideLoadingIndicator()
             guard let statisticService = statisticService else { return }
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
             
             let gamesPlayed = statisticService.gamesCount
             let averageAccuracy = statisticService.totalAccuracy
@@ -178,7 +157,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let bestDate = bestGame.date.dateTimeString
             
             let message = """
-            Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
             Количество сыгранных квизов: \(gamesPlayed)
             Рекорд: \(bestScore) (\(bestDate))
             Средняя точность: \(String(format: "%.2f%%", averageAccuracy))
@@ -194,19 +173,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
             alertPresenter?.showAlert(with: alertModel)
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
-
+    
     
     // MARK: - Method "RestartQuiz"
     
     private func restartQuiz() {
-            currentQuestionIndex = 0
-            correctAnswers = 0
-            questionFactory?.requestNextQuestion()
-        }
+        presenter.resetQuestionIndex()
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
+    }
 }
 
 /// В дверь никто не постучал. "Отец" - подумал Штирлиц и заплакал.
