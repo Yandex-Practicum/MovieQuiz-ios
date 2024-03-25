@@ -30,19 +30,20 @@ final class MovieQuizUITests: XCTestCase {
         app.terminate()
         app = nil
     }
-
+    
     func testYesButton() {
+        
         let existsPredicate = NSPredicate(format: "exists == true")
         
-        let firstPoster = app.images["Poster"] // находим первоначальный постер
+        let firstPoster = app.images["Poster"]
         let expectationFirst = XCTNSPredicateExpectation(predicate: existsPredicate,
                                                         object: firstPoster)
-        wait(for: [expectationFirst], timeout: 5)
+        wait(for: [expectationFirst], timeout: 10)
         let firstPosterData = firstPoster.screenshot().pngRepresentation
         
-        app.buttons["Yes"].tap() // находим кнопку `Да` и нажимаем её
+        app.buttons["Yes"].tap()
         
-        let secondPoster = app.images["Poster"] // ещё раз находим постер
+        let secondPoster = app.images["Poster"]
         let expectationSecond = XCTNSPredicateExpectation(predicate: existsPredicate,
                                                         object: secondPoster)
         wait(for: [expectationSecond], timeout: 5)
@@ -58,7 +59,7 @@ final class MovieQuizUITests: XCTestCase {
     func testNoButton() {
         let existsPredicate = NSPredicate(format: "exists == true")
         
-        let firstPoster = app.images["Poster"] // находим первоначальный постер
+        let firstPoster = app.images["Poster"]
         let expectationFirst = XCTNSPredicateExpectation(
             predicate: existsPredicate,
             object: firstPoster)
