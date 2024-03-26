@@ -7,6 +7,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
+    private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
     // MARK: - IBOutlet
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -18,6 +20,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         let questionFactory = QuestionFactory()
         questionFactory.setup(delegate: self)
+        alertPresenter = AlertPresenter(viewController: self)
         self.questionFactory = questionFactory
         questionFactory.requestNextQuestion()
     }
@@ -66,22 +69,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
-    // приватный метод для показа результатов раунда квиза
-    // принимает вью модель QuizResultsViewModel и ничего не возвращает
-    private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else {return}
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            questionFactory?.requestNextQuestion()
-        }
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-    }
+    
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     
@@ -102,19 +90,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return
         }
     }
-    // приватный метод, который содержит логику перехода в один из сценариев
-    // метод ничего не принимает и ничего не возвращает
-    
+
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-                    "Поздравляем, вы ответили на 10 из 10!" :
-                    "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let viewModel = QuizResultsViewModel( // 2
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel) // 3
+            showFinalResults()
             isEnabledNoButton.isEnabled = true
             isEnabledYesButton.isEnabled = true
         } else {
@@ -124,6 +103,34 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             isEnabledNoButton.isEnabled = true
             isEnabledYesButton.isEnabled = true
         }
+    private func showFinalResults() {
+        
+        statisticService?.store(correct: correctAnswers, total: questionsAmount)
+        
+        let alertModel = AlertModel(
+            title: "Игра окончена!",
+            message: makeResultMessage(),
+            buttonText: "Сыграть ещё раз",
+            completion: { [weak self] in
+                self?.currentQuestionIndex = 0
+                self?.correctAnswers = 0
+                self?.questionFactory?.requestNextQuestion()
+            }
+        )
+        alertPresenter?.show(alertModel: alertModel)
     }
+    private func makeResultMessage() -> String {
+        guard let bestGame = statisticService?.bestGame else {
+            assertionFailure("error")
+            return ""
+        }
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService?.gamesCount)"
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
+        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" + "(\(bestGame.date.dateTimeString)"
+        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService!.totalAccuracy))%"
+        let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine].joined(separator: "\n")
+        return resultMessage
+    }
+}
 
 
