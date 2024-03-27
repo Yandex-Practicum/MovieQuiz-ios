@@ -55,8 +55,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         isEnabledNoButton.isEnabled = false
         isEnabledYesButton.isEnabled = false
     }
-    //MARK: - Private functions
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -64,7 +63,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
-    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
