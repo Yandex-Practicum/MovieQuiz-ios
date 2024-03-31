@@ -1,10 +1,76 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    
+    struct QuizQuestion {
+        // строка с названием фильма,
+        // совпадает с названием картинки афиши фильма в Assets
+        let image: String
+        // строка с вопросом о рейтинге фильма
+        let text: String
+        // булевое значение (true, false), правильный ответ на вопрос
+        let correctAnswer: Bool
+    }
+    
+    struct QuizStepViewModel {
+      // картинка с афишей фильма с типом UIImage
+      let image: UIImage
+      // вопрос о рейтинге квиза
+      let question: String
+      // строка с порядковым номером этого вопроса (ex. "1/10")
+      let questionNumber: String
+    }
+    
+    
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
+    
+    private let questions: [QuizQuestion] = [
+        QuizQuestion(image: "The Godfather", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(image: "The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(image: "Kill Bill", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(image: "The Avengers", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(image: "Deadpool", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(image: "The Green Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
+        QuizQuestion(image: "Old", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
+        QuizQuestion(image: "The Ice Age Adventures of Buck Wild", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
+        QuizQuestion(image: "Tesla", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
+        QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
+    ]
+    
+    private var currentQuestionIndex = 0
+    private var correctAnswers = 0
+   
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        let currentQuestion = questions[currentQuestionIndex]
+        show(quiz: convert(model: currentQuestion))
     }
+
+    @IBAction func noButtonClicked(_ sender: UIButton) {
+    }
+
+    
+    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    }
+    
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
+                                 question: model.text,
+                                 questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+    }
+    
+    private func show(quiz step: QuizStepViewModel) {
+        imageView.image = step.image
+        textLabel.text = step.question
+        counterLabel.text = step.questionNumber
+    }
+    
+    
+    
 }
 
 /*
