@@ -230,7 +230,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    func showNextQuestionOrResults() {
+    private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
             let text = "Ваш результат: \(correctAnswers)/10"
             let viewModel = QuizResultsViewModel(
