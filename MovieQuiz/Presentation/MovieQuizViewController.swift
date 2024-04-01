@@ -13,12 +13,21 @@ final class MovieQuizViewController: UIViewController {
     }
     
     struct QuizStepViewModel {
-      // картинка с афишей фильма с типом UIImage
-      let image: UIImage
-      // вопрос о рейтинге квиза
-      let question: String
-      // строка с порядковым номером этого вопроса (ex. "1/10")
-      let questionNumber: String
+        // картинка с афишей фильма с типом UIImage
+        let image: UIImage
+        // вопрос о рейтинге квиза
+        let question: String
+        // строка с порядковым номером этого вопроса (ex. "1/10")
+        let questionNumber: String
+    }
+    
+    struct QuizResultsViewModel {
+        // строка с заголовком алерта
+        let title: String
+        // строка с текстом о количестве набранных очков
+        let text: String
+        // текст для кнопки алерта
+        let buttonText: String
     }
     
     
@@ -41,7 +50,7 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-   
+    
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -49,12 +58,14 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion = questions[currentQuestionIndex]
         show(quiz: convert(model: currentQuestion))
     }
-
-    @IBAction func noButtonClicked(_ sender: UIButton) {
-    }
-
     
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer)
+    }
+    
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -65,12 +76,60 @@ final class MovieQuizViewController: UIViewController {
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
+        imageView.layer.borderWidth = 0
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
     
+    private func showAnswerResult(isCorrect: Bool) {
+        // метод красит рамку
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        if isCorrect {
+            correctAnswers += 1
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+        }
+
+    }
     
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 {
+            show(quiz: .init(title: "Этот раунд окончен", text: "Ваш результат: \(correctAnswers)/\(questions.count)", buttonText: "Сыграть еще раз"))
+        } else { // 2
+            currentQuestionIndex += 1
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            show(quiz: viewModel)
+        }
+    }
     
+    private func show(quiz result: QuizResultsViewModel) {
+        // попробуйте написать код создания и показа алерта с результатами
+        // идём в состояние "Результат квиза"
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        
+        
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+            // код, который сбрасывает игру и показывает первый вопрос
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            let firstQuestion = self.questions[self.currentQuestionIndex]
+            let viewModel = self.convert(model: firstQuestion)
+            self.show(quiz: viewModel)
+        }
+        
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 /*
