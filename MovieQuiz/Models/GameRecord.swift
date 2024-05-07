@@ -16,3 +16,4 @@ struct GameRecord: Codable {
         correct > another.correct
     }
 }
+
