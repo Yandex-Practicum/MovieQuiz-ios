@@ -29,9 +29,12 @@ class QuestionFactory: QuestionFactoryProtocol {
                 print("Failed to load image")
             }
             
-            let rating = Float(movie.rating) ?? 0
-            let text = "Рейтинг этого фильма \nбольше чем 6?"
-            let correctAnswer = rating > 6
+            let randomRating = Float.random(in: 7.0...9.9)
+            let isGreaterThan = Bool.random()
+            let text = "Рейтинг этого фильма \(isGreaterThan ? "больше" : "меньше") чем \(String(format: "%.1f", randomRating))?"
+            
+            let movieRating = Float(movie.rating) ?? 0
+            let correctAnswer = isGreaterThan ? (movieRating > randomRating) : (movieRating < randomRating)
             
             
             let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
