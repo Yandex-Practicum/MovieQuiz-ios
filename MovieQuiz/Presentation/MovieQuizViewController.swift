@@ -201,30 +201,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter?.show(alert: alertModel)
     }
     
-    @objc private func noButtonTapped() {
+    private func handleAnswer(isYesAnswer: Bool) {
+        yesButton.isEnabled = false
         noButton.isEnabled = false
+        
         let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.impactOccurred()
         
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = false
         
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        let isCorrect = (isYesAnswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: isCorrect)
+    }
+    
+    @objc private func noButtonTapped() {
+        handleAnswer(isYesAnswer: false)
     }
     
     @objc private func yesButtonTapped() {
-        yesButton.isEnabled = false
-        let generator = UIImpactFeedbackGenerator(style: .soft)
-        generator.impactOccurred()
-        
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        handleAnswer(isYesAnswer: true)
     }
     
     private func showAnswerResult(isCorrect: Bool) {
