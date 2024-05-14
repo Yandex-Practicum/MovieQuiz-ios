@@ -31,7 +31,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             let randomRating = Float.random(in: 7.0...9.9)
             let isGreaterThan = Bool.random()
-            let text = "Рейтинг этого фильма \(isGreaterThan ? "больше" : "меньше") чем \(String(format: "%.1f", randomRating))?"
+            let text = "Рейтинг этого фильма \n\(isGreaterThan ? "больше" : "меньше") чем \(String(format: "%.1f", randomRating))?"
             
             let movieRating = Float(movie.rating) ?? 0
             let correctAnswer = isGreaterThan ? (movieRating > randomRating) : (movieRating < randomRating)
