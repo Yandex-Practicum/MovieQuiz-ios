@@ -60,7 +60,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private lazy var imageView: UIImageView = {
         let element = UIImageView()
-        element.image = UIImage(named: "Deadpool")
+        element.image = UIImage()
         element.layer.cornerRadius = 20
         element.layer.masksToBounds = true
         element.translatesAutoresizingMaskIntoConstraints = false
@@ -102,6 +102,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return element
     }()
     
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let element = UIActivityIndicatorView(style: .large)
+        element.color = .ypWhite
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
     
     // MARK: - Logic
     
@@ -112,8 +119,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         setView()
         setupConstraints()
         
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        statisticService = StatisticServiceImplementation()
+        //        questionFactory?.requestNextQuestion()
         alertPresenter = AlertPresenter(viewController: self)
     }
     
@@ -123,6 +133,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questCountStackView.addArrangedSubview(questionTitleLabel)
         questCountStackView.addArrangedSubview(counterLabel)
         mainStackView.addArrangedSubview(imageView)
+        imageView.addSubview(activityIndicator)
         mainStackView.addArrangedSubview(textLabel)
         mainStackView.addArrangedSubview(buttonsStackView) //60
         buttonsStackView.addArrangedSubview(noButton)
@@ -140,6 +151,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    func didLoadDataFromServer() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -150,12 +171,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
-        )
-        return questionStep
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -220,7 +239,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.showNextQuestionOrResults()
         }
     }
-
+    
     private func showNextQuestionOrResults() {
         guard currentQuestionIndex + 1 < questionsAmount else {
             let result = QuizResultsViewModel(
@@ -233,6 +252,33 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         currentQuestionIndex += 1
         questionFactory?.requestNextQuestion()
     }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        alertPresenter?.show(alert: model)
+    }
 }
 
 
@@ -241,6 +287,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 extension MovieQuizViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

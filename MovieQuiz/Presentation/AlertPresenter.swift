@@ -1,13 +1,6 @@
-//
-//  AlertPresenter.swift
-//  MovieQuiz
-//
-//  Created by Александр Крапивин on 12.05.2024.
-//
-
 import UIKit
 
-class AlertPresenter {
+final class AlertPresenter {
     weak var viewController: MovieQuizViewController?
 
     init(viewController: MovieQuizViewController) {
