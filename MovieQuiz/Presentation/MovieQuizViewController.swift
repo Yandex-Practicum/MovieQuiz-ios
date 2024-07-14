@@ -27,12 +27,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         super.viewDidLoad()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         alertPresenter?.delegate = self
-        
+        activityIndicator.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+        activityIndicator.color = .white
         showLoadingIndicator()
         questionFactory?.loadData()
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
+        hideLoadingIndicator()
         guard let firstQuestion = question else { return }
             currentQuestion = firstQuestion
             let viewModel = convert(model: firstQuestion)
@@ -74,12 +76,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         indexView.text = step.questionNumber
     }
     
-    private func showLoadingIndicator() {
+    func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
-    private func hideLoadingIndicator() {
+    func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
     
@@ -94,7 +96,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 
-                self.questionFactory?.requestNextQuestion()
+                //self.questionFactory?.requestNextQuestion()
+                self.questionFactory?.loadData()
             }
             
         alertPresenter?.showAlert(with : model)
@@ -129,7 +132,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             showResults()
         } else {
             currentQuestionIndex += 1
-            questionFactory?.requestNextQuestion() 
+            showLoadingIndicator()
+            questionFactory?.requestNextQuestion()
             yesButton.isEnabled = true
             noButton.isEnabled = true
         }

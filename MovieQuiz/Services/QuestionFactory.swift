@@ -48,6 +48,10 @@ final class QuestionFactory: QuestionFactoryProtocol {
             var imageData = Data()
             
             do {
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self = self else { return }
+//                    self.delegate?.showLoadingIndicator()
+//                }
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
                 print("Failed to load image")
@@ -64,6 +68,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
+//                self.delegate?.hideLoadingIndicator()
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
