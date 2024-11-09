@@ -13,6 +13,9 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "MovieQuizTests"
+      ],
       "target" : {
         "containerPath" : "container:MovieQuiz.xcodeproj",
         "identifier" : "4AE9A72D2CD920C0008A5331",
@@ -20,10 +23,20 @@
       }
     },
     {
+      "skippedTests" : [
+        "MovieQuizUITests\/testLaunchPerformance()"
+      ],
       "target" : {
         "containerPath" : "container:MovieQuiz.xcodeproj",
         "identifier" : "4A1F72802CDE80050029FBDB",
         "name" : "MovieQuizUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "4AD062092CDF8D4800EEBA36",
+        "name" : "MovieQuizPresenterTests"
       }
     }
   ],

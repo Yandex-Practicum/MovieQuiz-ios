@@ -1,24 +1,23 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-
-    private weak var viewController: MovieQuizViewController?
+    
+    private weak var viewController: MovieQuizViewControllerProtocol?
     internal var questionFactory: QuestionFactoryProtocol?
     private var statistics: StatisticServiceProtocol!
-    
     private let questionsAmount: Int = 10
     private var correctAnswers: Int = 0
     private var currentQuestionIndex: Int = 0
     private var currentQuestion: QuizQuestion?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
         viewController.showLoadingIndicator()
         statistics = StatisticService()
     }
-    /////////
+    
     internal func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
@@ -78,7 +77,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    internal func convert(model: QuizQuestion) -> QuizStepViewModel {
         let output = QuizStepViewModel.init(image: UIImage(data: model.image) ?? UIImage(),
                                             question: model.text,
                                             questionNumber: String(currentQuestionIndex+1)+"/"+String(questionsAmount))
