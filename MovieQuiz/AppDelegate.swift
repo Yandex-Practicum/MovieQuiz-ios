@@ -1,6 +1,6 @@
 import UIKit
 
-@main
+ @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
@@ -16,6 +16,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
+        print("Hello for brunch ")
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
@@ -24,3 +25,4 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didDiscardSceneSessions sceneSessions: Set<UISceneSession>
     ) {}
 }
+
