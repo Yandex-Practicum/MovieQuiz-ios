@@ -1,0 +1,490 @@
+diff --git a/MovieQuiz.xcodeproj/project.pbxproj b/MovieQuiz.xcodeproj/project.pbxproj
+index b7aeeb6..b3c6505 100644
+--- a/MovieQuiz.xcodeproj/project.pbxproj
++++ b/MovieQuiz.xcodeproj/project.pbxproj
+@@ -18,6 +18,9 @@
+ 		236845D32AAA424100571F4D /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236845D22AAA424100571F4D /* AlertModel.swift */; };
+ 		236845D52AAA442800571F4D /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236845D42AAA442800571F4D /* AlertPresenter.swift */; };
+ 		236845D72AAA482300571F4D /* AlertPresenerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236845D62AAA482300571F4D /* AlertPresenerProtocol.swift */; };
++		236855BD2AB36107002E8F29 /* StatisticServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236855BC2AB36106002E8F29 /* StatisticServiceProtocol.swift */; };
++		236855BF2AB36520002E8F29 /* BestGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236855BE2AB36520002E8F29 /* BestGameModel.swift */; };
++		236855C12AB36E08002E8F29 /* StatisticServiceImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236855C02AB36E08002E8F29 /* StatisticServiceImplementation.swift */; };
+ 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
+ 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
+ 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
+@@ -41,6 +44,9 @@
+ 		236845D22AAA424100571F4D /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
+ 		236845D42AAA442800571F4D /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+ 		236845D62AAA482300571F4D /* AlertPresenerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenerProtocol.swift; sourceTree = "<group>"; };
++		236855BC2AB36106002E8F29 /* StatisticServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceProtocol.swift; sourceTree = "<group>"; };
++		236855BE2AB36520002E8F29 /* BestGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestGameModel.swift; sourceTree = "<group>"; };
++		236855C02AB36E08002E8F29 /* StatisticServiceImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceImplementation.swift; sourceTree = "<group>"; };
+ 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
+ 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+ 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+@@ -77,6 +83,8 @@
+ 		236845C22AAA073900571F4D /* Services */ = {
+ 			isa = PBXGroup;
+ 			children = (
++				236855C02AB36E08002E8F29 /* StatisticServiceImplementation.swift */,
++				236855BC2AB36106002E8F29 /* StatisticServiceProtocol.swift */,
+ 				236845CC2AAA204B00571F4D /* QuestionFactoryProtocol.swift */,
+ 				236845C32AAA077400571F4D /* QuestionFactory.swift */,
+ 				236845CE2AAA35FD00571F4D /* QuestionFactoryDelegate.swift */,
+@@ -93,6 +101,7 @@
+ 				236845C82AAA0E9500571F4D /* QuizResultsViewModel.swift */,
+ 				236845CA2AAA0ECE00571F4D /* QuizQuestion.swift */,
+ 				236845D22AAA424100571F4D /* AlertModel.swift */,
++				236855BE2AB36520002E8F29 /* BestGameModel.swift */,
+ 			);
+ 			path = Models;
+ 			sourceTree = "<group>";
+@@ -244,13 +253,16 @@
+ 				236845D52AAA442800571F4D /* AlertPresenter.swift in Sources */,
+ 				236845D32AAA424100571F4D /* AlertModel.swift in Sources */,
+ 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
++				236855BF2AB36520002E8F29 /* BestGameModel.swift in Sources */,
+ 				236845CD2AAA204B00571F4D /* QuestionFactoryProtocol.swift in Sources */,
+ 				236845CF2AAA35FD00571F4D /* QuestionFactoryDelegate.swift in Sources */,
+ 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
+ 				236845C72AAA0E2600571F4D /* QuizStepViewModel.swift in Sources */,
+ 				236845CB2AAA0ECE00571F4D /* QuizQuestion.swift in Sources */,
++				236855BD2AB36107002E8F29 /* StatisticServiceProtocol.swift in Sources */,
+ 				236845C42AAA077400571F4D /* QuestionFactory.swift in Sources */,
+ 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
++				236855C12AB36E08002E8F29 /* StatisticServiceImplementation.swift in Sources */,
+ 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
+ 				236845C92AAA0E9500571F4D /* QuizResultsViewModel.swift in Sources */,
+ 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
+diff --git a/MovieQuiz/Models/AlertModel.swift b/MovieQuiz/Models/AlertModel.swift
+index 3695c0f..b1dccc3 100644
+--- a/MovieQuiz/Models/AlertModel.swift
++++ b/MovieQuiz/Models/AlertModel.swift
+@@ -17,8 +17,9 @@ struct AlertModel {
+     let title: String
+     let message: String
+     let buttonText: String
+-    let buttonAction: () -> Void
++    let completion: () -> Void
+ 
+     // completion- завершение
+ }
+ 
++
+diff --git a/MovieQuiz/Models/BestGameModel.swift b/MovieQuiz/Models/BestGameModel.swift
+new file mode 100644
+index 0000000..5e19328
+--- /dev/null
++++ b/MovieQuiz/Models/BestGameModel.swift
+@@ -0,0 +1,28 @@
++//
++//  GameRecordModel.swift
++//  MovieQuiz
++//
++//  Created by Александра Коснырева on 14.09.2023.
++//
++
++import Foundation
++// создаем сообщение об игре
++struct BestGame: Codable {
++    let correct: Int // количество правильных ответов
++    let total: Int // количество вопросов квиза
++    let date: Date //  дата
++    
++    func isBetterThan(_ another: BestGame) -> Bool {
++            correct > another.correct
++        }
++    }
++//extension BestGame: Comparable {
++//    static func < (lhs: BestGame, rhs: BestGame) -> Bool {
++//      //  lhs.correct < rhs.correct
++//        lhs.correct < rhs.correct
++//    }
++//    }
++    
++   
++
++    
+diff --git a/MovieQuiz/Models/QuizResultsViewModel.swift b/MovieQuiz/Models/QuizResultsViewModel.swift
+index 346dc00..145a448 100644
+--- a/MovieQuiz/Models/QuizResultsViewModel.swift
++++ b/MovieQuiz/Models/QuizResultsViewModel.swift
+@@ -12,3 +12,4 @@ struct QuizResultsViewModel{
+     let text: String
+     let buttonText: String
+ }
++// Предлагаем вам вывести в сообщении алерта статистику игр пользователя с помощью созданного класса  StatisticServiceImplementation
+diff --git a/MovieQuiz/Services/Presentation/AlertPresenter.swift b/MovieQuiz/Services/Presentation/AlertPresenter.swift
+index c5abb11..72584f3 100644
+--- a/MovieQuiz/Services/Presentation/AlertPresenter.swift
++++ b/MovieQuiz/Services/Presentation/AlertPresenter.swift
+@@ -11,8 +11,9 @@ import UIKit
+ //В классе MovieQuizViewController есть метод show(quiz result: QuizResultsViewModel). Он отвечает за отображение алерта (окошка с уведомлением) с результатами квиза после прохождения всех вопросов. Но задача отображения другого экрана (алерт в некотором смысле он и есть)
+ 
+ final class AlertPresenter: AlertPresenterProtocol {
+-    weak var alertDelegate: UIViewController?
+-    init(alertDelegate: UIViewController? = nil) {
++    
++    private weak var alertDelegate:  UIViewController?
++    init(alertDelegate: UIViewController?) {
+         self.alertDelegate = alertDelegate
+     }
+     
+@@ -25,19 +26,14 @@ final class AlertPresenter: AlertPresenterProtocol {
+             message: alertModel.message, // "Ваш результат \(correctAnswers)",
+             preferredStyle: .alert)
+     
+-    let action = UIAlertAction(
+-        title: "Сыграть ещё раз",
+-        style: .default) { [weak  self] _ in
+-        guard let self = self else {return}
++        let action = UIAlertAction(title: alertModel.buttonText, style: .default) {_ in
+         // код, который сбрасывает игру и показывает первый вопрос
+-            alertModel.buttonAction()
++            alertModel.completion()
+         }
+-        
++
+     alertDelegate?.present(alert, animated: true)
+     alert.addAction(action)
+-        
+    // self.present(alert, animated: true, completion: nil) // present - предоставить. Эта функция автоматом заложена в UIAlertAction
+-     
+         }
+     }
+     
+diff --git a/MovieQuiz/Services/Presentation/MovieQuizViewController.swift b/MovieQuiz/Services/Presentation/MovieQuizViewController.swift
+index c3b058a..bfbef08 100644
+--- a/MovieQuiz/Services/Presentation/MovieQuizViewController.swift
++++ b/MovieQuiz/Services/Presentation/MovieQuizViewController.swift
+@@ -1,6 +1,7 @@
+ import UIKit
+ 
+ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
++    
+     // MARK: - Lifecycle
+     @IBOutlet weak var noButton: UIButton!
+     
+@@ -18,21 +19,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+     private var correctAnswers = 0
+     
+     private let questionsAmount: Int = 10
+-    private var questionFactory: QuestionFactoryProtocol?
++    private var questionFactory: QuestionFactoryProtocol? 
+     private var currentQuestion: QuizQuestion? //текущий вопрос который будет видеть пользователь
+     private var alertPresenter: AlertPresenterProtocol?
++    private var statisticService: StatisticServiceImplementation?
++    
++
+     
+     private func convert(model: QuizQuestion) -> QuizStepViewModel{
+         let questionStep = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+         
+         return questionStep
+     }
++    
+     private func show (quiz step: QuizStepViewModel) {
+         indexLabel.text = step.questionNumber
+         imageView.image = step.image
+         questionLabel.text = step.question
+         imageView.layer.borderColor = UIColor.clear.cgColor
+     }
++    
+     private func showAnswerResult(isCorrect: Bool) {
+         if isCorrect {
+             correctAnswers += 1
+@@ -47,75 +53,95 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+             self.showNextQuestionOrResults()
+         }
+     }
+-    
+-    private func show(quiz result: QuizResultsViewModel) {
+-        let alertModel = AlertModel(
+-            title: "Этот раунд окончен!",
+-            message: "Ваш результат \(correctAnswers) из \(questionsAmount)",
+-            buttonText: "Сыграть ещё раз",
+-            buttonAction: {[weak self] in
+-                guard let self = self else {return}
+-                self.currentQuestionIndex = 0
+-                self.correctAnswers = 0
+-                questionFactory?.requestNextQuestion()
+-            }
+-            )
+-            alertPresenter?.show(alertModel: alertModel)
+-    }
+-    
+-    private func showNextQuestionOrResults(){
+-        // - TO DO call showAlertWhithResult
+-        if currentQuestionIndex == questionsAmount - 1 {
+-            // идем в состояние результата квиза
+-            let text = correctAnswers == questionsAmount ?
+-            "Поздравляем, вы ответили на 10/10!" :
+-            "Ваш результат: \(correctAnswers)/10"
++    private func showNextQuestionOrResults() {
+         
+-        let viewModel = QuizResultsViewModel(
+-                title: "Поздравляем!",
+-                text: text,
+-                buttonText: "Сыграть еще раз")
+-            show(quiz: viewModel)
++        if currentQuestionIndex == questionsAmount - 1 {
++            showFinalResults()
+         } else { // показываем следующий вопрос
+             currentQuestionIndex += 1
+             questionFactory?.requestNextQuestion()
+         }
+     }
++    
++        private func showFinalResults() {
++            statisticService?.store(correct: correctAnswers, total: questionsAmount)
++          
++            let alertModel = AlertModel(
++                title: "Этот раунд окончен!",
++                message: makeMessage(),
++                buttonText: "Сыграть еще раз" ,
++                completion: { [weak self] in
++                    self?.currentQuestionIndex = 0
++                    self?.correctAnswers = 0
++                    self?.questionFactory?.requestNextQuestion()
++                } )
++                alertPresenter?.show(alertModel: alertModel)
++                }
++                
++                func makeMessage () -> String {
++                    guard let statisticService = statisticService, let bestGame = statisticService.bestGame else {
++                        assertionFailure("error")
++                        return ""}
++                    
++                    let string1 = "Ваш результат: \(correctAnswers) / \(questionsAmount)"
++                    let string2 = "Количество сыграных квизов: \(statisticService.gamesCount)"
++                    let string3 = "Рекорд: \(bestGame.correct) / \(bestGame.total) \n \(bestGame.date.dateTimeString)"
++                    let string4 = "Средняя точность: \(String(format:"%.2f", statisticService.totalAccuracy)) %"
++                        let message = [
++                            string1, string2, string3, string4
++                        ].joined(separator: "\n")
++                  
++                    return message
++                    
++                    }
++                
++
+     //метод который вызывается когда пользователь жмет на кнопку нет
+     @IBAction private func noButtonClicked(_ sender: UIButton) {
+-        guard let currentQuestion = currentQuestion else {return}
++        guard let currentQuestion = currentQuestion else {
++            return
++            
++        }
+         let givenResult = false
+         showAnswerResult(isCorrect: givenResult == currentQuestion.correctAnswer)
+     }
+     //метод когда пользователь жмет на кнопку да
+     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+-        guard let currentQuestion = currentQuestion else {return}
++        guard let currentQuestion = currentQuestion else {
++            return
++            
++        }
+         let givenResult = true
+         showAnswerResult(isCorrect: givenResult == currentQuestion.correctAnswer)
++    
+     }
++    
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         imageView.layer.cornerRadius = 20
+         questionFactory = QuestionFactory(delegate: self)
+         alertPresenter = AlertPresenter(alertDelegate: self)
+         questionFactory?.requestNextQuestion()
+-    }
+-    
+-    // MARK: - QuestionFactoryDelegate
++        statisticService = StatisticServiceImplementation().self
++        print(NSHomeDirectory())
++        print(Bundle.main.bundlePath)
+ 
+-    func didReceiveNextQuestion(question: QuizQuestion?) { //реализуем протокол делегата
+-        guard let question = question else {
+-            return
+-        }
+-        currentQuestion = question
+-        let viewModel = convert(model: question)
+-        DispatchQueue.main.async { [weak self] in
+-            self?.show(quiz: viewModel)
++    }
++        
++        // MARK: - QuestionFactoryDelegate
++        
++        func didReceiveNextQuestion(question: QuizQuestion?) { //реализуем протокол делегата
++            guard let question = question else {
++                return
++            }
++            currentQuestion = question
++            let viewModel = convert(model: question)
++            DispatchQueue.main.async { [weak self] in
++                self?.show(quiz: viewModel)
++            }
+         }
+     }
+-    
+-    
+-}
++
+ 
+         
+ //        yesButton.titleLabel!.font = UIFont(name: "YSDisplay-Medium", size: 20)
+@@ -125,7 +151,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+ //    }
+ 
+ /*
+- Mock-данные
++ Mock-данные (от англ. имитация)
+  
+  
+  Картинка: The Godfather
+diff --git a/MovieQuiz/Services/QuestionFactory.swift b/MovieQuiz/Services/QuestionFactory.swift
+index b33cb28..c5df51e 100644
+--- a/MovieQuiz/Services/QuestionFactory.swift
++++ b/MovieQuiz/Services/QuestionFactory.swift
+@@ -24,7 +24,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
+         QuizQuestion(image: "Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)
+     ]
+     
+-    func requestNextQuestion() {                       // request - запрос
++    func requestNextQuestion() {                       // request - запрос. Фабрика должна уметь создавать вопросы
+         guard let index = (0..<questions.count).randomElement() else {
+             delelgate?.didReceiveNextQuestion(question: nil)
+             return
+diff --git a/MovieQuiz/Services/QuestionFactoryProtocol.swift b/MovieQuiz/Services/QuestionFactoryProtocol.swift
+index 6fcbf93..7099265 100644
+--- a/MovieQuiz/Services/QuestionFactoryProtocol.swift
++++ b/MovieQuiz/Services/QuestionFactoryProtocol.swift
+@@ -8,5 +8,5 @@
+ import Foundation
+ 
+ protocol QuestionFactoryProtocol {
+-    func requestNextQuestion() 
++    func requestNextQuestion()
+ }
+diff --git a/MovieQuiz/Services/StatisticServiceImplementation.swift b/MovieQuiz/Services/StatisticServiceImplementation.swift
+new file mode 100644
+index 0000000..cb65b78
+--- /dev/null
++++ b/MovieQuiz/Services/StatisticServiceImplementation.swift
+@@ -0,0 +1,90 @@
++//
++//  StatisticServiceImplementation.swift
++//  MovieQuiz
++//
++//  Created by Александра Коснырева on 14.09.2023.
++//
++
++import Foundation
++
++final class StatisticServiceImplementation: StatisticServiceProtocol {
++   
++    
++    // MARC -- Properties
++    var bestGame: BestGame? {
++        get {
++            guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
++                  let record = try? JSONDecoder().decode(BestGame.self, from: data) else {
++                return .init(correct: 0, total: 0, date: Date())
++            }
++            return record
++        }
++        set { guard let data = try? JSONEncoder().encode(newValue) else {
++            print("Невозможно сохранить результат")
++            return
++        }
++            userDefaults.set(data, forKey: Keys.bestGame.rawValue)
++            
++        }
++    }
++    
++    var totalAccuracy: Double {
++        get {
++            guard total != 0 else {
++                return 0
++            }
++            return  Double(correct) / Double(total) * 100
++        }
++    }
++     
++    
++    private let userDefaults = UserDefaults.standard
++    private enum Keys: String {
++        case correct, total, bestGame, gamesCount
++    }
++    var total: Int {
++        get {
++            userDefaults.integer(forKey: Keys.total.rawValue)
++        }
++        set {
++            userDefaults.set(newValue, forKey: Keys.total.rawValue)
++        }
++    }
++    var correct: Int {
++        get {
++            userDefaults.integer(forKey: Keys.correct.rawValue)
++        }
++        set {
++            userDefaults.set(newValue, forKey: Keys.correct.rawValue)
++        }
++    }
++    
++    var gamesCount: Int {
++        get {
++            userDefaults.integer(forKey: Keys.gamesCount.rawValue)
++        }
++        set {
++            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
++        }
++    
++    }
++    
++    // MARC -- Metods
++   
++    func store (correct: Int, total: Int) {
++        self.correct = correct
++        self.total = total
++        self.gamesCount += 1
++        
++            let currentBestGame = BestGame(correct: correct, total: total, date: Date())
++        
++        if let previosBestGame = bestGame { 
++            if currentBestGame.correct > previosBestGame.correct {
++                bestGame = currentBestGame
++            }
++        }
++    }
++}
++        
++        
++    
+diff --git a/MovieQuiz/Services/StatisticServiceProtocol.swift b/MovieQuiz/Services/StatisticServiceProtocol.swift
+new file mode 100644
+index 0000000..c9753e5
+--- /dev/null
++++ b/MovieQuiz/Services/StatisticServiceProtocol.swift
+@@ -0,0 +1,20 @@
++//
++//  StatisticService.swift
++//  MovieQuiz
++//
++//  Created by Александра Коснырева on 14.09.2023.
++//
++
++    protocol StatisticServiceProtocol {
++        // метод для сохранения текущего результата игры:
++        func store(correct count: Int, total amount: Int) // store- хранилище, amount - количество, общая сумма
++    
++        var totalAccuracy: Double { get } // средняя точность
++        var gamesCount: Int { get } // количество сыграных квизов
++        var bestGame: BestGame? { get }
++            }
++            
++        
++      
++    
++
