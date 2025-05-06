@@ -20,6 +20,11 @@
 				</dict>
 			</array>
 		</dict>
+        <key>UIAppFonts</key>
+             <array>
+                  <string>YS Display-Bold</string>
+                  <string>YS Display-Medium</string>
+             </array>
 	</dict>
 </dict>
 </plist>
