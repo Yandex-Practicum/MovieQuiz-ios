@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,13 +16,180 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BT6-fw-g4w" userLabel="Stack View General">
+                                <rect key="frame" x="20" y="58" width="374" height="804"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ceA-VG-wo2">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="804"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s9W-yy-6SB" userLabel="Stack View Question/Label">
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2J5-cu-VEc" userLabel="Question Title Label">
+                                                        <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
+                                                        <color key="backgroundColor" name="Black"/>
+                                                        <color key="tintColor" name="White"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="Вопрос:">
+                                                                <attributes>
+                                                                    <color key="NSColor" name="White"/>
+                                                                    <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNH-u2-pIr" userLabel="Index Label">
+                                                        <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
+                                                        <color key="backgroundColor" name="Black"/>
+                                                        <color key="tintColor" name="White"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="Index"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="1/10">
+                                                                <attributes>
+                                                                    <color key="NSColor" name="White"/>
+                                                                    <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5d5-pP-D2j" userLabel="Preview Image">
+                                                <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                                <color key="backgroundColor" name="Background"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Poster"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="5d5-pP-D2j" secondAttribute="height" multiplier="2:3" id="x3o-E0-Qmw"/>
+                                                </constraints>
+                                            </imageView>
+                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xda-c7-FkU">
+                                                <rect key="frame" x="0.0" y="624.5" width="374" height="99.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3Q-yM-mgp" userLabel="Question Label">
+                                                        <rect key="frame" x="42" y="0.0" width="290" height="99.5"/>
+                                                        <color key="backgroundColor" name="Background"/>
+                                                        <color key="tintColor" name="White"/>
+                                                        <attributedString key="attributedText"/>
+                                                        <color key="highlightedColor" name="Background"/>
+                                                    </label>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="w3Q-yM-mgp" firstAttribute="top" secondItem="xda-c7-FkU" secondAttribute="top" id="1WB-gL-2pm"/>
+                                                    <constraint firstAttribute="trailing" secondItem="w3Q-yM-mgp" secondAttribute="trailing" constant="42" id="Kpb-ed-XAO"/>
+                                                    <constraint firstAttribute="bottom" secondItem="w3Q-yM-mgp" secondAttribute="bottom" id="pE9-rU-zjS"/>
+                                                    <constraint firstItem="w3Q-yM-mgp" firstAttribute="leading" secondItem="xda-c7-FkU" secondAttribute="leading" constant="42" id="vJi-Xx-RUR"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1Mu-ld-C19" userLabel="Stack View Bottons">
+                                                <rect key="frame" x="0.0" y="744" width="374" height="60"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MOQ-sa-Eer" userLabel="No button">
+                                                        <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                                        <color key="backgroundColor" name="White"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="No"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="60" id="GUK-MY-EID"/>
+                                                        </constraints>
+                                                        <color key="tintColor" name="Black"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal">
+                                                            <attributedString key="attributedTitle">
+                                                                <fragment content="Нет">
+                                                                    <attributes>
+                                                                        <color key="NSColor" name="Black"/>
+                                                                        <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="noButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KU8-9O-JjP"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0vm-PD-Ht5" userLabel="Yes button">
+                                                        <rect key="frame" x="197" y="0.0" width="177" height="60"/>
+                                                        <color key="backgroundColor" name="White"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="Yes"/>
+                                                        <color key="tintColor" name="Black"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal">
+                                                            <attributedString key="attributedTitle">
+                                                                <fragment content="Да">
+                                                                    <attributes>
+                                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                        <font key="NSFont" size="20" name="YSDisplay-Medium"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="yesButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pFw-69-fRm"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="WNL-XV-u9O"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="vqP-fU-Of9">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="3Mf-u2-dq3"/>
+                                    <constraint firstAttribute="width" constant="20" id="4O7-83-eZm"/>
+                                </constraints>
+                            </activityIndicatorView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="Black"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BT6-fw-g4w" secondAttribute="bottom" id="Pc4-rq-Zr4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BT6-fw-g4w" secondAttribute="trailing" constant="20" id="RoC-Ko-Pvq"/>
+                            <constraint firstItem="vqP-fU-Of9" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="bS6-wh-fbp"/>
+                            <constraint firstItem="BT6-fw-g4w" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="kvv-lt-beL"/>
+                            <constraint firstItem="BT6-fw-g4w" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="spl-gg-T6z"/>
+                            <constraint firstItem="vqP-fU-Of9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xSI-Vl-FkF"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="activityIndicator" destination="vqP-fU-Of9" id="ZDB-D9-3Mc"/>
+                        <outlet property="counterLabel" destination="cNH-u2-pIr" id="ex2-Yl-FAc"/>
+                        <outlet property="imageView" destination="5d5-pP-D2j" id="tUT-RM-uAY"/>
+                        <outlet property="noButtonOutlet" destination="MOQ-sa-Eer" id="Yqg-UM-V2d"/>
+                        <outlet property="textlabel" destination="w3Q-yM-mgp" id="kOq-32-Zno"/>
+                        <outlet property="yesButtonOutlet" destination="0vm-PD-Ht5" id="ktK-9e-wkw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-55.072463768115945" y="55.580357142857139"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="Background">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Black">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
