@@ -1,0 +1,35 @@
+[
+"title": Inception,
+"director": {
+    id = nm0634240;
+    name = "Christopher Nolan";
+},
+"image": https://imdb-api.com/images/original/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_Ratio0.6751_AL_.jpg,
+"directors": Christopher Nolan,
+"id": tt1375666,
+"runtimeMins": 148,
+"releaseDate": 2010-07-16,
+"year": 2010,
+"actorList": <__NSArrayI 0x600000361470>(
+{
+    asCharacter = Cobb;
+    id = nm0000138;
+    image = "https://imdb-api.com/images/original/MV5BMjI0MTg3MzI0M15BMl5BanBnXkFtZTcwMzQyODU2Mw@@._V1_Ratio1.0000_AL_.jpg";
+    name = "Leonardo DiCaprio";
+},
+{
+    asCharacter = Arthur;
+    id = nm0330687;
+    image = "https://imdb-api.com/images/original/MV5BMTY3NTk0NDI3Ml5BMl5BanBnXkFtZTgwNDA3NjY0MjE@._V1_Ratio1.0000_AL_.jpg";
+    name = "Joseph Gordon-Levitt";
+},
+{
+    asCharacter = Ariadne;
+    id = nm0680983;
+    image = "https://imdb-api.com/images/original/MV5BNmNhZmFjM2ItNTlkNi00ZTQ4LTk3NzYtYTgwNTJiMTg4OWQzXkEyXkFqcGdeQXVyMTM1MjAxMDc3._V1_Ratio1.0000_AL_.jpg";
+    name = "Elliot Page";
+}
+)
+]
+
+{"items":[{"id":"tt1745960","rank":"1","rankUpDown":"+4","title":"Top Gun: Maverick","fullTitle":"Top Gun: Maverick (2022)","year":"2022","image":"https://m.media-amazon.com/images/M/MV5BOWQwOTA1ZDQtNzk3Yi00ZmVmLWFiZGYtNjdjNThiYjJhNzRjXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_Ratio0.6716_AL_.jpg","crew":"Joseph Kosinski (dir.), Tom Cruise, Jennifer Connelly","imDbRating":"8.5","imDbRatingCount":"320779"},{"id":"tt10954984","rank":"2","rankUpDown":"+2","title":"Nope","fullTitle":"Nope (2022)","year":"2022","image":"https://m.media-amazon.com/images/M/MV5BNGM1MDc3ZjgtODlkOS00NmZjLWJlOTItNGQ5OGFhN2JlNjgxXkEyXkFqcGdeQXVyNjk1Njg5NTA@._V1_Ratio0.7910_AL_.jpg","crew":"Jordan Peele (dir.), Daniel Kaluuya, Keke Palmer","imDbRating":"7.1","imDbRatingCount":"77247"}],"errorMessage":""}
